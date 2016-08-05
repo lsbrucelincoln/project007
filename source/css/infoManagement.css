@@ -1,0 +1,185 @@
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.after:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.veryCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.staffManagement .contentHeader .normalBtn {
+  float: right;
+}
+.staffManagement .contentHeader .manageBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
+.staffManagement .contentHeader .addItemBtn {
+  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
+  background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+}
+.staffManagement .contentHeader .gobackBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
+.staffManagement .contentHeader .deleteBtn {
+  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f0f0f0 100%);
+  background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
+  color: #666666;
+  border: 1px solid #ccc;
+}
+.staffManagement .contentHeader .deleteBtn,
+.staffManagement .contentHeader .gobackBtn,
+.staffManagement .contentHeader .addItemBtn {
+  display: none;
+}
+.staffManagement .contentHeader h3 {
+  display: none;
+}
+.staffManagement .contentBody .infoTable .number {
+  width: 23%;
+  position: relative;
+}
+.staffManagement .contentBody .infoTable .task {
+  width: 23%;
+}
+.staffManagement .contentBody .infoTable .name {
+  width: 54%;
+}
+.staffManagement .contentBody .infoTable .tableRow {
+  color: #666666;
+}
+.staffManagement .contentBody .infoTable .tableRow .task {
+  text-decoration: underline;
+  color: #50a8e7;
+}
+.staffDetail .contentHeader h2 {
+  float: right;
+  margin-right: 50px;
+}
+.staffDetail .contentHeader .backBtn {
+  float: left;
+}
+.staffDetail .contentBody .infoTable .number {
+  width: 20%;
+}
+.staffDetail .contentBody .infoTable .task {
+  width: 10%;
+}
+.staffDetail .contentBody .infoTable .name {
+  width: 45%;
+}
+.staffDetail .contentBody .infoTable .time {
+  width: 25%;
+}
+.staffDetail .contentBody .infoTable .tableRow {
+  color: #666666;
+}
+.staffDetail .contentBody .infoTable .tableRow .task {
+  text-decoration: underline;
+  color: #50a8e7;
+}
+.addStaff .contentHeader .backBtn {
+  float: right;
+}
+.addStaff .contentBody {
+  text-align: center;
+}
+.addStaff .contentBody p {
+  display: inline-block;
+}
+.addStaff .contentBody .confirmBtn {
+  display: inline-block;
+}
+.companyManagement {
+  font-size: 18px;
+}
+.companyManagement .contentHeader .chooseSubstation {
+  display: inline-block;
+  font-size: 20px;
+  margin-right: 20px;
+  margin-top: 4px;
+  color: #666;
+}
+.companyManagement .contentHeader .chosen {
+  color: #50a8e7;
+}
+.companyManagement .contentHeader .normalBtn {
+  float: right;
+}
+.companyManagement .contentHeader .manageBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
+.companyManagement .contentHeader .addItemBtn {
+  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
+  background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+}
+.companyManagement .contentHeader .gobackBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
+.companyManagement .contentHeader .deleteBtn {
+  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f0f0f0 100%);
+  background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
+  color: #666666;
+  border: 1px solid #ccc;
+}
+.companyManagement .contentHeader .deleteBtn,
+.companyManagement .contentHeader .gobackBtn,
+.companyManagement .contentHeader .addItemBtn {
+  display: none;
+}
+.companyManagement .selectBox {
+  float: left;
+}
+.companyManagement .selectBox select {
+  font-size: 18px;
+  height: 28px;
+}
+.companyManagement .selectBox select option {
+  font-size: 18px;
+}
+.companyManagement .searchBox {
+  float: right;
+  margin-bottom: 20px;
+}
+.companyManagement .infoTable {
+  clear: both;
+}
+.companyManagement .infoTable .companyName {
+  width: 40%;
+  position: relative;
+}
+.companyManagement .infoTable .companyType {
+  width: 15%;
+}
+.companyManagement .infoTable .chargePerson {
+  width: 15%;
+}
+.companyManagement .infoTable .contactNumber {
+  width: 30%;
+}
+.editMode .contentHeader .manageBtn,
+.editMode .contentHeader .searchBox {
+  display: none;
+}
+.editMode .contentHeader .deleteBtn,
+.editMode .contentHeader .gobackBtn,
+.editMode .contentHeader .addItemBtn,
+.editMode .contentHeader h3 {
+  display: inline-block;
+}
+.editMode .infoTable .tableRow .checkBox + label {
+  display: inline-block;
+}
+/*# sourceMappingURL=infoManagement.css.map */

@@ -1,0 +1,143 @@
+@import url('init.less');
+.contentHeader {
+    height: 50px;
+    border-bottom: 1px solid @blueB;
+    h3 {
+        color: @blueA;
+        font-size: 20px;
+        float: left;
+        position: relative;
+        top: 4px;
+        width: 200px;
+    }
+}
+
+.contentBody {
+    padding-top: 20px;
+}
+// 按钮样式
+.normalBtn {
+    background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+    .border(@blueA);
+    .radius;
+    width: 80px;
+    // float: right;
+    .chb(34px);
+    color: @blueA;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.backBtn {
+    background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
+// 搜索框样式
+.searchBox {
+    width: 260px;
+    .border(@blueA);
+    height: 34px;
+    .radius;
+    display: inline-block;
+    input {
+        padding: 9px 10px;
+        height: 100%;
+        border: 0;
+        border-radius: 6px 0px 0px 6px;
+    }
+    i {
+        color: #Ccc;
+        font-size: 18px;
+        position: relative;
+        top: 3px;
+    }
+    span {
+        float: right;
+        width: 60px;
+        height: 100%;
+        .colorBox(@blueA);
+        line-height: 32px;
+        text-align: center;
+        border-radius: 0px 4px 4px 0px;
+        font-size:16px;
+    }
+}
+
+.inputShort {
+    font-size: 18px;
+    width: 100%;
+    margin-bottom: 20px;
+    span {
+        display: inline-block;
+        width: 200px;
+        text-align: right;
+    }
+    input {
+        height: 28px;
+        width: 200px;
+        .border(#ccc);
+    }
+}
+
+.infoTable {
+    width: 100%;
+    border-left: 1px solid @lineColor;
+    font-size: 18px;
+    .tableHeader {
+    	color:#333;
+        height: 50px;
+        background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+        .border(@blueB);
+        span {
+            line-height: 48px;
+            text-align: center;
+            display: inline-block;
+            border-right: 1px solid @lineColor;
+        }
+    }
+    .tableRow {
+        height: 46px;
+        color:#666;
+        .bb;
+        .checkBox {
+            display: none;
+        }
+        .checkBox+label {
+            display: none;
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.10);
+            border-radius: 4px;
+            width: 14px;
+            height: 14px;
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            i {
+                color: @blueA;
+                font-size: 14px;
+                position: absolute;
+                top: -16px;
+                left: 0;
+                display: none;
+            }
+        }
+        .checkBox:checked+label {
+            i {
+                display: block;
+            }
+        }
+        span {
+            line-height: 46px;
+            text-align: center;
+            display: inline-block;
+            border-right: 1px solid @lineColor;
+        }
+        &:nth-child(2n+1) {
+            background-color: #fafbfd;
+        }
+        .task {
+            text-decoration: underline;
+            color: @blueA;
+        }
+    }
+}

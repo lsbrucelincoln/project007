@@ -1,0 +1,158 @@
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.after:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.veryCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.contentHeader {
+  height: 50px;
+  border-bottom: 1px solid #a9dbf6;
+}
+.contentHeader h3 {
+  color: #50a8e7;
+  font-size: 20px;
+  float: left;
+  position: relative;
+  top: 4px;
+  width: 200px;
+}
+.contentBody {
+  padding-top: 20px;
+}
+.normalBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+  border: 1px solid #50a8e7;
+  border-radius: 6px;
+  width: 80px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  color: #50a8e7;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.backBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
+.searchBox {
+  width: 260px;
+  border: 1px solid #50a8e7;
+  height: 34px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.searchBox input {
+  padding: 9px 10px;
+  height: 100%;
+  border: 0;
+  border-radius: 6px 0px 0px 6px;
+}
+.searchBox i {
+  color: #Ccc;
+  font-size: 18px;
+  position: relative;
+  top: 3px;
+}
+.searchBox span {
+  float: right;
+  width: 60px;
+  height: 100%;
+  background-color: #50a8e7;
+  color: white;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 0px 4px 4px 0px;
+  font-size: 16px;
+}
+.inputShort {
+  font-size: 18px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.inputShort span {
+  display: inline-block;
+  width: 200px;
+  text-align: right;
+}
+.inputShort input {
+  height: 28px;
+  width: 200px;
+  border: 1px solid #cccccc;
+}
+.infoTable {
+  width: 100%;
+  border-left: 1px solid #dfe9ef;
+  font-size: 18px;
+}
+.infoTable .tableHeader {
+  color: #333;
+  height: 50px;
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+  border: 1px solid #a9dbf6;
+}
+.infoTable .tableHeader span {
+  line-height: 48px;
+  text-align: center;
+  display: inline-block;
+  border-right: 1px solid #dfe9ef;
+}
+.infoTable .tableRow {
+  height: 46px;
+  color: #666;
+  border-bottom: 1px solid #dfe9ef;
+}
+.infoTable .tableRow .checkBox {
+  display: none;
+}
+.infoTable .tableRow .checkBox + label {
+  display: none;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 16px;
+  left: 20px;
+}
+.infoTable .tableRow .checkBox + label i {
+  color: #50a8e7;
+  font-size: 14px;
+  position: absolute;
+  top: -16px;
+  left: 0;
+  display: none;
+}
+.infoTable .tableRow .checkBox:checked + label i {
+  display: block;
+}
+.infoTable .tableRow span {
+  line-height: 46px;
+  text-align: center;
+  display: inline-block;
+  border-right: 1px solid #dfe9ef;
+}
+.infoTable .tableRow:nth-child(2n+1) {
+  background-color: #fafbfd;
+}
+.infoTable .tableRow .task {
+  text-decoration: underline;
+  color: #50a8e7;
+}
+/*# sourceMappingURL=public.css.map */

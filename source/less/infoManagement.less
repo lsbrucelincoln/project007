@@ -1,0 +1,187 @@
+@import url('init.less');
+.staffManagement {
+    .contentHeader {
+    	.normalBtn{
+    		float:right;
+    	}
+        .manageBtn {
+            background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+        }
+        .addItemBtn {
+            background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+        }
+        .gobackBtn {
+            background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+        }
+        .deleteBtn {
+            background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
+            color: @textColor;
+            border: 1px solid #ccc;
+        }
+        .deleteBtn,
+        .gobackBtn,
+        .addItemBtn {
+            display: none;
+        }
+        h3 {
+            display: none;
+        }
+    }
+    .contentBody {
+        .infoTable {
+            .number {
+                width: 23%;
+                position: relative;
+            }
+            .task {
+                width: 23%;
+            }
+            .name {
+                width: 54%;
+            }
+            .tableRow {
+                color: @textColor;
+                .task {
+                    text-decoration: underline;
+                    color: @blueA;
+                }
+            }
+        }
+    }
+}
+
+.staffDetail {
+    .contentHeader {
+        h2 {
+            float: right;
+            margin-right: 50px;
+        }
+        .backBtn {
+            float: left;
+        }
+    }
+    .contentBody {
+        .infoTable {
+            .number {
+                width: 20%;
+            }
+            .task {
+                width: 10%;
+            }
+            .name {
+                width: 45%;
+            }
+            .time {
+                width: 25%;
+            }
+            .tableRow {
+                color: @textColor;
+                .task {
+                    text-decoration: underline;
+                    color: @blueA;
+                }
+            }
+        }
+    }
+}
+
+.addStaff {
+	.contentHeader{
+		.backBtn{
+			float:right;
+		}
+	}
+    .contentBody {
+        text-align: center;
+        p {
+            display: inline-block;
+        }
+        .confirmBtn{
+        	display:inline-block;
+        }
+    }
+}
+.companyManagement{
+	font-size:18px;
+	.contentHeader{
+		.chooseSubstation{
+			display:inline-block;
+			font-size:20px;
+			margin-right: 20px;
+			margin-top: 4px;
+			color:#666;
+		}
+		.chosen{
+			color:@blueA;
+		}
+    	.normalBtn{
+    		float:right;
+    	}
+        .manageBtn {
+            background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+        }
+        .addItemBtn {
+            background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+        }
+        .gobackBtn {
+            background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+        }
+        .deleteBtn {
+            background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
+            color: @textColor;
+            border: 1px solid #ccc;
+        }
+        .deleteBtn,
+        .gobackBtn,
+        .addItemBtn {
+            display: none;
+        }
+	}
+	.selectBox{
+		float:left;
+		select{
+			font-size:18px;
+			height: 28px;
+			option{
+				font-size:18px;
+			}
+		}
+	}
+	.searchBox{
+		float:right;
+		margin-bottom: 20px;
+	}
+	.infoTable{
+		clear:both;
+		.companyName{
+			width:40%;
+			position:relative;
+		}
+		.companyType{
+			width:15%;
+		}
+		.chargePerson{
+			width:15%;
+		}
+		.contactNumber{
+			width:30%;
+		}
+	}
+}
+.editMode {
+    .contentHeader {
+        .manageBtn,
+        .searchBox {
+            display: none;
+        }
+        .deleteBtn,
+        .gobackBtn,
+        .addItemBtn,
+        h3 {
+            display: inline-block;
+        }
+    }
+    .infoTable .tableRow .checkBox+label {
+        display: inline-block;
+    }
+}

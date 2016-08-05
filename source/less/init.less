@@ -1,16 +1,18 @@
 @length_cenbox: 1000px;
-@radius: 5px;
+@radius: 6px;
 @textColor: #666;
 @mainColor: #55a012;
 @subColor: #7ed321;
 @redColor: #e70118;
 @placeholder: #d8d8d8;
-@lineColor: #999;
+@lineColor: #dfe9ef;
 @greyColor:#f9f9f9;
 @lightGreyColor: #fafafa;
 @bodyWhite: #fefefe;
 @blackColor:#333;
 @green:#66cecc;
+@blueA:#50a8e7;
+@blueB:#a9dbf6;
 .ellipsis {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -52,11 +54,30 @@
 .border(@color: @lineColor) {
     border: 1px solid @color;
 }
-
-
-
-
-
+.bb(@color: @lineColor) {
+    border-bottom: 1px solid @color;
+}
+.colorBox(@color:@mainColor) {
+    background-color: @color;
+    color: white;
+}
+.radius(@radius: 6px) {
+    border-radius: @radius;
+}
+.h(@height){
+    height: @height;
+    line-height:@height;
+}
+.ch(@height) {
+    height: @height;
+    line-height: @height;
+    text-align: center;
+}
+.chb(@height) {
+    height: (@height - 2);
+    line-height: (@height - 2);
+    text-align: center;
+}
 
 
 

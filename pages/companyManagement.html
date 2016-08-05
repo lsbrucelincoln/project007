@@ -1,0 +1,50 @@
+<div class="companyManagement">
+    <div class="contentHeader">
+        <a href="" class="chooseSubstation chosen">北仑分局</a>
+        <a href="" class="chooseSubstation">大榭分局</a>
+        <a href="" class="chooseSubstation">象山分局</a>
+        <a href="" class="chooseSubstation">宁海分局</a>
+        <a href="" class="chooseSubstation">全部分局</a>
+        <div class="deleteBtn normalBtn">删除</div>
+        <a href="#/addCompany.html" class="addItemBtn normalBtn">新增</a>
+        <div class="gobackBtn normalBtn">返回</div>
+        <div class="manageBtn normalBtn">管理</div>
+    </div>
+    <div class="contentBody">
+        <div class="selectBox">类型：
+            <select name="" id="">
+                <option value="" selected>全部</option>
+                <option value="">港口服务</option>
+                <option value="">港口集装箱企业</option>
+                <option value="">港口客运企业</option>
+                <option value="">港口普通货物企业</option>
+                <option value="">港口危险货物企业</option>
+            </select>
+        </div>
+        <div class="searchBox">
+            <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
+        </div>
+        <div class="infoTable">
+            <div class="tableHeader">
+                <span class="companyName">企业名称</span><span class="companyType">企业类型</span><span class="chargePerson">负责人</span><span class="contactNumber">联系电话</span>
+            </div>
+            <div class="tableRow">
+                <span class="companyName"><input type="checkBox" id="company1" class="checkBox">
+            <label for="company1"><i class="flaticon-checked"></i></label>中外运</span><span class="companyType">国际货代</span><span class="chargePerson">陈先生</span><span class="contactNumber">138-8888-8888</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $(".manageBtn").off().on('click', function(event) {
+            $(".companyManagement").addClass('editMode');
+        });
+        $(".gobackBtn").off().on('click', function(event) {
+            $(".companyManagement").removeClass('editMode');
+        });
+         $(".deleteBtn").off().on('click', function(event) {
+            $(".checkBox:checked").parents(".tableRow").remove();
+        });
+    });
+</script>

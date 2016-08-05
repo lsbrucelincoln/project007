@@ -33,6 +33,13 @@ function eventBind() {
         }
         e.stopPropagation();
     });
+    $(".submenu .line").on('click',function(event) {
+        $(".submenu .line").removeClass('chosen');
+        $(this).addClass('chosen');
+    });
+    $(".admin_content").on('click', '.backBtn', function(event) {
+        history.back();
+    });
     $(ADMIN_CONFIG.leftSelector + " .leftmenu>div>.line").bind('click', function() {
         if ($(this).next('.submenu').length) {
             // 有子菜单
@@ -40,9 +47,13 @@ function eventBind() {
                 // 打开的
                 $(this).next('.submenu').slideUp(300);
                 $(this).removeClass("active");
+                $(this).find('.flaticon-arrows-2').hide();
+                $(this).find('.flaticon-arrows').show();
             } else {
                 $(this).next('.submenu').slideDown(300);
                 $(this).addClass("active");
+                $(this).find('.flaticon-arrows').hide();
+                $(this).find('.flaticon-arrows-2').show();
             }
 
         }
