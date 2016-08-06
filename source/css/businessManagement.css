@@ -1,0 +1,127 @@
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.after:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.veryCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.assessmentCheck .contentHeader .addItemBtn {
+  width: 130px;
+  color: #50a8e7;
+  float: right;
+}
+.assessmentCheck .contentHeader .searchBox {
+  float: right;
+}
+.assessmentCheck .contentBody .infoTable .number,
+.assessmentCheck .contentBody .infoTable .chargePerson,
+.assessmentCheck .contentBody .infoTable .task {
+  width: 15%;
+}
+.assessmentCheck .contentBody .infoTable .companyName {
+  width: 30%;
+}
+.assessmentCheck .contentBody .infoTable .time {
+  width: 25%;
+}
+.assessmentCheck .contentBody .infoTable .tableRow .deleteItem {
+  margin-left: 20px;
+  color: #f5a623;
+}
+.assessmentCheck .contentBody .finishedTable {
+  display: none;
+}
+.assessDetail .contentHeader .backBtn {
+  float: right;
+}
+.assessDetail .contentBody .infoTable span {
+  width: 25%;
+}
+.assessDetail .contentBody .textInfo {
+  font-size: 18px;
+  padding: 0px 20px;
+  border: 1px solid #dfe9ef;
+}
+.assessDetail .contentBody .textInfo h3 {
+  padding-left: 10px;
+  font-size: 20px;
+  color: #50a8e7;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  border-left: 2px solid #50a8e7;
+}
+.assessDetail .contentBody .textInfo p {
+  margin-bottom: 20px;
+  color: #333;
+}
+.assessDetail .contentBody .textInfo p span {
+  color: #666;
+}
+.assessDetail .contentBody .textInfo .halfText,
+.assessDetail .contentBody .textInfo .thirdText {
+  display: inline-block;
+}
+.assessDetail .contentBody .textInfo .halfText {
+  width: 49%;
+}
+.assessDetail .contentBody .textInfo .thirdText {
+  width: 32%;
+}
+.assessDetail .contentBody .textInfo .picArea {
+  border-top: 1px solid #dfe9ef;
+}
+.assessDetail .contentBody .textInfo .picArea .picBox {
+  font-size: 18px;
+  color: #333;
+  width: 32%;
+  display: inline-block;
+  text-align: center;
+}
+.assessDetail .contentBody .textInfo .picArea .picBox img {
+  margin-top: 20px;
+  width: 240px;
+  height: 180px;
+}
+.assessDetail .contentBody .textInfo .picArea .picBox .place {
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+.addAssessment .contentHeader .backBtn {
+  float: right;
+}
+.addAssessment .contentBody .textInfo {
+  font-size: 18px;
+  padding: 0px 20px;
+  border: 1px solid #dfe9ef;
+}
+.addAssessment .contentBody .textInfo h3 {
+  padding-left: 10px;
+  font-size: 20px;
+  color: #50a8e7;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  border-left: 2px solid #50a8e7;
+}
+.addAssessment .contentBody .textInfo .inputShort {
+  width: 48%;
+  display: inline-block;
+}
+.addAssessment .contentBody .textInfo .inputShort span {
+  width: 90px;
+}
+.addAssessment .contentBody .textInfo .seeCriteria {
+  float: right;
+  text-decoration: underline;
+}
+/*# sourceMappingURL=businessManagement.css.map */

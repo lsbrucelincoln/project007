@@ -1,0 +1,46 @@
+<div class="addAssessment admin_content_innerBox">
+    <div class="admin_scrollBox">
+        <div class="contentHeader">
+            <div class="backBtn normalBtn">返回</div>
+        </div>
+        <div class="contentBody">
+            <div class="textInfo">
+                <h3>公司信息</h3>
+                <div class="inputShort">
+                    <span>公司名称：</span><input type="text">
+                    <a href="" class="chooseCompany"></a>
+                </div><br/>
+                <div class="inputShort"><span>企业地址：</span><input type="text"></div>
+                <div class="inputShort"><span>负责人：</span><input type="text"></div>
+                <div class="inputShort"><span>企业类型：</span><input type="text"></div>
+                <div class="inputShort"><span>联系电话：</span><input type="text"></div>
+                <h3>评估详情 <a href="" class="seeCriteria">查看适用的评估标准</a></h3>
+                <div class="inputShort"><span>任务主题：</span><input type="text"></div>
+                <div class="inputShort"><span>评估模式：</span><select name="" id=""></select></div>
+                <div class="inputShort"><span>评估场景：</span><select name="" id=""></select></div>
+                <div class="inputShort"><span>到期时间：</span><input type="text"></div>
+                <h3>人员安排</h3>
+                <div class="addPersonBtn"></div>
+                <div class="confirmBtn normalBtn">确定</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+});
+</script>

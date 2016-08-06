@@ -1,0 +1,63 @@
+<div class="assessmentCheck">
+    <div class="contentHeader">
+    <a href="" class="headerText chosen" id="processingBtn">进行中</a><a href="" class="headerText" id="finishedBtn">已结束</a>
+    <a href="#/addAssessment.html" class="addItemBtn normalBtn">发起新评估</a>
+        <div class="searchBox">
+            <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
+        </div>
+    </div>
+    <div class="contentBody">
+        <div class="infoTable processingTable">
+            <div class="tableHeader">
+                <span class="number">编号</span><span class="companyName">公司名称</span><span class="chargePerson">评估负责人</span><span class="time">时间</span><span class="task">操作</span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a><a class="deleteItem">删除</a></span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a><a class="deleteItem">删除</a></span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a><a class="deleteItem">删除</a></span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a><a class="deleteItem">删除</a></span>
+            </div>
+        </div>
+        <div class="infoTable finishedTable">
+            <div class="tableHeader">
+                <span class="number">编号</span><span class="companyName">公司名称</span><span class="chargePerson">评估负责人</span><span class="time">时间</span><span class="task">操作</span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a></span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a></span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a></span>
+            </div>
+            <div class="tableRow">
+                <span class="number">0020161</span><span class="companyName">马士基有限公司</span><span class="chargePerson">朱先生</span><span class="time">2016年06月01日</span><span class="task"><a href="#/assessDetail.html" class="seeDetail">查看</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#processingBtn").on('click', function(event) {
+            event.preventDefault();
+            $(".processingTable").show();
+            $(".finishedTable").hide();
+            $(this).addClass('chosen');
+            $("#finishedBtn").removeClass('chosen');
+        });
+        $("#finishedBtn").on('click', function(event) {
+            event.preventDefault();
+            $(".processingTable").hide();
+            $(".finishedTable").show();
+            $(this).addClass('chosen');
+            $("#processingBtn").removeClass('chosen');
+        });
+    });
+</script>

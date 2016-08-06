@@ -10,6 +10,16 @@
         top: 4px;
         width: 200px;
     }
+		.headerText{
+			display:inline-block;
+			font-size:20px;
+			margin-right: 20px;
+			margin-top: 4px;
+			color:#666;
+		}
+		.chosen{
+			color:@blueA;
+		}
 }
 
 .contentBody {
@@ -26,6 +36,7 @@
     color: @blueA;
     margin-left: 20px;
     cursor: pointer;
+    display:inline-block;
 }
 
 .backBtn {
@@ -75,6 +86,15 @@
         height: 28px;
         width: 200px;
         .border(#ccc);
+    }
+    select{
+    	height: 28px;
+    	width:200px;
+    	font-size:18px;
+    	.border(#ccc);
+    	option{
+    		font-size:18px;
+    	}
     }
 }
 
