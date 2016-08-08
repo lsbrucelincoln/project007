@@ -103,6 +103,7 @@
   height: 28px;
   width: 200px;
   border: 1px solid #cccccc;
+  padding: 5px;
 }
 .inputShort select {
   height: 28px;

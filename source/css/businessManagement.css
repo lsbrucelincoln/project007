@@ -116,9 +116,30 @@
 .addAssessment .contentBody .textInfo .inputShort {
   width: 48%;
   display: inline-block;
+  position: relative;
 }
 .addAssessment .contentBody .textInfo .inputShort span {
   width: 90px;
+}
+.addAssessment .contentBody .textInfo .inputShort .chooseCompany {
+  display: inline-block;
+  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
+  background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+  border: 1px solid #50a8e7;
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  text-align: center;
+}
+.addAssessment .contentBody .textInfo .inputShort .chooseCompany i {
+  color: #50a8e7;
+  font-size: 16px;
+}
+.addAssessment .contentBody .textInfo .inputShort .flaticon-small-calendar {
+  font-size: 16px;
+  position: absolute;
+  top: 3px;
+  left: 265px;
 }
 .addAssessment .contentBody .textInfo .seeCriteria {
   float: right;

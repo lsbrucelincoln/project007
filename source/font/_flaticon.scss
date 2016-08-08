@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 05/08/2016 03:48
+    Creation date: 05/08/2016 14:29
     */
 
     @font-face {
@@ -50,8 +50,9 @@
 .flaticon-paper:before { content: "\f10b"; }
 .flaticon-pen:before { content: "\f10c"; }
 .flaticon-profile:before { content: "\f10d"; }
-.flaticon-tool:before { content: "\f10e"; }
-.flaticon-up-arrow:before { content: "\f10f"; }
+.flaticon-small-calendar:before { content: "\f10e"; }
+.flaticon-tool:before { content: "\f10f"; }
+.flaticon-up-arrow:before { content: "\f110"; }
     
     $font-Flaticon-add: "\f100";
     $font-Flaticon-arrows: "\f101";
@@ -67,5 +68,6 @@
     $font-Flaticon-paper: "\f10b";
     $font-Flaticon-pen: "\f10c";
     $font-Flaticon-profile: "\f10d";
-    $font-Flaticon-tool: "\f10e";
-    $font-Flaticon-up-arrow: "\f10f";
+    $font-Flaticon-small-calendar: "\f10e";
+    $font-Flaticon-tool: "\f10f";
+    $font-Flaticon-up-arrow: "\f110";

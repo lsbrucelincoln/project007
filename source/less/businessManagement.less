@@ -1,131 +1,158 @@
 @import url('init.less');
-.assessmentCheck{
-	.contentHeader{
-		.addItemBtn{
-			width:130px;
-			color:@blueA;
-			float:right;
-		}
-		.searchBox{
-			float:right;
-		}
-	}
-	.contentBody{
-		.infoTable{
-			.number,.chargePerson,.task{
-				width:15%
-			}
-			.companyName{
-				width:30%
-			}
-			.time{
-				width:25%
-			}
-			.tableRow{
-				.deleteItem{
-					margin-left: 20px;
-					color:#f5a623;
-				}
-			}
-		}
-		.finishedTable{
-			display:none;
-		}
-	}
+.assessmentCheck {
+    .contentHeader {
+        .addItemBtn {
+            width: 130px;
+            color: @blueA;
+            float: right;
+        }
+        .searchBox {
+            float: right;
+        }
+    }
+    .contentBody {
+        .infoTable {
+            .number,
+            .chargePerson,
+            .task {
+                width: 15%
+            }
+            .companyName {
+                width: 30%
+            }
+            .time {
+                width: 25%
+            }
+            .tableRow {
+                .deleteItem {
+                    margin-left: 20px;
+                    color: #f5a623;
+                }
+            }
+        }
+        .finishedTable {
+            display: none;
+        }
+    }
 }
-.assessDetail{
-	.contentHeader{
-		.backBtn{
-			float:right;
-		}
-	}
-	.contentBody{
-		.infoTable{
-			span{
-				width:25%
-			}
-		}
-		.textInfo{
-			font-size:18px;
-			padding:0px 20px;
-			.border;
-			h3{
-				padding-left: 10px;
-				font-size:20px;
-				color:@blueA;
-				margin-top: 24px;
-				margin-bottom: 20px;
-				border-left: 2px solid @blueA;
-			}
-			p{
-				margin-bottom: 20px;
-				color:#333;
-				span{
-					color:#666;
-				}
-			}
-			.halfText,.thirdText{
-				display:inline-block;
-			}
-			.halfText{
-				width:49%;
-			}
-			.thirdText{
-				width:32%;
-			}
-			.picArea{
-				border-top: 1px solid @lineColor;
-				.picBox{
-					font-size:18px;
-					color:#333;
-					width:32%;
-					display:inline-block;
-					text-align:center;
-					img{
-						margin-top: 20px;
-						width: 240px;
-						height: 180px;
-					}
-					.place{
-						margin-top: 20px;
-						margin-bottom: 6px;
-					}
-				}
-			}
-		}
-	}
-}
-.addAssessment{
-	.contentHeader{
-		.backBtn{
-			float:right;
-		}
-	}
-	.contentBody{
-		.textInfo{
-			font-size:18px;
-			padding:0px 20px;
-			.border;
-			h3{
-				padding-left: 10px;
-				font-size:20px;
-				color:@blueA;
-				margin-top: 24px;
-				margin-bottom: 20px;
-				border-left: 2px solid @blueA;
-			}
-			.inputShort{
-				width:48%;
-				display:inline-block;
-				span{
-					width:90px;
-				}
-			}
-			.seeCriteria{
-				float:right;
-				text-decoration:underline;
-			}
-		}
 
-	}
+.assessDetail {
+    .contentHeader {
+        .backBtn {
+            float: right;
+        }
+    }
+    .contentBody {
+        .infoTable {
+            span {
+                width: 25%
+            }
+        }
+        .textInfo {
+            font-size: 18px;
+            padding: 0px 20px;
+            .border;
+            h3 {
+                padding-left: 10px;
+                font-size: 20px;
+                color: @blueA;
+                margin-top: 24px;
+                margin-bottom: 20px;
+                border-left: 2px solid @blueA;
+            }
+            p {
+                margin-bottom: 20px;
+                color: #333;
+                span {
+                    color: #666;
+                }
+            }
+            .halfText,
+            .thirdText {
+                display: inline-block;
+            }
+            .halfText {
+                width: 49%;
+            }
+            .thirdText {
+                width: 32%;
+            }
+            .picArea {
+                border-top: 1px solid @lineColor;
+                .picBox {
+                    font-size: 18px;
+                    color: #333;
+                    width: 32%;
+                    display: inline-block;
+                    text-align: center;
+                    img {
+                        margin-top: 20px;
+                        width: 240px;
+                        height: 180px;
+                    }
+                    .place {
+                        margin-top: 20px;
+                        margin-bottom: 6px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.addAssessment {
+    .contentHeader {
+        .backBtn {
+            float: right;
+        }
+    }
+    .contentBody {
+        .textInfo {
+            font-size: 18px;
+            padding: 0px 20px;
+            .border;
+            h3 {
+                padding-left: 10px;
+                font-size: 20px;
+                color: @blueA;
+                margin-top: 24px;
+                margin-bottom: 20px;
+                border-left: 2px solid @blueA;
+            }
+            .inputShort {
+                width: 48%;
+                display: inline-block;
+                position:relative;
+                span {
+                    width: 90px;
+                }
+                .chooseCompany {
+                    display: inline-block;
+                    background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+                    border: 1px solid #50a8e7;
+                    .radius;
+                    width: 26px;
+                    height: 26px;
+                    text-align:center;
+                    i{
+                    	color:@blueA;
+                    	font-size:16px;
+                    }
+                }
+                .flaticon-small-calendar{
+                	font-size:16px;
+                	position: absolute;
+                	top:3px;
+                	left:265px;
+                }
+            }
+            .seeCriteria {
+                float: right;
+                text-decoration: underline;
+            }
+            .addPersonBtn{
+            	
+            }
+        }
+    }
 }
