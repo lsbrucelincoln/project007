@@ -113,8 +113,6 @@ body {
   height: 60px;
   background-color: #50a8e7;
   padding-left: 40px;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   margin-top: 10px;
 }
@@ -129,7 +127,7 @@ body {
   height: 60px;
   background-color: #73b9eb;
   float: right;
-  margin-right: 40px;
+  margin-right: 20px;
   text-align: center;
 }
 .footer .download i {
@@ -379,6 +377,7 @@ body {
   text-decoration: underline;
 }
 .admin_scrollBox {
+  min-height: 500px;
   height: 100%;
   width: 100%;
   overflow: auto;

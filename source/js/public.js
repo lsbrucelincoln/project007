@@ -48,14 +48,13 @@ function eventBind() {
                 $(this).next('.submenu').slideUp(300);
                 $(this).removeClass("active");
                 $(this).find('.flaticon-arrows-2').hide();
-                $(this).find('.flaticon-arrows').show();
+                $(this).find('.flaticon-arrows-1').show();
             } else {
                 $(this).next('.submenu').slideDown(300);
                 $(this).addClass("active");
-                $(this).find('.flaticon-arrows').hide();
+                $(this).find('.flaticon-arrows-1').hide();
                 $(this).find('.flaticon-arrows-2').show();
             }
-
         }
     });
 }

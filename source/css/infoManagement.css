@@ -166,6 +166,33 @@
 .companyManagement .infoTable .contactNumber {
   width: 30%;
 }
+.companyInfoManagement .contentHeader .updateBtn {
+  float: right;
+}
+.companyInfoManagement .contentBody .inputShort {
+  display: inline-block;
+  width: 48%;
+}
+.companyInfoManagement .contentBody .inputShort span {
+  width: 120px;
+}
+.companyInfoManagement .contentBody .inputShort i {
+  font-style: normal;
+}
+.companyInfoManagement .contentBody .digitMap input {
+  width: 60px;
+}
+.companyInfoManagement .contentBody .companyAddress input {
+  width: 400px;
+}
+.companyInfoManagement .contentBody .companyNumber span {
+  width: 200px;
+}
+.companyInfoManagement .contentBody .companyNumber img {
+  width: 300px;
+  height: 200px;
+  margin-left: 20px;
+}
 .editMode .contentHeader .manageBtn,
 .editMode .contentHeader .searchBox {
   display: none;

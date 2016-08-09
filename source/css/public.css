@@ -212,4 +212,7 @@
 .tableBox table tr {
   height: 46px;
 }
+.tableBox table tr:nth-child(2n+1) {
+  background-color: #fafbfd;
+}
 /*# sourceMappingURL=public.css.map */

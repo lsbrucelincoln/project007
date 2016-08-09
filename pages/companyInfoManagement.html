@@ -1,0 +1,61 @@
+<div class="companyInfoManagement admin_content_innerBox">
+    <div class="admin_scrollBox">
+        <div class="contentHeader">
+            <div class="updateBtn normalBtn">更新</div>
+        </div>
+        <div class="contentBody">
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>公司名称：</span>
+                    <i>浙江省杭州某某有限公司</i>
+                </div>
+                <div class="inputShort"><span>评估模式：</span>
+                    <select name="" id=""></select>
+                </div>
+                <div class="inputShort">
+                    <span>企业代码：</span>
+                    <span>5615132156356156</span>
+                </div>
+                <div class="inputShort"><span>评估模式：</span>
+                    <select name="" id=""></select>
+                </div>
+                <div class="inputShort"><span>安全责任人：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort"><span>所属港区：</span>
+                    <select name="" id=""></select>
+                </div>
+                <div class="inputShort"><span>固定电话：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort digitMap"><span>电子地图：</span>
+                    <input type="text"> —— <input type="text">
+                </div>
+                <div class="inputShort"><span>手机号码：</span>
+                    <input type="text">
+                </div><br/>
+                <div class="inputShort companyNumber" ><span>企业组织机构代码证：</span><br/>
+                    <img src="" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+});
+</script>
