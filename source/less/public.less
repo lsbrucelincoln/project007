@@ -10,21 +10,22 @@
         top: 4px;
         width: 200px;
     }
-		.headerText{
-			display:inline-block;
-			font-size:20px;
-			margin-right: 20px;
-			margin-top: 4px;
-			color:#666;
-		}
-		.chosen{
-			color:@blueA;
-		}
+    .headerText {
+        display: inline-block;
+        font-size: 20px;
+        margin-right: 20px;
+        margin-top: 4px;
+        color: #666;
+    }
+    .chosen {
+        color: @blueA;
+    }
 }
 
 .contentBody {
     padding-top: 20px;
 }
+
 // 按钮样式
 .normalBtn {
     background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
@@ -36,12 +37,13 @@
     color: @blueA;
     margin-left: 20px;
     cursor: pointer;
-    display:inline-block;
+    display: inline-block;
 }
 
 .backBtn {
     background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
 }
+
 // 搜索框样式
 .searchBox {
     width: 260px;
@@ -69,7 +71,7 @@
         line-height: 32px;
         text-align: center;
         border-radius: 0px 4px 4px 0px;
-        font-size:16px;
+        font-size: 16px;
     }
 }
 
@@ -86,16 +88,16 @@
         height: 28px;
         width: 200px;
         .border(#ccc);
-        padding:5px;
+        padding: 5px;
     }
-    select{
-    	height: 28px;
-    	width:200px;
-    	font-size:18px;
-    	.border(#ccc);
-    	option{
-    		font-size:18px;
-    	}
+    select {
+        height: 28px;
+        width: 200px;
+        font-size: 18px;
+        .border(#ccc);
+        option {
+            font-size: 18px;
+        }
     }
 }
 
@@ -104,7 +106,7 @@
     border-left: 1px solid @lineColor;
     font-size: 18px;
     .tableHeader {
-    	color:#333;
+        color: #333;
         height: 50px;
         background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
         .border(@blueB);
@@ -117,7 +119,7 @@
     }
     .tableRow {
         height: 46px;
-        color:#666;
+        color: #666;
         .bb;
         .checkBox {
             display: none;
@@ -159,6 +161,42 @@
         .task {
             text-decoration: underline;
             color: @blueA;
+        }
+    }
+}
+
+.tableBox {
+    display:inline-block;
+    .tableHeader {
+        height: 50px;
+        background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+        .border(#a9dbf6);
+        padding-top: 10px;
+        padding-left: 20px;
+        color: @blueA;
+        font-size: 18px;
+        i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        span {
+            display: inline-block;
+            position: relative;
+            top: -2px;
+        }
+    }
+    table {
+        border-collapse: collapse;
+        tr,
+        td,
+        th {
+            .border;
+            text-align:center;
+            font-weight:100;
+            font-size:16px;
+        }
+        tr{
+            height: 46px;
         }
     }
 }

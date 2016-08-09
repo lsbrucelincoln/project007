@@ -251,8 +251,8 @@ function dataURLtoBlob(dataurl) {
 }
 
 function windowReset() {
-    var h = $(window).height() - $(ADMIN_CONFIG.headerSelector).height();
-    $(ADMIN_CONFIG.contentSelector).height(h);
+    var h = $(window).height() - $("#admin_header").height();
+    $(".admin_scrollBox").height(h);
 }
 
 function loadContent() {

@@ -24,49 +24,60 @@ body {
 .admin_body {
   width: 100%;
   height: 100%;
-  padding-top: 80px;
+  padding-top: 100px;
   padding-left: 250px;
   position: relative;
+  overflow: hidden;
 }
 .admin_header {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  height: 100px;
   padding-left: 10px;
   padding-right: 10px;
-  background-image: -webkit-linear-gradient(270deg, #6bc6ff 3%, #1f73bb 85%);
-  background-image: linear-gradient(-180deg, #6bc6ff 3%, #1f73bb 85%);
+  background-image: -webkit-linear-gradient(270deg, #50a8e7 3%, #1f73bb 100%);
+  background-image: linear-gradient(-180deg, #50a8e7 3%, #1f73bb 100%);
   z-index: 1;
 }
 .admin_header .brand {
   color: white;
-  margin-top: 25px;
   line-height: 1;
 }
+.admin_header .brand .logo {
+  margin-left: 10px;
+  margin-top: 20px;
+  height: 60px;
+  width: 50px;
+  float: left;
+}
 .admin_header .headerTitle {
-  margin-left: 40px;
+  margin-top: 33px;
+  margin-left: 10px;
   font-size: 30px;
   font-family: 'PingFangSC4fdada5c215c68';
   float: left;
   font-weight: 600;
 }
 .admin_header .rightBox {
+  margin-top: 20px;
+  line-height: 30px;
+  float: right;
+  margin-right: 20px;
+  color: white;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.admin_header .rightBox .userBox {
   background-image: -webkit-linear-gradient(270deg, #68c2fc 0%, #1f73bb 100%);
   background-image: linear-gradient(-180deg, #68c2fc 0%, #1f73bb 100%);
   box-shadow: 0px 0px 0px 1px rgba(29, 109, 175, 0.5);
   border-radius: 6px;
   min-width: 167px;
   height: 34px;
-  line-height: 30px;
-  float: right;
-  margin-right: 40px;
-  color: white;
-  cursor: pointer;
   padding-left: 8px;
   padding-right: 8px;
-  vertical-align: middle;
 }
 .admin_header .rightBox .client,
 .admin_header .rightBox .logout {
@@ -83,11 +94,53 @@ body {
 .admin_header .rightBox .client:after {
   content: "|";
 }
+.admin_header .tips {
+  position: absolute;
+  color: white;
+  float: right;
+  right: 20px;
+}
+.admin_header .tips span {
+  text-decoration: underline;
+}
+.admin_header .tips i {
+  font-size: 20px;
+  position: relative;
+  top: 4px;
+  color: #a9dbf6;
+}
+.footer {
+  height: 60px;
+  background-color: #50a8e7;
+  padding-left: 40px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-top: 10px;
+}
+.footer span {
+  margin-right: 33px;
+  line-height: 60px;
+  color: #fff;
+  font-size: 16px;
+}
+.footer .download {
+  width: 60px;
+  height: 60px;
+  background-color: #73b9eb;
+  float: right;
+  margin-right: 40px;
+  text-align: center;
+}
+.footer .download i {
+  font-size: 40px;
+  color: #a9dbf6;
+}
 .admin_left {
   position: absolute;
   left: 0;
   top: 0;
-  padding-top: 80px;
+  padding-top: 100px;
   width: 250px;
   height: 100%;
   background-color: #F4F4F4;
@@ -187,10 +240,149 @@ body {
 .admin_left .leftmenu > div.active > .line .rightIcon {
   display: none;
 }
+.signInBody {
+  height: 100%;
+  text-align: center;
+  vertical-align: center;
+  margin-top: 100px;
+  margin-bottom: 60px;
+}
+.signInBody .mainBox {
+  position: absolute;
+  left: 50%;
+  margin-left: -486px;
+  top: 50%;
+  margin-top: -156px;
+  width: 972px;
+  height: 352px;
+}
+.signInBody .mainBox img {
+  height: 100%;
+  width: 500px;
+  float: left;
+}
+.signInBody .mainBox .logInBox {
+  color: #333;
+  text-align: left;
+  width: 472px;
+  height: 100%;
+  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #fafbfd 100%);
+  background-image: linear-gradient(-180deg, #ffffff 0%, #fafbfd 100%);
+  float: left;
+  padding: 20px;
+  border: 1px solid #dddddd;
+}
+.signInBody .mainBox .logInBox h3 {
+  font-size: 24px;
+}
+.signInBody .mainBox .logInBox .inputBox {
+  margin-top: 36px;
+  margin-left: 40px;
+  position: relative;
+}
+.signInBody .mainBox .logInBox .inputBox .title {
+  font-size: 18px;
+}
+.signInBody .mainBox .logInBox .inputBox > input {
+  height: 28px;
+  width: 200px;
+  padding-left: 26px;
+  border: 1px solid #dddddd;
+  font-size: 14px;
+  color: #999;
+}
+.signInBody .mainBox .logInBox .inputBox > i {
+  color: #ccc;
+  position: absolute;
+  font-size: 16px;
+  left: 76px;
+  top: 2px;
+}
+.signInBody .mainBox .logInBox .rememberAmount {
+  display: inline-block;
+  font-size: 14px;
+  position: relative;
+  top: 4px;
+}
+.signInBody .mainBox .logInBox .rememberAmount .checkBox {
+  display: none;
+}
+.signInBody .mainBox .logInBox .rememberAmount .checkBox + label {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+.signInBody .mainBox .logInBox .rememberAmount .checkBox + label i {
+  color: #50a8e7;
+  font-size: 14px;
+  position: absolute;
+  top: -4px;
+  display: none;
+}
+.signInBody .mainBox .logInBox .rememberAmount .checkBox:checked + label i {
+  display: block;
+}
+.signInBody .mainBox .logInBox .radioBox {
+  margin-left: 40px;
+  margin-top: 36px;
+  font-size: 18px;
+}
+.signInBody .mainBox .logInBox .radioBox input {
+  display: none;
+}
+.signInBody .mainBox .logInBox .radioBox input + label {
+  height: 7px;
+  width: 7px;
+  border-radius: 7px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  position: relative;
+  top: -4px;
+  margin-right: 10px;
+}
+.signInBody .mainBox .logInBox .radioBox input + label:after {
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
+  position: absolute;
+  content: "";
+  border: 1px solid #dddddd;
+  top: -5px;
+  left: -5px;
+}
+.signInBody .mainBox .logInBox .radioBox input:checked + label {
+  background-color: #6db2fa;
+}
+.signInBody .mainBox .logInBox .radioBox label:nth-child(5) {
+  margin-left: 40px;
+}
+.signInBody .mainBox .logInBox .normalBtn {
+  margin-left: 150px;
+  margin-top: 40px;
+  width: 100px;
+  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
+  background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+}
+.signInBody .mainBox .logInBox .companyRegister {
+  margin-left: 10px;
+  color: #50a8e7;
+  font-size: 16px;
+  position: relative;
+  top: 10px;
+  text-decoration: underline;
+}
 .admin_scrollBox {
   height: 100%;
   width: 100%;
   overflow: auto;
+  position: relative;
 }
 .admin_content {
   position: relative;
@@ -198,7 +390,7 @@ body {
   height: 100%;
   background-color: #fff;
   overflow: hidden;
-  padding: 15px 20px 20px;
+  padding: 15px 20px 0px 20px;
 }
 .admin_content > .admin_content_innerBox {
   width: 100%;
