@@ -12,8 +12,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 body {
@@ -25,9 +24,15 @@ body {
   width: 100%;
   height: 100%;
   padding-top: 100px;
-  padding-left: 250px;
   position: relative;
-  overflow: hidden;
+}
+.admin_content_table {
+  border-collapse: collapse;
+  min-width: 1200px;
+  table-layout: fixed;
+}
+.admin_content_table td {
+  vertical-align: top;
 }
 .admin_header {
   position: absolute;
@@ -37,7 +42,6 @@ body {
   height: 100px;
   padding-left: 10px;
   padding-right: 10px;
-  background-image: -webkit-linear-gradient(270deg, #50a8e7 3%, #1f73bb 100%);
   background-image: linear-gradient(-180deg, #50a8e7 3%, #1f73bb 100%);
   z-index: 1;
 }
@@ -70,7 +74,6 @@ body {
   vertical-align: middle;
 }
 .admin_header .rightBox .userBox {
-  background-image: -webkit-linear-gradient(270deg, #68c2fc 0%, #1f73bb 100%);
   background-image: linear-gradient(-180deg, #68c2fc 0%, #1f73bb 100%);
   box-shadow: 0px 0px 0px 1px rgba(29, 109, 175, 0.5);
   border-radius: 6px;
@@ -109,19 +112,19 @@ body {
   top: 4px;
   color: #a9dbf6;
 }
-.footer {
+.admin_footer {
   height: 60px;
   background-color: #50a8e7;
   padding-left: 40px;
   width: 100%;
 }
-.footer span {
+.admin_footer span {
   margin-right: 33px;
   line-height: 60px;
   color: #fff;
   font-size: 16px;
 }
-.footer .download {
+.admin_footer .download {
   width: 60px;
   height: 60px;
   background-color: #73b9eb;
@@ -129,21 +132,17 @@ body {
   margin-right: 20px;
   text-align: center;
 }
-.footer .download i {
+.admin_footer .download i {
   font-size: 40px;
   color: #a9dbf6;
 }
 .admin_left {
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding-top: 100px;
   width: 250px;
   height: 100%;
   background-color: #F4F4F4;
   z-index: 0;
   overflow: auto;
-  border-right: 1px solid #dddddd;
+  border-right: 1px solid #ddd;
 }
 .admin_left .leftmenu {
   color: #333;
@@ -263,11 +262,10 @@ body {
   text-align: left;
   width: 472px;
   height: 100%;
-  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #fafbfd 100%);
   background-image: linear-gradient(-180deg, #ffffff 0%, #fafbfd 100%);
   float: left;
   padding: 20px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 .signInBody .mainBox .logInBox h3 {
   font-size: 24px;
@@ -284,7 +282,7 @@ body {
   height: 28px;
   width: 200px;
   padding-left: 26px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   font-size: 14px;
   color: #999;
 }
@@ -350,7 +348,7 @@ body {
   border-radius: 15px;
   position: absolute;
   content: "";
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   top: -5px;
   left: -5px;
 }
@@ -364,7 +362,6 @@ body {
   margin-left: 150px;
   margin-top: 40px;
   width: 100px;
-  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
   background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
 }
 .signInBody .mainBox .logInBox .companyRegister {
@@ -375,24 +372,9 @@ body {
   top: 10px;
   text-decoration: underline;
 }
-.admin_scrollBox {
-  min-height: 500px;
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  position: relative;
-}
 .admin_content {
   position: relative;
-  width: 100%;
-  height: 100%;
   background-color: #fff;
-  overflow: hidden;
-}
-.admin_content > .admin_content_innerBox {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
 }
 .admin_content > .admin_content_innerBox.admin_ui_cont_bottomPadding {
   padding-bottom: 50px;
@@ -404,7 +386,7 @@ body {
   height: 50px;
   width: 100%;
   padding: 5px 20px;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #ddd;
   background-color: #fff;
 }
 .admin_ui_button_group:after {
@@ -417,7 +399,7 @@ body {
   margin: 0 8px;
 }
 .admin_ui_border {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   background-color: #fff;
 }
 .admin_ui_cont {
@@ -442,7 +424,7 @@ body {
   text-align: center;
   padding: 13px;
   font-size: 14px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   line-height: 1;
   cursor: pointer;
 }
@@ -488,7 +470,7 @@ body {
   padding: 5px 0;
   top: 45px;
   right: 10px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   line-height: 23px;
   cursor: pointer;
   display: none;
@@ -512,7 +494,7 @@ body {
   right: 9px;
   display: inline-block;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid #dddddd;
+  border-bottom: 7px solid #ddd;
   border-left: 7px solid transparent;
   border-bottom-color: rgba(0, 0, 0, 0.2);
   content: '';
@@ -525,7 +507,7 @@ body {
   width: 100%;
   height: 84px;
   padding: 20px;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   background-color: #fff;
 }
 .admin_ui_header > i {
@@ -540,12 +522,12 @@ body {
   height: 50px;
   background-color: white;
   padding: 10px;
-  border-top: 1px solid #dddddd;
-  border-left: 1px solid #dddddd;
-  border-right: 1px solid #dddddd;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 .admin_ui_table {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
@@ -571,7 +553,7 @@ body {
 .admin_ui_table tr th,
 .admin_ui_table tr td {
   padding: 8px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 .admin_ui_form {
   border-collapse: collapse;
@@ -613,7 +595,7 @@ body {
   margin-bottom: 20px;
 }
 .admin_ui_leadForm tr td.admin_ui_leadForm_lead p {
-  color: #999999;
+  color: #999;
   width: 200px;
   font-size: 12px;
 }
@@ -627,7 +609,7 @@ body {
 .admin_ui_input {
   padding: 6px 4px;
   height: 30px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   width: 100%;
   background-color: #fff;
 }
@@ -667,7 +649,7 @@ body {
   top: 30px;
   left: 0px;
   z-index: 1;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   border-top: none;
   background-color: #fff;
 }
@@ -692,7 +674,7 @@ body {
 .admin_ui_imgUpload .uploadPic + label {
   position: relative;
   width: 180px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   display: inline-block;
   height: 120px;
   line-height: 118px;
@@ -712,7 +694,7 @@ body {
   display: none;
 }
 .admin_ui_imgUpload label + span {
-  color: #999999;
+  color: #999;
   display: inline-block;
 }
 .admin_ui_imgUpload .multiPicBox img {
@@ -733,7 +715,7 @@ body {
   width: 100%;
   height: 30px;
   padding: 6px 20px 6px 4px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   border-radius: 0;
   appearance: none;
   -moz-appearance: none;
@@ -784,9 +766,9 @@ body {
   background-color: #fff;
   padding: 10px;
   position: relative;
-  border-left: 1px solid #dddddd;
-  border-right: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 .admin_ui_word {
   width: 100px;
@@ -800,10 +782,10 @@ body {
 .admin_ui_label {
   height: 33px;
   width: 400px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   font-size: 14px;
   padding-left: 7px;
-  background-color: white
+  background-color: white;
   /*border-radius: 5px;*/
 }
 .iconButton {
@@ -841,4 +823,3 @@ body {
   background: #ddd;
   color: #000;
 }
-/*# sourceMappingURL=index.css.map */
