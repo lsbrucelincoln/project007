@@ -3,11 +3,13 @@ var ADMIN_CONFIG = {
     "mainBodySelector": "#admin_body",
     "headerSelector": "#admin_header",
     "contentSelector": "#admin_content",
-    "leftSelector": "#admin_left"
+    "leftSelector": "#admin_left",
+    "footerSelector": "#admin_footer",
+    "contentTableSelector": "#admin_content_table"
 };
 $(function() {
     adminInit();
-
+    resizeContentTable();
     function adminInit() {
         eventBind();
     }
@@ -22,6 +24,9 @@ function eventBind() {
     $(window).bind('click', function() {
         $("[data-hideWhenBlur]").hide();
     });
+    $(window).bind('resize',function(){
+        resizeContentTable();
+    })
     $(window).on('click', '[data-urlBack]', function() {
         window.history.back();
     })
@@ -253,7 +258,12 @@ function windowReset() {
     var h = $(window).height() - $("#admin_header").height();
     $(".admin_scrollBox").height(h);
 }
-
+function resizeContentTable(){
+    var height = $(this).height() - $(ADMIN_CONFIG.headerSelector).height() - $(ADMIN_CONFIG.footerSelector).height();
+    $(ADMIN_CONFIG.contentTableSelector).css({
+        "min-height": height
+    });
+}
 function loadContent() {
     var hash = window.location.hash;
     if (hash == "") {
