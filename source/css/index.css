@@ -114,7 +114,6 @@ body {
   background-color: #50a8e7;
   padding-left: 40px;
   width: 100%;
-  margin-top: 10px;
 }
 .footer span {
   margin-right: 33px;
@@ -389,7 +388,6 @@ body {
   height: 100%;
   background-color: #fff;
   overflow: hidden;
-  padding: 15px 20px 0px 20px;
 }
 .admin_content > .admin_content_innerBox {
   width: 100%;

@@ -24,6 +24,123 @@
 .assessmentCheck .contentHeader .searchBox {
   float: right;
 }
+.assessmentCheck .contentBody {
+  padding: 0;
+  padding-top: 15px;
+}
+.assessmentCheck .contentBody .tagBar {
+  padding-bottom: 28px;
+  position: relative;
+}
+.assessmentCheck .contentBody .tagBar .tag {
+  position: absolute;
+  display: inline-block;
+  width: 160px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  color: #50a8e7;
+  background: transparent;
+}
+.assessmentCheck .contentBody .tagBar .tag:before {
+  content: "";
+  background: transparent;
+  background: #d7eefb;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  -webkit-transform: scaleY(1.3) perspective(10px) rotateX(7deg);
+          transform: scaleY(1.3) perspective(10px) rotateX(7deg);
+  -webkit-transform-origin: bottom;
+      -ms-transform-origin: bottom;
+          transform-origin: bottom;
+  border: 1px solid #50a8e7;
+  border-bottom: none;
+}
+.assessmentCheck .contentBody .tagBar .checkBtn {
+  top: 0;
+  left: 20px;
+  z-index: 3;
+}
+.assessmentCheck .contentBody .tagBar .praticeBtn {
+  top: 0;
+  left: 152px;
+  z-index: 2;
+}
+.assessmentCheck .contentBody .tagBar .historyBtn {
+  top: 0;
+  left: 287px;
+  z-index: 1;
+}
+.assessmentCheck .contentBody .tagBar .chosenBtn {
+  z-index: 4;
+  top: 1px;
+}
+.assessmentCheck .contentBody .tagBar .chosenBtn:before {
+  background-color: #fff;
+}
+.assessmentCheck .contentBody .checkBody {
+  padding: 20px;
+  border-top: 1px solid #50a8e7;
+}
+.assessmentCheck .contentBody .checkBody .inputShort {
+  width: 47%;
+  display: inline-block;
+  position: relative;
+  margin-bottom: 0;
+}
+.assessmentCheck .contentBody .checkBody .inputShort span {
+  width: 90px;
+}
+.assessmentCheck .contentBody .checkBody .inputShort i {
+  position: absolute;
+  left: 270px;
+  top: 20px;
+}
+.assessmentCheck .contentBody .checkBody .inputShort input {
+  margin-top: 20px;
+}
+.assessmentCheck .contentBody .checkBody .searchBody {
+  display: inline-block;
+  width: 46%;
+}
+.assessmentCheck .contentBody .checkBody .btnBox {
+  display: inline-block;
+  width: 51%;
+}
+.assessmentCheck .contentBody .checkBody .btnBox .normalBtn {
+  margin-left: 0;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+.assessmentCheck .contentBody .checkBody .btnBox .addBtn {
+  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
+  background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
+  width: 114px;
+}
+.assessmentCheck .contentBody .checkBody .btnBox .urgeBtn {
+  width: 114px;
+}
+.assessmentCheck .contentBody .checkBody .btnBox .endProgramBtn {
+  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f0f0f0 100%);
+  background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
+  border: 1px solid #cccccc;
+  width: 114px;
+  color: #999;
+}
+.assessmentCheck .contentBody .checkBody .tableBox {
+  margin-top: 20px;
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid #50a8e7;
+}
+.assessmentCheck .contentBody .checkBody .tableBox th {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
+  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+}
 .assessmentCheck .contentBody .infoTable .number,
 .assessmentCheck .contentBody .infoTable .chargePerson,
 .assessmentCheck .contentBody .infoTable .task {
