@@ -110,7 +110,7 @@
   font-size: 16px;
 }
 .inputShort {
-  font-size: 18px;
+  font-size: 14px;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -200,17 +200,17 @@
   display: inline-block;
 }
 .tableBox .tableHeader {
-  height: 50px;
+  height: 40px;
   background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
   border: 1px solid #a9dbf6;
   padding-top: 10px;
   padding-left: 20px;
   color: #50a8e7;
-  font-size: 18px;
+  font-size: 14px;
 }
 .tableBox .tableHeader i {
-  font-size: 20px;
+  font-size: 16px;
   margin-right: 10px;
 }
 .tableBox .tableHeader span {
@@ -227,10 +227,10 @@
   border: 1px solid #dfe9ef;
   text-align: center;
   font-weight: 100;
-  font-size: 16px;
+  font-size: 12px;
 }
 .tableBox table tr {
-  height: 46px;
+  height: 36px;
 }
 .tableBox table tr:nth-child(2n+1) {
   background-color: #fafbfd;

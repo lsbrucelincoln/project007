@@ -15,14 +15,14 @@ body {
 .admin_body {
     width: 100%;
     height: 100%;
-    padding-top: 100px;
+    padding-top: 68px;
     position: relative;
 }
 .admin_content_table{
     border-collapse: collapse;
     min-width: 1200px;
     table-layout: fixed;
-    td{
+    &>tbody>tr>td{
         vertical-align: top;
     }
 }
@@ -31,9 +31,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100px;
+    height: 68px;
     padding-left: 10px;
-    padding-right: 10px;
     background-image: linear-gradient(-180deg, #50a8e7 3%, #1f73bb 100%);
     z-index: 1;
     .brand {
@@ -41,32 +40,29 @@ body {
         line-height: 1;
         .logo {
             margin-left: 10px;
-            margin-top: 20px;
-            height: 60px;
-            width: 50px;
+            margin-top: 10px;
+            height: 40px;
+            width: 33px;
             float: left;
         }
     }
     .headerTitle {
-        margin-top: 33px;
+        margin-top: 23px;
         margin-left: 10px;
-        font-size: 30px;
+        font-size: 18px;
         font-family: 'PingFangSC4fdada5c215c68';
         float: left;
         font-weight: 600;
     }
     .rightBox {
-        margin-top: 20px;
         line-height: 30px;
         float: right;
-        margin-right: 20px;
         color: white;
         cursor: pointer;
         vertical-align: middle;
         .userBox {
-            background-image: linear-gradient(-180deg, #68c2fc 0%, #1f73bb 100%);
+background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
             box-shadow: 0px 0px 0px 1px rgba(29, 109, 175, 0.50);
-            border-radius: 6px;
             min-width: 167px;
             height: 34px;
         padding-left: 8px;
@@ -75,10 +71,10 @@ body {
         .client,
         .logout {
             display: inline-block;
-            font-size: 14px;
+            font-size: 12px;
             vertical-align: middle;
             i {
-                font-size: 18px;
+                font-size: 12px;
                 float: left;
                 margin-right: 8px;
             }
@@ -98,7 +94,7 @@ body {
             text-decoration: underline;
         }
         i {
-            font-size: 20px;
+            font-size: 14px;
             position:relative;
             top:4px;
             color:#a9dbf6;
@@ -106,7 +102,7 @@ body {
     }
 }
 .admin_footer {
-    height: 60px;
+    height: 50px;
     background-color: #50a8e7;
     padding-left: 40px;
     width: 100%;
@@ -114,11 +110,11 @@ body {
         margin-right: 33px;
         line-height: 60px;
         color: #fff;
-        font-size: 16px;
+        font-size: 12px;
     }
     .download {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         background-color: #73b9eb;
         float: right;
         margin-right: 20px;
@@ -131,7 +127,7 @@ body {
 }
 
 .admin_left {
-    width: 250px;
+    width: 200px;
     height: 100%;
     background-color: #F4F4F4;
     z-index: 0;
@@ -146,12 +142,12 @@ body {
             .line {
                 position: relative;
                 display: block;
-                height: 50px;
-                line-height: 50px;
+                height: 40px;
+                line-height: 40px;
                 border-bottom: 1px solid #50a8e7;
                 padding-left: 50px;
                 padding-right: 50px;
-                font-size: 18px;
+                font-size: 14px;
                 cursor: pointer;
                 background: #a9dbf6;
                 .name {
@@ -189,6 +185,10 @@ body {
                     }
                 }
             }
+            .chosenLine{
+                background-color: @blueA;
+                color:#fff;
+            }
             &>.submenu {
                 display: none;
                 background: #d7eefb;
@@ -199,6 +199,7 @@ body {
                     background: #d7eefb;
                     &:hover {
                         color: #50a8e7;
+
                     }
                     .icon {
                         width: 30px;

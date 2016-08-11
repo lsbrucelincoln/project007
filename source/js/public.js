@@ -40,6 +40,7 @@ function eventBind() {
     });
     $(".submenu .line").on('click',function(event) {
         $(".submenu .line").removeClass('chosen');
+        $(".line").removeClass("chosenLine");
         $(this).addClass('chosen');
     });
     $(".admin_content").on('click', '.backBtn', function(event) {
@@ -50,21 +51,32 @@ function eventBind() {
             // 有子菜单
             if ($(this).hasClass("active")) {
                 // 打开的
+                $(".line").removeClass("chosenLine");
                 $(this).next('.submenu').slideUp(300);
                 $(this).removeClass("active");
                 $(this).find('.flaticon-arrows-2').hide();
                 $(this).find('.flaticon-arrows-1').show();
             } else {
+                $('.submenu').slideUp(300);
+                $(".line").removeClass("active");
+                $(".line").removeClass("chosenLine");
+                $('.flaticon-arrows-2').hide();
+                $('.flaticon-arrows-1').show();
                 $(this).next('.submenu').slideDown(300);
                 $(this).addClass("active");
                 $(this).find('.flaticon-arrows-1').hide();
                 $(this).find('.flaticon-arrows-2').show();
             }
+        }else{
+            $(".line").removeClass('chosenLine')
+            $(".line").removeClass('chosen')
+            $(this).addClass("chosenLine");
         }
     });
 }
 
 function uiComponentEventBind() {
+    $(".tableBox table").tablesorter();
     $(".uploadPic").off().on('change', function(event) {
         event.preventDefault();
         var parent = $(this).parents(".admin_ui_imgUpload");

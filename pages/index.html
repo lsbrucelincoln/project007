@@ -23,6 +23,7 @@
     <script src="../source/plunges/tinymce/tinymce.js"></script>
     <script src="../source/plunges/zTree/js/jquery.ztree.all.min.js"></script>
     <script src="../source/js/page.js"></script>
+    <script src="../source/js/jquery.tablesorter.js"></script>
 </head>
 
 <body>
@@ -44,20 +45,20 @@
                     </div>
                 </div>
                 <div class="tips">
-                    <p>今日提示：<span class="checkNum">8</span>项评估检查 <span class="checkNum">9</span>项隐患问题 <a href=""><i class="flaticon-cloud-storage-download" style="color:white"> </i>安全文件</a></p>
+                    <p>今日提示：<span class="checkNum">8</span>项评估检查 <span class="checkNum">9</span>项隐患问题 <a href=""><i class="flaticon-cloud-storage-download"> </i>安全文件</a></p>
                 </div>
             </div>
         </div>
         <div style="height: 100%;width: 100%;overflow: auto;">
             <table id="admin_content_table" class="admin_content_table">
                 <tbody>
-                    <td style="width: 250px;">
+                    <td style="width: 200px;">
                         <div id="admin_left" class="admin_left">
                             <div class="leftmenu">
                                 <div>
                                     <a href="#/welcome.html" class="line">
                                         <span class="markIcon">
-                                        <i class="flaticon-paper"></i>
+                                        <i class="flaticon-home"></i>
                                     </span>
                                         <div class="name">首页</div>
                                     </a>
@@ -97,7 +98,7 @@
                                         <span class="markIcon">
                                         <i class="flaticon-up-arrow"></i>
                                     </span>
-                                        <div class="name">业务管理</div>
+                                        <div class="name">业务操作</div>
                                         <span class="downIcon">
                                         <i class="fa fa-angle-down fa-lg"></i>
                                     </span>
@@ -105,23 +106,35 @@
                                         <i class="flaticon-arrows-1"></i></span>
                                     </a>
                                     <div class="submenu">
+                                        <a class="line" href="#">
+                                            <span class="markIcon">
+                                              <i class="flaticon-arrows-4"></i>
+                                          </span>
+                                            <div class="name">重大危险源信息</div>
+                                        </a>
                                         <a class="line" href="#/assessmentCheck.html">
                                             <span class="markIcon">
                                               <i class="flaticon-arrows-4"></i>
                                           </span>
                                             <div class="name">评估检查</div>
                                         </a>
-                                        <a class="line" href="#/formAndEditor.html">
+                                        <a class="line" href="#">
                                             <span class="markIcon">
                                               <i class="flaticon-arrows-4"></i>
                                           </span>
-                                            <div class="name">隐患问题</div>
+                                            <div class="name">隐患管理</div>
                                         </a>
-                                        <a class="line" href="#/formAndEditorUpload.html">
+                                        <a class="line" href="#">
                                             <span class="markIcon">
                                               <i class="flaticon-arrows-4"></i>
                                           </span>
                                             <div class="name">应急演练</div>
+                                        </a>
+                                        <a class="line" href="#">
+                                            <span class="markIcon">
+                                              <i class="flaticon-arrows-4"></i>
+                                          </span>
+                                            <div class="name">通知公告</div>
                                         </a>
                                     </div>
                                 </div>
@@ -130,27 +143,13 @@
                                         <span class="markIcon">
                                         <i class="flaticon-tool"></i>
                                     </span>
-                                        <div class="name">评估标准管理</div>
+                                        <div class="name">数据管理</div>
                                         <span class="downIcon">
                                         <i class="fa fa-angle-down fa-lg"></i>
                                     </span>
                                         <span class="rightArrowBox"><i class="flaticon-arrows-2"></i>
                                         <i class="flaticon-arrows-1"></i></span>
                                     </a>
-                                    <div class="submenu">
-                                        <a class="line" href="#/zTreeDemo.html">
-                                            <span class="markIcon">
-                                              <i class="flaticon-arrows-4"></i>
-                                          </span>
-                                            <div class="name">zTreeDemo</div>
-                                        </a>
-                                        <a class="line" href="#/formAndEditor.html">
-                                            <span class="markIcon">
-                                              <i class="flaticon-arrows-4"></i>
-                                          </span>
-                                            <div class="name">表单和编辑器</div>
-                                        </a>
-                                    </div>
                                 </div>
                                 <div>
                                     <a class="line" href="#">
@@ -168,6 +167,16 @@
                                           <i class="flaticon-book"></i>
                                       </span>
                                         <div class="name">在线学习</div>
+                                        <span class="rightArrowBox"><i class="flaticon-arrows-2"></i>
+                                        <i class="flaticon-arrows-1"></i></span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a class="line" href="#">
+                                        <span class="markIcon">
+                                          <i class="flaticon-people-1"></i>
+                                      </span>
+                                        <div class="name">后台管理</div>
                                         <span class="rightArrowBox"><i class="flaticon-arrows-2"></i>
                                         <i class="flaticon-arrows-1"></i></span>
                                     </a>
