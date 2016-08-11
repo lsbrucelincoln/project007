@@ -271,7 +271,7 @@ function windowReset() {
     $(".admin_scrollBox").height(h);
 }
 function resizeContentTable(){
-    var height = $(this).height() - $(ADMIN_CONFIG.headerSelector).height() - $(ADMIN_CONFIG.footerSelector).height();
+    var height = $(window).height() - $(ADMIN_CONFIG.headerSelector).height() - $(ADMIN_CONFIG.footerSelector).height();
     $(ADMIN_CONFIG.contentTableSelector).css({
         "min-height": height
     });
