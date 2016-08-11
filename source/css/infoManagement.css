@@ -12,29 +12,24 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 .staffManagement .contentHeader .normalBtn {
   float: right;
 }
 .staffManagement .contentHeader .manageBtn {
-  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
 }
 .staffManagement .contentHeader .addItemBtn {
-  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
   background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
 }
 .staffManagement .contentHeader .gobackBtn {
-  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
 }
 .staffManagement .contentHeader .deleteBtn {
-  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f0f0f0 100%);
   background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
-  color: #666666;
+  color: #666;
   border: 1px solid #ccc;
 }
 .staffManagement .contentHeader .deleteBtn,
@@ -56,7 +51,7 @@
   width: 54%;
 }
 .staffManagement .contentBody .infoTable .tableRow {
-  color: #666666;
+  color: #666;
 }
 .staffManagement .contentBody .infoTable .tableRow .task {
   text-decoration: underline;
@@ -96,7 +91,7 @@
   width: 25%;
 }
 .staffDetail .contentBody .infoTable .tableRow {
-  color: #666666;
+  color: #666;
 }
 .staffDetail .contentBody .infoTable .tableRow .task {
   text-decoration: underline;
@@ -128,21 +123,17 @@
   float: right;
 }
 .companyManagement .contentHeader .manageBtn {
-  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
 }
 .companyManagement .contentHeader .addItemBtn {
-  background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
   background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
 }
 .companyManagement .contentHeader .gobackBtn {
-  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
 }
 .companyManagement .contentHeader .deleteBtn {
-  background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f0f0f0 100%);
   background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
-  color: #666666;
+  color: #666;
   border: 1px solid #ccc;
 }
 .companyManagement .contentHeader .deleteBtn,
@@ -152,13 +143,6 @@
 }
 .companyManagement .selectBox {
   float: left;
-}
-.companyManagement .selectBox select {
-  font-size: 18px;
-  height: 28px;
-}
-.companyManagement .selectBox select option {
-  font-size: 18px;
 }
 .companyManagement .searchBox {
   float: right;
@@ -229,4 +213,3 @@
 .editMode .infoTable .tableRow .checkBox + label {
   display: inline-block;
 }
-/*# sourceMappingURL=infoManagement.css.map */
