@@ -22,4 +22,15 @@
 }
 .echartBox .echartBlock {
   float: left;
+  padding: 10px 0;
+}
+.headTable {
+  margin-bottom: 10px;
+}
+.chartConditionBox {
+  width: 100%;
+  padding: 10px 0;
+  border: 1px solid #ddd;
+  border-width: 1px 0;
+  margin-bottom: 10px;
 }
