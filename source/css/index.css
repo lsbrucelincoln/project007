@@ -104,11 +104,14 @@ body {
 }
 .admin_header .tips span {
   text-decoration: underline;
+  margin-left: 10px;
+  margin-right: 5px;
 }
 .admin_header .tips i {
+  margin-left: 10px;
   font-size: 14px;
   position: relative;
-  top: 4px;
+  top: 1px;
   color: #a9dbf6;
 }
 .admin_footer {
@@ -807,10 +810,16 @@ body {
 .iconButton.removeIcon {
   color: #f34541;
 }
+.bottom-search {
+  position: relative;
+}
+.bottom-search .normalBtn {
+  margin-top: 15px;
+}
 .page {
-  margin-top: 5px;
   position: absolute;
   right: 2%;
+  top: 15px;
 }
 .page > a {
   text-decoration: none;

@@ -1,40 +1,27 @@
-<div class="addAssessment admin_content_innerBox">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
+<div class="addAssessment admin_content_innerBox dataManagement">
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">数据管理</span></span>
     </div>
     <div class="admin_scrollBox">
-        <div class="contentHeader">
-            <div class="backBtn normalBtn">返回</div>
-        </div>
         <div class="contentBody">
-            <div class="stateBox">
-                <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>第一步<br/>基本信息设置</span>
-                </div>
-                <div class="state">
-                    <i class="circle chosen"></i>
-                    <br/><span>第二步<br/>选择评估模板</span>
-                </div>
-                <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>第三步<br/>确认发布</span>
-                </div>
-            </div>
-            <div class="secondPage">
-                <div class="inputShort assessType"><span>选择评估类型:</span>
+            <div class="dataPage">
+                <div class="inputShort assessType"><span>选择企业类型:</span>
                     <select name="" id="">
                         <option value="">日常评估检查</option>
-                    </select> —
-                    <select name="" id="">
-                        <option value=""></option>
                     </select>
+                    <input type="checkBox" id="canUse">
+                    <label for="canUse">只看有效</label>
                 </div>
+                <div class="dataOutBtn normalBtn">导出数据</div>
                 <div class="assess2Body">
-                    <div class="ztreeBox ztree">
-                    </div>
+                    <div class="ztrbox">
+                        <div class="ztreeBox ztree">
+                        </div>
+                        <i class="flaticon-add"></i>
+                        <i class="flaticon-cancel"></i></div>
                     <div class="tableBox">
                         <table>
                             <tr>
+                                <th></th>
                                 <th>序号</th>
                                 <th>内容</th>
                                 <th>等级</th>
@@ -44,6 +31,9 @@
                                 <th>操作</th>
                             </tr>
                             <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -53,6 +43,9 @@
                                 <td></td>
                             </tr>
                             <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -62,6 +55,9 @@
                                 <td></td>
                             </tr>
                             <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -71,6 +67,9 @@
                                 <td></td>
                             </tr>
                             <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -80,6 +79,33 @@
                                 <td></td>
                             </tr>
                             <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -89,16 +115,20 @@
                                 <td></td>
                             </tr>
                         </table>
+                        <div class="bottom-search">
+                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                        </div>
                     </div>
                 </div>
-                <a class="normalBtn cancel" href="#/addAssessment.html">上一步</a>
-                <a class="normalBtn nextStep" href="#/addAssessment3.html">下一步</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
+    TablePage("table", 10);
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();
