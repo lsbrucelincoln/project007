@@ -1,0 +1,49 @@
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.after:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.veryCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.dataManagement .inputShort #canUse {
+  width: 10px;
+  height: 10px;
+}
+.dataManagement .contentBody .assess2Body {
+  margin-top: 0;
+}
+.dataManagement .contentBody .assess2Body .ztrbox {
+  width: 150px;
+  height: 332px;
+  position: relative;
+  float: left;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .ztreeBox {
+  height: 332px;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .flaticon-add {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 16px;
+  pointer: cursor;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .flaticon-cancel {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 16px;
+  pointer: cursor;
+}
+/*# sourceMappingURL=dataManagement.css.map */

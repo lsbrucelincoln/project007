@@ -21,7 +21,7 @@
             <div class="inputShort"><span>选择港区:</span><select name="" id=""><option value="">港口服务企业</option></select></div>
             <div class="inputShort inputLong companyObject"><span>选择企业对象:</span><select name="" id=""><option value="">港口服务企业</option></select></div>
             <div class="inputShort assessType"><span>选择评估类型:</span><select name="" id=""><option value="">日常评估检查</option></select>—<select name="" id=""><option value=""></option></select></div>
-            <div class="inputShort inputLong"><span>创建时间:</span><input type="text"><i class="flaticon-small-calendar"></i></div>
+            <div class="inputShort inputLong"><span>选择执行时间:</span><input type="text" class="excuteTime"><i class="flaticon-small-calendar"></i></div>
             <div class="inputShort inputLong companyObject"><span>选择执行中队:</span><select name="" id=""><option value="">第一中队</option></select></div>
             <div class="actionPerson inputShort inputLong">
             <span>选择执行人员:</span>
@@ -41,6 +41,8 @@
 </div>
 <script>
 $(document).ready(function() {
+        $.datetimepicker.setLocale('zh');
+    $(".excuteTime").datetimepicker();
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();

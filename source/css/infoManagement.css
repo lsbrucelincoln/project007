@@ -57,6 +57,20 @@
   text-decoration: underline;
   color: #50a8e7;
 }
+.staffManagement .contentBody .checkBody {
+  padding-top: 0;
+}
+.staffManagement .contentBody .checkBody .btnBox {
+  border-top: 0;
+}
+.staffManagement .contentBody .checkBody .btnBox p {
+  line-height: 50px;
+  font-size: 16px;
+  margin-left: 20px;
+}
+.staffManagement .contentBody .checkBody .btnBox .addBtn {
+  margin-top: 0;
+}
 .staffDetail .contentHeader h2 {
   float: right;
   margin-right: 50px;
@@ -165,6 +179,9 @@
 }
 .companyInfoManagement .contentBody .digitMap input {
   width: 60px;
+}
+.companyInfoManagement .contentBody .companyAddress {
+  width: 80%;
 }
 .companyInfoManagement .contentBody .companyAddress input {
   width: 400px;

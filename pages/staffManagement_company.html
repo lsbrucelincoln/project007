@@ -1,23 +1,30 @@
 <div class="assessmentCheck staffManagement">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页> <span class="nowPlace">账号管理</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">账号管理</span></span>
     </div>
     <div class="contentBody">
-        <div class="tagBar">
-            <a class="tag  chosenBtn checkBtn">评估检查账号管理</a>
-            <a class="tag praticeBtn">辖区企业管理</a>
-        </div>
         <div class="contenBox">
             <div class="checkBody">
+                <div class="inputShort"><span>创建时间：</span>
+                    <input type="text"><i class="flaticon-small-calendar"></i></div>
+                <div class="inputShort"><span>管理机构：</span>
+                    <select name="" id=""></select>
+                </div>
+                <div class="inputShort"><span>任务编号：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort"><span>企业对象：</span>
+                    <input type="text">
+                </div>
+                <div class="searchBody">
+                    <span class="searchButtom normalBtn">搜索</span>
+                </div>
                 <div class="btnBox">
-                        <div class="searchBox">
-            <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
-        </div>
                     <a href="#/addAssessment.html" class="addBtn normalBtn">添加账号</a>
+                    <p>企业账号管理</p>
                 </div>
                 <div class="tableBox">
                     <table>
                         <tr>
-                            <th></th>
                             <th>序号</th>
                             <th>任务编号</th>
                             <th>任务类型</th>
@@ -29,9 +36,6 @@
                             <th>操作</th>
                         </tr>
                         <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
                             <td>20160001</td>
                             <td>20160001</td>
                             <td>管理</td>
@@ -43,9 +47,6 @@
                             <td>查看</td>
                         </tr>
                         <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
                             <td>20160001</td>
                             <td>20160001</td>
                             <td>管理</td>
@@ -57,7 +58,6 @@
                             <td>查看</td>
                         </tr>
                         <tr>
-                            <td><input type="checkBox" id="person1" class="checkBox"></td>
                             <td>20160001</td>
                             <td>20160001</td>
                             <td>管理</td>
@@ -69,7 +69,6 @@
                             <td>查看</td>
                         </tr>
                         <tr>
-                            <td><input type="checkBox" id="person1" class="checkBox"></td>
                             <td>20160001</td>
                             <td>20160001</td>
                             <td>管理</td>
@@ -81,7 +80,6 @@
                             <td>查看</td>
                         </tr>
                           <tr>
-                            <td><input type="checkBox" id="person1" class="checkBox"></td>
                             <td>20160001</td>
                             <td>20160001</td>
                             <td>管理</td>
@@ -93,10 +91,6 @@
                             <td>查看</td>
                         </tr>
                     </table>
-                    <div class="bottom-search">
-                                        <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">删除</div>
-</div>
                 </div>
             </div>
             <div class="practiceBody"></div>
@@ -106,7 +100,6 @@
 </div>
 <script>
 $(document).ready(function() {
-    TablePage("table", 10);
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');
         $(this).siblings('.tag').removeClass('chosenBtn');
