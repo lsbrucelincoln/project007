@@ -1,0 +1,157 @@
+<div class="addAssessment admin_content_innerBox dataManagement">
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">评估场景预设</span></span>
+    </div>
+    <div class="admin_scrollBox">
+        <div class="contentBody">
+            <div class="dataPage">
+                <div class="inputShort assessType"><span>选择企业类型:</span>
+                    <select name="" id="">
+                        <option value="">日常评估检查</option>
+                    </select>
+                    <input type="checkBox" id="canUse">
+                    <label for="canUse">只看有效</label>
+                </div>
+                <div class="dataOutBtn normalBtn">导出数据</div>
+                <div class="assess2Body">
+                    <div class="ztrbox">
+                        <div class="ztreeBox ztree">
+                        </div>
+                        <i class="flaticon-add"></i>
+                        <i class="flaticon-cancel"></i></div>
+                    <div class="tableBox">
+                        <table>
+                            <tr>
+                                <th>序号</th>
+                                <th>内容</th>
+                                <th>等级</th>
+                                <th>是否强制执行</th>
+                                <th>更新时间</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <div class="bottom-search">
+                            <div class="addBtn normalBtn" style="margin-top:15px">添加</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">批量增加</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    TablePage("table", 10);
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+    $(".rightBox").on('click', "p", function(event) {
+        $(".leftBox").append($(this));
+    });
+    $(".leftBox").on('click', "p", function(event) {
+        $(".rightBox").append($(this));
+    });
+
+    function getZTreeData() {
+        var ajax = $.ajax({
+            url: "../source/JSON/get_org.json"
+        });
+        return ajax;
+    }
+    var ztreeSetting = {
+        async: {
+            enable: false
+        },
+        data: {
+            key: {
+                name: "name",
+                children: "data"
+            }
+        },
+        callback: {
+            onClick: function(event, treeId, treeNode, clickFlag) {
+
+            }
+        }
+    };
+    $.when(getZTreeData()).done(function(data) {
+        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
+    });
+});
+</script>
