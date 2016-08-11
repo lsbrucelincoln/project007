@@ -1,0 +1,94 @@
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.after:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.veryCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.fileUpload {
+  font-size: 16px;
+}
+.fileUpload #uploadFile {
+  display: none;
+}
+.fileUpload #uploadFile + label {
+  width: 100px;
+  border: 1px solid #dfe9ef;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 6px;
+  color: #666666;
+  font-size: 14px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.fileUpload label + span {
+  color: #666666;
+}
+.fileUpload .turnUrl {
+  display: none;
+}
+.fileUpload input[type=submit] {
+  display: none;
+}
+.picUpload {
+  margin-bottom: 20px;
+  float: left;
+}
+.picUpload span:first-child {
+  width: 110px;
+  display: inline-block;
+}
+.picUpload #uploadPic {
+  display: none;
+}
+.picUpload #uploadPic + label {
+  position: relative;
+  width: 400px;
+  border: 1px solid #dfe9ef;
+  display: inline-block;
+  height: 240px;
+  line-height: 238px;
+  text-align: center;
+  font-size: 50px;
+  color: #ccc;
+  font-size: 100;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.picUpload #uploadPic + label img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.picUpload label + span {
+  color: #666666;
+  display: inline-block;
+}
+.picUpload .turnUrl {
+  display: none;
+}
+.picUpload input[type=submit] {
+  display: none;
+}
+body > img {
+  width: 180px;
+  height: 120px;
+}
+/*# sourceMappingURL=iframe.css.map */

@@ -1,0 +1,76 @@
+ @import url("./init.less");
+ .fileUpload {
+     font-size: 16px;
+     #uploadFile {
+         display: none;
+     }
+     #uploadFile+label {
+         width: 100px;
+         .border;
+         .centerHeight(30px);
+         display: inline-block;
+         .radius;
+         color: @textColor;
+         font-size: 14px;
+         margin: 0 10px;
+         cursor: pointer;
+     }
+     label+span {
+         color: @textColor;
+     }
+     .turnUrl {
+         display: none;
+     }
+     input[type=submit] {
+         display: none;
+     }
+ }
+ 
+ .picUpload {
+     margin-bottom: 20px;
+     float:left;
+     span:first-child {
+         width: 110px;
+         display: inline-block;
+     }
+     #uploadPic {
+         display: none;
+     }
+     #uploadPic+label {
+         position: relative;
+         width: 400px;
+         .border;
+         display: inline-block;
+         .centerHeight(240px);
+         font-size: 50px;
+         color: #ccc;
+         font-size: 100;
+         margin-right: 20px;
+         cursor: pointer;
+         img {
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             display: none;
+         }
+     }
+     label+span {
+         color: @textColor;
+         display: inline-block;
+     }
+     .turnUrl {
+         display: none;
+     }
+     input[type=submit] {
+         display: none;
+     }
+ }
+ 
+ body {
+     >img {
+         width: 180px;
+         height: 120px;
+     }
+ }

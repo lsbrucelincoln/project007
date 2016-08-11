@@ -193,6 +193,12 @@
   height: 200px;
   margin-left: 20px;
 }
+.companyInfoManagement iframe {
+  margin-left: 40px;
+  margin-top: 20px;
+  width: 500px;
+  height: 260px;
+}
 .editMode .contentHeader .manageBtn,
 .editMode .contentHeader .searchBox {
   display: none;

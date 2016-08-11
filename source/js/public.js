@@ -54,18 +54,18 @@ function eventBind() {
                 $(".line").removeClass("chosenLine");
                 $(this).next('.submenu').slideUp(300);
                 $(this).removeClass("active");
-                $(this).find('.flaticon-arrows-2').hide();
-                $(this).find('.flaticon-arrows-1').show();
+                $(this).find('.flaticon-arrows-1').hide();
+                $(this).find('.flaticon-arrows').show();
             } else {
                 $('.submenu').slideUp(300);
                 $(".line").removeClass("active");
                 $(".line").removeClass("chosenLine");
-                $('.flaticon-arrows-2').hide();
-                $('.flaticon-arrows-1').show();
+                $('.flaticon-arrows-1').hide();
+                $('.flaticon-arrows').show();
                 $(this).next('.submenu').slideDown(300);
                 $(this).addClass("active");
-                $(this).find('.flaticon-arrows-1').hide();
-                $(this).find('.flaticon-arrows-2').show();
+                $(this).find('.flaticon-arrows').hide();
+                $(this).find('.flaticon-arrows-1').show();
             }
         }else{
             $(".line").removeClass('chosenLine')

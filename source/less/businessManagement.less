@@ -78,19 +78,24 @@
                 i {
                     position: absolute;
                     left: 270px;
-                    top:20px;
+                    top: 20px;
                 }
-                input{
+                input {
                     margin-top: 20px;
+                }
+                &:nth-child(2n) {
+                    width: 30%
                 }
             }
             .searchBody {
-                display: inline-block;
-                width: 46%;
+                float: right;
+                margin-right: 20px;
             }
             .btnBox {
+                margin-top: 20px;
+                border-top: 1px solid @blueA;
                 display: inline-block;
-                width: 51%;
+                width: 100%;
                 .normalBtn {
                     margin-left: 0;
                     margin-right: 20px;
@@ -98,23 +103,22 @@
                 }
                 .addBtn {
                     background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
-                    width: 114px;
+                    width: 88px;
+                    float: right;
                 }
                 .urgeBtn {
-                    width: 114px;
+                    width: 88px;
                 }
                 .endProgramBtn {
                     background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
                     border: 1px solid #cccccc;
-                    width: 114px;
-                    color:#999;
+                    width: 88px;
+                    color: #999;
                 }
             }
             .tableBox {
-                margin-top: 20px;
                 width: 100%;
                 padding-top: 20px;
-                border-top: 1px solid @blueA;
                 th {
                     background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
                 }
@@ -216,6 +220,111 @@
         }
     }
     .contentBody {
+        .stateBox {
+            .state {
+                width:30%;
+                position:relative;
+                display:inline-block;
+                text-align:center;
+                font-size:14px;
+                top:-25px;
+                .circle {
+                    height: 13px;
+                    width: 13px;
+                    border-radius: 13px;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    background-color: #ccc;
+                    position: relative;
+                    top: -4px;
+                    left:4px;
+                    margin-right: 10px;
+                }
+                .circle:after {
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 25px;
+                    position: absolute;
+                    content: "";
+                    .border;
+                    top: -7px;
+                    left: -7px;
+                }
+                .chosen {
+                    background-color: #6db2fa;
+                }
+            }
+        }
+        .assess2Body{
+            .ztreeBox{
+                width: 127px;
+                height: 280px;
+                .border;
+                float:left;
+            }
+            .tableBox{
+                display:block;
+                float:left;
+            }
+        }
+        .inputShort{
+            display:inline-block;
+            width:47%;
+            span{
+                width:120px;
+                margin-right: 10px;
+            }
+            i{
+                position:relative;
+                left:-20px;
+            }
+        }
+        .inputLong{
+            width:80%;
+            select {
+                width: 386px;
+            }
+        }
+        .actionPerson{
+            span{
+                float:left;
+            }
+            input{
+                width:15px;
+                height: 10px;
+            }
+        }
+        .leftBox,.rightBox{
+            width:114px;
+            min-height:80px;
+            .border;
+            float:left;
+            p{
+                padding-left:5px;
+                line-height:20px;
+                &:nth-child(2n){
+                    background-color: #dfe9ef;
+                }
+            }
+        }
+        .cancel{
+            width:100px;
+            margin-left: 100px;
+        }
+        .nextStep{
+            width:175px;
+        }
+        .iconBox{
+            float:left;
+            margin:20px 20px 0px;
+            i{
+                left:0;
+                font-size:16px;
+            }
+        }
+        .assessType{
+            width:80%;
+        }
         .textInfo {
             font-size: 18px;
             padding: 0px 20px;

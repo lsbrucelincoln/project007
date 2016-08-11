@@ -103,13 +103,18 @@
 .assessmentCheck .contentBody .checkBody .inputShort input {
   margin-top: 20px;
 }
+.assessmentCheck .contentBody .checkBody .inputShort:nth-child(2n) {
+  width: 30%;
+}
 .assessmentCheck .contentBody .checkBody .searchBody {
-  display: inline-block;
-  width: 46%;
+  float: right;
+  margin-right: 20px;
 }
 .assessmentCheck .contentBody .checkBody .btnBox {
+  margin-top: 20px;
+  border-top: 1px solid #50a8e7;
   display: inline-block;
-  width: 51%;
+  width: 100%;
 }
 .assessmentCheck .contentBody .checkBody .btnBox .normalBtn {
   margin-left: 0;
@@ -119,23 +124,22 @@
 .assessmentCheck .contentBody .checkBody .btnBox .addBtn {
   background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
   background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
-  width: 114px;
+  width: 88px;
+  float: right;
 }
 .assessmentCheck .contentBody .checkBody .btnBox .urgeBtn {
-  width: 114px;
+  width: 88px;
 }
 .assessmentCheck .contentBody .checkBody .btnBox .endProgramBtn {
   background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f0f0f0 100%);
   background-image: linear-gradient(-180deg, #ffffff 0%, #f0f0f0 100%);
   border: 1px solid #cccccc;
-  width: 114px;
+  width: 88px;
   color: #999;
 }
 .assessmentCheck .contentBody .checkBody .tableBox {
-  margin-top: 20px;
   width: 100%;
   padding-top: 20px;
-  border-top: 1px solid #50a8e7;
 }
 .assessmentCheck .contentBody .checkBody .tableBox th {
   background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
@@ -216,6 +220,108 @@
 }
 .addAssessment .contentHeader .backBtn {
   float: right;
+}
+.addAssessment .contentBody .stateBox .state {
+  width: 30%;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+  top: -25px;
+}
+.addAssessment .contentBody .stateBox .state .circle {
+  height: 13px;
+  width: 13px;
+  border-radius: 13px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  position: relative;
+  top: -4px;
+  left: 4px;
+  margin-right: 10px;
+}
+.addAssessment .contentBody .stateBox .state .circle:after {
+  height: 25px;
+  width: 25px;
+  border-radius: 25px;
+  position: absolute;
+  content: "";
+  border: 1px solid #dfe9ef;
+  top: -7px;
+  left: -7px;
+}
+.addAssessment .contentBody .stateBox .state .chosen {
+  background-color: #6db2fa;
+}
+.addAssessment .contentBody .assess2Body .ztreeBox {
+  width: 127px;
+  height: 280px;
+  border: 1px solid #dfe9ef;
+  float: left;
+}
+.addAssessment .contentBody .assess2Body .tableBox {
+  display: block;
+  float: left;
+}
+.addAssessment .contentBody .inputShort {
+  display: inline-block;
+  width: 47%;
+}
+.addAssessment .contentBody .inputShort span {
+  width: 120px;
+  margin-right: 10px;
+}
+.addAssessment .contentBody .inputShort i {
+  position: relative;
+  left: -20px;
+}
+.addAssessment .contentBody .inputLong {
+  width: 80%;
+}
+.addAssessment .contentBody .inputLong select {
+  width: 386px;
+}
+.addAssessment .contentBody .actionPerson span {
+  float: left;
+}
+.addAssessment .contentBody .actionPerson input {
+  width: 15px;
+  height: 10px;
+}
+.addAssessment .contentBody .leftBox,
+.addAssessment .contentBody .rightBox {
+  width: 114px;
+  min-height: 80px;
+  border: 1px solid #dfe9ef;
+  float: left;
+}
+.addAssessment .contentBody .leftBox p,
+.addAssessment .contentBody .rightBox p {
+  padding-left: 5px;
+  line-height: 20px;
+}
+.addAssessment .contentBody .leftBox p:nth-child(2n),
+.addAssessment .contentBody .rightBox p:nth-child(2n) {
+  background-color: #dfe9ef;
+}
+.addAssessment .contentBody .cancel {
+  width: 100px;
+  margin-left: 100px;
+}
+.addAssessment .contentBody .nextStep {
+  width: 175px;
+}
+.addAssessment .contentBody .iconBox {
+  float: left;
+  margin: 20px 20px 0px;
+}
+.addAssessment .contentBody .iconBox i {
+  left: 0;
+  font-size: 16px;
+}
+.addAssessment .contentBody .assessType {
+  width: 80%;
 }
 .addAssessment .contentBody .textInfo {
   font-size: 18px;

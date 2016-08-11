@@ -18,7 +18,7 @@
 }
 .welcome .leftInfo {
   display: inline-block;
-  width: 75%;
+  width: 82%;
 }
 .welcome .leftInfo .title {
   display: inline-block;
@@ -44,7 +44,7 @@
 }
 .welcome .leftInfo .scrollBox {
   display: inline-block;
-  width: 80%;
+  width: 84%;
   height: 30px;
   line-height: 26px;
   background-color: #fafbfd;
