@@ -1,26 +1,27 @@
 @import url('init.less');
-    .minibar {
-        width: 100%;
-        padding-left: 20px;
-        line-height: 32px;
-        font-size: 14px;
-        background-image: linear-gradient(-180deg, #f0f0f0 0%, #dddddd 100%);
-        i {
-            margin-right: 8px;
-            font-size: 20px;
-            color:#999;
-            position:relative;
-            top:2px;
-        }
-        .nowPlace {
-            color: #d9b497;
-        }
+.minibar {
+    width: 100%;
+    padding-left: 20px;
+    line-height: 32px;
+    font-size: 14px;
+    background-image: linear-gradient(-180deg, #f0f0f0 0%, #dddddd 100%);
+    i {
+        margin-right: 8px;
+        font-size: 20px;
+        color: #999;
+        position: relative;
+        top: 2px;
     }
+    .nowPlace {
+        color: #d9b497;
+    }
+}
+
 .contentHeader {
     height: 64px;
     border-bottom: 1px solid @blueB;
-    padding:15px 0px 0px;
-    margin:0 20px;
+    padding: 15px 0px 0px;
+    margin: 0 20px;
     h3 {
         color: @blueA;
         font-size: 20px;
@@ -42,7 +43,7 @@
 }
 
 .contentBody {
-    padding:20px;
+    padding: 20px;
 }
 
 // 按钮样式
@@ -206,6 +207,31 @@
     }
     table {
         border-collapse: collapse;
+        .checkBox {
+            // display: none;
+        }
+        .checkBox+label {
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.10);
+            border-radius: 4px;
+            width: 14px;
+            height: 14px;
+            i {
+                color: @blueA;
+                font-size: 14px;
+                position: absolute;
+                top: -16px;
+                left: 0;
+                display: none;
+            }
+        }
+        .checkBox:checked+label {
+            i {
+                display: block;
+            }
+        }
+        ;
         tr,
         td,
         th {
@@ -219,6 +245,9 @@
         }
         tr:nth-child(2n+1) {
             background-color: #fafbfd;
+        }
+        td{
+            position:relative;
         }
     }
 }

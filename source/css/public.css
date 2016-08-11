@@ -221,6 +221,25 @@
 .tableBox table {
   border-collapse: collapse;
 }
+.tableBox table .checkBox + label {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 14px;
+  height: 14px;
+}
+.tableBox table .checkBox + label i {
+  color: #50a8e7;
+  font-size: 14px;
+  position: absolute;
+  top: -16px;
+  left: 0;
+  display: none;
+}
+.tableBox table .checkBox:checked + label i {
+  display: block;
+}
 .tableBox table tr,
 .tableBox table td,
 .tableBox table th {
@@ -234,5 +253,8 @@
 }
 .tableBox table tr:nth-child(2n+1) {
   background-color: #fafbfd;
+}
+.tableBox table td {
+  position: relative;
 }
 /*# sourceMappingURL=public.css.map */
