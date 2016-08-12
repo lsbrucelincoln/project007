@@ -12,20 +12,23 @@ body {
     width: 100%;
     height: 100%;
 }
+
 .admin_body {
     width: 100%;
     height: 100%;
     padding-top: 68px;
     position: relative;
 }
-.admin_content_table{
+
+.admin_content_table {
     border-collapse: collapse;
     min-width: 1200px;
     table-layout: fixed;
-    &>tbody>tr>td{
+    &>tbody>tr>td {
         vertical-align: top;
     }
 }
+
 .admin_header {
     position: absolute;
     top: 0;
@@ -61,12 +64,12 @@ body {
         cursor: pointer;
         vertical-align: middle;
         .userBox {
-background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
+            background-image: linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
             box-shadow: 0px 0px 0px 1px rgba(29, 109, 175, 0.50);
             min-width: 167px;
             height: 34px;
-        padding-left: 8px;
-        padding-right: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
         }
         .client,
         .logout {
@@ -89,7 +92,7 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
         position: absolute;
         color: white;
         float: right;
-        right:20px;
+        right: 20px;
         span {
             text-decoration: underline;
             margin-left: 10px;
@@ -98,12 +101,13 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
         i {
             margin-left: 10px;
             font-size: 14px;
-            position:relative;
-            top:1px;
-            color:#a9dbf6;
+            position: relative;
+            top: 1px;
+            color: #a9dbf6;
         }
     }
 }
+
 .admin_footer {
     height: 50px;
     background-color: #50a8e7;
@@ -122,7 +126,7 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
         float: right;
         margin-right: 20px;
         text-align: center;
-        line-height:50px;
+        line-height: 50px;
         i {
             font-size: 20px;
             color: #a9dbf6;
@@ -189,9 +193,9 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
                     }
                 }
             }
-            .chosenLine{
+            .chosenLine {
                 background-color: @blueA;
-                color:#fff;
+                color: #fff;
             }
             &>.submenu {
                 display: none;
@@ -203,7 +207,6 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
                     background: #d7eefb;
                     &:hover {
                         color: #50a8e7;
-
                     }
                     .icon {
                         width: 30px;
@@ -291,7 +294,7 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
                     color: #999;
                     position: relative;
                     font-size: 24px;
-                    top:2px;
+                    top: 2px;
                 }
             }
             .rememberAmount {
@@ -362,19 +365,18 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
                 }
             }
             .normalBtn {
-                color:@blueA;
+                color: @blueA;
                 margin-left: 50px;
                 margin-top: 40px;
                 width: 200px;
                 background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
                 height: 40px;
-                line-height:38px;
-                font-size:14px;
-
+                line-height: 38px;
+                font-size: 14px;
             }
             .companyRegister {
                 margin-left: 20px;
-                width:88px;
+                width: 88px;
                 // color: @blueA;
                 // font-size: 16px;
                 // position: relative;
@@ -559,6 +561,53 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
     border-top: 1px solid @lineColor;
     border-left: 1px solid @lineColor;
     border-right: 1px solid @lineColor;
+}
+
+.mask {
+    position: fixed;
+    background-color: #ccc;
+    opacity: 0.5;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 20;
+    display: none;
+}
+
+.addAccount {
+    display:none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: #fff;
+    height: 240px;
+    width: 400px;
+    margin-left: -200px;
+    margin-top: -120px;
+    z-index: 23;
+    .header {
+        text-align: center;
+        line-height: 30px;
+        font-size: 16px;
+        .bb;
+        position: relative;
+        i {
+            position: absolute;
+            right: 10px;
+        }
+    }
+    .inputShort {
+        margin-top: 20px;            
+        width: 100%;
+        span {
+            width: 120px;
+        }
+    }
+    .btnBox{
+        width:100%;
+        text-align:center;
+    }
+
 }
 
 .admin_ui_table {
@@ -767,7 +816,7 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
 .admin_ui_select {
     position: relative;
     display: inline-block;
-    width: 120px;
+    width: 150px;
     line-height: 1;
     background-color: #fff;
     &>select {
@@ -869,16 +918,18 @@ background-image:linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
         color: #f34541;
     }
 }
-.bottom-search{
-    position:relative;
-    .normalBtn{
+
+.bottom-search {
+    position: relative;
+    .normalBtn {
         margin-top: 15px;
     }
 }
+
 .page {
     position: absolute;
     right: 2%;
-    top:15px;
+    top: 15px;
     &>a {
         text-decoration: none;
         &>span {

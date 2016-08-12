@@ -130,14 +130,14 @@
                         <option value="">宁波市港航管理局</option>
                     </select>
                 </div>
-                <div class="inputShort"><span>危险等级：</span>
+                <div class="admin_ui_select"><span>危险等级：</span>
                                         <select name="" id="">
                         <option value="">一级</option>
                         <option value="">二级</option>
                         <option value="">三级</option>
                     </select>
                 </div>
-                <div class="inputShort"><span>企业对象：</span>
+                <div class="admin_ui_select"><span>企业对象：</span>
                     <input type="text" placeholder="输入企业名称">
                 </div>
                 <div class="searchBody">
@@ -246,7 +246,7 @@ $(document).ready(function() {
     TablePage("#checkTable", 10);
     TablePage("#practiceTable", 10);
     $.datetimepicker.setLocale('zh');
-    $(".createTime").datetimepicker({timepicker:false,});
+    $(".createTime").datetimepicker({timepicker:false,format:"Y-m-d",});
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');
         $(this).siblings('.tag').removeClass('chosenBtn');

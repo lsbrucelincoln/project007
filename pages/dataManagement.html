@@ -1,5 +1,5 @@
 <div class="addAssessment admin_content_innerBox dataManagement">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">数据管理</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">评估标准数据管理</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
@@ -107,6 +107,11 @@ $(document).ready(function() {
                 name: "name",
                 children: "data"
             }
+        },
+        view :{
+        },
+        edit:{
+            enable:true
         },
         callback: {
             onClick: function(event, treeId, treeNode, clickFlag) {

@@ -9,24 +9,40 @@
         <div class="contenBox">
             <div class="checkBody">
                 <div class="btnBox">
-                        <div class="searchBox">
-            <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
-        </div>
+                    <div class="searchBox">
+                        <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
+                    </div>
                     <a href="#" class="addBtn normalBtn">添加账号</a>
                 </div>
                 <div class="tableBox">
-                    <table>
+                    <table id="checkTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>序号</th>
+                                <th>任务编号</th>
+                                <th>任务类型</th>
+                                <th>企业对象</th>
+                                <th>管理机构</th>
+                                <th>创建时间</th>
+                                <th>责任人</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
                         <tr>
-                            <th></th>
-                            <th>序号</th>
-                            <th>任务编号</th>
-                            <th>任务类型</th>
-                            <th>企业对象</th>
-                            <th>管理机构</th>
-                            <th>创建时间</th>
-                            <th>责任人</th>
-                            <th>当前状态</th>
-                            <th>操作</th>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160001</td>
+                            <td>20160001</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
+                            <td>竹林风</td>
+                            <td>使用中</td>
+                            <td>查看</td>
                         </tr>
                         <tr>
                             <td>
@@ -34,12 +50,12 @@
                             </td>
                             <td>20160001</td>
                             <td>20160001</td>
-                            <td>管理</td>
-                            <td>企业</td>
-                            <td>安全管理</td>
-                            <td>创建时间</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
                             <td>竹林风</td>
-                            <td>状态</td>
+                            <td>使用中</td>
                             <td>查看</td>
                         </tr>
                         <tr>
@@ -48,65 +64,168 @@
                             </td>
                             <td>20160001</td>
                             <td>20160001</td>
-                            <td>管理</td>
-                            <td>企业</td>
-                            <td>安全管理</td>
-                            <td>创建时间</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
                             <td>竹林风</td>
-                            <td>状态</td>
+                            <td>使用中</td>
                             <td>查看</td>
                         </tr>
                         <tr>
-                            <td><input type="checkBox" id="person1" class="checkBox"></td>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
                             <td>20160001</td>
                             <td>20160001</td>
-                            <td>管理</td>
-                            <td>企业</td>
-                            <td>安全管理</td>
-                            <td>创建时间</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
                             <td>竹林风</td>
-                            <td>状态</td>
+                            <td>使用中</td>
                             <td>查看</td>
                         </tr>
                         <tr>
-                            <td><input type="checkBox" id="person1" class="checkBox"></td>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
                             <td>20160001</td>
                             <td>20160001</td>
-                            <td>管理</td>
-                            <td>企业</td>
-                            <td>安全管理</td>
-                            <td>创建时间</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
                             <td>竹林风</td>
-                            <td>状态</td>
-                            <td>查看</td>
-                        </tr>
-                          <tr>
-                            <td><input type="checkBox" id="person1" class="checkBox"></td>
-                            <td>20160001</td>
-                            <td>20160001</td>
-                            <td>管理</td>
-                            <td>企业</td>
-                            <td>安全管理</td>
-                            <td>创建时间</td>
-                            <td>竹林风</td>
-                            <td>状态</td>
+                            <td>使用中</td>
                             <td>查看</td>
                         </tr>
                     </table>
                     <div class="bottom-search">
-                                        <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">删除</div>
-</div>
+                        <div class="allSelectBtn normalBtn">全选</div>
+                        <div class="urgeBtn normalBtn">删除</div>
+                    </div>
                 </div>
             </div>
-            <div class="practiceBody"></div>
+            <div class="practiceBody">
+                <div class="btnBox">
+                    <div class="searchBox">
+                        <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
+                    </div>
+                    <a href="#" class="addBtn normalBtn">添加公司</a>
+                </div>
+                <div class="tableBox">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>序号</th>
+                                <th>任务编号</th>
+                                <th>任务类型</th>
+                                <th>企业对象</th>
+                                <th>管理机构</th>
+                                <th>创建时间</th>
+                                <th>责任人</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160001</td>
+                            <td>20160001</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
+                            <td>竹林风</td>
+                            <td>使用中</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160001</td>
+                            <td>20160001</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
+                            <td>竹林风</td>
+                            <td>使用中</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160001</td>
+                            <td>20160001</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
+                            <td>竹林风</td>
+                            <td>使用中</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160001</td>
+                            <td>20160001</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
+                            <td>竹林风</td>
+                            <td>使用中</td>
+                            <td>查看</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160001</td>
+                            <td>20160001</td>
+                            <td>综合评估检查</td>
+                            <td>象山危货公司</td>
+                            <td>象山港航局</td>
+                            <td>2016-01-01</td>
+                            <td>竹林风</td>
+                            <td>使用中</td>
+                            <td>查看</td>
+                        </tr>
+                    </table>
+                    <div class="bottom-search">
+                        <div class="allSelectBtn normalBtn">全选</div>
+                        <div class="urgeBtn normalBtn">删除</div>
+                    </div>
+                </div>
+            </div>
             <div class="historyBody"></div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    TablePage("table", 10);
+    TablePage("#checkTable", 5);
+    $(".checkBody .addBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".mask,.addAccount").show();
+    });
+    $(".practiceBody .addBtn").on('click', function(event) {
+        event.preventDefault();
+        window.location.href="index.html#/addCompany.html"
+    });
+    $(".mask,.cancel,.confirm").on('click', function(event) {
+        event.preventDefault();
+        $(".mask,.addAccount").hide();
+    });
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');
         $(this).siblings('.tag').removeClass('chosenBtn');

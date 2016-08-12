@@ -16,9 +16,22 @@
       transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
+.welcome .infoHeader {
+  position: relative;
+  width: 100%;
+  padding-right: 180px;
+}
+.welcome .infoHeader .normalBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 .welcome .leftInfo {
   display: inline-block;
-  width: 82%;
+  width: 100%;
+  position: relative;
+  padding-left: 120px;
+  padding-right: 20px;
 }
 .welcome .leftInfo .title {
   display: inline-block;
@@ -29,7 +42,8 @@
   background-color: #f5d2bc;
   color: #c7702b;
   font-size: 14px;
-  position: relative;
+  position: absolute;
+  left: 0;
 }
 .welcome .leftInfo .title:after {
   content: "";
@@ -44,7 +58,7 @@
 }
 .welcome .leftInfo .scrollBox {
   display: inline-block;
-  width: 84%;
+  width: 100%;
   height: 30px;
   line-height: 26px;
   background-color: #fafbfd;
@@ -100,6 +114,8 @@
   margin-left: 20px;
   display: inline-block;
   width: 47%;
+  position: relative;
+  padding-left: 64px;
 }
 .welcome .businessTip .reportBox .reportIcon {
   background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
@@ -110,6 +126,8 @@
   line-height: 40px;
   text-align: center;
   display: inline-block;
+  position: absolute;
+  left: 0;
 }
 .welcome .businessTip .reportBox .reportIcon i {
   color: #50a8e7;
@@ -117,7 +135,7 @@
 }
 .welcome .businessTip .reportBox .reportText {
   display: inline-block;
-  width: 85%;
+  width: 100%;
   background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #f3f4f5 100%);
   background-image: linear-gradient(-180deg, #ffffff 0%, #f3f4f5 100%);
   height: 40px;
@@ -125,7 +143,6 @@
   padding-left: 10px;
   font-size: 12px;
   position: relative;
-  top: -1px;
   border: 1px solid #dfe9ef;
 }
 .welcome .businessTip .reportBox .reportText span {

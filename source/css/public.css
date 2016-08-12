@@ -34,6 +34,18 @@
 .minibar .nowPlace {
   color: #d9b497;
 }
+.ztree li span.button.diy02_ico_open::before {
+  font-family: Flaticon;
+  content: "\f122";
+}
+.ztree li span.button.diy02_ico_close::before {
+  font-family: Flaticon;
+  content: "\f101";
+}
+.ztree li span.button.diy03_ico_docu::before {
+  font-family: Flaticon;
+  content: "\f110";
+}
 .contentHeader {
   height: 64px;
   border-bottom: 1px solid #a9dbf6;

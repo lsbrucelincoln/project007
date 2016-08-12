@@ -1,8 +1,20 @@
 @import url('init.less');
 .welcome {
+	.infoHeader{
+		position:relative;
+		width:100%;
+		padding-right:180px;
+		.normalBtn{
+			position:absolute;right:0;
+			top:0;
+		}
+	}
     .leftInfo {
         display: inline-block;
-        width: 82%;
+        width: 100%;
+        position: relative;
+        padding-left: 120px;
+        padding-right:20px;
         .title {
             display: inline-block;
             width: 120px;
@@ -10,7 +22,8 @@
             background-color: #f5d2bc;
             color: #c7702b;
             font-size: 14px;
-            position: relative;
+            position:absolute;
+            left:0;
             &:after {
                 content: "";
                 width: 0;
@@ -25,7 +38,7 @@
         }
         .scrollBox {
             display: inline-block;
-            width: 84%;
+            width: 100%;
             height: 30px;
             line-height: 26px;
             background-color: #fafbfd;
@@ -83,12 +96,16 @@
             margin-left: 20px;
              display: inline-block;
              width:47%;
+             position:relative;
+             padding-left:64px;
             .reportIcon {
                 background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
                 border: 1px solid #a9dbf6;
                 width: 64px;
                 .ch(40px);
                 display: inline-block;
+                position:absolute;
+                left:0;
                 i {
                     color: @blueA;
                     font-size: 16px;
@@ -96,14 +113,14 @@
             }
             .reportText {
                 display: inline-block;
-                width: 85%;
+                width: 100%;
                 background-image: linear-gradient(-180deg, #ffffff 0%, #f3f4f5 100%);
                 height: 40px;
                 line-height: 40px;
                 padding-left: 10px;
                 font-size: 12px;
                 position: relative;
-                top: -1px;
+                // top: -1px;
                 .border;
                 span{
                 	color:@redColor;

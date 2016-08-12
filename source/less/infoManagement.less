@@ -47,7 +47,8 @@
                 }
             }
         }
-        .checkBody {
+        .checkBody,
+        .practiceBody {
             // border-top:0;
             padding-top: 0;
             .btnBox {
@@ -57,11 +58,12 @@
                     font-size: 16px;
                     margin-left: 20px;
                 }
-                .addBtn{
+                .addBtn {
                     margin-top: 0;
                 }
             }
-        };
+        }
+        ;
     }
 }
 
@@ -107,13 +109,23 @@
         }
     }
     .contentBody {
-        text-align: center;
+        text-align: left;
         p {
             display: inline-block;
         }
         .confirmBtn {
             display: inline-block;
+            position:relative;
+            left:50%;
+            margin-left: -32px;
         }
+        .inputShort {
+            width: 47%;
+            span {
+                width: 140px;
+            }
+        }
+
     }
 }
 

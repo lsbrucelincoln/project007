@@ -282,8 +282,11 @@ function resizeContentTable() {
 
 function loadContent() {
     var hash = window.location.hash;
-    if (hash == "") {
+    var url =window.location.href;
+    if (hash == ""&&!url.match("index_c")) {
         hash = "#/" + ADMIN_CONFIG.homePage;
+    }else if(hash == ""&&url.match("index_c")){
+        hash="#/"+"companyInfoManagement.html"
     }
     var hashArray = hash.split("/");
     $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {

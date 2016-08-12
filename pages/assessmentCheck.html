@@ -28,10 +28,10 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>任务编号：</span>
-                    <input type="text">
+                    <input type="text" placeholder="输入编号">
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
-                    <input type="text">
+                    <input type="text" placeholder="输入企业名称">
                 </div>
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
@@ -151,10 +151,10 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>任务编号：</span>
-                    <input type="text">
+                    <input type="text" placeholder="输入编号">
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
-                    <input type="text">
+                    <input type="text" placeholder="输入企业名称">
                 </div>
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
@@ -265,6 +265,7 @@ $(document).ready(function() {
     $.datetimepicker.setLocale('zh');
     $(".createTime").datetimepicker({
         timepicker: false,
+         format:"Y-m-d",
     });
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');

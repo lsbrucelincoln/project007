@@ -62,18 +62,22 @@
   text-decoration: underline;
   color: #50a8e7;
 }
-.staffManagement .contentBody .checkBody {
+.staffManagement .contentBody .checkBody,
+.staffManagement .contentBody .practiceBody {
   padding-top: 0;
 }
-.staffManagement .contentBody .checkBody .btnBox {
+.staffManagement .contentBody .checkBody .btnBox,
+.staffManagement .contentBody .practiceBody .btnBox {
   border-top: 0;
 }
-.staffManagement .contentBody .checkBody .btnBox p {
+.staffManagement .contentBody .checkBody .btnBox p,
+.staffManagement .contentBody .practiceBody .btnBox p {
   line-height: 50px;
   font-size: 16px;
   margin-left: 20px;
 }
-.staffManagement .contentBody .checkBody .btnBox .addBtn {
+.staffManagement .contentBody .checkBody .btnBox .addBtn,
+.staffManagement .contentBody .practiceBody .btnBox .addBtn {
   margin-top: 0;
 }
 .staffDetail .contentHeader h2 {
@@ -106,13 +110,22 @@
   float: right;
 }
 .addStaff .contentBody {
-  text-align: center;
+  text-align: left;
 }
 .addStaff .contentBody p {
   display: inline-block;
 }
 .addStaff .contentBody .confirmBtn {
   display: inline-block;
+  position: relative;
+  left: 50%;
+  margin-left: -32px;
+}
+.addStaff .contentBody .inputShort {
+  width: 47%;
+}
+.addStaff .contentBody .inputShort span {
+  width: 140px;
 }
 .companyManagement {
   font-size: 18px;
