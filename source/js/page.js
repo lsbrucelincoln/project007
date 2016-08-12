@@ -11,7 +11,7 @@ function TablePage(id,size){
     var numRows = $table.find("tbody tr").length;  //记录宗条数  
     var numPages = Math.ceil(numRows/pageSize);    //总页数  
     //console.log(numPages);  
-    var $pager = $("<div class='page'><a href='javascript:void(0)'><span id='Prev' style='margin-right:4px;'>« Prev</span></a></div>");  //分页div  
+    var $pager = $("<div class='page'><a href='javascript:void(0)'><span id='Prev' style='margin-right:4px;'>« 上一页</span></a></div>");  //分页div  
     for( var page = 0; page < numPages; page++ )  
     {  
   
@@ -32,7 +32,7 @@ function TablePage(id,size){
         $pager.append("  ");  
     }  
     //$table.trigger("repaginate");  
-    var next=$("<a href='javascript:void(0)'><span id='Next'>Next »</span></a>");  
+    var next=$("<a href='javascript:void(0)'><span id='Next'>下一页 »</span></a>");  
     $pager.append(next);  
     $pager.appendTo(".bottom-search");//分页div插入table  
     $("#1").attr("class","click_page");  

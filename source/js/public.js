@@ -10,6 +10,7 @@ var ADMIN_CONFIG = {
 $(function() {
     adminInit();
     resizeContentTable();
+
     function adminInit() {
         eventBind();
     }
@@ -20,11 +21,12 @@ function eventBind() {
     // eventBind 仅进行一次
     // 页面刷新 hash变化时的处理
     $(window).bind('load hashchange', loadContent);
+    $(window).bind('load', leftMenuPlace);
     // $(window).bind('resize', windowReset);
     $(window).bind('click', function() {
         $("[data-hideWhenBlur]").hide();
     });
-    $(window).bind('resize',function(){
+    $(window).bind('resize', function() {
         resizeContentTable();
     })
     $(window).on('click', '[data-urlBack]', function() {
@@ -38,7 +40,7 @@ function eventBind() {
         }
         e.stopPropagation();
     });
-    $(".submenu .line").on('click',function(event) {
+    $(".submenu .line").on('click', function(event) {
         $(".submenu .line").removeClass('chosen');
         $(".line").removeClass("chosenLine");
         $(this).addClass('chosen');
@@ -46,7 +48,7 @@ function eventBind() {
     $(".admin_content").on('click', '.backBtn', function(event) {
         history.back();
     });
-    $(ADMIN_CONFIG.leftSelector + " .leftmenu>div>.line").bind('click', function() {
+    $(ADMIN_CONFIG.leftSelector + " .leftmenu>div>.line").bind('click', function(e) {
         if ($(this).next('.submenu').length) {
             // 有子菜单
             if ($(this).hasClass("active")) {
@@ -67,7 +69,7 @@ function eventBind() {
                 $(this).find('.flaticon-arrows').hide();
                 $(this).find('.flaticon-arrows-1').show();
             }
-        }else{
+        } else {
             $(".line").removeClass('chosenLine')
             $(".line").removeClass('chosen')
             $(this).addClass("chosenLine");
@@ -270,18 +272,39 @@ function windowReset() {
     var h = $(window).height() - $("#admin_header").height();
     $(".admin_scrollBox").height(h);
 }
-function resizeContentTable(){
+
+function resizeContentTable() {
     var height = $(window).height() - $(ADMIN_CONFIG.headerSelector).height() - $(ADMIN_CONFIG.footerSelector).height();
     $(ADMIN_CONFIG.contentTableSelector).css({
         "min-height": height
     });
 }
+
 function loadContent() {
     var hash = window.location.hash;
     if (hash == "") {
         hash = "#/" + ADMIN_CONFIG.homePage;
     }
+    var hashArray = hash.split("/");
     $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
         uiComponentEventBind();
     });
+}
+
+function leftMenuPlace() {
+    var hash = window.location.hash;
+    console.log(hash);
+    if (hash.match("safeDataMap") || !hash || hash.match("welcome")) {
+        $("#homePageBtn").addClass('chosenLine');
+    }
+    // if (hash.match("companyInfoManagement") || hash.match("staffManagement")) {
+    //     console.log($(".leftmenu>div>.line"));
+    //     $(".leftmenu>div>.line").eq(1).trigger("click");
+    //     if (hash.match("companyInfoManagement")) {
+    //         $(".active+.submenu>.line").eq(0).addClass('chosen');
+    //     }
+    //     if (hash.match("staffManagement")) {
+    //         $(".active+.submenu>.line").eq(1).addClass('chosen');
+    //     }
+    // }
 }

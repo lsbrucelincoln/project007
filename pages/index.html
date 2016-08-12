@@ -26,6 +26,7 @@
 
     <script src="../source/js/jquery-1.11.1.min.js"></script>
     <script src="../source/js/public.js"></script>
+    <!-- <script src="../source/js/router.js"></script> -->
     <script src="../source/plunges/tinymce/tinymce.js"></script>
     <script src="../source/plunges/zTree/js/jquery.ztree.all.min.js"></script>
     <script src="../source/js/page.js"></script>
@@ -64,7 +65,7 @@
                         <div id="admin_left" class="admin_left">
                             <div class="leftmenu">
                                 <div>
-                                    <a href="#/welcome.html" class="line">
+                                    <a href="#/welcome.html" class="line" id="homePageBtn">
                                         <span class="markIcon">
                                         <i class="flaticon-home"></i>
                                     </span>
@@ -72,7 +73,7 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#/welcome.html" class="line">
+                                    <a  class="line">
                                         <span class="markIcon">
                                             <i class="flaticon-paper"></i>
                                         </span>
@@ -91,7 +92,7 @@
                                             <span class="markIcon">
                                             <i class="flaticon-arrows-3"></i>
                                         </span>
-                                            <div class="name">人员管理</div>
+                                            <div class="name">账号管理</div>
                                         </a>
 <!--                                         <a class="line" href="#/companyManagement.html">
                                             <span class="markIcon">
@@ -106,7 +107,7 @@
                                         <span class="markIcon">
                                             <i class="flaticon-up-arrow"></i>
                                         </span>
-                                        <div class="name">业务操作</div>
+                                        <div class="name">业务管理</div>
                                         <span class="downIcon">
                                             <i class="fa fa-angle-down fa-lg"></i>
                                         </span>
@@ -114,12 +115,6 @@
                                         <i class="flaticon-arrows"></i></span>
                                     </a>
                                     <div class="submenu">
-                                        <a class="line" href="#/dangerousSources.html">
-                                            <span class="markIcon">
-                                              <i class="flaticon-arrows-3"></i>
-                                            </span>
-                                            <div class="name">重大危险源信息</div>
-                                        </a>
                                         <a class="line" href="#/assessmentCheck.html">
                                             <span class="markIcon">
                                               <i class="flaticon-arrows-3"></i>
@@ -130,13 +125,19 @@
                                             <span class="markIcon">
                                               <i class="flaticon-arrows-3"></i>
                                             </span>
-                                            <div class="name">隐患管理</div>
+                                            <div class="name">隐患跟踪</div>
                                         </a>
                                         <a class="line" href="#/assessmentCheck.html?urge">
                                             <span class="markIcon">
                                               <i class="flaticon-arrows-3"></i>
                                             </span>
                                             <div class="name">应急演练</div>
+                                        </a>
+                                        <a class="line" href="#/dangerousSources.html">
+                                            <span class="markIcon">
+                                              <i class="flaticon-arrows-3"></i>
+                                            </span>
+                                            <div class="name">重大危险源信息</div>
                                         </a>
                                         <a class="line">
                                             <span class="markIcon">
@@ -151,7 +152,7 @@
                                         <span class="markIcon">
                                             <i class="flaticon-tool"></i>
                                         </span>
-                                        <div class="name">数据管理</div>
+                                        <div class="name">评估标准管理</div>
                                         <span class="downIcon">
                                             <i class="fa fa-angle-down fa-lg"></i>
                                         </span>
@@ -163,7 +164,7 @@
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
-                                            <div class="name">数据管理</div>
+                                            <div class="name">评估标准数据管理</div>
                                         </a>
                                         <a class="line" href="#/analysisSituationSet.html">
                                             <span class="markIcon">
