@@ -12,7 +12,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 .echartBox:after {
@@ -24,13 +25,45 @@
   float: left;
   padding: 10px 0;
 }
-.headTable {
-  margin-bottom: 10px;
+.dataBody {
+  width: 100%;
+  height: 100px;
+}
+.dataBody .dataBox {
+  float: left;
+  width: 30%;
+  height: 100px;
+  color: #fff;
+  position: relative;
+  margin-right: 20px;
+}
+.dataBody .dataBox .data {
+  position: absolute;
+  font-size: 40px;
+  right: 20px;
+  top: 5px;
+}
+.dataBody .dataBox .title {
+  position: absolute;
+  font-size: 24px;
+  left: 10px;
+  bottom: 20px;
+}
+.dataBody .dataBox:first-child {
+  background-color: #39599B;
+}
+.dataBody .dataBox:nth-child(2) {
+  background-color: #ff6330;
+}
+.dataBody .dataBox:last-child {
+  background-color: #52ADEF;
 }
 .chartConditionBox {
-  width: 100%;
+  width: 60%;
   padding: 10px 0;
-  border: 1px solid #ddd;
   border-width: 1px 0;
   margin-bottom: 10px;
+  display: inline-block;
+  margin-left: 10px;
 }
+/*# sourceMappingURL=accessmentAnalysis.css.map */

@@ -71,7 +71,7 @@
   color: #50a8e7;
 }
 .contentBody {
-  padding: 20px;
+  padding: 10px 20px;
 }
 .normalBtn {
   background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
@@ -94,7 +94,7 @@
 .searchBox {
   width: 260px;
   border: 1px solid #50a8e7;
-  height: 34px;
+  height: 30px;
   border-radius: 6px;
   display: inline-block;
 }
@@ -106,9 +106,9 @@
 }
 .searchBox i {
   color: #Ccc;
-  font-size: 18px;
+  font-size: 16px;
   position: relative;
-  top: 3px;
+  top: 1px;
 }
 .searchBox span {
   float: right;
@@ -116,10 +116,10 @@
   height: 100%;
   background-color: #50a8e7;
   color: white;
-  line-height: 32px;
+  line-height: 28px;
   text-align: center;
   border-radius: 0px 4px 4px 0px;
-  font-size: 16px;
+  font-size: 14px;
 }
 .inputShort {
   font-size: 14px;
@@ -259,5 +259,25 @@
 }
 .tableBox table td {
   position: relative;
+}
+.tableBox table td a {
+  text-decoration: underline;
+  color: #50a8e7;
+}
+.tableBox table th {
+  position: relative;
+}
+.tableBox table th i {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  font-size: #ccc;
+}
+.tableBox table th .flaticon-technology {
+  font-size: 12px;
+}
+.tableBox table th .flaticon-sort {
+  font-size: 24px;
+  top: 1px;
 }
 /*# sourceMappingURL=public.css.map */

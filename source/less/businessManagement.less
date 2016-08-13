@@ -13,6 +13,13 @@
     .contentBody {
         padding: 0;
         padding-top: 10px;
+        .searchButtom {
+            height: 58px;
+            line-height: 58px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
         .tagBar {
             padding-bottom: 28px;
             position: relative;
@@ -64,9 +71,12 @@
                 }
             }
         }
-        .checkBody,.practiceBody,.historyBody {
+        .checkBody,
+        .practiceBody,
+        .historyBody {
             padding: 10px 20px;
             border-top: 1px solid @blueA;
+            position: relative;
             .inputShort {
                 width: 47%;
                 display: inline-block;
@@ -124,8 +134,9 @@
                 }
             }
         }
-                .practiceBody,.historyBody{
-            display:none;
+        .practiceBody,
+        .historyBody {
+            display: none;
         }
         .infoTable {
             .number,
@@ -159,25 +170,31 @@
         }
     }
     .contentBody {
+        .tableBox {
+            width: 100%;
+        }
         .infoTable {
             span {
                 width: 25%
             }
+            .tableHeader {
+                height: 40px;
+            }
         }
         .textInfo {
-            font-size: 18px;
-            padding: 0px 20px;
+            font-size: 12px;
+            padding: 0px 10px;
             .border;
             h3 {
                 padding-left: 10px;
-                font-size: 20px;
+                font-size: 14px;
                 color: @blueA;
-                margin-top: 24px;
-                margin-bottom: 20px;
+                margin-top: 12px;
+                margin-bottom: 10px;
                 border-left: 2px solid @blueA;
             }
             p {
-                margin-bottom: 20px;
+                margin-bottom: 10px;
                 color: #333;
                 span {
                     color: #666;
@@ -196,18 +213,18 @@
             .picArea {
                 border-top: 1px solid @lineColor;
                 .picBox {
-                    font-size: 18px;
+                    font-size: 14px;
                     color: #333;
                     width: 32%;
                     display: inline-block;
                     text-align: center;
                     img {
-                        margin-top: 20px;
+                        margin-top: 10px;
                         width: 240px;
                         height: 180px;
                     }
                     .place {
-                        margin-top: 20px;
+                        margin-top: 10px;
                         margin-bottom: 6px;
                     }
                 }
@@ -223,14 +240,26 @@
         }
     }
     .contentBody {
+        .inputShort {
+            select{
+                // width:200px;
+            }
+        }
+        .backBtn {
+            float: right;
+            margin-top: 20px;
+        }
         .stateBox {
+            border-top: 1px solid @blueA;
+            margin-top: 10px;
+            margin-bottom: 10px;
             .state {
-                width:30%;
-                position:relative;
-                display:inline-block;
-                text-align:center;
-                font-size:14px;
-                top:-25px;
+                width: 30%;
+                position: relative;
+                display: inline-block;
+                text-align: center;
+                font-size: 14px;
+                top: -5px;
                 .circle {
                     height: 13px;
                     width: 13px;
@@ -240,7 +269,7 @@
                     background-color: #ccc;
                     position: relative;
                     top: -4px;
-                    left:4px;
+                    left: 4px;
                     margin-right: 10px;
                 }
                 .circle:after {
@@ -258,104 +287,127 @@
                 }
             }
         }
-        .assess2Body{
+        .assess2Body {
             margin-top: 20px;
-            .ztreeBox{
-                width: 150px;
+            .ztreeBox {
+                width: 200px;
                 height: 217px;
                 .border;
-                float:left;
-            }
-            .tableBox{
-                display:block;
-                float:left;
-                width:80%;
-            }
-            .normalBtn{
-                margin-top: 20px;
-            }
-        }
-        .firstPage{
-            margin-left: 20px;
-        }
-        .secondPage{
-            .normalBtn{
-                margin-top: 20px;
-            }
-        }
-        .thirdPage{
-            margin-left: 20px;
-            u{
-                display:inline-block;
-                text-decoration:none;
-                border-bottom: 1px solid #333;
-            }
-            .companyObject{
-                u{
-                    display:inline-block;
-                    width:400px;
-                    text-decoration:none;
-
+                float: left;
+                li a{
+                    height: 20px;
                 }
             }
+            .tableBox {
+                display: block;
+                float: left;
+                width: 80%;
+            }
+            .normalBtn {
+                margin-top: 20px;
+            }
         }
-        .inputShort{
-            display:inline-block;
-            width:47%;
-            span{
-                width:120px;
+        .firstPage {
+            margin-left: 20px;
+            select{
+                width:120px
+            }
+        }
+        .secondPage {
+            .normalBtn {
+                margin-top: 20px;
+            }
+            select{
+                width:120px
+            }
+        }
+        .thirdPage {
+            margin-left: 20px;
+            u {
+                display: inline-block;
+                text-decoration: none;
+                border-bottom: 1px solid #333;
+            }
+            select{
+                width:120px
+            }
+            .companyObject {
+                u {
+                    display: inline-block;
+                    width: 400px;
+                    text-decoration: none;
+                }
+            }
+            .hide{
+                width:100px;
+                text-align:left;
+                display:none;
+            }
+            .chooseLeader{
+                margin-left: 55px;
+            }
+            .chooseBox{
+                display:none;
+            }
+        }
+        .inputShort {
+            display: inline-block;
+            width: 47%;
+            span {
+                width: 120px;
                 margin-right: 10px;
             }
-            i{
-                position:relative;
-                left:-20px;
+            i {
+                position: relative;
+                left: -20px;
             }
         }
-        .inputLong{
-            width:80%;
+        .inputLong {
+            width: 80%;
             select {
                 width: 386px;
             }
         }
-        .actionPerson{
-            span{
-                float:left;
+        .actionPerson {
+            span {
+                float: left;
             }
-            input{
-                width:15px;
+            input {
+                width: 15px;
                 height: 10px;
             }
         }
-        .leftBox,.rightBox{
-            width:114px;
-            min-height:80px;
+        .leftBox,
+        .rightBox {
+            width: 165px;
+            min-height: 80px;
             .border;
-            float:left;
-            p{
-                padding-left:5px;
-                line-height:20px;
-                &:nth-child(2n){
+            float: left;
+            p {
+                padding-left: 5px;
+                line-height: 20px;
+                &:nth-child(2n) {
                     background-color: #dfe9ef;
                 }
             }
         }
-        .cancel{
-            width:100px;
+        .cancel {
+            width: 100px;
             margin-left: 100px;
         }
-        .nextStep{
-            width:175px;
+        .nextStep {
+            width: 175px;
         }
-        .iconBox{
-            float:left;
-            margin:20px 20px 0px;
-            i{
-                left:0;
-                font-size:16px;
+        .iconBox {
+            float: left;
+            margin: 20px 20px 0px;
+            i {
+                left: 0;
+                font-size: 16px;
             }
         }
-        .assessType{
-            width:80%;
+        .assessType {
+            width: 80%;
         }
         .textInfo {
             font-size: 18px;

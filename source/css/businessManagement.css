@@ -28,6 +28,13 @@
   padding: 0;
   padding-top: 10px;
 }
+.assessmentCheck .contentBody .searchButtom {
+  height: 58px;
+  line-height: 58px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
 .assessmentCheck .contentBody .tagBar {
   padding-bottom: 28px;
   position: relative;
@@ -87,6 +94,7 @@
 .assessmentCheck .contentBody .historyBody {
   padding: 10px 20px;
   border-top: 1px solid #50a8e7;
+  position: relative;
 }
 .assessmentCheck .contentBody .checkBody .inputShort,
 .assessmentCheck .contentBody .practiceBody .inputShort,
@@ -198,24 +206,30 @@
 .assessDetail .contentHeader .backBtn {
   float: right;
 }
+.assessDetail .contentBody .tableBox {
+  width: 100%;
+}
 .assessDetail .contentBody .infoTable span {
   width: 25%;
 }
+.assessDetail .contentBody .infoTable .tableHeader {
+  height: 40px;
+}
 .assessDetail .contentBody .textInfo {
-  font-size: 18px;
-  padding: 0px 20px;
+  font-size: 12px;
+  padding: 0px 10px;
   border: 1px solid #dfe9ef;
 }
 .assessDetail .contentBody .textInfo h3 {
   padding-left: 10px;
-  font-size: 20px;
+  font-size: 14px;
   color: #50a8e7;
-  margin-top: 24px;
-  margin-bottom: 20px;
+  margin-top: 12px;
+  margin-bottom: 10px;
   border-left: 2px solid #50a8e7;
 }
 .assessDetail .contentBody .textInfo p {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #333;
 }
 .assessDetail .contentBody .textInfo p span {
@@ -235,23 +249,32 @@
   border-top: 1px solid #dfe9ef;
 }
 .assessDetail .contentBody .textInfo .picArea .picBox {
-  font-size: 18px;
+  font-size: 14px;
   color: #333;
   width: 32%;
   display: inline-block;
   text-align: center;
 }
 .assessDetail .contentBody .textInfo .picArea .picBox img {
-  margin-top: 20px;
+  margin-top: 10px;
   width: 240px;
   height: 180px;
 }
 .assessDetail .contentBody .textInfo .picArea .picBox .place {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 6px;
 }
 .addAssessment .contentHeader .backBtn {
   float: right;
+}
+.addAssessment .contentBody .backBtn {
+  float: right;
+  margin-top: 20px;
+}
+.addAssessment .contentBody .stateBox {
+  border-top: 1px solid #50a8e7;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .addAssessment .contentBody .stateBox .state {
   width: 30%;
@@ -259,7 +282,7 @@
   display: inline-block;
   text-align: center;
   font-size: 14px;
-  top: -25px;
+  top: -5px;
 }
 .addAssessment .contentBody .stateBox .state .circle {
   height: 13px;
@@ -290,10 +313,13 @@
   margin-top: 20px;
 }
 .addAssessment .contentBody .assess2Body .ztreeBox {
-  width: 150px;
+  width: 200px;
   height: 217px;
   border: 1px solid #dfe9ef;
   float: left;
+}
+.addAssessment .contentBody .assess2Body .ztreeBox li a {
+  height: 20px;
 }
 .addAssessment .contentBody .assess2Body .tableBox {
   display: block;
@@ -306,8 +332,14 @@
 .addAssessment .contentBody .firstPage {
   margin-left: 20px;
 }
+.addAssessment .contentBody .firstPage select {
+  width: 120px;
+}
 .addAssessment .contentBody .secondPage .normalBtn {
   margin-top: 20px;
+}
+.addAssessment .contentBody .secondPage select {
+  width: 120px;
 }
 .addAssessment .contentBody .thirdPage {
   margin-left: 20px;
@@ -317,10 +349,24 @@
   text-decoration: none;
   border-bottom: 1px solid #333;
 }
+.addAssessment .contentBody .thirdPage select {
+  width: 120px;
+}
 .addAssessment .contentBody .thirdPage .companyObject u {
   display: inline-block;
   width: 400px;
   text-decoration: none;
+}
+.addAssessment .contentBody .thirdPage .hide {
+  width: 100px;
+  text-align: left;
+  display: none;
+}
+.addAssessment .contentBody .thirdPage .chooseLeader {
+  margin-left: 55px;
+}
+.addAssessment .contentBody .thirdPage .chooseBox {
+  display: none;
 }
 .addAssessment .contentBody .inputShort {
   display: inline-block;
@@ -349,7 +395,7 @@
 }
 .addAssessment .contentBody .leftBox,
 .addAssessment .contentBody .rightBox {
-  width: 114px;
+  width: 165px;
   min-height: 80px;
   border: 1px solid #dfe9ef;
   float: left;

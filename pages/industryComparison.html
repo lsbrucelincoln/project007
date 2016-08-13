@@ -1,58 +1,56 @@
 <div class="admin_content_innerBox">
-	<div class="minibar">
-		<i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">隐患分析</span></span>
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">隐患分析</span></span>
     </div>
     <div class="contentBody">
-    	<table class="headTable">
-	    	<tbody>
-	    		<tr>
-	    			<td>
-	    				统计范围：
-				    	<div class="admin_ui_select" style="width: 180px;">
-							<select>
-								<option>宁波市港航管理局</option>
-								<option>大榭港行管理局</option>
-								<option>北仓港行管理局</option>
-								<option>宁波市港航局市区所</option>
-								<option>宁波市港航局运政所</option>
-								<option>鄞州港航管理处</option>
-								<option>镇海港航管理所</option>
-								<option>东钱湖港航管理所</option>
-								<option>宁海港航管理处</option>
-								<option>宁波市港航局直属所</option>
-								<option>余姚港航管理处</option>
-								<option>奉化港航管理处</option>
-								<option>慈溪港航管理处</option>
-							</select>
-						</div>
-	    			</td>
-	    			<td>
-	    			</td>
-	    		</tr>
-	    	</tbody>
-	    </table>
-	    <div class="chartConditionBox">
-	    	展示粒度：
-	    	<label for="zsld_byYear" style="margin-right: 10px;">
-	    		<input id="zsld_byYear" name="zsld_by" type="radio">按年
-	    	</label>
-	    	<label for="zsld_bySeason" style="margin-right: 10px;">
-	    		<input id="zsld_bySeason" name="zsld_by" type="radio">按季度
-	    	</label>
-	    	<label for="zsld_byMonth" style="margin-right: 10px;">
-	    		<input id="zsld_byMonth" name="zsld_by" type="radio">按月
-	    	</label>
-	    	<label for="zsld_byCustom" style="margin-right: 10px;">
-	    		<input id="zsld_byCustom" name="zsld_by" type="radio">自定义
-	    	</label>
-	    	<input type="text" class="admin_ui_input" style="width: 100px;">
-	    	<i class="fa fa-calendar"></i>
-	    	-
-	    	<input type="text" class="admin_ui_input" style="width: 100px;">
-	    	<i class="fa fa-calendar"></i>
-	    </div>
-            
-	    <div class="echartBox" style="border-bottom: 1px solid #ddd;margin-bottom: 10px;">
+        <table class="headTable">
+            <tbody>
+                <tr>
+                    <td>
+                        统计范围：
+                        <div class="admin_ui_select" style="width: 180px;">
+                            <select>
+                                <option>宁波市港航管理局</option>
+                                <option>大榭港行管理局</option>
+                                <option>北仓港行管理局</option>
+                                <option>宁波市港航局市区所</option>
+                                <option>宁波市港航局运政所</option>
+                                <option>鄞州港航管理处</option>
+                                <option>镇海港航管理所</option>
+                                <option>东钱湖港航管理所</option>
+                                <option>宁海港航管理处</option>
+                                <option>宁波市港航局直属所</option>
+                                <option>余姚港航管理处</option>
+                                <option>奉化港航管理处</option>
+                                <option>慈溪港航管理处</option>
+                            </select>
+                        </div>
+                        <div class="chartConditionBox">
+                            展示粒度：
+                            <label for="zsld_byYear" style="margin-right: 10px;">
+                                <input id="zsld_byYear" name="zsld_by" type="radio">按年
+                            </label>
+                            <label for="zsld_bySeason" style="margin-right: 10px;">
+                                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
+                            </label>
+                            <label for="zsld_byMonth" style="margin-right: 10px;">
+                                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
+                            </label>
+                            <label for="zsld_byCustom" style="margin-right: 10px;">
+                                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
+                            </label>
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <i class="fa fa-calendar"></i> -
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="echartBox" style="border-bottom: 1px solid #ddd;margin-bottom: 10px;">
             <table class="headTable">
                 <tbody>
                     <tr>
@@ -75,115 +73,172 @@
                                 <input id="yhdj_4" name="yhdj" type="radio">四级
                             </label>
                         </td>
-                    </tr>
-                </tbody>
-            </table>
-	    	<div id="echartLine_AccessmentAnalysis1" class="echartBlock echartLine" style="width: 950px;height: 300px;"></div>
-
-	    </div>
-        
-        <div class="echartBox">
-            <table class="headTable">
-                <tbody>
-                    <tr>
+                        <td>
+                            隐患等级：
+                            <label for="yhdx_1" style="margin-right: 10px;">
+                                <input id="yhdx_1" name="yhdj" type="radio">一级
+                            </label>
+                            <label for="yhdx_2" style="margin-right: 10px;">
+                                <input id="yhdx_2" name="yhdj" type="radio">二级
+                            </label>
+                            <label for="yhdx_3" style="margin-right: 10px;">
+                                <input id="yhdx_3" name="yhdj" type="radio">三级
+                            </label>
+                            <label for="yhdx_4" style="margin-right: 10px;">
+                                <input id="yhdx_4" name="yhdj" type="radio">四级
+                            </label>
+                        </td>
                         <td>
                             选择企业：
                             <input type="text" class="ui-input" placeholder="输入企业名称">
                         </td>
-                        <td>
-                            隐患等级：
-                            <label for="yhdj_1" style="margin-right: 10px;">
-                                <input id="yhdj_1" name="yhdj" type="radio" checked>一级
-                            </label>
-                            <label for="yhdj_2" style="margin-right: 10px;">
-                                <input id="yhdj_2" name="yhdj" type="radio">二级
-                            </label>
-                            <label for="yhdj_3" style="margin-right: 10px;">
-                                <input id="yhdj_3" name="yhdj" type="radio">三级
-                            </label>
-                            <label for="yhdj_4" style="margin-right: 10px;">
-                                <input id="yhdj_4" name="yhdj" type="radio">四级
-                            </label>
-                        </td>
                     </tr>
                 </tbody>
             </table>
-            <div id="echartLine_AccessmentAnalysis2" class="echartBlock echartLine" style="width: 950px;height: 300px;"></div>
+            <div style="width:100%;height:600px;margin:0 auto;" id="demo">
+            </div>
         </div>
     </div>
-	    
-</div>
+    <script>
+    $(document).ready(function() {
+        $.datetimepicker.setLocale('zh');
+        $(".datepicker").datetimepicker({
+            timepicker: false,
+            format: "Y-m-d",
+        });
+    });
+    var myChart = echarts.init(demo);
 
+    var max = -1
 
-<script>
-
-var echartLine_AccessmentAnalysis_option = {
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['日常评估','专项评估','综合评估','应急演练']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: {
-    	name: '月份',
-        type: 'category',
-        boundaryGap: false,
-        data: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-    },
-    yAxis: {
-    	name: '数量',
-        type: 'value'
-    },
-    series: [
-        {
-            name:'日常评估',
-            type:'line',
-            stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 190, 330]
-        },
-        {
-            name:'专项评估',
-            type:'line',
-            stack: '总量',
-            data:[220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
-        },
-        {
-            name:'综合评估',
-            type:'line',
-            stack: '总量',
-            data:[150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
-        },
-        {
-            name:'应急演练',
-            type:'line',
-            stack: '总量',
-            data:[320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
+    function getRandom() {
+        var ret = []
+        for (var i = 0; i < 12; i++) {
+            var num = Math.random() * 600 | 0
+            if (num > max) {
+                max = num
+            }
+            ret.push(num)
         }
-    ]
-};
-var echartLine_AccessmentAnalysis1 = echarts.init(document.getElementById("echartLine_AccessmentAnalysis1"));
-var echartLine_AccessmentAnalysis2 = echarts.init(document.getElementById("echartLine_AccessmentAnalysis2"));
-echartLine_AccessmentAnalysis1.setOption(echartLine_AccessmentAnalysis_option);
-echartLine_AccessmentAnalysis2.setOption(echartLine_AccessmentAnalysis_option);
-</script>
+        return ret
+    }
+    var data1 = {
+        '日常评估': getRandom(),
+        '专项评估': getRandom(),
+        '综合评估': getRandom(),
+        '应急演练': getRandom()
+    }
+    var data2 = {
+        '日常评估': getRandom(),
+        '专项评估': getRandom(),
+        '综合评估': getRandom(),
+        '应急演练': getRandom()
+    }
 
+    max += (300 - max % 300)
+    var option = {
+        title: {
+            text: 'VS',
+            y: 'center',
+            x: 'center'
+        },
+        legend: {
+            y: "top",
+            x: "center",
+            data: ['日常评估', '专项评估', '综合评估', '应急演练']
+        },
+        grid: [{
+            top: "5%",
+            bottom: "2%",
+            left: "5%",
+            width: '40%',
+            show: false,
+            containLabel: true,
+        }, {
+            top: "5%",
+            bottom: "2%",
+            right: "5%",
+            width: '40%',
+            containLabel: true
+        }],
+        xAxis: [{
+            gridIndex: 0,
+            type: "value",
+            name: "数量",
+            min: 0,
+            max: max,
+            interval: 300
+        }, {
+            gridIndex: 1,
+            inverse: true,
+            type: "value",
+            name: "数量",
+            min: 0,
+            max: max,
+            interval: 300
+        }],
+        yAxis: [{
+            gridIndex: 0,
+            type: "category",
+            name: "月份",
+            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+        }, {
+            gridIndex: 1,
+            position: "right",
+            type: "category",
+            name: "月份",
+            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+        }],
+        series: [{
+            name: '日常评估',
+            type: "bar",
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            data: data1['日常评估']
+        }, {
+            name: '专项评估',
+            type: "bar",
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            data: data1['专项评估']
+        }, {
+            name: '综合评估',
+            type: "bar",
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            data: data1['综合评估']
+        }, {
+            name: '应急演练',
+            type: "bar",
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            data: data1['应急演练']
+        }, {
+            name: '日常评估',
+            type: "bar",
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data: data2['日常评估']
+        }, {
+            name: '专项评估',
+            type: "bar",
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data: data2['专项评估']
+        }, {
+            name: '综合评估',
+            type: "bar",
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data: data2['综合评估']
+        }, {
+            name: '应急演练',
+            type: "bar",
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data: data2['应急演练']
+        }]
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    myChart.setOption(option)
+    </script>

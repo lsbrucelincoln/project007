@@ -1,6 +1,6 @@
 	/*
   	Flaticon icon font: Flaticon
-  	Creation date: 11/08/2016 05:30
+  	Creation date: 13/08/2016 08:39
   	*/
 
 @font-face {
@@ -63,6 +63,8 @@ font-style: normal;
 .flaticon-small-calendar:before { content: "\f120"; }
 .flaticon-sort:before { content: "\f121"; }
 .flaticon-square:before { content: "\f122"; }
-.flaticon-tool:before { content: "\f123"; }
-.flaticon-up-arrow:before { content: "\f124"; }
-.flaticon-warning:before { content: "\f125"; }
+.flaticon-technology:before { content: "\f123"; }
+.flaticon-tool:before { content: "\f124"; }
+.flaticon-up-arrow:before { content: "\f125"; }
+.flaticon-up-arrow-1:before { content: "\f126"; }
+.flaticon-warning:before { content: "\f127"; }

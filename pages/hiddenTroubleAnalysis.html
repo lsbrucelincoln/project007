@@ -25,40 +25,37 @@
 								<option>慈溪港航管理处</option>
 							</select>
 						</div>
+        <div class="chartConditionBox">
+            展示粒度：
+            <label for="zsld_byYear" style="margin-right: 10px;">
+                <input id="zsld_byYear" name="zsld_by" type="radio">按年
+            </label>
+            <label for="zsld_bySeason" style="margin-right: 10px;">
+                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
+            </label>
+            <label for="zsld_byMonth" style="margin-right: 10px;">
+                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
+            </label>
+            <label for="zsld_byCustom" style="margin-right: 10px;">
+                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
+            </label>
+            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+            <i class="fa fa-calendar"></i>
+            -
+            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+            <i class="fa fa-calendar"></i>
+        </div>
 	    			</td>
 	    			<td>
 	    			</td>
 	    		</tr>
 	    	</tbody>
 	    </table>
-	    <div class="chartConditionBox">
-	    	展示粒度：
-	    	<label for="zsld_byYear" style="margin-right: 10px;">
-	    		<input id="zsld_byYear" name="zsld_by" type="radio">按年
-	    	</label>
-	    	<label for="zsld_bySeason" style="margin-right: 10px;">
-	    		<input id="zsld_bySeason" name="zsld_by" type="radio">按季度
-	    	</label>
-	    	<label for="zsld_byMonth" style="margin-right: 10px;">
-	    		<input id="zsld_byMonth" name="zsld_by" type="radio">按月
-	    	</label>
-	    	<label for="zsld_byCustom" style="margin-right: 10px;">
-	    		<input id="zsld_byCustom" name="zsld_by" type="radio">自定义
-	    	</label>
-	    	<input type="text" class="admin_ui_input" style="width: 100px;">
-	    	<i class="fa fa-calendar"></i>
-	    	-
-	    	<input type="text" class="admin_ui_input" style="width: 100px;">
-	    	<i class="fa fa-calendar"></i>
-	    </div>
             
 	    <div class="echartBox" style="border-bottom: 1px solid #ddd;margin-bottom: 10px;">
             <table class="headTable">
                 <tbody>
                     <tr>
-                        <td>
-                            
-                        </td>
                         <td>
                             隐患等级：
                             <label for="yhdj_1" style="margin-right: 10px;">
@@ -77,21 +74,23 @@
                     </tr>
                 </tbody>
             </table>
-	    	<div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 950px;height: 300px;"></div>
+	    	<div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 950px;height: 200px;"></div>
 
 	    </div>
-        
-        <div class="echartBox">
-            <div id="echartPie_AccessmentAnalysis1" class="echartBlock echartPie" style="width: 300px;height: 300px;"></div>
-            <div id="echartPie_AccessmentAnalysis2" class="echartBlock echartPie" style="width: 300px;height: 300px;"></div>
-            <div id="echartPie_AccessmentAnalysis3" class="echartBlock echartPie" style="width: 300px;height: 300px;"></div>
-        </div>
+        <div class="dataBody"><div class="dataBox"><span class="data">1500</span><span class="title">新增隐患数</span></div><div class="dataBox"><span class="data">400</span><span class="title">消除隐患数量</span></div><div class="dataBox"><span class="data">300</span><span class="title">逾期处置隐患</span></div></div>
     </div>
 	    
 </div>
 
 
 <script>
+$(document).ready(function() {
+        $.datetimepicker.setLocale('zh');
+        $(".datepicker").datetimepicker({
+        timepicker: false,
+         format:"Y-m-d",
+    });
+});
 var echartPie_AccessmentAnalysis_option = {
     title: {
         text: "新增隐患数",
@@ -133,14 +132,7 @@ var echartPie_AccessmentAnalysis_option = {
     ],
     animation: false
 };
-var echartPie_AccessmentAnalysis1 = echarts.init(document.getElementById("echartPie_AccessmentAnalysis1"));
-echartPie_AccessmentAnalysis1.setOption(echartPie_AccessmentAnalysis_option);
-var echartPie_AccessmentAnalysis2 = echarts.init(document.getElementById("echartPie_AccessmentAnalysis2"));
-echartPie_AccessmentAnalysis_option.title.text = "消除隐患数量";
-echartPie_AccessmentAnalysis2.setOption(echartPie_AccessmentAnalysis_option);
-var echartPie_AccessmentAnalysis3 = echarts.init(document.getElementById("echartPie_AccessmentAnalysis3"));
 echartPie_AccessmentAnalysis_option.title.text = "逾期处置隐患";
-echartPie_AccessmentAnalysis3.setOption(echartPie_AccessmentAnalysis_option);
 
 
 var echartLine_AccessmentAnalysis_option = {

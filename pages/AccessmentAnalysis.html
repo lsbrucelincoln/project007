@@ -1,98 +1,134 @@
 <div class="admin_content_innerBox">
-	<div class="minibar">
-		<i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">评估分析</span></span>
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">评估分析</span></span>
     </div>
     <div class="contentBody">
-    	<table class="headTable">
-	    	<tbody>
-	    		<tr>
-	    			<td>
-	    				统计范围：
-				    	<div class="admin_ui_select" style="width: 180px;">
-							<select>
-								<option>宁波市港航管理局</option>
-								<option>大榭港行管理局</option>
-								<option>北仓港行管理局</option>
-								<option>宁波市港航局市区所</option>
-								<option>宁波市港航局运政所</option>
-								<option>鄞州港航管理处</option>
-								<option>镇海港航管理所</option>
-								<option>东钱湖港航管理所</option>
-								<option>宁海港航管理处</option>
-								<option>宁波市港航局直属所</option>
-								<option>余姚港航管理处</option>
-								<option>奉化港航管理处</option>
-								<option>慈溪港航管理处</option>
-							</select>
-						</div>
-	    			</td>
-	    			<td>
-	    				评估标准总项：23423项
-	    			</td>
-	    		</tr>
-	    	</tbody>
-	    </table>
-	    <div class="chartConditionBox">
-	    	展示粒度：
-	    	<label for="zsld_byYear" style="margin-right: 10px;">
-	    		<input id="zsld_byYear" name="zsld_by" type="radio">按年
-	    	</label>
-	    	<label for="zsld_bySeason" style="margin-right: 10px;">
-	    		<input id="zsld_bySeason" name="zsld_by" type="radio">按季度
-	    	</label>
-	    	<label for="zsld_byMonth" style="margin-right: 10px;">
-	    		<input id="zsld_byMonth" name="zsld_by" type="radio">按月
-	    	</label>
-	    	<label for="zsld_byCustom" style="margin-right: 10px;">
-	    		<input id="zsld_byCustom" name="zsld_by" type="radio">自定义
-	    	</label>
-	    	<input type="text" class="admin_ui_input" style="width: 100px;">
-	    	<i class="fa fa-calendar"></i>
-	    	-
-	    	<input type="text" class="admin_ui_input" style="width: 100px;">
-	    	<i class="fa fa-calendar"></i>
-	    </div>
-	    <div class="echartBox">
-	    	<div id="echartPie_AccessmentAnalysis" class="echartBlock echartPie" style="width: 350px;height: 400px;"></div>
-	    	<div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 600px;height: 400px;"></div>
-	    </div>
-	    <div>
-	    	<div class="tableBox" style="display: block;">
-	            <table>
-	            	<tbody>
-	            		<tr>
-		                    <th>中队名称</th>
-		                    <th>抽检企业数量</th>
-		                    <th>现场评估检查天数</th>
-		                    <th>现场评估检查人数</th>
-		                    <th>新增隐患数量</th>
-		                </tr>
-		                <tr>
-		                	<td></td>
-		                	<td></td>
-		                	<td></td>
-		                	<td></td>
-		                	<td></td>
-		                </tr>
-		                <tr>
-		                	<td></td>
-		                	<td></td>
-		                	<td></td>
-		                	<td></td>
-		                	<td></td>
-		                </tr>
-	            	</tbody>
-	            </table>
-	        </div>
-	    </div>
+        <table class="headTable">
+            <tbody>
+                <tr>
+                    <td>
+                        统计范围：
+                        <div class="admin_ui_select" style="width: 180px;">
+                            <select>
+                                <option>宁波市港航管理局</option>
+                                <option>大榭港行管理局</option>
+                                <option>北仓港行管理局</option>
+                                <option>宁波市港航局市区所</option>
+                                <option>宁波市港航局运政所</option>
+                                <option>鄞州港航管理处</option>
+                                <option>镇海港航管理所</option>
+                                <option>东钱湖港航管理所</option>
+                                <option>宁海港航管理处</option>
+                                <option>宁波市港航局直属所</option>
+                                <option>余姚港航管理处</option>
+                                <option>奉化港航管理处</option>
+                                <option>慈溪港航管理处</option>
+                            </select>
+                        </div>
+                        <div class="chartConditionBox">
+                            展示粒度：
+                            <label for="zsld_byYear" style="margin-right: 10px;">
+                                <input id="zsld_byYear" name="zsld_by" type="radio">按年
+                            </label>
+                            <label for="zsld_bySeason" style="margin-right: 10px;">
+                                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
+                            </label>
+                            <label for="zsld_byMonth" style="margin-right: 10px;">
+                                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
+                            </label>
+                            <label for="zsld_byCustom" style="margin-right: 10px;">
+                                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
+                            </label>
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <i class="fa fa-calendar"></i> -
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </td>
+                    <td width="14%">
+                        评估标准总项：23423项
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="echartBox">
+        <div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 600px;height: 200px;"></div>
+            <div id="echartPie_AccessmentAnalysis" class="echartBlock echartPie" style="width: 350px;height: 200px;"></div>
+            
+        </div>
+        <div>
+            <div class="tableBox" style="display: block;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>中队名称</th>
+                            <th>抽查数量</th>
+                            <th>评估天数</th>
+                            <th>参与人数</th>
+                            <th>隐患数量</th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>总计</td>
+                            <td colspan="4"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-	    
 </div>
-
-
 <script>
+$(document).ready(function() {
+    $.datetimepicker.setLocale('zh');
+    $(".datepicker").datetimepicker({
+        timepicker: false,
+        format: "Y-m-d",
+    });
+});
 var echartPie_AccessmentAnalysis_option = {
-    tooltip : {
+    tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
     },
@@ -100,32 +136,37 @@ var echartPie_AccessmentAnalysis_option = {
         orient: 'horizontal',
         left: 'center',
         top: 'top',
-        data: ['日常评估','专项评估','综合评估','应急演练']
+        data: ['日常评估', '专项评估', '综合评估', '应急演练']
     },
-    series : [
-        {
-            name: '项目分类',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '50%'],
-            label: {
-            	normal: {
-            		show: true,
-            		position: "inside",
-            		formatter: "{c}",
-            		textStyle: {
-            			color: "#fff"
-            		}
-            	}
-            },
-            data:[
-                {value:335, name:'日常评估'},
-                {value:310, name:'专项评估'},
-                {value:234, name:'综合评估'},
-                {value:135, name:'应急演练'}
-            ]
-        }
-    ],
+    series: [{
+        name: '项目分类',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '50%'],
+        label: {
+            normal: {
+                show: true,
+                position: "inside",
+                formatter: "{c}",
+                textStyle: {
+                    color: "#fff"
+                }
+            }
+        },
+        data: [{
+            value: 335,
+            name: '日常评估'
+        }, {
+            value: 310,
+            name: '专项评估'
+        }, {
+            value: 234,
+            name: '综合评估'
+        }, {
+            value: 135,
+            name: '应急演练'
+        }]
+    }],
     animation: false
 };
 var echartPie_AccessmentAnalysis = echarts.init(document.getElementById("echartPie_AccessmentAnalysis"));
@@ -138,7 +179,7 @@ var echartLine_AccessmentAnalysis_option = {
         trigger: 'axis'
     },
     legend: {
-        data:['日常评估','专项评估','综合评估','应急演练']
+        data: ['日常评估', '专项评估', '综合评估', '应急演练']
     },
     grid: {
         left: '3%',
@@ -147,57 +188,37 @@ var echartLine_AccessmentAnalysis_option = {
         containLabel: true
     },
     xAxis: {
-    	name: '月份',
+        name: '月份',
         type: 'category',
         boundaryGap: false,
-        data: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+        data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
     },
     yAxis: {
-    	name: '数量',
+        name: '数量',
         type: 'value'
     },
-    series: [
-        {
-            name:'日常评估',
-            type:'line',
-            stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 190, 330]
-        },
-        {
-            name:'专项评估',
-            type:'line',
-            stack: '总量',
-            data:[220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
-        },
-        {
-            name:'综合评估',
-            type:'line',
-            stack: '总量',
-            data:[150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
-        },
-        {
-            name:'应急演练',
-            type:'line',
-            stack: '总量',
-            data:[320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
-        }
-    ]
+    series: [{
+        name: '日常评估',
+        type: 'line',
+        stack: '总量',
+        data: [120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 190, 330]
+    }, {
+        name: '专项评估',
+        type: 'line',
+        stack: '总量',
+        data: [220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
+    }, {
+        name: '综合评估',
+        type: 'line',
+        stack: '总量',
+        data: [150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
+    }, {
+        name: '应急演练',
+        type: 'line',
+        stack: '总量',
+        data: [320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
+    }]
 };
 var echartLine_AccessmentAnalysis = echarts.init(document.getElementById("echartLine_AccessmentAnalysis"));
 echartLine_AccessmentAnalysis.setOption(echartLine_AccessmentAnalysis_option);
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

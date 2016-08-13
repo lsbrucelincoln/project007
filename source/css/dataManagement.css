@@ -23,14 +23,20 @@
 .dataManagement .contentBody .assess2Body {
   margin-top: 0;
 }
+.dataManagement .contentBody .assess2Body select {
+  width: 120px;
+}
 .dataManagement .contentBody .assess2Body .ztrbox {
-  width: 150px;
+  width: 200px;
   height: 332px;
   position: relative;
   float: left;
+  border: 1px solid #dfe9ef;
 }
 .dataManagement .contentBody .assess2Body .ztrbox .ztreeBox {
-  height: 332px;
+  height: 292px;
+  border: 0;
+  width: 100%;
 }
 .dataManagement .contentBody .assess2Body .ztrbox .flaticon-add {
   position: absolute;

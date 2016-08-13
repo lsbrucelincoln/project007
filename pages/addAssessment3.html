@@ -2,47 +2,61 @@
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
-        <div class="contentHeader">
-            <div class="backBtn normalBtn">返回</div>
-        </div>
         <div class="contentBody">
-        <div class="stateBox">
-            <div class="state">
-                <i class="circle"></i><br/><span>第一步<br/>基本信息设置</span>
+            <div class="backBtn normalBtn">返回</div>
+            <div class="stateBox">
+                <div class="state">
+                    <i class="circle"></i>
+                    <br/><span>基本信息设置</span>
+                </div>
+                <div class="state">
+                    <i class="circle"></i>
+                    <br/><span>评估模板</span>
+                </div>
+                <div class="state  ">
+                    <i class="circle chosen"></i>
+                    <br/><span>确认发布</span>
+                </div>
             </div>
-            <div class="state">
-                <i class="circle"></i><br/><span>第二步<br/>选择评估模板</span>
+            <div class="thirdPage">
+                <div class="inputShort"><span>企业类型:</span><u>港口服务企业</u></div>
+                <div class="inputShort"><span>任务编号:</span><u>NB01020120160809001</u></div>
+                <div class="inputShort inputLong companyObject"><span>选择企业对象:</span><u>港口服务企业</u></div>
+                <div class="inputShort assessType"><span>评估类型:</span><u>日常评估检查</u><span class="hide">—<u></u></span></div>
+                <div class="inputShort inputLong"><span>创建时间:</span><u>2016年8月11日20：10</u></div>
+                <div class="inputShort inputLong"><span>执行中队:</span><u>第一中队</u></div>
+                <div class="actionPerson inputShort inputLong">
+                    <a href="" class="normalBtn chooseLeader">选择队长</a>
+                    <div class="chooseBox">
+                        <input type="radio" name="person" id="person1" checked>
+                        <label for="person1">张三</label>
+                        <input type="radio" name="person" id="person2">
+                        <label for="person2">李四</label>
+                        <input type="radio" name="person" id="person3">
+                        <label for="person3">张五</label>
+                    </div>
+                </div>
+                <br/>
+                <a href="#/addAssessment2.html" class="normalBtn cancel">上一步</a>
+                <a href="#/assessmentCheck.html" class="normalBtn nextStep">确认生成</a>
             </div>
-            <div class="state  ">
-                <i class="circle chosen"></i><br/><span>第三步<br/>确认发布</span>
-            </div>        </div>
-        <div class="thirdPage">
-            <div class="inputShort"><span>选择企业类型:</span><u>港口服务企业</u></div>
-            <div class="inputShort"><span>任务编号:</span><u>NB01020120160809001</u></div>
-            <div class="inputShort inputLong companyObject"><span>选择企业对象:</span><u>港口服务企业</u></div>
-            <div class="inputShort assessType"><span>选择评估类型:</span><u>日常评估检查</u>—<u>&nbsp;&nbsp;&nbsp;&nbsp;</u></div>
-            <div class="inputShort inputLong"><span>创建时间:</span><u>2016年8月11日</u></div>
-            <div class="inputShort inputLong"><span>选择执行中队:</span><u>第一中队</u></div>
-            <div class="actionPerson inputShort inputLong">
-            <span>选择执行人员:</span>
-                <input type="radio" name="person" id="person1" checked><label for="person1">张三</label>
-                <input type="radio" name="person" id="person2"><label for="person2">李四</label>
-                <input type="radio" name="person" id="person3"><label for="person3">张五</label>
-            </div><br/>
-            <a href="#/addAssessment2.html" class="normalBtn cancel">上一步</a>
-            <a href="#/assessmentCheck.html" class="normalBtn nextStep">确认生成</a>
-        </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
+    var isChoose=false;
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();
         $(".finishedTable").hide();
         $(this).addClass('chosen');
         $("#finishedBtn").removeClass('chosen');
+    });
+    $(".chooseLeader").on('click', function(event) {
+        event.preventDefault();
+        $(".chooseBox").css("display","inline-block");
+        isChoose=true;
     });
     $("#finishedBtn").on('click', function(event) {
         event.preventDefault();
@@ -51,11 +65,17 @@ $(document).ready(function() {
         $(this).addClass('chosen');
         $("#processingBtn").removeClass('chosen');
     });
-    $(".rightBox").on('click',"p", function(event) {
+    $(".rightBox").on('click', "p", function(event) {
         $(".leftBox").append($(this));
     });
-        $(".leftBox").on('click',"p", function(event) {
+    $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
+    });
+    $(".nextStep").on('click', function(event) {
+        if(!isChoose){
+            alert("请选择队长");
+            event.preventDefault();
+        }
     });
 });
 </script>

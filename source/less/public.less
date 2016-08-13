@@ -54,7 +54,7 @@
 }
 
 .contentBody {
-    padding: 20px;
+    padding: 10px 20px;
 }
 
 // 按钮样式
@@ -79,7 +79,7 @@
 .searchBox {
     width: 260px;
     .border(@blueA);
-    height: 34px;
+    height: 30px;
     .radius;
     display: inline-block;
     input {
@@ -90,19 +90,19 @@
     }
     i {
         color: #Ccc;
-        font-size: 18px;
+        font-size: 16px;
         position: relative;
-        top: 3px;
+        top: 1px;
     }
     span {
         float: right;
         width: 60px;
         height: 100%;
         .colorBox(@blueA);
-        line-height: 32px;
+        line-height: 28px;
         text-align: center;
         border-radius: 0px 4px 4px 0px;
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
@@ -259,6 +259,26 @@
         }
         td{
             position:relative;
+            a{
+                text-decoration:underline;
+                color:@blueA;
+            }
+        }
+        th{
+            position:relative;
+            i{
+                position:absolute;
+                right: 5px;
+                top:10px;
+                font-size:#ccc;
+            }
+            .flaticon-technology{
+                font-size:12px;
+            }
+            .flaticon-sort{
+                font-size:24px;
+                top:1px;
+            }
         }
     }
 }

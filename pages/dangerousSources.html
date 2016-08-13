@@ -1,5 +1,5 @@
 <div class="assessmentCheck">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">重大危险源信息</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">重大危险源</span></span>
     </div>
     <div class="contentBody">
         <div class="tagBar">
@@ -11,16 +11,20 @@
                 <div class="inputShort"><span>备案时间：</span>
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
-                    <select name="" id="">
-                        <option value="">宁波市港航管理局</option>
-                    </select>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select name="" id="">
+                            <option value="">宁波市港航管理局</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort"><span>危险等级：</span>
-                                        <select name="" id="">
-                        <option value="">一级</option>
-                        <option value="">二级</option>
-                        <option value="">三级</option>
-                    </select>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select name="" id="">
+                            <option value="">一级</option>
+                            <option value="">二级</option>
+                            <option value="">三级</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
                     <input type="text" placeholder="输入企业名称">
@@ -37,14 +41,14 @@
                     <table id="checkTable">
                         <tr>
                             <th></th>
-                            <th>序号</th>
-                            <th>企业名称</th>
+                            <th>序号<i class="flaticon-technology"></i></th>
+                            <th>企业名称<i class="flaticon-sort"></i></th>
                             <th>重大危险源名称</th>
                             <th>等级</th>
                             <th>备案编号</th>
                             <th>备案日期</th>
                             <th>所在港区</th>
-                            <th>管理机构</th>
+                            <th>管理机构<i class="flaticon-technology"></i></th>
                             <th>操作</th>
                         </tr>
                         <tr>
@@ -126,40 +130,39 @@
                 <div class="inputShort"><span>备案时间：</span>
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
-                    <select name="" id="">
-                        <option value="">宁波市港航管理局</option>
-                    </select>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select name="" id="">
+                            <option value="">宁波市港航管理局</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="admin_ui_select"><span>危险等级：</span>
-                                        <select name="" id="">
-                        <option value="">一级</option>
-                        <option value="">二级</option>
-                        <option value="">三级</option>
-                    </select>
+                <div class="inputShort"><span>危险等级：</span>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select name="" id="">
+                            <option value="">一级</option>
+                            <option value="">二级</option>
+                            <option value="">三级</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="admin_ui_select"><span>企业对象：</span>
+                <div class="inputShort"><span>企业对象：</span>
                     <input type="text" placeholder="输入企业名称">
                 </div>
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
                 </div>
-                <div class="btnBox">
-                    <a href="#/addAssessment.html" class="addBtn normalBtn">新建备案(企业)</a>
-                    <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">失效操作</div>
-                </div>
                 <div class="tableBox">
                     <table id="practiceTable">
                         <tr>
                             <th></th>
-                            <th>序号</th>
-                            <th>企业名称</th>
+                            <th>序号<i class="flaticon-technology"></i></th>
+                            <th>企业名称<i class="flaticon-sort"></i></th>
                             <th>重大危险源名称</th>
                             <th>等级</th>
                             <th>备案编号</th>
                             <th>备案日期</th>
                             <th>所在港区</th>
-                            <th>管理机构</th>
+                            <th>管理机构<i class="flaticon-technology"></i></th>
                             <th>操作</th>
                         </tr>
                         <tr>
@@ -246,7 +249,10 @@ $(document).ready(function() {
     TablePage("#checkTable", 10);
     TablePage("#practiceTable", 10);
     $.datetimepicker.setLocale('zh');
-    $(".createTime").datetimepicker({timepicker:false,format:"Y-m-d",});
+    $(".createTime").datetimepicker({
+        timepicker: false,
+        format: "Y-m-d",
+    });
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');
         $(this).siblings('.tag').removeClass('chosenBtn');
