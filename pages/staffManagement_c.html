@@ -118,5 +118,13 @@ $(document).ready(function() {
         $(".historyBody").siblings().hide();
         $(".checkBtn").css('z-index', '1');
     });
+        $(".mask,.cancel,.confirm").on('click', function(event) {
+        event.preventDefault();
+        $(".mask,.addAccount").hide();
+    });
+            $(".checkBody .addBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".mask,.addAccount").show();
+    });
 });
 </script>
