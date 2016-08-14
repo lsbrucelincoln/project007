@@ -8,7 +8,7 @@
                 <tr>
                     <td>
                         统计范围：
-                        <div class="admin_ui_select" style="width: 180px;">
+                        <div class="admin_ui_select" style="width: 180px;margin-right: 100px;">
                             <select>
                                 <option>宁波市港航管理局</option>
                                 <option>大榭港行管理局</option>
@@ -59,34 +59,10 @@
                             <input type="text" class="ui-input" placeholder="输入企业名称">
                         </td>
                         <td>
-                            隐患等级：
-                            <label for="yhdj_1" style="margin-right: 10px;">
-                                <input id="yhdj_1" name="yhdj" type="radio">一级
-                            </label>
-                            <label for="yhdj_2" style="margin-right: 10px;">
-                                <input id="yhdj_2" name="yhdj" type="radio">二级
-                            </label>
-                            <label for="yhdj_3" style="margin-right: 10px;">
-                                <input id="yhdj_3" name="yhdj" type="radio">三级
-                            </label>
-                            <label for="yhdj_4" style="margin-right: 10px;">
-                                <input id="yhdj_4" name="yhdj" type="radio">四级
-                            </label>
+                            
                         </td>
                         <td>
-                            隐患等级：
-                            <label for="yhdx_1" style="margin-right: 10px;">
-                                <input id="yhdx_1" name="yhdj" type="radio">一级
-                            </label>
-                            <label for="yhdx_2" style="margin-right: 10px;">
-                                <input id="yhdx_2" name="yhdj" type="radio">二级
-                            </label>
-                            <label for="yhdx_3" style="margin-right: 10px;">
-                                <input id="yhdx_3" name="yhdj" type="radio">三级
-                            </label>
-                            <label for="yhdx_4" style="margin-right: 10px;">
-                                <input id="yhdx_4" name="yhdj" type="radio">四级
-                            </label>
+                            
                         </td>
                         <td>
                             选择企业：
@@ -123,16 +99,16 @@
         return ret
     }
     var data1 = {
-        '日常评估': getRandom(),
-        '专项评估': getRandom(),
-        '综合评估': getRandom(),
-        '应急演练': getRandom()
+        '一级': getRandom(),
+        '二级': getRandom(),
+        '三级': getRandom(),
+        '四级': getRandom()
     }
     var data2 = {
-        '日常评估': getRandom(),
-        '专项评估': getRandom(),
-        '综合评估': getRandom(),
-        '应急演练': getRandom()
+        '一级': getRandom(),
+        '二级': getRandom(),
+        '三级': getRandom(),
+        '四级': getRandom()
     }
 
     max += (300 - max % 300)
@@ -145,7 +121,7 @@
         legend: {
             y: "top",
             x: "center",
-            data: ['日常评估', '专项评估', '综合评估', '应急演练']
+            data: ['一级', '二级', '三级', '四级']
         },
         grid: [{
             top: "5%",
@@ -190,53 +166,53 @@
             data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
         }],
         series: [{
-            name: '日常评估',
+            name: '一级',
             type: "bar",
             xAxisIndex: 0,
             yAxisIndex: 0,
-            data: data1['日常评估']
+            data: data1['一级']
         }, {
-            name: '专项评估',
+            name: '二级',
             type: "bar",
             xAxisIndex: 0,
             yAxisIndex: 0,
-            data: data1['专项评估']
+            data: data1['二级']
         }, {
-            name: '综合评估',
+            name: '三级',
             type: "bar",
             xAxisIndex: 0,
             yAxisIndex: 0,
-            data: data1['综合评估']
+            data: data1['三级']
         }, {
-            name: '应急演练',
+            name: '四级',
             type: "bar",
             xAxisIndex: 0,
             yAxisIndex: 0,
-            data: data1['应急演练']
+            data: data1['四级']
         }, {
-            name: '日常评估',
+            name: '一级',
             type: "bar",
             xAxisIndex: 1,
             yAxisIndex: 1,
-            data: data2['日常评估']
+            data: data2['一级']
         }, {
-            name: '专项评估',
+            name: '二级',
             type: "bar",
             xAxisIndex: 1,
             yAxisIndex: 1,
-            data: data2['专项评估']
+            data: data2['二级']
         }, {
-            name: '综合评估',
+            name: '三级',
             type: "bar",
             xAxisIndex: 1,
             yAxisIndex: 1,
-            data: data2['综合评估']
+            data: data2['三级']
         }, {
-            name: '应急演练',
+            name: '四级',
             type: "bar",
             xAxisIndex: 1,
             yAxisIndex: 1,
-            data: data2['应急演练']
+            data: data2['四级']
         }]
     }
 
