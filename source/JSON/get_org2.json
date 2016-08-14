@@ -3,7 +3,7 @@
         "id": 1384,
         "code": "00",
         "level": "市级",
-        "name": "应急演练预设",
+        "name": "文本类评估标准",
         "baidu": "",
         "open": true,
         "iconSkinw":"diy02",
@@ -13,83 +13,12 @@
             "id": 1926,
             "code": "00.15.FD.4C",
             "level": "文件二",
-            "name": "预警与信息报告",
+            "name": "管理机构和人员",
             "baidu": null,
             "google": "",
             "orgs": [],
             "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "预案启动",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "应急指挥与协调",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "应急处置",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "人员保护",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "应急通讯",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "警戒与控制",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "演练结束及恢复",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        },{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件二",
-            "name": "其它",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        }],
+        }]
+    }],
     "state": "0"
 }
