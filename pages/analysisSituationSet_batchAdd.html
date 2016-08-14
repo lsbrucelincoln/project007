@@ -1,0 +1,182 @@
+<style>
+    .tableBox>table>tbody>tr{
+        background-color: transparent !important;
+    }
+    .tableBox>table>tbody>th{
+        background-color: transparent !important;
+    }
+    .tableBox>table>tbody>td{
+        background-color: transparent !important;
+    }
+</style>
+<div class="addAssessment admin_content_innerBox dataManagement">
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">评估场景预设</span></span>
+    </div>
+    <div class="admin_scrollBox">
+        <div class="contentBody">
+            <div class="dataPage">
+                <div class="inputShort assessType"><span>选择企业类型:</span>
+                    <div class="admin_ui_select" style="width: 140px;">
+                        <select>
+                            <option value="">日常评估检查</option>
+                        </select>
+                    </div>
+                    <input type="checkBox" id="canUse">
+                    <label for="canUse">只看有效</label>
+                </div>
+                <div class="dataOutBtn normalBtn">导出数据</div>
+                <div class="assess2Body">
+                    <div class="ztrbox">
+                        <div class="ztreeBox ztree">
+                        </div>
+                        <i class="flaticon-add"></i>
+                        <i class="flaticon-cancel"></i>
+                    </div>
+                    <div class="tem_clearFloatBox">
+                        <div class="tableBox">
+                            <table>
+                                <tbody>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <th></th>
+                                                <th>序号</th>
+                                                <th width="40%">内容</th>
+                                                <th>等级</th>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>1</td>
+                                                <td>查看</td>
+                                                <td>2级</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>2</td>
+                                                <td>查看</td>
+                                                <td>2级</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>3</td>
+                                                <td>查看</td>
+                                                <td>2级</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>4</td>
+                                                <td>查看</td>
+                                                <td>2级</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                        <div class="bottom-search">
+                                            未选标准
+                                        </div>
+                                    </td>
+                                    <td style="width: 100px;">
+                                        <i style="font-size: 30px;" class="fa fa-arrow-right"></i><br />
+                                        <i style="font-size: 30px;" class="fa fa-arrow-left"></i>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <th></th>
+                                                <th>序号</th>
+                                                <th width="40%">内容</th>
+                                                <th>等级</th>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>1</td>
+                                                <td>查看</td>
+                                                <td>2级</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>2</td>
+                                                <td>查看</td>
+                                                <td>2级</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                        <div class="bottom-search">
+                                            已选标准
+                                        </div>
+                                    </td>
+                                </tbody>
+                            </table>
+                            <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
+                                <div class="allSelectBtn normalBtn">完成</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+
+    function getZTreeData() {
+        var ajax = $.ajax({
+            url: "../source/JSON/get_org.json"
+        });
+        return ajax;
+    }
+    var ztreeSetting = {
+        async: {
+            enable: false
+        },
+        data: {
+            key: {
+                name: "name",
+                children: "data"
+            }
+        },
+        callback: {
+            onClick: function(event, treeId, treeNode, clickFlag) {
+
+            }
+        }
+    };
+    $.when(getZTreeData()).done(function(data) {
+        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
+    });
+});
+</script>

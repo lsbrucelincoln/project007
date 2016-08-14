@@ -1,0 +1,44 @@
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.after:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.veryCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.tem_headTable {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  font-size: 14px;
+}
+.tem_headTable tbody tr {
+  height: 40px;
+  vertical-align: top;
+}
+.tem_headTable tbody tr th {
+  text-align: right;
+  font-weight: normal;
+}
+.tem_headTable tbody tr td {
+  text-align: left;
+  padding: 0 10px;
+}
+.tem_clearFloatBox:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.tem_scrollBox {
+  position: relative;
+  overflow: auto;
+}

@@ -1,0 +1,172 @@
+<div class="addAssessment admin_content_innerBox dataManagement">
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 应急演练 ><span class="nowPlace">详细信息</span></span>
+    </div>
+    <div class="admin_scrollBox">
+        <div class="contentBody">
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>任务编号：</span>
+                    <i>NB01020120160809001</i>
+                </div>
+                <div class="inputShort">
+                    <span>企业类型：</span>
+                    <i>港口服务企业</i>
+                </div>
+                <div class="inputShort">
+                    <span>企业对象：</span>
+                    <i>宁波市北高顺城无牵无挂拿腔作势佣兵有限公司</i>
+                </div>
+                <div class="inputShort">
+                    <span>评估类型：</span>
+                    <i>应急演练</i>
+                </div>
+                <div class="inputShort">
+                    <span>执行时间：</span>
+                    <i>03/08/2016</i>
+                </div>
+                <div class="inputShort">
+                    <span>当前状态：</span>
+                    <i>进行中</i>
+                </div>
+            </div>
+            <table class="headTable" style="margin: 15px 0;">
+                <tbody>
+                    <tr>
+                        <td>
+                            执行中队:第一中队
+                        </td>
+                        <td>
+                            执行人员:
+                            <label for="zxry_by1" style="margin-right: 10px;">
+                                <input id="zxry_by1" name="zxry_by" type="radio" checked>张三
+                            </label>
+                            <label for="zxry_by2" style="margin-right: 10px;">
+                                <input id="zxry_by2" name="zxry_by" type="radio">李四
+                            </label>
+                            <label for="zxry_by3" style="margin-right: 10px;">
+                                <input id="zxry_by3" name="zxry_by" type="radio">王五
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            评估信息:
+                            <span style="margin: 0 20px;">
+                                总体得分：89分
+                            </span>
+                            <span style="margin: 0 20px;">
+                                优秀
+                            </span>
+                            <span style="margin: 0 20px;">
+                                扣分项  3项  
+                            </span>
+                            <span style="margin: 0 20px;">
+                                观察记录：5条  
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="dataPage">
+                
+                <div class="assess2Body">
+                    <div class="ztrbox">
+                        <div class="ztreeBox ztree">
+                        </div>
+                        <i class="flaticon-add"></i>
+                        <i class="flaticon-cancel"></i></div>
+                    <div class="tableBox">
+                        <table>
+                            <tr>
+                                <th>序号</th>
+                                <th width="40%">评估内容</th>
+                                <th>总分</th>
+                                <th>得分</th>
+                                <th>观察记录</th>
+                                <th>是否扣分</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>反应速度</td>
+                                <td>40</td>
+                                <td>40</td>
+                                <td>正常</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>执行时间</td>
+                                <td>50</td>
+                                <td>49</td>
+                                <td>正常</td>
+                                <td>扣1分</td>
+                            </tr>
+                        </table>
+                        <div class="bottom-search">
+                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    TablePage("table", 10);
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+    $(".rightBox").on('click', "p", function(event) {
+        $(".leftBox").append($(this));
+    });
+    $(".leftBox").on('click', "p", function(event) {
+        $(".rightBox").append($(this));
+    });
+
+    function getZTreeData() {
+        var ajax = $.ajax({
+            url: "../source/JSON/get_org.json"
+        });
+        return ajax;
+    }
+    var ztreeSetting = {
+        async: {
+            enable: false
+        },
+        data: {
+            key: {
+                name: "name",
+                children: "data"
+            }
+        },
+        view :{
+        },
+        edit:{
+            enable:true
+        },
+        callback: {
+            onClick: function(event, treeId, treeNode, clickFlag) {
+
+            }
+        }
+    };
+    $.when(getZTreeData()).done(function(data) {
+        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
+    });
+});
+</script>
