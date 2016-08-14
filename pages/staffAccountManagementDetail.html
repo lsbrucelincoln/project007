@@ -1,0 +1,82 @@
+<div class="companyInfoManagement admin_content_innerBox">
+    <div class="admin_scrollBox">
+<div class="minibar"><i class="flaticon-arrows-4"></i>
+    <span>
+        当前位置：信息管理 > 企业&账号管理 > <span class="nowPlace">账号详情</span>
+    </span>
+</div>
+        <div class="contentBody">
+            <div class="backBtn normalBtn" style="float:right">返回</div>
+            <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px">
+                <div class="inputShort">
+                    <span>机构名称：</span>
+                    <i>宁波市港航管理局</i>
+                </div>
+                <div class="inputShort">
+                    <span>注册时间：</span>
+                    <i>2016-06-09</i>
+                </div>
+                <div class="inputShort">
+                    <span>当前状态：</span>
+                    <i>正常</i>
+                </div>
+                <div class="inputShort">
+                    <span>姓名：</span>
+                    <i>王五</i>
+                </div>
+                <div class="inputShort">
+                    <span>性别：</span>
+                    <i>男</i>
+                </div>
+                <div class="inputShort">
+                    <span>角色：</span>
+                    <i>普通用户</i>
+                </div>
+            </div>
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>用户名：</span>
+                    <i>王五</i>
+                </div>
+                <div class="inputShort">
+                    <span>密码：</span>
+                    <i>*******</i><div class="normalBtn" style="position:absolute;right:20px;">修改</div>
+                </div>
+            </div>
+            <div style="text-align: center;margin-top: 150px;margin-bottom: 20px;">
+                <div class="allSelectBtn normalBtn" style="margin-top:15px">确定</div>
+                <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $(".settingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".digitMap input").removeAttr('disabled');
+        $(this).hide();
+        $(".confirmBtn").show();
+    });
+    $(".confirmBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".digitMap input").attr('disabled',"disabled");
+        $(this).hide();
+        $(".settingBtn").show();
+    });
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+});
+</script>

@@ -73,6 +73,12 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function() {
+            $("#company").on('click',  function(event) {
+                $(".loginBtn").attr('href', 'Index_c.html');
+            });
+            $("#government").on('click',  function(event) {
+                $(".loginBtn").attr('href', 'index.html');
+            });
                 $(".loginBtn").on('click', function(event) {
         var username = $("#mail").val();
         var password = $("#pass").val();

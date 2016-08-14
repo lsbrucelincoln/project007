@@ -1,58 +1,89 @@
 <div class="assessDetail admin_content_innerBox">
     <div class="admin_scrollBox">
         <div class="contentHeader">
+        <p style="font-size:16px;float:left;">评估编号：NB0102201608110001</p>
             <div class="backBtn normalBtn">返回</div>
+            <p style="font-size:16px;text-align:center;">正在执行</p>
         </div>
         <div class="contentBody">
-            <div class="tableBox processingTable">
-                <table>
-                <tr>
-                    <th class="number">00020161</th><th class="companyName">浙报印务</th><th class="chargePerson">竹林风</th><th class="time">2016年06月01日</th>
-                    </tr>
-                    </table>
-            </div>
             <div class="textInfo">
-                <h3>公司信息</h3>
-                <p class="halfText">企业地址：<span>浙江省杭州市拱墅区祥园路</span></p>
-                <p class="halfText">负责人：<span>竹林风</span></p>
-                <p class="halfText">企业类型：<span>电子科技</span></p>
+                <h3>企业信息</h3>
+                <p class="halfText">企业名称：<span>宁波港航危险品类测试公司</span></p>
+                <p class="halfText">安全负责人：<span>竹林风</span></p>
+                <p class="halfText">企业类型：<span>危货类</span></p>
                 <p class="halfText">联系电话：<span>138-8888-8888</span></p>
                 <h3>评估详情</h3>
-                <p class="halfText">任务主题：<span>浙江省杭州市拱墅区祥园路</span></p>
-                <p class="halfText">评估队伍：<span>竹林风</span></p>
-                <p>评估队伍：<span>竹林风</span></p>
-                <h3>评估反馈</h3>
-                <p class="thirdText">整改人：<span>陈秀成</span></p>
-                <p class="thirdText">整改期限：<span>1个月</span></p>
-                <p class="thirdText">检查场景：<span>外包区域</span></p>
-                <p>评估项：<span>电子科技</span></p>
-                <p>补充描述：<span>工作不认真啊工作不认真</span></p>
-                <p>法律依据：<span>某某法第几条</span></p>
-                <p>联系电话：<span>152-2345-6789</span></p>
-                <p>地图标注：<span>已标识</span></p>
-                <div class="picArea">
-                    <div class="picBox">
-                        <img src="../source/images/login_new_15.png" alt="">
-                        <p class="place">办公室</p>
-                        <p class="time">2016年06月01日</p>
-                    </div>
-                    <div class="picBox">
-                        <img src="../source/images/login_new_15.png" alt="">
-                        <p class="place">办公室</p>
-                        <p class="time">2016年06月01日</p>
-                    </div>
-                    <div class="picBox">
-                        <img src="../source/images/login_new_15.png" alt="">
-                        <p class="place">办公室</p>
-                        <p class="time">2016年06月01日</p>
+                <p class="halfText">评估类型：<span>日常评估</span></p>
+                <p class="halfText">执行时间：<span>06/01 20:00</span></p>
+                <p class="halfText">评估队伍：<span>*竹林风 王五 张三 李四</span></p>
+                <p class="halfText">评估结论：<span>新增 <u>3</u> 条隐患</span></p>
+            </div>
+            <div class="textInfo" style="margin-top:10px">
+                <h3>隐患信息</h3>
+                <div class="tableBox">
+                    <table id="practiceTable">
+                        <tr>
+                            <th><input type="checkBox" id="person1" class="checkBox"></th>
+                            <th>序号<i class="flaticon-technology"></i></th>
+                            <th>隐患等级</th>
+                            <th>企业对象</th>
+                            <th>管理机构</th>
+                            <th>登记时间</th>
+                            <th>整改限期</th>
+                            <th>当前状态<i class="flaticon-technology"></i></th>
+                            <th>操作</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>1000001</td>
+                            <td>2级</td>
+                            <td>宁波港航集装箱类测试公司</td>
+                            <td>宁波港航管理局</td>
+                            <td>2016-01-01</td>
+                            <td>6天</td>
+                            <td>正在跟踪</td>
+                            <td><a href="#/assessDetail.html">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>1000001</td>
+                            <td>2级</td>
+                            <td>宁波港航普通运输类测试公司</td>
+                            <td>宁波港航管理局</td>
+                            <td>2016-01-01</td>
+                            <td>6天</td>
+                            <td>正在跟踪</td>
+                            <td><a href="#/assessDetail.html">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>1000001</td>
+                            <td>2级</td>
+                            <td>宁波港航客运类测试公司</td>
+                            <td>宁波港航管理局</td>
+                            <td>2016-01-01</td>
+                            <td>6天</td>
+                            <td>正在跟踪</td>
+                            <td><a href="#/assessDetail.html">查看</a></td>
+                        </tr>
+                    </table>
+                    <div class="bottom-search" style="margin-top:20px">
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
+    // TablePage("#checkTable", 10);
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();

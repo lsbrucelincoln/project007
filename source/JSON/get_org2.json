@@ -3,7 +3,7 @@
         "id": 1384,
         "code": "00",
         "level": "市级",
-        "name": "文本类评估标准",
+        "name": "应急演练预设",
         "baidu": "",
         "open": true,
         "iconSkinw":"diy02",
@@ -12,53 +12,17 @@
         "data": [{
             "id": 1926,
             "code": "00.15.FD.4C",
-            "level": "文件一",
-            "name": "合法经营文件",
+            "level": "文件二",
+            "name": "预警与信息报告",
             "baidu": null,
             "google": "",
             "orgs": [],
             "data": []
-        }, {
+        },{
             "id": 1926,
             "code": "00.15.FD.4C",
             "level": "文件二",
-            "name": "管理机构和人员",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        }, {
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件三",
-            "name": "安全管理制度",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        }, {
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "执行度评估标准",
-            "name": "操作规程",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        }]
-    }, {
-        "id": 1926,
-        "code": "00.15.FD.4C",
-        "level": "文件一",
-        "name": "执行度评估标准",
-        "baidu": null,
-        "google": "",
-        "orgs": [],
-        "data": [{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件一",
-            "name": "设备设施",
+            "name": "预案启动",
             "baidu": null,
             "google": "",
             "orgs": [],
@@ -66,26 +30,8 @@
         },{
             "id": 1926,
             "code": "00.15.FD.4C",
-            "level": "文件一",
-            "name": "应急处理",
-            "baidu": null,
-            "google": "",
-            "orgs": [],
-            "data": []
-        }]
-    }, {
-        "id": 1926,
-        "code": "00.15.FD.4C",
-        "level": "文件一",
-        "name": "重大危险源核查方式",
-        "baidu": null,
-        "google": "",
-        "orgs": [],
-        "data": [{
-            "id": 1926,
-            "code": "00.15.FD.4C",
-            "level": "文件一",
-            "name": "评估分级",
+            "level": "文件二",
+            "name": "应急指挥与协调",
             "baidu": null,
             "google": "",
             "orgs": [],
@@ -93,8 +39,8 @@
         },{
             "id": 1926,
             "code": "00.15.FD.4C",
-            "level": "文件一",
-            "name": "登记建档备案",
+            "level": "文件二",
+            "name": "应急处置",
             "baidu": null,
             "google": "",
             "orgs": [],
@@ -102,13 +48,48 @@
         },{
             "id": 1926,
             "code": "00.15.FD.4C",
-            "level": "文件一",
-            "name": "安全管理与监控",
+            "level": "文件二",
+            "name": "人员保护",
             "baidu": null,
             "google": "",
             "orgs": [],
             "data": []
-        }]
-    }],
+        },{
+            "id": 1926,
+            "code": "00.15.FD.4C",
+            "level": "文件二",
+            "name": "应急通讯",
+            "baidu": null,
+            "google": "",
+            "orgs": [],
+            "data": []
+        },{
+            "id": 1926,
+            "code": "00.15.FD.4C",
+            "level": "文件二",
+            "name": "警戒与控制",
+            "baidu": null,
+            "google": "",
+            "orgs": [],
+            "data": []
+        },{
+            "id": 1926,
+            "code": "00.15.FD.4C",
+            "level": "文件二",
+            "name": "演练结束及恢复",
+            "baidu": null,
+            "google": "",
+            "orgs": [],
+            "data": []
+        },{
+            "id": 1926,
+            "code": "00.15.FD.4C",
+            "level": "文件二",
+            "name": "其它",
+            "baidu": null,
+            "google": "",
+            "orgs": [],
+            "data": []
+        }],
     "state": "0"
 }

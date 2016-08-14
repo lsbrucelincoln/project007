@@ -3,43 +3,92 @@
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
-        <div class="backBtn normalBtn">返回</div>
-        <div class="stateBox">
-            <div class="state">
-                <i class="circle chosen"></i><br/><span>基本信息设置</span>
-            </div>
-            <div class="state">
-                <i class="circle"></i><br/><span>选择评估模板</span>
-            </div>
-            <div class="state">
-                <i class="circle"></i><br/><span>确认发布</span>
-            </div>        </div>
-        <div class="firstPage">
-            <div class="inputShort"><span>选择企业类型:</span><select name="" id=""><option value="">港口服务企业</option></select></div>
-            <div class="inputShort"><span>选择港区:</span><select name="" id=""><option value="">港口服务企业</option></select></div>
-            <div class="inputShort inputLong companyObject"><span>选择企业对象:</span><select name="" id=""><option value="">港口服务企业</option></select></div>
-            <div class="inputShort assessType"><span>选择评估类型:</span><select name="" id=""><option value="">日常评估检查</option></select>—<select name="" id=""><option value=""></option></select></div>
-            <div class="inputShort inputLong"><span>选择执行时间:</span><input type="text" class="excuteTime"><i class="flaticon-small-calendar"></i></div>
-            <div class="inputShort inputLong companyObject"><span>选择执行中队:</span><select name="" id=""><option value="">第一中队</option></select></div>
-            <div class="actionPerson inputShort inputLong">
-            <span>选择执行人员:</span>
-                <div class="leftBox"><p>张三</p>
-                <p>李四</p><p>张一</p><p>赵四</p></div>
-                <div class="iconBox">
-                    <i class="flaticon-arrows-3"></i><br/>
-                    <i class="flaticon-arrows-2"></i>
+            <div class="backBtn normalBtn">返回</div>
+            <div class="stateBox">
+                <div class="state">
+                    <i class="circle chosen"></i>
+                    <br/><span>基本信息设置</span>
                 </div>
-                <div class="rightBox"></div>
-            </div><br/>
-            <div class="normalBtn cancel">取消</div>
-            <a class="normalBtn nextStep" href="#/addAssessment2.html">下一步</a>
-        </div>
+                <div class="state">
+                    <i class="circle"></i>
+                    <br/><span>选择评估模板</span>
+                </div>
+                <div class="state">
+                    <i class="circle"></i>
+                    <br/><span>确认发布</span>
+                </div>
+            </div>
+            <div class="firstPage">
+                <div class="inputShort"><span>选择企业类型:</span>
+                    <select name="" id="">
+                        <option value="">港口服务企业</option>
+                        <option value="">港口集装箱企业</option>
+                        <option value="">港口客运企业</option>
+                        <option value="">港口危险品企业</option>
+                        <option value="">港口普通运输企业</option>
+                    </select>
+                </div>
+                <div class="inputShort"><span>选择港区:</span>
+                    <select name="" id="">
+                        <option value="">象山</option>
+                        <option value="">宁海</option>
+                        <option value="">北仑</option>
+                         <option value="">大谢</option>
+                         <option value="">宁波</option>
+                    </select>
+                </div>
+                <div class="inputShort inputLong companyObject"><span>选择企业对象:</span>
+                    <select name="" id="">
+                        <option value="">宁波港航危险品类测试公司</option>
+                        <option value="">宁波港航港口服务类测试公司</option>
+                        <option value="">宁波港航集装箱类测试公司</option>
+                        <option value="">宁波港航普通运输类测试公司</option>
+                        <option value="">宁波港航客运类测试公司</option>
+                    </select>
+                </div>
+                <div class="inputShort assessType"><span>选择评估类型:</span>
+                    <select name="" id="">
+                        <option value="">日常评估检查</option>
+                    </select>—
+                    <select name="" id="">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="inputShort inputLong"><span>选择执行时间:</span>
+                    <input type="text" class="excuteTime"><i class="flaticon-small-calendar"></i></div>
+                <div class="inputShort inputLong companyObject"><span>选择执行中队:</span>
+                    <select name="" id="">
+                        <option value="">第一中队</option>
+                        <option value="">第二中队</option>
+                        <option value="">第三中队</option>
+                        <option value="">第四中队</option>
+                    </select>
+                </div>
+                <div class="actionPerson inputShort inputLong">
+                    <span>选择执行人员:</span>
+                    <div class="leftBox">
+                        <p>张三</p>
+                        <p>李四</p>
+                        <p>张一</p>
+                        <p>赵四</p>
+                    </div>
+                    <div class="iconBox">
+                        <i class="flaticon-arrows-3"></i>
+                        <br/>
+                        <i class="flaticon-arrows-2"></i>
+                    </div>
+                    <div class="rightBox"></div>
+                </div>
+                <br/>
+                <a class="normalBtn cancel" href="#/assessmentCheck.html">取消</a>
+                <a class="normalBtn nextStep" href="#/addAssessment2.html">下一步</a>
+            </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-        $.datetimepicker.setLocale('zh');
+    $.datetimepicker.setLocale('zh');
     $(".excuteTime").datetimepicker();
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
@@ -55,10 +104,10 @@ $(document).ready(function() {
         $(this).addClass('chosen');
         $("#processingBtn").removeClass('chosen');
     });
-    $(".rightBox").on('click',"p", function(event) {
+    $(".rightBox").on('click', "p", function(event) {
         $(".leftBox").append($(this));
     });
-        $(".leftBox").on('click',"p", function(event) {
+    $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
     });
 });

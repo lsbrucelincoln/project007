@@ -60,7 +60,7 @@ body {
 .admin_header .headerTitle {
   margin-top: 23px;
   margin-left: 10px;
-  font-size: 18px;
+  font-size: 21px;
   font-family: 'PingFangSC4fdada5c215c68';
   float: left;
   font-weight: 600;
@@ -104,11 +104,11 @@ body {
 }
 .admin_header .tips span {
   text-decoration: underline;
-  margin-left: 10px;
+  margin-left: 15px;
   margin-right: 5px;
 }
 .admin_header .tips i {
-  margin-left: 10px;
+  margin-left: 15px;
   font-size: 14px;
   position: relative;
   top: 1px;
@@ -553,13 +553,13 @@ body {
   height: 350px;
   width: 400px;
   margin-left: -200px;
-  margin-top: -120px;
+  margin-top: -175px;
   z-index: 23;
 }
 .addAccount .header {
   text-align: center;
   line-height: 30px;
-  font-size: 16px;
+  font-size: 14px;
   border-bottom: 1px solid #dddddd;
   position: relative;
 }

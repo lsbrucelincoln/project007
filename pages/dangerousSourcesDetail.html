@@ -1,0 +1,133 @@
+<div class="addAssessment admin_content_innerBox dataManagement">
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 重大危险源 ><span class="nowPlace">详细信息</span></span>
+    </div>
+    <div class="admin_scrollBox">
+        <div class="contentBody">
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>备案编号：</span>
+                    <i>NB01020120160809001</i>
+                </div>
+                <div class="inputShort">
+                    <span>备案时间：</span>
+                    <i>2016-08-01</i>
+                </div>
+                <div class="inputShort">
+                    <span>企业对象：</span>
+                    <i>宁波市北高顺城无牵无挂拿腔作势佣兵有限公司</i>
+                </div>
+                <div class="inputShort">
+                    <span>企业类型：</span>
+                    <i>港口服务类</i>
+                </div>
+                <div class="inputShort">
+                    <span style="width:100px">重大危险源名称：</span>
+                    <i>宁波市北高顺无牵无重大危险源信息</i>
+                </div>
+                <div class="inputShort">
+                    <span>等级：</span>
+                    <i>二级</i>
+                </div>
+            </div>
+            <table class="headTable" style="margin: 15px 0;">
+                <tbody>
+                    <tr>
+                        <td>
+                            管理机构:宁波市港航管理局
+                        </td>
+                        <td>
+                            登记人:
+                            <label for="zxry_by1" style="margin-right: 10px;">
+                                <input id="zxry_by1" name="zxry_by" type="radio" checked>张三
+                            </label>
+                        </td>
+                        <td>
+                            当前状态:有效
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            描述:
+                        </td>
+                        <td colspan="2">
+                            坐标： <input type="text" value="X:750" style="width:65px;"> - <input type="text" value="Y:145" style="width:65px;"> <div class="normalBtn">设定</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea name="" id="" cols="30" rows="10" style="width:600px;height:120px;margin-left:150px;padding:10px"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>附件：<a href="">查看</a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="dataPage">
+                <div class="assess2Body">
+                    <div class="tableBox" style="text-align:center;margin-bottom:20px">
+                            <div class="addBtn normalBtn" >确认</div>
+                            <div class="urgeBtn normalBtn" >删除</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+    $(".rightBox").on('click', "p", function(event) {
+        $(".leftBox").append($(this));
+    });
+    $(".leftBox").on('click', "p", function(event) {
+        $(".rightBox").append($(this));
+    });
+
+    function getZTreeData() {
+        var ajax = $.ajax({
+            url: "../source/JSON/get_org.json"
+        });
+        return ajax;
+    }
+    var ztreeSetting = {
+        async: {
+            enable: false
+        },
+        data: {
+            key: {
+                name: "name",
+                children: "data"
+            }
+        },
+        view: {},
+        edit: {
+            enable: true
+        },
+        callback: {
+            onClick: function(event, treeId, treeNode, clickFlag) {
+
+            }
+        }
+    };
+    $.when(getZTreeData()).done(function(data) {
+        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
+    });
+});
+</script>

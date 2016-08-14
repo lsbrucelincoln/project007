@@ -12,14 +12,15 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 .tem_headTable {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
 }
 .tem_headTable tbody tr {
   height: 40px;
@@ -42,3 +43,4 @@
   position: relative;
   overflow: auto;
 }
+/*# sourceMappingURL=temporary.css.map */

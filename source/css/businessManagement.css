@@ -365,8 +365,15 @@
 .addAssessment .contentBody .thirdPage .chooseLeader {
   margin-left: 55px;
 }
-.addAssessment .contentBody .thirdPage .chooseBox {
+.addAssessment .contentBody .thirdPage .chooseBox .confirmBtn {
   display: none;
+}
+.addAssessment .contentBody .thirdPage .chooseBox .settingBtn {
+  margin-left: 320px;
+}
+.addAssessment .contentBody .thirdPage .cancel {
+  margin-left: 350px;
+  margin-top: 80px;
 }
 .addAssessment .contentBody .inputShort {
   display: inline-block;

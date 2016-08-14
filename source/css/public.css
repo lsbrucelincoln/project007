@@ -122,7 +122,7 @@
   font-size: 14px;
 }
 .inputShort {
-  font-size: 14px;
+  font-size: 12px;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -266,10 +266,11 @@
 }
 .tableBox table th {
   position: relative;
+  padding-left: 3px;
 }
 .tableBox table th i {
   position: absolute;
-  right: 5px;
+  right: 1px;
   top: 10px;
   font-size: #ccc;
 }

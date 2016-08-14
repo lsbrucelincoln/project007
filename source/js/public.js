@@ -16,7 +16,6 @@ $(function() {
     }
 
 });
-
 function eventBind() {
     // eventBind 仅进行一次
     // 页面刷新 hash变化时的处理
