@@ -35,6 +35,21 @@ function initialize(){
     marker3.addEventListener('click',function(e){
         map.openInfoWindow(infoWindow3, marker3.getPosition());
     });
+    var marker4 = new BMap.Marker(new BMap.Point(121.549686, 29.88197)); 
+    map.addOverlay(marker4);
+    marker1.addEventListener('click',function(e){
+        map.openInfoWindow(infoWindow1, marker1.getPosition());
+    });
+    var marker5 = new BMap.Marker(new BMap.Point(121.5536865, 29.863177)); 
+    map.addOverlay(marker5);
+    marker2.addEventListener('click',function(e){
+        map.openInfoWindow(infoWindow2, marker2.getPosition());
+    });
+    var marker6 = new BMap.Marker(new BMap.Point(121.5586869, 29.871)); 
+    map.addOverlay(marker6);
+    marker3.addEventListener('click',function(e){
+        map.openInfoWindow(infoWindow3, marker3.getPosition());
+    });
 
 
     var opts = {    
@@ -44,16 +59,16 @@ function initialize(){
     var html = '<table>'+
         '<tbody>'+
             '<tr>'+
-                '<td>企业名称：</td>'+
-                '<td>宁波质监局</td>'+
+                '<td>隐患编号：</td>'+
+                '<td>NBYH010220160810001</td>'+
             '</tr>'+
             '<tr>'+
-                '<td>责任人：</td>'+
-                '<td>竹林风</td>'+
+                '<td>等级：</td>'+
+                '<td>2</td>'+
             '</tr>'+
             '<tr>'+
-                '<td>类型：</td>'+
-                '<td>事业单位</td>'+
+                '<td>登记时间：</td>'+
+                '<td>2016-08-10</td>'+
             '</tr>'+
         '</tbody>'+
     '</table>';

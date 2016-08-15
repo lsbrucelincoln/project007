@@ -1,3 +1,8 @@
+<style>
+    .headTable td{
+        vertical-align: top;
+    }
+</style>
 <div class="addAssessment admin_content_innerBox dataManagement">
     <div class="minibar">
         <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 重大危险源 ><span class="nowPlace">详细信息</span></span>
@@ -30,7 +35,7 @@
                     <i>二级</i>
                 </div>
             </div>
-            <table class="headTable" style="margin: 15px 0;">
+            <table class="headTable tem_headTable" style="margin: 15px 0;">
                 <tbody>
                     <tr>
                         <td>
@@ -47,20 +52,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            描述:
+                        <td colspan="2" rowspan="2">
+                            <span style="margin-bottom: 10px;display: inline-block;">描述：</span><br />
+                            <textarea name="" id="" cols="30" rows="10" style="width:600px;height:120px;padding:10px"></textarea>
                         </td>
-                        <td colspan="2">
+                        <td>
                             坐标： <input type="text" value="X:750" style="width:65px;"> - <input type="text" value="Y:145" style="width:65px;"> <div class="normalBtn">设定</div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <textarea name="" id="" cols="30" rows="10" style="width:600px;height:120px;margin-left:150px;padding:10px"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>附件：<a href="">查看</a></td>
+                        <td>附件：<a class="admin_ui_link">查看</a></td>
                     </tr>
 
                 </tbody>
