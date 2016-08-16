@@ -20,18 +20,25 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><select name="" id="" v-model="companyName">
-                            <option value="">企业名称</option>
-                            <option v-for="company in companyList" value="{{company}}">{{company}}</option>
-                        </select></th>
+                            <th>
+                                <select name="" id="" v-model="companyName">
+                                    <option value="">企业名称</option>
+                                    <option v-for="company in companyList" value="{{company}}">{{company}}</option>
+                                </select>
+                            </th>
                             <th>评估类</th>
-                            <th>创建时间</th>
+                            <th>
+                                <select name="" id="" v-model="createTime">
+                                    <option value="">创建时间</option>
+                                    <option v-for="time in createTimeList" value="{{time}}">{{time}}</option>
+                                </select>
+                            </th>
                             <th>负责人</th>
                             <th>当前状态</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="task in tasks | filterBy companyNameFilter task">
+                        <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task">
                             <td>{{task.company.name}}</td>
                             <td>{{task.mode}}</td>
                             <td>{{task.time}}</td>
@@ -75,10 +82,12 @@
                 </p>
                 <table>
                     <tr>
-                        <th><select name="" id="">
-                            <option value="">企业名称</option>
-                            <option v-for="company in companyList" value="{{company}}">{{company}}</option>
-                        </select></th>
+                        <th>
+                            <select name="" id="">
+                                <option value="">企业名称</option>
+                                <option v-for="company in companyList" value="{{company}}">{{company}}</option>
+                            </select>
+                        </th>
                         <th>整改期限</th>
                         <th>隐患等级</th>
                         <th>登记时间</th>
@@ -157,18 +166,38 @@ $(document).ready(function() {
             el: "#welcomeBody",
             data: {
                 tasks: {},
-                companyList:[],
-                companyName:""
+                companyList: [],
+                companyName: "",
+                createTimeList: [],
+                createTime: "",
+                risks: {},
             },
             methods: {
                 taskGetDetail: function(data) {
-                    var companyList=[];
+                    var companyList = [];
+                    var timeList = [];
                     for (var i = 0; i < data.length; i++) {
                         data[i].time = vm.stamp2time(data[i].in_time);
+                        data[i].createTime = data[i].time.split(" ")[0];
                         companyList.push(data[i].company.name)
+                        timeList.push(data[i].createTime)
                     }
-                    vm.tasks = data;
-                    vm.companyList=vm.unique(companyList);
+                    vm.tasks = data.reverse();
+                    vm.companyList = vm.unique(companyList);
+                    vm.createTimeList = vm.unique(timeList);
+                },
+                riskGetDetail: function(data) {
+                    var companyList = [];
+                    var timeList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].time = vm.stamp2time(data[i].in_time);
+                        data[i].createTime = data[i].time.split(" ")[0];
+                        // companyList.push(data[i].company.name)
+                        // timeList.push(data[i].createTime)
+                    }
+                    vm.risks = data;
+                    // vm.companyList = vm.unique(companyList);
+                    // vm.createTimeList = vm.unique(timeList);
                 },
                 stamp2time: function(stamp) {
                     var time = new Date(stamp);
@@ -179,6 +208,8 @@ $(document).ready(function() {
                     month = month < 10 ? "0" + month : month;
                     var day = time.getDate();
                     day = day < 10 ? "0" + day : day;
+                    hours=hours<10?"0"+hours:hours;
+                    minutes=minutes<10?"0"+minutes:minutes;
                     var timeString = '';
                     return month + "/" + day + " " + hours + ":" + minutes;
                 },
@@ -194,8 +225,19 @@ $(document).ready(function() {
                     }
                     return result.reverse();
                 },
-                companyNameFilter:function(data){
-                    
+                companyNameFilter: function(data) {
+                    if (vm.companyName !== "" && vm.companyName !== data.company.name) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                createTimeFilter: function(data) {
+                    if (vm.createTime !== "" && vm.createTime !== data.createTime) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             },
             created: function() {
@@ -213,7 +255,7 @@ $(document).ready(function() {
                 $.post('/model', {
                     name: "Censor",
                     rows: 0,
-                   "params['taday']": '1'
+                    "params['taday']": '1'
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {

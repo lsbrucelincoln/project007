@@ -1,18 +1,104 @@
-<div class="addStaff">
-    <div class="contentHeader">
-    <div class="backBtn normalBtn">返回</div>
-        <h3>新增企业</h3>
-    </div>
-    <div class="contentBody">
-    <p class="inputShort"><span class="title">企业代码：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">单位名称：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">密码：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">账号状态：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">所在港区：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">联系人：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">联系电话：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">创建时间：</span><input type="text"></p>
-    <p class="inputShort"><span class="title">管理部门：</span><input type="text"></p><br/>
-    <div class="confirmBtn normalBtn">确定</div>
+<div class="companyInfoManagement admin_content_innerBox">
+    <div class="admin_scrollBox">
+        <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">新增企业</span></span>
+        </div>
+        <div class="contentBody">
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>企业名称：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort"><span>企业类型：</span>
+                    <div class="admin_ui_select">
+                        <select>
+                            <option>港口服务企业</option>
+                            <option>选项2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputShort">
+                    <span>企业代码：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort">
+                    <span>港口管理部门：</span>
+                    <div class="admin_ui_select">
+                        <select>
+                            <option>宁波市港航管理局</option>
+                            <option>选项2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputShort"><span>安全责任人：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort"><span>所属港区：</span>
+                    <div class="admin_ui_select">
+                        <select>
+                            <option>余姚港航局</option>
+                            <option>慈溪港航局</option>
+                            <option>奉化港航局</option>
+                            <option>宁海港航局</option>
+                            <option>象山港航局</option>
+                            <option>鄞州港航局</option>
+                            <option>海曙港航局</option>
+                            <option>江东港航局</option>
+                            <option>江北港航局</option>
+                            <option>北仑港航局</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputShort"><span>固定电话：</span>
+                    <input type="text">
+                </div>
+                <div class="inputShort digitMap"><span>电子地图：</span>
+                    <input type="text"> —
+                    <input type="text"> </div>
+                <div class="inputShort"><span>手机号码：</span>
+                    <input type="text">
+                </div>
+                <br/>
+                <div class="inputShort companyAddress"><span>企业地址：</span>
+                    <input type="text">
+                </div>
+                <br/>
+                <div class="inputShort companyNumber"><span>企业组织机构代码证：</span>
+                    <br/>
+                    <iframe src="photoIframe.html" frameborder="0"></iframe>
+                </div>
+                <div class="changeBtn normalBtn">修改</div>
+                <div class="updateBtn normalBtn">更新</div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    $(".settingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".digitMap input").removeAttr('disabled');
+        $(this).hide();
+        $(".confirmBtn").show();
+    });
+    $(".confirmBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".digitMap input").attr('disabled', "disabled");
+        $(this).hide();
+        $(".settingBtn").show();
+    });
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+});
+</script>

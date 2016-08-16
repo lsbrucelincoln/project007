@@ -1,21 +1,21 @@
-<div class="assessDetail admin_content_innerBox">
+<div class="assessDetail admin_content_innerBox" id="assessDetailBody">
     <div class="admin_scrollBox">
         <div class="contentHeader">
-        <p style="font-size:16px;float:left;">评估编号：NB0102201608110001</p>
+            <p style="font-size:16px;float:left;">评估编号：{{taskDetail.code}}</p>
             <div class="backBtn normalBtn">返回</div>
             <p style="font-size:16px;text-align:center;">正在执行</p>
         </div>
         <div class="contentBody">
             <div class="textInfo">
                 <h3>企业信息</h3>
-                <p class="halfText">企业名称：<span>宁波港航危险品类测试公司</span></p>
-                <p class="halfText">安全负责人：<span>竹林风</span></p>
-                <p class="halfText">企业类型：<span>危货类</span></p>
-                <p class="halfText">联系电话：<span>138-8888-8888</span></p>
+                <p class="halfText">企业名称：<span>{{taskDetail.company.name}}</span></p>
+                <p class="halfText">安全负责人：<span>{{taskDetail.leader.name}}</span></p>
+                <p class="halfText">企业类型：<span>{{taskDetail.company.type.name}}</span></p>
+                <p class="halfText">联系电话：<span>{{taskDetail.company.phone}}</span></p>
                 <h3>评估详情</h3>
-                <p class="halfText">评估类型：<span>日常评估</span></p>
-                <p class="halfText">执行时间：<span>06/01 20:00</span></p>
-                <p class="halfText">评估队伍：<span>*竹林风 王五 张三 李四</span></p>
+                <p class="halfText">评估类型：<span>{{taskDetail.mode}}</span></p>
+                <p class="halfText">执行时间：<span>{{excuteTime}}</span></p>
+                <p class="halfText">评估队伍：<span>*{{taskDetail.leader.name}} <span v-for="member in taskDetail.member">{{member.name}}</span></span></p>
                 <p class="halfText">评估结论：<span>新增 <u>3</u> 条隐患</span></p>
             </div>
             <div class="textInfo" style="margin-top:10px">
@@ -23,7 +23,9 @@
                 <div class="tableBox">
                     <table id="practiceTable">
                         <tr>
-                            <th><input type="checkBox" id="person1" class="checkBox"></th>
+                            <th>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </th>
                             <th>序号<i class="flaticon-technology"></i></th>
                             <th>隐患等级</th>
                             <th>企业对象</th>
@@ -77,7 +79,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </div>
@@ -98,5 +99,48 @@ $(document).ready(function() {
         $(this).addClass('chosen');
         $("#processingBtn").removeClass('chosen');
     });
+    var vm = new Vue({
+        el: "#assessDetailBody",
+        data: {
+            taskDetail: JSON.parse(localStorage.getItem("taskDetail"))
+        },
+        computed: {
+            excuteTime: function() {
+                return this.stamp2time(this.taskDetail.in_time);
+            }
+        },
+        methods: {
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return month + "/" + day + " " + hours + ":" + minutes;
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+        },
+        created: function() {
+
+        },
+        ready: function() {}
+    })
 });
 </script>
