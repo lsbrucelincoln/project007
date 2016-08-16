@@ -13,9 +13,11 @@ $(function() {
 
     function adminInit() {
         eventBind();
+        basicAjax();
     }
 
 });
+
 function eventBind() {
     // eventBind 仅进行一次
     // 页面刷新 hash变化时的处理
@@ -47,6 +49,14 @@ function eventBind() {
     $(".admin_content").on('click', '.backBtn', function(event) {
         history.back();
     });
+    $("window").on('click', '.logout', function(event) {
+        event.preventDefault();
+        $.post('/auth/logout', function(data, textStatus, xhr) {
+            if (data.state == 0) {
+                window.location.href = "sign_in.html"
+            }
+        });
+    });
     $(ADMIN_CONFIG.leftSelector + " .leftmenu>div>.line").bind('click', function(e) {
         if ($(this).next('.submenu').length) {
             // 有子菜单
@@ -75,9 +85,20 @@ function eventBind() {
         }
     });
 }
+function basicAjax() {
+    var id = localStorage.getItem("id");
+    $.post('/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
+        console.log(data);
+        if (data.state == 0) {
+            console.log(data);
+            console.log($(".client .name"));
+            $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
+        }
+    });
+}
 
 function uiComponentEventBind() {
-    $(".tableBox table").tablesorter();
+    // $(".tableBox table").tablesorter();
     $(".uploadPic").off().on('change', function(event) {
         event.preventDefault();
         var parent = $(this).parents(".admin_ui_imgUpload");
@@ -281,11 +302,11 @@ function resizeContentTable() {
 
 function loadContent() {
     var hash = window.location.hash;
-    var url =window.location.href;
-    if (hash == ""&&!url.match("index_c")) {
+    var url = window.location.href;
+    if (hash == "" && !url.match("index_c")) {
         hash = "#/" + ADMIN_CONFIG.homePage;
-    }else if(hash == ""&&url.match("index_c")){
-        hash="#/"+"companyInfoManagement.html"
+    } else if (hash == "" && url.match("index_c")) {
+        hash = "#/" + "companyInfoManagement.html"
     }
     var hashArray = hash.split("/");
     $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {

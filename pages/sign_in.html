@@ -8,20 +8,13 @@
     <meta name="reply-to" content="chendind@xiyoukeji.com">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="../source/css/colpick.css">
-    <link rel="stylesheet" type="text/css" href="../source/css/classic.css">
-    <link rel="stylesheet" type="text/css" href="../source/css/classic.date.css">
     <link rel="stylesheet" type="text/css" href="../source/css/reset.css">
     <link rel="stylesheet" type="text/css" href="../source/css/ui.css">
     <link rel="stylesheet" type="text/css" href="../source/css/index.css">
     <link rel="stylesheet" type="text/css" href="../source/css/public.css">
-    <link rel="stylesheet" type="text/css" href="../source/css/infoManagement.css">
-    <link rel="stylesheet" type="text/css" href="../source/css/businessManagement.css">
     <link rel="stylesheet" type="text/css" href="../source/font/flaticon.css">
     <script src="../source/js/jquery-1.11.1.min.js"></script>
     <script src="../source/js/public.js"></script>
-    <script src="../source/plunges/tinymce/tinymce.js"></script>
-    <script src="../source/plunges/zTree/js/jquery.ztree.all.min.js"></script>
-    <script src="../source/js/page.js"></script>
 </head>
 
 <body>
@@ -39,7 +32,7 @@
                     <h3>用户登录</h3>
                     <div class="inputBox">
                         <i class="flaticon-home"></i>
-                        <input type="text" placeholder="请输入你的账号">
+                        <input type="text" placeholder="请输入你的账号" id="account">
                         <div class="rememberAmount">
                             <input type="checkbox" class="checkBox" id="rememberBtn" checked>
                             <label for="rememberBtn"><i class="flaticon-checked"></i></label>
@@ -48,10 +41,10 @@
                     </div>
                     <div class="inputBox">
                         <i class="flaticon-lock"></i>
-                        <input type="password" placeholder="请输入密码">
+                        <input type="password" placeholder="请输入密码" id="password">
                     </div>
                     <div class="radioBox">
-                        <input type="radio" id="company" name="group" >
+                        <input type="radio" id="company" name="group">
                         <label for="company"></label>
                         <label for="company">港航企业</label>
                         <input type="radio" id="government" name="group" checked>
@@ -72,33 +65,43 @@
 "></i></div>
     </div>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("#company").on('click',  function(event) {
-                $(".loginBtn").attr('href', 'Index_c.html');
-            });
-            $("#government").on('click',  function(event) {
-                $(".loginBtn").attr('href', 'index.html');
-            });
-                $(".loginBtn").on('click', function(event) {
-        var username = $("#mail").val();
-        var password = $("#pass").val();
-        $.post('/auth/login', {
-            username: username,
-            password: password
-        }, function(data, textStatus, xhr) {
-            console.log(data);
-            if (data.code == 200) {
-                window.location.href = "index.html";
-                localStorage.setItem("username", username);
-                localStorage.setItem("ps", password);
-            } else if (data.code == 212) {
-                alert("密码错误，请重新输入");
-                $("#pass").val("");
-            }
+    $(document).ready(function() {
+        $("#company").on('click', function(event) {
+            $(".loginBtn").attr('href', 'Index_c.html');
         });
+        $("#government").on('click', function(event) {
+            $(".loginBtn").attr('href', 'index.html');
+        });
+        $(".loginBtn").on('click', function(event) {
+            event.preventDefault();
+            var username = $("#account").val();
+            var password = $("#password").val();
+            $.post('/auth/login', {
+                username: username,
+                password: password,
+                "remember-me": "on"
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    localStorage.setItem("id",data.id);
+                    switch(data.competence) {
+                        case "机构管理员":
+                        window.location.href = "index.html";    
+                            break;
+                        case "企业负责人":
+                        window.location.href= "Index_c.html"
+                        case "检查评估员":
+                        alert("您是检查评估员，没有权限进入后台");
+                        break;
+                    }
+                } else if (data.state == 10000) {
+                    alert("密码错误，请重新输入");
+                    $("#password").val("");
+                }
+            });
 
-    });
         });
+    });
     </script>
 </body>
 

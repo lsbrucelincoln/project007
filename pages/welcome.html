@@ -1,8 +1,13 @@
-<div class="welcome admin_content_innerBox">
+<div class="welcome admin_content_innerBox" id="welcomeBody">
     <div class="admin_scrollBox">
         <div class="infoHeader">
-            <div class="leftInfo"><span class="title">通知公告</span><div class="scrollBox">
-            <div class="list1"></div><p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p><p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p><p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p></div>
+            <div class="leftInfo"><span class="title">通知公告</span>
+                <div class="scrollBox">
+                    <div class="list1"></div>
+                    <p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p>
+                    <p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p>
+                    <p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p>
+                </div>
             </div>
             <a href="#/safeDataMap.html" class="normalBtn"><i class="flaticon-location"></i><span>安全信息地图</span></a>
         </div>
@@ -15,7 +20,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>企业名称</th>
+                            <th><select name="" id="" v-model="companyName">
+                            <option value="">企业名称</option>
+                            <option v-for="company in companyList" value="{{company}}">{{company}}</option>
+                        </select></th>
                             <th>评估类</th>
                             <th>创建时间</th>
                             <th>负责人</th>
@@ -23,14 +31,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>宁波港航危险品类测试公司</td>
-                            <td>日常评估</td>
-                            <td>6/1 20:00</td>
-                            <td>竹林风</td>
-                            <td>新增任务</td>
+                        <tr v-for="task in tasks | filterBy companyNameFilter task">
+                            <td>{{task.company.name}}</td>
+                            <td>{{task.mode}}</td>
+                            <td>{{task.time}}</td>
+                            <td>{{task.leader.name}}</td>
+                            <td>{{task.state}}</td>
                         </tr>
-                        <tr>
+                        <!--                         <tr>
                             <td>宁波港航港口服务类测试公司</td>
                             <td>综合评估</td>
                             <td>6/1 20:00</td>
@@ -57,7 +65,7 @@
                             <td>6/1 20:00</td>
                             <td>竹林风</td>
                             <td>新增任务</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -67,7 +75,10 @@
                 </p>
                 <table>
                     <tr>
-                        <th>企业名称</th>
+                        <th><select name="" id="">
+                            <option value="">企业名称</option>
+                            <option v-for="company in companyList" value="{{company}}">{{company}}</option>
+                        </select></th>
                         <th>整改期限</th>
                         <th>隐患等级</th>
                         <th>登记时间</th>
@@ -120,22 +131,100 @@
     </div>
 </div>
 <script>
-            var area = $(".scrollBox")[0];
-        var con1 = $(".list1")[0];
+$(document).ready(function() {
+    var area = $(".scrollBox")[0];
+    var con1 = $(".list1")[0];
 
-        function scrollUp() {
-            if (area.scrollTop >= con1.offsetHeight) {
-                // area.scrollTop = 0;
-            } else { area.scrollTop++; }
-            // console.log(area.scrollTop);
-            // console.log(con1.offsetHeight);
+    function scrollUp() {
+        if (area.scrollTop >= con1.offsetHeight) {
+            // area.scrollTop = 0;
+        } else {
+            area.scrollTop++;
         }
-        var time = 50;
-        var myScroll = setInterval(scrollUp, 50);
-        area.onmouseover = function() {
-            clearInterval(myScroll);
-        };
-        area.onmouseout = function() {
-            myScroll = setInterval(scrollUp, 50);
-        };
+        // console.log(area.scrollTop);
+        // console.log(con1.offsetHeight);
+    }
+    var time = 50;
+    var myScroll = setInterval(scrollUp, 50);
+    area.onmouseover = function() {
+        clearInterval(myScroll);
+    };
+    area.onmouseout = function() {
+        myScroll = setInterval(scrollUp, 50);
+    };
+    $(document).ready(function() {
+        var vm = new Vue({
+            el: "#welcomeBody",
+            data: {
+                tasks: {},
+                companyList:[],
+                companyName:""
+            },
+            methods: {
+                taskGetDetail: function(data) {
+                    var companyList=[];
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].time = vm.stamp2time(data[i].in_time);
+                        companyList.push(data[i].company.name)
+                    }
+                    vm.tasks = data;
+                    vm.companyList=vm.unique(companyList);
+                },
+                stamp2time: function(stamp) {
+                    var time = new Date(stamp);
+                    var year = time.getFullYear();
+                    var month = time.getMonth() - 0 + 1;
+                    var hours = time.getHours();
+                    var minutes = time.getMinutes();
+                    month = month < 10 ? "0" + month : month;
+                    var day = time.getDate();
+                    day = day < 10 ? "0" + day : day;
+                    var timeString = '';
+                    return month + "/" + day + " " + hours + ":" + minutes;
+                },
+                unique: function(arr) {
+                    var result = [],
+                        hash = {};
+                    for (var i = 0, elem;
+                        (elem = arr[i]) != null; i++) {
+                        if (!hash[elem]) {
+                            result.push(elem);
+                            hash[elem] = true;
+                        }
+                    }
+                    return result.reverse();
+                },
+                companyNameFilter:function(data){
+                    
+                }
+            },
+            created: function() {
+                var self = this;
+                var id = localStorage.getItem("id");
+                $.post('/model', {
+                    name: "Task",
+                    rows: 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.taskGetDetail(data.data)
+                    }
+                });
+                $.post('/model', {
+                    name: "Censor",
+                    rows: 0,
+                   "params['taday']": '1'
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.taskGetDetail(data.data);
+                    }
+                });
+            },
+            ready: function() {
+
+            }
+        })
+    });
+});
 </script>
