@@ -38,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task">
+                        <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task|limitBy 5">
                             <td>{{task.company.name}}</td>
                             <td>{{task.mode}}</td>
                             <td>{{task.time}}</td>
@@ -92,13 +92,13 @@
                         <th>隐患等级</th>
                         <th>登记时间</th>
                     </tr>
-                    <tr>
-                        <td>宁波港航危险品类测试公司</td>
-                        <td>4天</td>
-                        <td>2级</td>
-                        <td>6/1 20:00</td>
+                    <tr v-for="risk in risks">
+                        <td>{{risk.taskDetail.company.name}}</td>
+                        <td>{{risk.restDay}}天</td>
+                        <td>{{risk.safeRule.safetyLevel}}</td>
+                        <td>{{risk.time}}</td>
                     </tr>
-                    <tr>
+<!--                     <tr>
                         <td>宁波港航港口服务类测试公司</td>
                         <td>4天</td>
                         <td>2级</td>
@@ -121,7 +121,7 @@
                         <td>4天</td>
                         <td>2级</td>
                         <td>6/1 20:00</td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
             <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大威胁源备案登记数：<a href=""><span>145 </span>项</a>
@@ -165,7 +165,7 @@ $(document).ready(function() {
         var vm = new Vue({
             el: "#welcomeBody",
             data: {
-                tasks: {},
+                tasks: [],
                 companyList: [],
                 companyName: "",
                 createTimeList: [],
@@ -192,6 +192,8 @@ $(document).ready(function() {
                     for (var i = 0; i < data.length; i++) {
                         data[i].time = vm.stamp2time(data[i].in_time);
                         data[i].createTime = data[i].time.split(" ")[0];
+                        var restDay=vm.dayPeriodCompute(data[i].in_time,data[i].deadline);
+                        data[i].restDay=restDay;
                         // companyList.push(data[i].company.name)
                         // timeList.push(data[i].createTime)
                     }
@@ -212,6 +214,11 @@ $(document).ready(function() {
                     minutes=minutes<10?"0"+minutes:minutes;
                     var timeString = '';
                     return month + "/" + day + " " + hours + ":" + minutes;
+                },
+                dayPeriodCompute:function(startTime,endTime){
+                    var nowTime=new Date(startTime);
+                    var theTime=new Date(endTime);
+                    return theTime.getDate()-nowTime.getDate();
                 },
                 unique: function(arr) {
                     var result = [],
@@ -259,7 +266,7 @@ $(document).ready(function() {
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
-                        vm.taskGetDetail(data.data);
+                        vm.riskGetDetail(data.data);
                     }
                 });
             },

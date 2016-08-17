@@ -857,6 +857,7 @@ body {
 }
 .bottom-search {
   position: relative;
+  height: 30px;
 }
 .bottom-search .normalBtn {
   margin-top: 15px;
@@ -866,10 +867,17 @@ body {
   right: 2%;
   top: 15px;
 }
+.page #Prev {
+  margin-right: 4px;
+}
+.page #Next {
+  margin-left: 4px;
+}
 .page > a {
   text-decoration: none;
 }
 .page > a > span {
+  margin-right: 4px;
   padding: 4px 16px 4px 16px;
   border: 1px solid #ddd;
   color: #000;

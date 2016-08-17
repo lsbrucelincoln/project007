@@ -1,4 +1,4 @@
-<div class="assessmentCheck">
+<div class="assessmentCheck" id="riskManagementBody">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">隐患跟踪</span></span>
     </div>
     <div class="contentBody">
@@ -11,8 +11,8 @@
                 <div class="inputShort"><span>登记时间：</span>
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
-                    <div class="admin_ui_select"  style="width: 200px;">
-                        <select>
+                    <div class="admin_ui_select" style="width: 200px;">
+                        <select class="regionName">
                             <option>余姚港航局</option>
                             <option>慈溪港航局</option>
                             <option>奉化港航局</option>
@@ -20,17 +20,17 @@
                             <option>象山港航局</option>
                             <option>鄞州港航局</option>
                             <option>海曙港航局</option>
-                            <option>江东港航局</option> 
-                            <option>江北港航局</option> 
-                            <option>北仑港航局</option> 
+                            <option>江东港航局</option>
+                            <option>江北港航局</option>
+                            <option>北仑港航局</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>隐患编号：</span>
-                    <input type="text" placeholder="输入编号">
+                    <input type="text" placeholder="输入编号" class="taskNum">
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称">
+                    <input type="text" placeholder="输入企业名称" class="companyName">
                 </div>
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
@@ -43,7 +43,9 @@
                 <div class="tableBox">
                     <table id="checkTable">
                         <tr>
-                            <th><input type="checkBox" id="person1" class="checkBox"></th>
+                            <th>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </th>
                             <th>隐患编号<i class="flaticon-sort"></i></th>
                             <th>隐患等级</th>
                             <th>企业对象</th>
@@ -53,20 +55,20 @@
                             <th>当前状态<i class="flaticon-technology"></i></th>
                             <th>操作</th>
                         </tr>
-                        <tr>
+                        <tr v-for="task in showTasks |limitBy recordLimit startPoint ">
                             <td>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </td>
                             <td>NBYH010220160810001</td>
-                            <td>2级</td>
-                               <td>宁波港航危险品类测试公司</td>
-                            <td>宁波港航管理局</td>
-                            <td>06/01 20:00</td>
-                            <td>6天</td>
-                            <td>新增隐患</td>
-                            <td><a href="#/riskManagementDetail.html">查看</a></td>
+                            <td>{{task.safeRule.safetyLevel}}</td>
+                            <td>{{task.taskDetail.company.name}}</td>
+                            <td>{{task.user.region.name}}</td>
+                            <td>{{task.time}}</td>
+                            <td>{{task.restDay}}天</td>
+                            <td></td>
+                            <td><a href="#/riskManagementDetail.html" @click="saveTask(task)">查看</a></td>
                         </tr>
-                        <tr>
+                        <!--                         <tr>
                             <td>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </td>
@@ -117,9 +119,17 @@
                             <td>6天</td>
                             <td>重新整改</td>
                             <td><a href="#/riskManagementDetail.html">查看</a></td>
-                        </tr>
+                        </tr> -->
                     </table>
                     <div class="bottom-search">
+                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                            <a href="javascript:void(0)" v-for="n in pageNum">
+                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                            </a>
+                            <a href="javascript:void(0)" @click="nextPage">
+                                <span id="Next">下一页 »</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,8 +137,9 @@
                 <div class="inputShort"><span>登记时间：</span>
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
-                    <div class="admin_ui_select"  style="width: 200px;">
+                    <div class="admin_ui_select" style="width: 200px;">
                         <select>
+                            <option>北仑港航局</option>
                             <option>余姚港航局</option>
                             <option>慈溪港航局</option>
                             <option>奉化港航局</option>
@@ -136,9 +147,8 @@
                             <option>象山港航局</option>
                             <option>鄞州港航局</option>
                             <option>海曙港航局</option>
-                            <option>江东港航局</option> 
-                            <option>江北港航局</option> 
-                            <option>北仑港航局</option> 
+                            <option>江东港航局</option>
+                            <option>江北港航局</option>
                         </select>
                     </div>
                 </div>
@@ -154,7 +164,9 @@
                 <div class="tableBox">
                     <table id="practiceTable">
                         <tr>
-                            <th><input type="checkBox" id="person1" class="checkBox"></th>
+                            <th>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </th>
                             <th>隐患编号<i class="flaticon-sort"></i></th>
                             <th>隐患等级</th>
                             <th>企业对象</th>
@@ -170,14 +182,14 @@
                             </td>
                             <td>NBYH010220160810001</td>
                             <td>2级</td>
-                               <td>宁波港航危险品类测试公司</td>
+                            <td>宁波港航危险品类测试公司</td>
                             <td>宁波港航管理局</td>
                             <td>06/01 20:00</td>
                             <td>6天</td>
                             <td>新增隐患</td>
                             <td><a href="#/riskManagementDetail.html">查看</a></td>
                         </tr>
-                        <tr>
+                        <!--                         <tr>
                             <td>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </td>
@@ -228,7 +240,7 @@
                             <td>6天</td>
                             <td>重新整改</td>
                             <td><a href="#/riskManagementDetail.html">查看</a></td>
-                        </tr>
+                        </tr> -->
                     </table>
                     <div class="bottom-search">
                     </div>
@@ -240,10 +252,13 @@
 </div>
 <script>
 $(document).ready(function() {
-    TablePage("#checkTable", 10);
-    // TablePage("#practiceTable", 10);
+    // TablePage("#checkTable", 5);
+    // TablePage("#practiceTable", 5);
     $.datetimepicker.setLocale('zh');
-    $(".createTime").datetimepicker({timepicker:false,format:"Y-m-d",});
+    $(".createTime").datetimepicker({
+        timepicker: false,
+        format: "Y-m-d",
+    });
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');
         $(this).siblings('.tag').removeClass('chosenBtn');
@@ -262,5 +277,192 @@ $(document).ready(function() {
         $(".historyBody").siblings().hide();
         $(".checkBtn").css('z-index', '1');
     });
+    if (window.location.href.search("urge") !== -1) {
+        $(".praticeBtn").trigger('click');
+        console.log('test');
+    };
+    $(".searchButtom").on('click', function(event) {
+        event.preventDefault();
+        vm.region = $(".regionName").val();
+        vm.createTime = $(".createTime").val();
+        vm.taskNum = $(".taskNum").val();
+        vm.companyName = $(".companyName").val();
+        vm.showTasks = vm.tasks.filter(function(data) {
+            return vm.companyNameFilter(data) && vm.createTimeFilter(data) && vm.regionFilter(data) && vm.taskNumFilter(data)
+        });
+    });
+    var vm = new Vue({
+        el: "#riskManagementBody",
+        data: {
+            tasks: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            region: "",
+            risks: {},
+            taskNum: "",
+            recordLimit: 5,
+            pageIndex: 1,
+            showTasks: []
+        },
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.showTasks.length / this.recordLimit)
+            },
+        },
+        methods: {
+            taskGetDetail: function(data) {
+                var companyList = [];
+                var timeList = [];
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                    data[i].date = vm.stamp2timeY(data[i].in_time);
+                    data[i].createTime = data[i].time.split(" ")[0];
+                    var restDay = vm.dayPeriodCompute(data[i].in_time, data[i].deadline);
+                    data[i].restDay = restDay;
+                }
+                vm.tasks = data.reverse();
+                vm.showTasks = vm.tasks;
+                vm.companyList = vm.unique(companyList);
+                vm.createTimeList = vm.unique(timeList);
+            },
+            riskGetDetail: function(data) {
+                var companyList = [];
+                var timeList = [];
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                    data[i].createTime = data[i].time.split(" ")[0];
+                    // companyList.push(data[i].company.name)
+                    // timeList.push(data[i].createTime)
+                }
+                vm.risks = data;
+                // vm.companyList = vm.unique(companyList);
+                // vm.createTimeList = vm.unique(timeList);
+            },
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return month + "/" + day + " " + hours + ":" + minutes;
+            },
+            stamp2timeY: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return year + "-" + month + "-" + day;
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            companyNameFilter: function(data) {
+                if (vm.companyName !== "" && (!data.company.name || !data.taskDetail.company.name.match(vm.companyName))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            createTimeFilter: function(data) {
+                if (vm.createTime !== "" && vm.createTime !== data.date) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            regionFilter: function(data) {
+                if (vm.region !== "" && vm.region !== data.taskDetail.company.region.name) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            taskNumFilter: function(data) {
+                if (vm.taskNum !== "" && (!data.code || !data.task.match(vm.taskNum))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            saveDetail: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("taskDetail", data);
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            dayPeriodCompute: function(startTime, endTime) {
+                var nowTime = new Date(startTime);
+                var theTime = new Date(endTime);
+                return theTime.getDate() - nowTime.getDate();
+            },
+            saveTask:function(data){
+                data=JSON.stringify(data);
+                localStorage.setItem("riskDetail",data);
+            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            $.post('/model', {
+                name: "Censor",
+                rows: 0,
+                "params['taday']": '1'
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.taskGetDetail(data.data)
+                }
+            });
+        },
+        ready: function() {
+
+        }
+    })
 });
 </script>

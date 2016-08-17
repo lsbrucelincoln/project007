@@ -28,10 +28,10 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>任务编号：</span>
-                    <input type="text" placeholder="输入编号" class="taskNum" @keyup="taskNumSearch | debounce 500">
+                    <input type="text" placeholder="输入编号" class="taskNum" >
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称" class="companyName" @keyup="companyNameSearch | debounce 500">
+                    <input type="text" placeholder="输入企业名称" class="companyName">
                 </div>
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
@@ -57,7 +57,7 @@
                             <th>当前状态<i class="flaticon-technology"></i></th>
                             <th>操作</th>
                         </tr>
-                        <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task | filterBy regionFilter task | filterBy taskNumFilter task  ">
+                        <tr v-for="task in showTasks |limitBy recordLimit startPoint ">
                             <td>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </td>
@@ -124,6 +124,14 @@
                         </tr> -->
                     </table>
                     <div class="bottom-search">
+                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                            <a href="javascript:void(0)" v-for="n in pageNum">
+                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                            </a>
+                            <a href="javascript:void(0)" @click="nextPage">
+                                <span id="Next">下一页 »</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -361,6 +369,14 @@
                         </tr>
                     </table>
                     <div class="bottom-search">
+                        <div class="page"><a href="javascript:void(0)"><span id="Prev" style="margin-right:4px;">« 上一页</span></a>
+                            <a href="javascript:void(0)" v-for="n in pageNum">
+                                <span style="color: rgb(255, 255, 255);">{{n}}</span>
+                            </a>
+                            <a href="javascript:void(0)">
+                                <span id="Next">下一页 »</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -369,8 +385,8 @@
 </div>
 <script>
 $(document).ready(function() {
-    TablePage("#checkTable", 10);
-    TablePage("#practiceTable", 10);
+    // TablePage("#checkTable", 5);
+    // TablePage("#practiceTable", 5);
     $.datetimepicker.setLocale('zh');
     $(".createTime").datetimepicker({
         timepicker: false,
@@ -398,26 +414,20 @@ $(document).ready(function() {
         $(".praticeBtn").trigger('click');
         console.log('test');
     };
-    $(".createTime").on('change', function(event) {
+    $(".searchButtom").on('click',  function(event) {
         event.preventDefault();
-        vm.createTime = $(this).val();
-        Vue.nextTick(function() {
-            $(".bottom-search").empty();
-            TablePage("#checkTable", 10);
-        });
-    });
-    $(".regionName").on('change', function(event) {
-        event.preventDefault();
-        vm.region = $(this).val();
-        Vue.nextTick(function() {
-            $(".bottom-search").empty();
-            TablePage("#checkTable", 10);
+        vm.region = $(".regionName").val();
+        vm.createTime = $(".createTime").val();
+        vm.taskNum=$(".taskNum").val();
+        vm.companyName=$(".companyName").val();
+        vm.showTasks=vm.tasks.filter(function(data) {
+            return vm.companyNameFilter(data)&&vm.createTimeFilter(data)&&vm.regionFilter(data)&&vm.taskNumFilter(data)
         });
     });
     var vm = new Vue({
         el: "#assessmentBody",
         data: {
-            tasks: {},
+            tasks: [],
             companyList: [],
             companyName: "",
             createTimeList: [],
@@ -425,6 +435,17 @@ $(document).ready(function() {
             region: "",
             risks: {},
             taskNum: "",
+            recordLimit: 5,
+            pageIndex: 1,
+            showTasks: []
+        },
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.showTasks.length / this.recordLimit)
+            },
         },
         methods: {
             taskGetDetail: function(data) {
@@ -437,6 +458,7 @@ $(document).ready(function() {
                     timeList.push(data[i].createTime)
                 }
                 vm.tasks = data.reverse();
+                vm.showTasks = vm.tasks;
                 vm.companyList = vm.unique(companyList);
                 vm.createTimeList = vm.unique(timeList);
             },
@@ -500,20 +522,6 @@ $(document).ready(function() {
                     return true;
                 }
             },
-            taskNumSearch: function() {
-                vm.taskNum = $(".taskNum").val();
-                vm.$nextTick(function() {
-                    $(".bottom-search").empty();
-                    TablePage("#checkTable", 10);
-                });
-            },
-            companyNameSearch: function() {
-                vm.companyName = $(".companyName").val();
-                vm.$nextTick(function() {
-                    $(".bottom-search").empty();
-                    TablePage("#checkTable", 10);
-                });
-            },
             taskNumFilter: function(data) {
                 if (vm.taskNum !== "" && (!data.code || !data.code.match(vm.taskNum))) {
                     return false;
@@ -524,6 +532,27 @@ $(document).ready(function() {
             saveDetail: function(data) {
                 data = JSON.stringify(data);
                 localStorage.setItem("taskDetail", data);
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         },
         created: function() {
@@ -536,16 +565,6 @@ $(document).ready(function() {
                 console.log(data);
                 if (data.state == 0) {
                     vm.taskGetDetail(data.data)
-                }
-            });
-            $.post('/model', {
-                name: "Censor",
-                rows: 0,
-                "params['taday']": '1'
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.taskGetDetail(data.data);
                 }
             });
         },

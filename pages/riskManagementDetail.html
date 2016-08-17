@@ -1,4 +1,4 @@
-<div class="companyInfoManagement admin_content_innerBox">
+<div class="companyInfoManagement admin_content_innerBox" id="riskManagementDetail">
     <div class="admin_scrollBox">
         <div class="minibar">
             <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 业务操作 > 隐患跟踪 > <span class="nowPlace">详细信息</span></span>
@@ -15,15 +15,15 @@
                 </div>
                 <div class="inputShort">
                     <span>企业对象：</span>
-                    <i>宁波市北高顺城无牵无挂拿腔作势佣兵有限公司</i>
+                    <i>{{taskDetail.taskDetail.company.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span>隐患等级：</span>
-                    <i>2级</i>
+                    <i>{{taskDetail.safeRule.safetyLevel}}</i>
                 </div>
                 <div class="inputShort">
                     <span>登记时间：</span>
-                    <i>03/08/2016</i>
+                    <i>{{startTime}}</i>
                 </div>
                 <div class="inputShort">
                     <span>当前状态：</span>
@@ -34,20 +34,19 @@
                 <tbody>
                     <tr>
                         <th style="width: 120px;">评估机构：</th>
-                        <td>宁波市港行管理局</td>
+                        <td>{{taskDetail.user.region.name}}</td>
                         <th>登记人：</th>
                         <td>
                             <label for="djr_by1">
-                                <input id="djr_by1" type="radio" name="djr">
-                                张三
+                                <input id="djr_by1" type="radio" name="djr"> {{taskDetail.user.name}}
                             </label>
                         </td>
                         <th>评估编号：</th>
-                        <td>NB01020120160809001</td>
+                        <td>{{taskDetail.taskDetail.code}}</td>
                     </tr>
                     <tr>
                         <th>评估标准：</th>
-                        <td colspan="5">文本类 > 合法经营文件 > 港口经营许可证（港口经营人、经营范围、附证事项、有效期限）</td>
+                        <td colspan="5">{{taskDetail.safeRule.category1}} > {{taskDetail.safeRule.category2}} > {{taskDetail.safeRule.text}}</td>
                     </tr>
                     <tr>
                         <th>补充描述：</th>
@@ -59,10 +58,10 @@
                     </tr>
                     <tr>
                         <th>处置方式：</th>
-                        <td>期限整改</td>
+                        <td>{{taskDetail.safeRule.punishment}}</td>
                         <th>整改期限：</th>
                         <td>
-                            2016-09-08
+                            {{excuteTime}}
                         </td>
                         <th>附件：</th>
                         <td><a class="admin_ui_link">查看</a></td>
@@ -70,24 +69,57 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
 <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
     <div class="allSelectBtn normalBtn" style="margin-top:15px">确认</div>
     <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
 </div>
-    
+<script>
+var vm = new Vue({
+    el: "#riskManagementDetail",
+    data: {
+        taskDetail: JSON.parse(localStorage.getItem("riskDetail"))
+    },
+    computed: {
+        excuteTime: function() {
+            return this.stamp2time(this.taskDetail.deadline);
+        },
+        startTime:function(){
+            return this.stamp2time(this.taskDetail.in_time);
+        }
+    },
+    methods: {
+        stamp2time: function(stamp) {
+            var time = new Date(stamp);
+            var year = time.getFullYear();
+            var month = time.getMonth() - 0 + 1;
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            month = month < 10 ? "0" + month : month;
+            var day = time.getDate();
+            day = day < 10 ? "0" + day : day;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            var timeString = '';
+            return year + "-" + month + "-" + day;
+        },
+        unique: function(arr) {
+            var result = [],
+                hash = {};
+            for (var i = 0, elem;
+                (elem = arr[i]) != null; i++) {
+                if (!hash[elem]) {
+                    result.push(elem);
+                    hash[elem] = true;
+                }
+            }
+            return result.reverse();
+        },
+    },
+    created: function() {
 
-
-
-
-
-
-
-
-
-
-
-
-
+    },
+    ready: function() {}
+})
+</script>
