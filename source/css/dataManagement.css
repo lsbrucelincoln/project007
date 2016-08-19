@@ -27,7 +27,7 @@
   width: 120px;
 }
 .dataManagement .contentBody .assess2Body .ztrbox {
-  width: 200px;
+  width: 250px;
   height: 332px;
   position: relative;
   float: left;
@@ -37,19 +37,41 @@
   height: 292px;
   border: 0;
   width: 100%;
+  padding: 5px;
+  line-height: 1.5;
 }
-.dataManagement .contentBody .assess2Body .ztrbox .flaticon-add {
+.dataManagement .contentBody .assess2Body .ztrbox .treeAdd,
+.dataManagement .contentBody .assess2Body .ztrbox .treeRemove {
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
+  font-size: 30px;
+  cursor: pointer;
+  font-style: normal;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .treeAdd {
   left: 10px;
-  font-size: 16px;
-  pointer: cursor;
 }
-.dataManagement .contentBody .assess2Body .ztrbox .flaticon-cancel {
-  position: absolute;
-  bottom: 10px;
+.dataManagement .contentBody .assess2Body .ztrbox .treeRemove {
   right: 10px;
-  font-size: 16px;
-  pointer: cursor;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .chosenCategory {
+  background-color: #ccc;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .chosenCategory i {
+  background-color: #ccc;
+}
+.dataManagement .contentBody .assess2Body .ztrbox a {
+  display: block;
+  line-height: 20px;
+}
+.dataManagement .contentBody .assess2Body .ztrbox a ul {
+  margin-left: 20px;
+}
+.dataManagement .contentBody .assess2Body .ztrbox a i {
+  font-size: 14px;
+  margin-right: 2px;
+}
+.dataManagement .contentBody .assess2Body .tableBox {
+  width: 70%;
 }
 /*# sourceMappingURL=dataManagement.css.map */

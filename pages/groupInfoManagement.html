@@ -1,4 +1,4 @@
-<div class="companyInfoManagement admin_content_innerBox">
+<div class="companyInfoManagement admin_content_innerBox" id="groupInfoBody">
     <div class="admin_scrollBox">
         <div class="minibar">
             <i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">机构基础信息管理</span></span>
@@ -7,27 +7,27 @@
             <div class="textInfo">
                 <div class="inputShort">
                     <span>机构名称：</span>
-                    <i>浙江省杭州某某机构</i>
+                    <i>{{params.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span>机构代码：</span>
-                    <span>5615132156356156</span>
+                    <span>{{params.code}}</span>
                 </div>
                 <div class="inputShort">
                     <span>上级管理部门：</span>
                     <div class="admin_ui_select">
-                        <select>
+                        <select v-model="params.parent">
                             <option>宁波市港航管理局</option>
                             <option>选项2</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>业务责任人：</span>
-                    <input type="text" value="张三">
+                    <input type="text" value="张三" v-model="params.contact">
                 </div>
                 <div class="inputShort"><span>所属港区：</span>
                     <div class="admin_ui_select">
-                        <select>
+                        <select v-model="params.area">
                             <option>余姚港航局</option>
                             <option>慈溪港航局</option>
                             <option>奉化港航局</option>
@@ -42,28 +42,28 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>固定电话：</span>
-                    <input type="text" value="0574-65825478">
+                    <input type="text" value="0574-65825478" v-model="params.phone">
                 </div>
-                <div class="inputShort digitMap"><span>电子地图：</span>
-                    <input type="text" value="X:750" disabled> —
-                    <input type="text" value="Y:145" disabled><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
+                <div class="inputShort digitMap"><span>电子地图：</span> X:
+                    <input type="text" value="750" disabled v-model="x"> — Y:
+                    <input type="text" value="145" disabled v-model="y"><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
-                    <input type="text" value="13805741235">
+                    <input type="text" value="13805741235" v-model="params.telephone">
                 </div>
                 <br/>
                 <div class="inputShort companyAddress"><span>机构地址：</span>
-                    <input type="text" value="浙江省宁波市XXX街XX路XXXX">
+                    <input type="text" value="浙江省宁波市XXX街XX路XXXX" v-model="params.address">
                 </div>
                 <br/>
                 <div class="inputShort companyNumber"><span>机构组织机构代码证：</span>
                     <br/>
                     <div class="picUpload">
                         <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
-                            <input type="file" id="uploadPic" name="file">
+                            <input type="file" id="uploadPic" name="file" @change="upload">
                             <label for="uploadPic" id="fileBtn">
                                 +
-                                <img class="showPic" src="" />
+                                <img class="showPic" :src="url" />
                             </label>
                             <span class="tip"></span>
                             <input type="text" name="turnUrl" class="turnUrl">
@@ -73,8 +73,8 @@
                         <iframe src="" frameborder="0" id="turnPage"></iframe>
                     </div>
                 </div>
-                <div class="changeBtn normalBtn">修改</div>
-                <div class="updateBtn normalBtn">更新</div>
+                <div class="changeBtn normalBtn" @click="update">修改</div>
+                <div class="updateBtn normalBtn" @click="update">更新</div>
             </div>
         </div>
     </div>
@@ -107,5 +107,115 @@ $(document).ready(function() {
         $(this).addClass('chosen');
         $("#processingBtn").removeClass('chosen');
     });
+    var vm = new Vue({
+        el: "#groupInfoBody",
+        data: {
+            params: {},
+            x: null,
+            y: null,
+            url:""
+        },
+        computed: {
+            coordinate: function() {
+                var place = vm.x + "+" + vm.y;
+                this.params.coordinate = place;
+                return place;
+            }
+        },
+        methods: {
+            upload: function(event) {
+                event.preventDefault();
+                console.log($(event.target)[0].files);
+                var file = $(event.target)[0].files[0];
+                if (!/image\/\w+/.test(file.type)) {
+                    alert("文件必须为图片！");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    vm.createCanvas(this.result);
+                }
+            },
+            createCanvas: function(src) {
+                var canvas = document.getElementById("uploadImg");
+                var cxt = canvas.getContext('2d');
+                // canvas.width = 640;
+                // canvas.height = 400;
+                var img = new Image();
+                img.src = src;
+                img.onload = function() {
+                    var w = img.width;
+                    var h = img.height;
+                    canvas.width = w;
+                    canvas.height = h;
+                    cxt.drawImage(img, 0, 0);
+                    var dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                    $(".showPic").show().attr('src', dataUrl);
+                    var blob = vm.dataURLtoBlob(dataUrl);
+                    var fd = new FormData();
+                    fd.append("file", blob, "1.png");
+                    console.log(fd);
+                    $.ajax({
+                        url: "/upload",
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fd,
+                        success: function(data) {
+                            vm.params.photo=data.id;
+                            console.log(data);
+                            $(".showPic").show().attr('data-id', "/" + data.id);
+                        }
+                    });
+                }
+            },
+            dataURLtoBlob: function(dataurl) {
+                var arr = dataurl.split(','),
+                    mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {
+                    type: mime
+                });
+            },
+            update:function(){
+                $.post('/region/editRegion', vm.params, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state==0) {
+                        alert("修改成功");
+                    }
+                });
+            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            $.post('/model', {
+                name: "Region",
+                "params['my']": 1
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.params = data.data[0];
+                    if (vm.params.coordinate) {
+                        vm.x = vm.params.coordinate.split("+")[0];
+                        vm.y = vm.params.coordinate.split("+")[1];
+                    }
+                    if (vm.params.photo) {
+                        vm.params.photo=vm.params.photo.id
+                        vm.url="/map?id="+vm.params.photo
+                    }
+                }
+            });
+        },
+        ready: function() {
+
+        }
+    })
 });
 </script>

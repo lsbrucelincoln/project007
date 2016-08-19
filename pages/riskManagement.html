@@ -240,9 +240,8 @@ $(document).ready(function() {
             var self = this;
             var id = localStorage.getItem("id");
             $.post('/model', {
-                name: "Censor",
+                name: "Recheck",
                 rows: 0,
-                "params['taday']": '1'
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {

@@ -13,7 +13,7 @@
             }
             margin-top: 0;
             .ztrbox {
-                width: 200px;
+                width: 250px;
                 height: 332px;
                 position: relative;
                 float: left;
@@ -22,21 +22,42 @@
                     height: 292px;
                     border: 0;
                     width: 100%;
+                    padding:5px;
+                    line-height:1.5;
                 }
-                .flaticon-add {
-                    position: absolute;
-                    bottom: 10px;
+                .treeAdd,.treeRemove{
+                    position:absolute;
+                    bottom:5px;
+                    font-size: 30px;
+                    cursor:pointer;
+                    font-style:normal;
+                }
+                .treeAdd {
                     left: 10px;
-                    font-size: 16px;
-                    pointer: cursor;
                 }
-                .flaticon-cancel {
-                    position: absolute;
-                    bottom: 10px;
+                .treeRemove {
                     right: 10px;
-                    font-size: 16px;
-                    pointer: cursor;
                 }
+                .chosenCategory{
+                    background-color: #ccc;
+                    i{
+                        background-color: #ccc;
+                    }
+                }
+                a{
+                    display:block;
+                    line-height:20px;
+                    ul{
+                        margin-left: 20px;
+                    }
+                    i{
+                        font-size:14px;
+                        margin-right: 2px;
+                    }
+                }
+            }
+            .tableBox{
+                width:70%;
             }
         }
     }
