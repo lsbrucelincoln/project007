@@ -57,6 +57,79 @@ function eventBind() {
             }
         });
     });
+    if (!document.addEventListener) {
+    // IE6~IE8
+    document.write('<script src="ieBetter.js"><\/script>');   
+}
+    if (navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE9.0") {
+        $(".admin_body").on('change', "#uploadPic", function(event) {
+            $("form").submit();
+        });
+    } else {
+        console.log('test');
+        $(".admin_body").on('change', "#uploadPic", function(event) {
+            event.preventDefault();
+            console.log($(this)[0].files);
+            var file = $(this)[0].files[0];
+            if (!/image\/\w+/.test(file.type)) {
+                alert("文件必须为图片！");
+                return false;
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                    createCanvas(this.result);
+                }
+                // $("form").submit();
+        });
+    }
+
+    function createCanvas(src) {
+        var canvas = document.getElementById("uploadImg");
+        var cxt = canvas.getContext('2d');
+        // canvas.width = 640;
+        // canvas.height = 400;
+        var img = new Image();
+        img.src = src;
+        img.onload = function() {
+            var w = img.width;
+            var h = img.height;
+            canvas.width = w;
+            canvas.height = h;
+            cxt.drawImage(img, 0, 0);
+            var dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+            $(".showPic").show().attr('src', dataUrl);
+            var blob = dataURLtoBlob(dataUrl);
+            var fd = new FormData();
+            fd.append("file", blob, "1.png");
+            console.log(fd);
+            $.ajax({
+                url: "/upload",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: fd,
+                success: function(data) {
+                    console.log(data.id);
+                    $(".showPic").show().attr('data-id', "/" + data.id);
+                }
+            });
+        }
+    }
+
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {
+            type: mime
+        });
+    }
     $(ADMIN_CONFIG.leftSelector + " .leftmenu>div>.line").bind('click', function(e) {
         if ($(this).next('.submenu').length) {
             // 有子菜单
@@ -85,6 +158,7 @@ function eventBind() {
         }
     });
 }
+
 function basicAjax() {
     var id = localStorage.getItem("id");
     $.post('/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
@@ -199,66 +273,6 @@ function uiComponentEventBind() {
 
 }
 
-function createCanvas(src, flag, parent) {
-    var canvas = document.getElementById("uploadImg");
-    var cxt = canvas.getContext('2d');
-    // canvas.width = 640;
-    // canvas.height = 400;
-    var img = new Image();
-    img.src = src;
-    img.onload = function() {
-        var w = img.width;
-        var h = img.height;
-        canvas.width = w;
-        canvas.height = h;
-        // cxt.drawImage(img, 0, 0,640,400);
-        cxt.drawImage(img, 0, 0);
-        var blob = dataURLtoBlob(canvas.toDataURL("image/jpeg", 0.9));
-        if (flag == true) {
-            parent.find(".multiPicBox").append("<img id='img" + $("img").length + "' src='" + canvas.toDataURL("image/jpeg", 0.9) + "'>")
-        } else {
-            parent.find(".showPic").show().attr('src', canvas.toDataURL("image/jpeg", 0.9));
-        }
-        $.ajax({
-            url: "/front/uploadByUserBase64.do",
-            type: "POST",
-            data: {
-                "imgStr": canvas.toDataURL("image/jpeg", 0.9).split(',')[1]
-            },
-            success: function(data) {
-                console.log(data);
-                if (flag == true) {
-                    parent.find("#img" + ($("img").length - 1)).attr('data-url', "/" + data.url);
-                } else {
-                    parent.find(".showPic").show().attr('data-url', "/" + data.url);
-                }
-            }
-        });
-    }
-}
-
-function uploadPic(area) {
-    var dtd = $.Deferred();
-    var area = area;
-    if (!area) {
-        area = "body";
-    }
-    // 取得编辑器外图片
-    var $imglist = $(area).find('img');
-    var $editorImg = $(getEditorContent()).find("img")
-    var imgLength = $imglist.length + $editorImg.length;
-    var count = 0;
-    $imglist.each(function(index, el) {
-        $.post('/front/uploadByUserBase64.do', { "imgStr": $(this).attr('src') }, function(data, textStatus, xhr) {
-            count++;
-        });
-    });
-    $editorImg.each(function(index, el) {
-        $.post('/front/uploadByUserBase64.do', { "imgStr": $(this).attr('src') }, function(data, textStatus, xhr) {
-            count++;
-        });
-    });
-}
 // 获得编辑器中内容
 function getEditorContent() {
     return editor.getContent();

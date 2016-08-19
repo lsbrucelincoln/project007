@@ -1,4 +1,4 @@
-<div class="addAssessment admin_content_innerBox dataManagement">
+<div class="addAssessment admin_content_innerBox dataManagement" id="dataManagementBody">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">数据管理</span></span>
     </div>
     <div class="admin_scrollBox">
@@ -137,5 +137,66 @@ $(document).ready(function() {
     $.when(getZTreeData()).done(function(data) {
         $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
     });
+            var vm = new Vue({
+            el: "#dataManagementBody",
+            data: {
+                tasks: [],
+                companyList: [],
+                companyName: "",
+                createTimeList: [],
+                createTime: "",
+                risks: {},
+            },
+            methods: {
+                taskGetDetail: function(data) {
+                    var companyList = [];
+                    var timeList = [];
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].time = vm.stamp2time(data[i].in_time);
+                        data[i].createTime = data[i].time.split(" ")[0];
+                        companyList.push(data[i].company.name)
+                        timeList.push(data[i].createTime)
+                    }
+                    vm.tasks = data.reverse();
+                    vm.companyList = vm.unique(companyList);
+                    vm.createTimeList = vm.unique(timeList);
+                },
+                stamp2time: function(stamp) {
+                    var time = new Date(stamp);
+                    var year = time.getFullYear();
+                    var month = time.getMonth() - 0 + 1;
+                    var hours = time.getHours();
+                    var minutes = time.getMinutes();
+                    month = month < 10 ? "0" + month : month;
+                    var day = time.getDate();
+                    day = day < 10 ? "0" + day : day;
+                    hours=hours<10?"0"+hours:hours;
+                    minutes=minutes<10?"0"+minutes:minutes;
+                    var timeString = '';
+                    return month + "/" + day + " " + hours + ":" + minutes;
+                },
+                dayPeriodCompute:function(startTime,endTime){
+                    var nowTime=new Date(startTime);
+                    var theTime=new Date(endTime);
+                    return theTime.getDate()-nowTime.getDate();
+                },
+            },
+            created: function() {
+                var self = this;
+                var id = localStorage.getItem("id");
+                $.post('/model', {
+                    name: "SafeRule",
+                    rows: 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.taskGetDetail(data.data)
+                    }
+                });
+            },
+            ready: function() {
+
+            }
+        })
 });
 </script>

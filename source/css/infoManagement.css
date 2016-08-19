@@ -219,19 +219,23 @@
 .companyInfoManagement .contentBody .companyNumber {
   margin-bottom: 0px;
 }
+.companyInfoManagement .contentBody .companyNumber .picUpload {
+  margin-top: 10px;
+  margin-left: 30px;
+}
 .companyInfoManagement .contentBody .companyNumber span {
   width: 190px;
 }
 .companyInfoManagement .contentBody .companyNumber img {
   width: 300px;
   height: 200px;
-  margin-left: 20px;
 }
 .companyInfoManagement iframe {
   margin-left: 40px;
   margin-top: 10px;
   width: 500px;
-  height: 140px;
+  height: 20px;
+  display: none;
 }
 .editMode .contentHeader .manageBtn,
 .editMode .contentHeader .searchBox {

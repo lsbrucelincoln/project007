@@ -35,9 +35,9 @@
                             <option>象山港航局</option>
                             <option>鄞州港航局</option>
                             <option>海曙港航局</option>
-                             <option>江东港航局</option> 
-                             <option>江北港航局</option> 
-                             <option>北仑港航局</option> 
+                            <option>江东港航局</option>
+                            <option>江北港航局</option>
+                            <option>北仑港航局</option>
                         </select>
                     </div>
                 </div>
@@ -45,16 +45,33 @@
                     <input type="text" value="0574-65825478">
                 </div>
                 <div class="inputShort digitMap"><span>电子地图：</span>
-                    <input type="text" value="X:750" disabled> — <input type="text" value="Y:145" disabled><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
+                    <input type="text" value="X:750" disabled> —
+                    <input type="text" value="Y:145" disabled><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
                     <input type="text" value="13805741235">
-                </div><br/>
+                </div>
+                <br/>
                 <div class="inputShort companyAddress"><span>机构地址：</span>
                     <input type="text" value="浙江省宁波市XXX街XX路XXXX">
-                </div><br/>
-                <div class="inputShort companyNumber"><span>机构组织机构代码证：</span><br/>
-                    <iframe src="photoIframe.html" frameborder="0"></iframe>
+                </div>
+                <br/>
+                <div class="inputShort companyNumber"><span>机构组织机构代码证：</span>
+                    <br/>
+                    <div class="picUpload">
+                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                            <input type="file" id="uploadPic" name="file">
+                            <label for="uploadPic" id="fileBtn">
+                                +
+                                <img class="showPic" src="" />
+                            </label>
+                            <span class="tip"></span>
+                            <input type="text" name="turnUrl" class="turnUrl">
+                            <input type="submit" value="submit">
+                            <canvas id="uploadImg" style="display:none"></canvas>
+                        </form>
+                        <iframe src="" frameborder="0" id="turnPage"></iframe>
+                    </div>
                 </div>
                 <div class="changeBtn normalBtn">修改</div>
                 <div class="updateBtn normalBtn">更新</div>
@@ -72,7 +89,7 @@ $(document).ready(function() {
     });
     $(".confirmBtn").on('click', function(event) {
         event.preventDefault();
-        $(".digitMap input").attr('disabled',"disabled");
+        $(".digitMap input").attr('disabled', "disabled");
         $(this).hide();
         $(".settingBtn").show();
     });

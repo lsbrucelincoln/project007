@@ -19,25 +19,32 @@
         <span class="tip"></span>
         <input type="text" name="turnUrl" class="turnUrl">
         <input type="submit" value="submit">
+        <canvas id="uploadImg" style="display:none"></canvas>
     </form>
-    <canvas id="uploadImg" style="display:none"></canvas>
+    
     <script>
     $(".turnUrl").val(window.location.pathname);
-    $("#uploadPic").on('change', function(event) {
-        event.preventDefault();
-        console.log($(this)[0].files);
-        var file = $(this)[0].files[0];
-        if (!/image\/\w+/.test(file.type)) {
-            alert("文件必须为图片！");
-            return false;
-        }
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function(e) {
-                createCanvas(this.result);
+    if (navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE9.0") {
+        $("#uploadPic").on('change', function(event) {
+            $("form").submit();
+        });
+    } else {
+        $("#uploadPic").on('change', function(event) {
+            event.preventDefault();
+            console.log($(this)[0].files);
+            var file = $(this)[0].files[0];
+            if (!/image\/\w+/.test(file.type)) {
+                alert("文件必须为图片！");
+                return false;
             }
-            // $("form").submit();
-    });
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                    createCanvas(this.result);
+                }
+                // $("form").submit();
+        });
+    }
 
     function createCanvas(src) {
         var canvas = document.getElementById("uploadImg");
@@ -47,24 +54,43 @@
         var img = new Image();
         img.src = src;
         img.onload = function() {
-            var w=img.width;
-            var h=img.height;
-            canvas.width= w;
-            canvas.height=h;
+            var w = img.width;
+            var h = img.height;
+            canvas.width = w;
+            canvas.height = h;
             cxt.drawImage(img, 0, 0);
-            $(".showPic").show().attr('src', canvas.toDataURL("image/jpeg", 0.9));
+            var dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+            $(".showPic").show().attr('src', dataUrl);
+            var blob = dataURLtoBlob(dataUrl);
+            var fd = new FormData();
+            fd.append("file", blob, "1.png");
+            console.log(fd);
             $.ajax({
-                url: "/front/uploadByUserBase64.do",
+                url: "/upload",
                 type: "POST",
-                data: {
-                    "imgStr": canvas.toDataURL("image/jpeg").split(',')[1]
-                },
+                contentType: false,
+                processData: false,
+                data: fd,
                 success: function(data) {
-                    console.log(data);
-                    $(".showPic").show().attr('data-url', "/"+data.url);
+                    console.log(data.id);
+                    $(".showPic").show().attr('data-url', "/" + data.url);
                 }
             });
         }
+    }
+
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {
+            type: mime
+        });
     }
     </script>
 </body>

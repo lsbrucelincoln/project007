@@ -3,9 +3,9 @@
     </div>
     <div class="contentBody">
         <div class="tagBar">
-            <a class="tag  chosenBtn checkBtn">评估检查任务</a>
-            <a class="tag praticeBtn">应急演练</a>
-            <a class="tag historyBtn">评估历史</a>
+            <a class="tag  chosenBtn checkBtn" @click="tagState=1">评估检查任务</a>
+            <a class="tag praticeBtn" @click="tagState=2">应急演练</a>
+            <a class="tag historyBtn" @click="tagState=3">评估历史</a>
         </div>
         <div class="contenBox">
             <div class="checkBody">
@@ -36,7 +36,7 @@
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
                 </div>
-                <div class="btnBox">
+                <div class="btnBox" v-if="tagState!==3">
                     <a href="#/addAssessment.html" class="addBtn normalBtn">添加任务</a>
                     <div class="allSelectBtn normalBtn">全选</div>
                     <div class="urgeBtn normalBtn">催促执行</div>
@@ -70,58 +70,6 @@
                             <td>{{task.state}}</td>
                             <td><a href="#/assessDetail.html" @click="saveDetail(task)">查看</a></td>
                         </tr>
-                        <!--                         <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>防火专项</td>
-                            <td>宁波港航港口服务类测试公司</td>
-                            <td>宁海港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>李四</td>
-                            <td>已同步</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>防爆专项</td>
-                            <td>宁波港航集装箱类测试公司</td>
-                            <td>北仑港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>王五</td>
-                            <td>正在执行</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>日常评估</td>
-                            <td>宁波港航普通运输类测试公司</td>
-                            <td>江北港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>洪七</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>专项评估检查</td>
-                            <td>宁波港航客运类测试公司</td>
-                            <td>象山港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>朱林峰</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr> -->
                     </table>
                     <div class="bottom-search">
                         <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
@@ -135,258 +83,11 @@
                     </div>
                 </div>
             </div>
-            <div class="practiceBody">
-                <div class="inputShort">
-                    <span>创建时间：</span>
-                    <input type="text" class="createTime">
-                    <i class="flaticon-small-calendar"></i>
-                </div>
-                <div class="inputShort"><span>管理机构：</span>
-                    <div class="admin_ui_select" style="width: 200px;">
-                        <select>
-                            <option>余姚港航局</option>
-                            <option>慈溪港航局</option>
-                            <option>奉化港航局</option>
-                            <option>宁海港航局</option>
-                            <option>象山港航局</option>
-                            <option>鄞州港航局</option>
-                            <option>海曙港航局</option>
-                            <option>江东港航局</option>
-                            <option>江北港航局</option>
-                            <option>北仑港航局</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="inputShort"><span>任务编号：</span>
-                    <input type="text" placeholder="输入编号">
-                </div>
-                <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称">
-                </div>
-                <div class="searchBody">
-                    <span class="searchButtom normalBtn">搜索</span>
-                </div>
-                <div class="btnBox">
-                    <a href="#/addAssessment.html" class="addBtn normalBtn">添加任务</a>
-                    <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">催促执行</div>
-                    <div class="endProgramBtn normalBtn">结束任务</div>
-                </div>
-                <div class="tableBox">
-                    <table id="practiceTable">
-                        <tr>
-                            <th>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </th>
-                            <th>任务编号<i class="flaticon-sort"></i></th>
-                            <th>任务类型</th>
-                            <th>企业对象</th>
-                            <th>管理机构</th>
-                            <th>创建时间</th>
-                            <th>责任人</th>
-                            <th>当前状态<i class="flaticon-technology"></i></th>
-                            <th>操作</th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>综合评估</td>
-                            <td>宁波港航危险品类测试公司</td>
-                            <td>宁波港航管理局</td>
-                            <td>2016-01-01</td>
-                            <td>张三</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>防火专项</td>
-                            <td>宁波港航港口服务类测试公司</td>
-                            <td>宁海港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>李四</td>
-                            <td>已同步</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>防爆专项</td>
-                            <td>宁波港航集装箱类测试公司</td>
-                            <td>北仑港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>王五</td>
-                            <td>正在执行</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>日常评估</td>
-                            <td>宁波港航普通运输类测试公司</td>
-                            <td>江北港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>洪七</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>专项评估检查</td>
-                            <td>宁波港航客运类测试公司</td>
-                            <td>象山港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>朱林峰</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                    </table>
-                    <div class="bottom-search">
-                    </div>
-                </div>
-            </div>
-            <div class="historyBody">
-                <div class="inputShort"><span>创建时间：</span>
-                    <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
-                <div class="inputShort"><span>管理机构：</span>
-                    <div class="admin_ui_select" style="width: 200px;">
-                        <select>
-                            <option>余姚港航局</option>
-                            <option>慈溪港航局</option>
-                            <option>奉化港航局</option>
-                            <option>宁海港航局</option>
-                            <option>象山港航局</option>
-                            <option>鄞州港航局</option>
-                            <option>海曙港航局</option>
-                            <option>江东港航局</option>
-                            <option>江北港航局</option>
-                            <option>北仑港航局</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="inputShort"><span>任务编号：</span>
-                    <input type="text" placeholder="输入编号">
-                </div>
-                <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称">
-                </div>
-                <div class="searchBody">
-                    <span class="searchButtom normalBtn">搜索</span>
-                </div>
-                <div class="btnBox">
-                </div>
-                <div class="tableBox">
-                    <table id="searchTable">
-                        <tr>
-                            <th>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </th>
-                            <th>任务编号<i class="flaticon-sort"></i></th>
-                            <th>任务类型</th>
-                            <th>企业对象</th>
-                            <th>管理机构</th>
-                            <th>创建时间</th>
-                            <th>责任人</th>
-                            <th>当前状态<i class="flaticon-technology"></i></th>
-                            <th>操作</th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>综合评估</td>
-                            <td>宁波港航危险品类测试公司</td>
-                            <td>宁波港航管理局</td>
-                            <td>2016-01-01</td>
-                            <td>张三</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>防火专项</td>
-                            <td>宁波港航港口服务类测试公司</td>
-                            <td>宁海港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>李四</td>
-                            <td>已同步</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>防爆专项</td>
-                            <td>宁波港航集装箱类测试公司</td>
-                            <td>北仑港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>王五</td>
-                            <td>正在执行</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>日常评估</td>
-                            <td>宁波港航普通运输类测试公司</td>
-                            <td>江北港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>洪七</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160001</td>
-                            <td>专项评估检查</td>
-                            <td>宁波港航客运类测试公司</td>
-                            <td>象山港航管理处</td>
-                            <td>2016-01-01</td>
-                            <td>朱林峰</td>
-                            <td>新增任务</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                    </table>
-                    <div class="bottom-search">
-                        <div class="page"><a href="javascript:void(0)"><span id="Prev" style="margin-right:4px;">« 上一页</span></a>
-                            <a href="javascript:void(0)" v-for="n in pageNum">
-                                <span style="color: rgb(255, 255, 255);">{{n}}</span>
-                            </a>
-                            <a href="javascript:void(0)">
-                                <span id="Next">下一页 »</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    // TablePage("#checkTable", 5);
-    // TablePage("#practiceTable", 5);
     $.datetimepicker.setLocale('zh');
     $(".createTime").datetimepicker({
         timepicker: false,
@@ -401,13 +102,7 @@ $(document).ready(function() {
         $(".checkBody").show();
         $(".checkBody").siblings().hide();
     });
-    $(".praticeBtn").on('click', function(event) {
-        $(".practiceBody").show();
-        $(".practiceBody").siblings().hide();
-    });
     $(".historyBtn").on('click', function(event) {
-        $(".historyBody").show();
-        $(".historyBody").siblings().hide();
         $(".checkBtn").css('z-index', '1');
     });
     if (window.location.href.search("urge") !== -1) {
@@ -427,6 +122,7 @@ $(document).ready(function() {
     var vm = new Vue({
         el: "#assessmentBody",
         data: {
+            tagState:1,
             tasks: [],
             companyList: [],
             companyName: "",
