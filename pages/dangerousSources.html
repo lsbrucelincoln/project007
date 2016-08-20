@@ -1,10 +1,10 @@
-<div class="assessmentCheck">
+<div class="assessmentCheck" id="dangerousBody">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">重大危险源</span></span>
     </div>
     <div class="contentBody">
         <div class="tagBar">
-            <a class="tag  chosenBtn checkBtn">重大危险源监控信息</a>
-            <a class="tag praticeBtn">历史重大危险源信息</a>
+            <a class="tag  chosenBtn checkBtn" @click="tagState=1">重大危险源监控信息</a>
+            <a class="tag praticeBtn" @click="tagState=2">历史重大危险源信息</a>
         </div>
         <div class="contenBox">
             <div class="checkBody">
@@ -12,143 +12,38 @@
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width:200px">
-                        <select name="" id="">
-                            <option value="">宁波市港航管理局</option>
+                        <select name="" id="" class="regionName">
+                        <option value="北仑港航局">北仑港航局</option>
+                            <option value="宁波市港航管理局">宁波市港航管理局</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>危险等级：</span>
                     <div class="admin_ui_select" style="width:200px">
-                        <select name="" id="">
-                            <option value="">一级</option>
-                            <option value="">二级</option>
-                            <option value="">三级</option>
+                        <select name="" id="" class="taskNum">
+                            <option value="1">一级</option>
+                            <option value="2">二级</option>
+                            <option value="3">三级</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称">
+                    <input type="text" placeholder="输入企业名称" class="companyName">
                 </div>
                 <div class="searchBody">
-                    <span class="searchButtom normalBtn">搜索</span>
+                    <span class="searchButtom normalBtn" id="searchBtn">搜索</span>
                 </div>
-                <div class="btnBox">
-                    <a href="#/addCompany.html" class="addBtn normalBtn">新建备案(企业)</a>
+                <div class="btnBox" v-if="tagState==1">
+                    <a href="#/addCompany.html" class="addBtn normalBtn">新建危险源</a>
                     <div class="allSelectBtn normalBtn">全选</div>
                     <div class="urgeBtn normalBtn">失效操作</div>
                 </div>
                 <div class="tableBox">
                     <table id="checkTable">
                         <tr>
-                            <th></th>
-                            <th>企业名称<i class="flaticon-sort"></i></th>
-                            <th>重大危险源名称</th>
-                            <th>等级</th>
-                            <th>备案编号</th>
-                            <th>备案日期</th>
-                            <th>所在港区</th>
-                            <th>管理机构<i class="flaticon-technology"></i></th>
-                            <th>操作</th>
-                        </tr>
-                        <tr>
-                            <td>
+                            <th>
                                 <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>宁波港航危险品类测试公司</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>宁波港航港口服务类测试公司</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>宁波港航集装箱类测试公司</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>宁波港航普通运输类测试公司</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>宁波港航客运类测试公司</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                    </table>
-                    <div class="bottom-search">
-                    </div>
-                </div>
-            </div>
-            <div class="practiceBody">
-                <div class="inputShort"><span>备案时间：</span>
-                    <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
-                <div class="inputShort"><span>管理机构：</span>
-                    <div class="admin_ui_select" style="width:200px">
-                        <select name="" id="">
-                            <option value="">宁波市港航管理局</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="inputShort"><span>危险等级：</span>
-                    <div class="admin_ui_select" style="width:200px">
-                        <select name="" id="">
-                            <option value="">一级</option>
-                            <option value="">二级</option>
-                            <option value="">三级</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称">
-                </div>
-                <div class="searchBody">
-                    <span class="searchButtom normalBtn">搜索</span>
-                </div>
-                <div class="tableBox">
-                    <table id="practiceTable">
-                        <tr>
-                            <th></th>
+                            </th>
                             <th>序号<i class="flaticon-technology"></i></th>
                             <th>企业名称<i class="flaticon-sort"></i></th>
                             <th>重大危险源名称</th>
@@ -159,89 +54,38 @@
                             <th>管理机构<i class="flaticon-technology"></i></th>
                             <th>操作</th>
                         </tr>
-                        <tr>
+                        <tr v-for="dangerous in showTasks">
                             <td>
                                 <input type="checkBox" class="checkBox">
                             </td>
-                            <td>01</td>
-                            <td>象山危货企业</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>01</td>
-                            <td>象山危货企业</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>01</td>
-                            <td>象山危货企业</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>01</td>
-                            <td>象山危货企业</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>01</td>
-                            <td>象山危货企业</td>
-                            <td>码头危险源信息</td>
-                            <td>2</td>
-                            <td>12334</td>
-                            <td>2016-08-01</td>
-                            <td>象山港航局</td>
-                            <td>象山港航局</td>
+                            <td>{{dangerous.id}}</td>
+                            <td>{{dangerous.company.name}}</td>
+                            <td>{{dangerous.name}}</td>
+                            <td>{{dangerous.level}}</td>
+                            <td>{{dangerous.code}}</td>
+                            <td>{{dangerous.time}}</td>
+                            <td>{{dangerous.company.region.area}}</td>
+                            <td>{{dangerous.company.region.name}}</td>
                             <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
                         </tr>
                     </table>
                     <div class="bottom-search">
+                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                            <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                            </a>
+                            <a href="javascript:void(0)" @click="nextPage">
+                                <span id="Next">下一页 »</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="historyBody"></div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    TablePage("#checkTable", 10);
-    TablePage("#practiceTable", 10);
     $.datetimepicker.setLocale('zh');
     $(".createTime").datetimepicker({
         timepicker: false,
@@ -256,14 +100,184 @@ $(document).ready(function() {
         $(".checkBody").show();
         $(".checkBody").siblings().hide();
     });
-    $(".praticeBtn").on('click', function(event) {
-        $(".practiceBody").show();
-        $(".practiceBody").siblings().hide();
-    });
+    $(".praticeBtn").on('click', function(event) {});
     $(".historyBtn").on('click', function(event) {
-        $(".historyBody").show();
-        $(".historyBody").siblings().hide();
         $(".checkBtn").css('z-index', '1');
     });
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
+        }
+    });
+    $(".searchButtom").on('click', function(event) {
+        event.preventDefault();
+        vm.region = $(".regionName").val();
+        vm.createTime = $(".createTime").val();
+        vm.taskNum = $(".taskNum").val();
+        vm.companyName = $(".companyName").val();
+        vm.showTasks = vm.tasks.filter(function(data) {
+            return vm.companyNameFilter(data) && vm.createTimeFilter(data) && vm.regionFilter(data) && vm.taskNumFilter(data)
+        });
+    });
+    var vm = new Vue({
+        el: "#dangerousBody",
+        data: {
+            tagState: 1,
+            tasks: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            region: "",
+            risks: {},
+            taskNum: "",
+            recordLimit: 5,
+            pageIndex: 1,
+            showTasks: [],
+            region:""
+        },
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.showTasks.length / this.recordLimit)
+            },
+        },
+        methods: {
+            taskGetDetail: function(data) {
+                var companyList = [];
+                var timeList = [];
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                    data[i].createTime = data[i].time.split(" ")[0];
+                    companyList.push(data[i].company.name)
+                    timeList.push(data[i].createTime)
+                }
+                vm.tasks = data.reverse();
+                vm.showTasks = vm.tasks;
+                vm.companyList = vm.unique(companyList);
+                vm.createTimeList = vm.unique(timeList);
+            },
+            riskGetDetail: function(data) {
+                var companyList = [];
+                var timeList = [];
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                    data[i].createTime = data[i].time.split(" ")[0];
+                    // companyList.push(data[i].company.name)
+                    // timeList.push(data[i].createTime)
+                }
+                vm.risks = data;
+                // vm.companyList = vm.unique(companyList);
+                // vm.createTimeList = vm.unique(timeList);
+            },
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return year + "-" + month + "-" + day;
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            companyNameFilter: function(data) {
+                if (vm.companyName !== "" && (!data.company.name || !data.company.name.match(vm.companyName))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            createTimeFilter: function(data) {
+                if (vm.createTime !== "" && vm.createTime !== data.createTime) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            regionFilter: function(data) {
+                if (vm.region !== "" && vm.region !== data.company.region.name) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            taskNumFilter: function(data) {
+                if (vm.taskNum !== "" && (!data.level || !data.level.match(vm.taskNum))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            saveDetail: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("taskDetail", data);
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            $.post('/model', {
+                name: "Dangerous",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.taskGetDetail(data.data)
+                }
+            });
+        },
+        ready: function() {
+
+        }
+    })
 });
 </script>

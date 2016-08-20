@@ -96,6 +96,13 @@ $(document).ready(function() {
         $(this).siblings('.tag').removeClass('chosenBtn');
         $(".checkBtn").css('z-index', '3');
     });
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked",true);
+        }else{
+            $("td .checkBox").prop("checked",false);
+        }
+    });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
         vm.region = $(".regionName").val();

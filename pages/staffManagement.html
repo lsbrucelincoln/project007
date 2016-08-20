@@ -1,4 +1,4 @@
-<div class="assessmentCheck staffManagement">
+<div class="assessmentCheck staffManagement" id="staffBody">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">企业&账号管理</span></span>
     </div>
     <div class="contentBody">
@@ -7,7 +7,7 @@
             <a class="tag praticeBtn">辖区企业管理</a>
         </div>
         <div class="contenBox">
-            <div class="checkBody">
+            <!--             <div class="checkBody">
                 <div class="btnBox">
                     <div class="searchBox">
                         <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
@@ -18,7 +18,9 @@
                     <table id="checkTable">
                         <thead>
                             <tr>
-                                <th><input type="checkBox" id="person1" class="checkBox" ></th>
+                                <th>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </th>
                                 <th>序号<i class="flaticon-technology"></i></th>
                                 <th>姓名<i class="flaticon-sort"></i></th>
                                 <th>角色</th>
@@ -28,19 +30,20 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
-                        <tr>
+                        <tr v-for="account in showTasks">
                             <td>
-                                <input type="checkBox" id="person1" class="checkBox" disabled>
+                                <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0">
+                                <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0">
                             </td>
-                            <td>20160210</td>
-                            <td>朱林峰</td>
-                            <td>管理员</td>
-                            <td>第一中队</td>
-                            <td>2016-09-28</td>
-                            <td>正常</td>
+                            <td>{{account.id}}</td>
+                            <td>{{account.name}}</td>
+                            <td>{{account.competence}}</td>
+                            <td>{{account.squadron}}</td>
+                            <td>{{account.time}}</td>
+                            <td>{{account.no_lock?"正常":"停用"}}</td>
                             <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
                         </tr>
-                        <tr>
+                                                <tr>
                             <td>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </td>
@@ -92,10 +95,18 @@
                     <div class="bottom-search">
                         <div class="allSelectBtn normalBtn">全选</div>
                         <div class="urgeBtn normalBtn">删除</div>
+                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                            <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                            </a>
+                            <a href="javascript:void(0)" @click="nextPage">
+                                <span id="Next">下一页 »</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="practiceBody">
+            </div> -->
+            <!--             <div class="practiceBody">
                 <div class="btnBox">
                     <div class="searchBox">
                         <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
@@ -194,23 +205,16 @@
                         <div class="urgeBtn normalBtn">删除</div>
                     </div>
                 </div>
-            </div>
-            <div class="historyBody"></div>
+            </div> -->
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    TablePage("#checkTable", 5);
-    $(".checkBody .addBtn").on('click', function(event) {
-        event.preventDefault();
-        $(".mask,.addAccount").show();
-    });
-    $(".practiceBody .addBtn").on('click', function(event) {
-        event.preventDefault();
-        window.location.href="index.html#/addCompany.html"
-    });
-    $(".mask,.cancel,.confirm").on('click', function(event) {
+    // TablePage("#checkTable", 5);
+    $(".contenBox").load('staffManagement1.html',
+        function() {});
+    $(".mask,.cancel").on('click', function(event) {
         event.preventDefault();
         $(".mask,.addAccount").hide();
     });
@@ -224,13 +228,12 @@ $(document).ready(function() {
         $(".checkBody").siblings().hide();
     });
     $(".praticeBtn").on('click', function(event) {
-        $(".practiceBody").show();
-        $(".practiceBody").siblings().hide();
+        $(".contenBox").load('staffManagement2.html',
+            function() {});
     });
-    $(".historyBtn").on('click', function(event) {
-        $(".historyBody").show();
-        $(".historyBody").siblings().hide();
-        $(".checkBtn").css('z-index', '1');
+    $(".checkBtn").on('click', function(event) {
+        $(".contenBox").load('staffManagement1.html',
+            function() {});
     });
 });
 </script>

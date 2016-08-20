@@ -25,7 +25,11 @@
     <link rel="stylesheet" type="text/css" href="../source/css/dataManagement.css">
     <link rel="stylesheet" type="text/css" href="../source/css/iframe.css">
     <link rel="stylesheet" type="text/css" href="../source/css/temporary.css">
-    <style>[v-cloak] { display: none }</style>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
     <script src="../source/js/jquery-1.11.1.min.js"></script>
     <script src="../source/js/public.js"></script>
     <!-- <script src="../source/js/router.js"></script> -->
@@ -36,7 +40,6 @@
     <!-- <script src="../source/js/jquery.tablesorter.js"></script> -->
     <script src="../source/js/jquery.datetimepicker.full.min.js"></script>
     <script src="../source/plunges/echarts/echarts.min.js"></script>
-
 </head>
 
 <body>
@@ -58,7 +61,7 @@
                     </a>
                 </div>
                 <div class="tips">
-                    <p>今日提示：<span class="checkNum">8</span>项评估检查 <span class="checkNum">9</span>项隐患问题 <a href=""><i class="flaticon-cloud-storage-download"> </i>工作月报</a></p>
+                    <p>今日提示：<span class="checkNum" id="todayTask">8</span>项评估检查 <span class="checkNum" id="todayCensor">9</span>项隐患问题 <a href=""><i class="flaticon-cloud-storage-download"> </i>工作月报</a></p>
                 </div>
             </div>
         </div>
@@ -176,7 +179,7 @@
                                             </span>
                                             <div class="name">应急演练预设</div>
                                         </a>
-<!--                                         <a class="line">
+                                        <!--                                         <a class="line">
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
@@ -239,7 +242,7 @@
                                         </a>
                                     </div>
                                 </div>
-<!--                                 <div>
+                                <!--                                 <div>
                                     <a class="line" href="#">
                                         <span class="markIcon">
                                           <i class="flaticon-people-1"></i>
@@ -300,44 +303,73 @@
         </div>
         <!-- 蒙版 -->
         <div class="mask"></div>
-            <div class="addAccount">
-                <div class="header">新建机构账号</div>
-                <div class="inputShort"><span>创建用户名：</span>
-                    <input type="" name="" placeholder="输入用户名">
+        <div class="addAccount" id="addAccount">
+            <div class="header">新建机构账号</div>
+            <div class="inputShort"><span>创建用户名：</span>
+                <input type="" name="" placeholder="输入用户名" v-model="username">
+            </div>
+            <div class="inputShort"><span>创建密码：</span>
+                <input type="" name="" placeholder="密码" v-model="password">
+            </div>
+            <div class="stateBox">
+                <div class="inputShort"><span>姓名：</span>
+                    <input type="" name="" placeholder="输入姓名" v-model="name">
                 </div>
-                <div class="inputShort"><span>创建密码：</span>
-                    <input type="" name="" placeholder="密码">
+                <div class="inputShort"><span>性别：</span>
+                    <select class="admin_ui_select" style="width:200px" v-model="sex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
                 </div>
-                <div class="stateBox">
-                    <div class="inputShort"><span>姓名：</span>
-                        <input type="" name="" placeholder="输入姓名">
-                    </div>
-                    <div class="inputShort"><span>性别：</span>
-                        <select class="admin_ui_select" style="width:200px">
-                            <option>男</option>
-                            <option>女</option>
-                        </select>
-                    </div>
-                    <div class="inputShort"><span>所属中队：</span>
-                        <select class="admin_ui_select" style="width:200px">
-                            <option>第一中队</option>
-                            <option>第二中队</option>
-                            <option>第三中队</option>
-                            <option>第四中队</option>
-                        </select>
-                    </div>
-                    <div class="inputShort"><span>角色：</span>
-                        <select class="admin_ui_select" style="width:200px">
-                            <option>普通用户</option>
-                        </select>
-                    </div>
-                    <div class="btnBox">
-                        <div class="normalBtn cancel">取消</div>
-                        <div class="normalBtn confirm">确定</div>
-                    </div>
+                <div class="inputShort"><span>所属中队：</span>
+                    <select class="admin_ui_select" style="width:200px" v-model="squadron">
+                        <option>第一中队</option>
+                        <option>第二中队</option>
+                        <option>第三中队</option>
+                        <option>第四中队</option>
+                    </select>
+                </div>
+                <div class="inputShort"><span>角色：</span>
+                    <select class="admin_ui_select" style="width:200px" v-model="competence">
+                        <option value="检查评估员">检查评估员</option>
+                        <option value="机构管理员">机构管理员</option>
+                    </select>
+                </div>
+                <div class="btnBox">
+                    <div class="normalBtn cancel">取消</div>
+                    <div class="normalBtn confirm" @click.prevent="createUser">确定</div>
                 </div>
             </div>
+        </div>
     </div>
+    <script>
+    var vm = new Vue({
+        el: "#addAccount",
+        data: {
+            username: "",
+            password: "",
+            name: "",
+            squadron: "第一中队",
+            sex: "男",
+            competence: "检查评估员"
+        },
+        computed: {},
+        methods: {
+            createUser: function() {
+                $.post('/region/createUser', vm.$data, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        alert("新增成功")
+                        $(".mask,.addAccount").hide();
+                    }
+                });
+            }
+        },
+        created: function() {},
+        ready: function() {
+
+        }
+    })
+    </script>
 </body>
 
 </html>

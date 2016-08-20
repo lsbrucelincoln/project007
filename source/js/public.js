@@ -169,6 +169,12 @@ function basicAjax() {
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
         }
     });
+    $.get('/region/getStatistics', function(data) {
+        if (data.state==0) {
+            $(".tips #todayTask").text(data.todayTask);
+            $(".tips #todayCensor").text(data.todayCensor);
+        }
+    });
 }
 
 function uiComponentEventBind() {

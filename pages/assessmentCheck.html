@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>任务编号：</span>
-                    <input type="text" placeholder="输入编号" class="taskNum" >
+                    <input type="text" placeholder="输入编号" class="taskNum">
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
                     <input type="text" placeholder="输入企业名称" class="companyName">
@@ -46,7 +46,7 @@
                     <table id="checkTable">
                         <tr>
                             <th>
-                                <input type="checkBox" id="person1" class="checkBox">
+                                <input type="checkBox" class="checkBox">
                             </th>
                             <th>任务编号<i class="flaticon-sort"></i></th>
                             <th>任务类型</th>
@@ -73,7 +73,7 @@
                     </table>
                     <div class="bottom-search">
                         <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
-                            <a href="javascript:void(0)" v-for="n in pageNum">
+                            <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                 <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
                             </a>
                             <a href="javascript:void(0)" @click="nextPage">
@@ -109,20 +109,27 @@ $(document).ready(function() {
         $(".praticeBtn").trigger('click');
         console.log('test');
     };
-    $(".searchButtom").on('click',  function(event) {
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked",true);
+        }else{
+            $("td .checkBox").prop("checked",false);
+        }
+    });
+    $(".searchButtom").on('click', function(event) {
         event.preventDefault();
         vm.region = $(".regionName").val();
         vm.createTime = $(".createTime").val();
-        vm.taskNum=$(".taskNum").val();
-        vm.companyName=$(".companyName").val();
-        vm.showTasks=vm.tasks.filter(function(data) {
-            return vm.companyNameFilter(data)&&vm.createTimeFilter(data)&&vm.regionFilter(data)&&vm.taskNumFilter(data)
+        vm.taskNum = $(".taskNum").val();
+        vm.companyName = $(".companyName").val();
+        vm.showTasks = vm.tasks.filter(function(data) {
+            return vm.companyNameFilter(data) && vm.createTimeFilter(data) && vm.regionFilter(data) && vm.taskNumFilter(data)
         });
     });
     var vm = new Vue({
         el: "#assessmentBody",
         data: {
-            tagState:1,
+            tagState: 1,
             tasks: [],
             companyList: [],
             companyName: "",
@@ -248,6 +255,14 @@ $(document).ready(function() {
                     return true;
                 } else {
                     return false;
+                }
+            },
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
+                    return true
+                } else {
+                    return false
                 }
             }
         },

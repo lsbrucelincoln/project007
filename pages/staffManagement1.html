@@ -1,0 +1,245 @@
+<div class="checkBody" v-cloak>
+    <div class="btnBox">
+        <div class="searchBox">
+            <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
+        </div>
+        <a href="#" class="addBtn normalBtn">添加账号</a>
+    </div>
+    <div class="tableBox">
+        <table id="checkTable">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkBox" id="person1" class="checkBox">
+                    </th>
+                    <th>序号<i class="flaticon-technology"></i></th>
+                    <th>姓名<i class="flaticon-sort"></i></th>
+                    <th>角色</th>
+                    <th>所属中队</th>
+                    <th>注册时间</th>
+                    <th>当前状态<i class="flaticon-technology"></i></th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tr v-for="account in showTasks">
+                <td>
+                    <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0">
+                    <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0">
+                </td>
+                <td>{{account.id}}</td>
+                <td>{{account.name}}</td>
+                <td>{{account.competence}}</td>
+                <td>{{account.squadron}}</td>
+                <td>{{account.time}}</td>
+                <td>{{account.no_lock?"正常":"停用"}}</td>
+                <td><a href="#/staffAccountManagementDetail.html" @click="saveDetail(account)">查看</a></td>
+            </tr>
+            <!--                         <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160210</td>
+                            <td>张三</td>
+                            <td>普通用户</td>
+                            <td>第二中队</td>
+                            <td>2016-09-28</td>
+                            <td>停用</td>
+                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160210</td>
+                            <td>李四</td>
+                            <td>普通用户</td>
+                            <td>第三中队</td>
+                            <td>2016-09-28</td>
+                            <td>正常</td>
+                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160210</td>
+                            <td>王五</td>
+                            <td>普通用户</td>
+                            <td>第四中队</td>
+                            <td>2016-09-28</td>
+                            <td>正常</td>
+                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkBox" id="person1" class="checkBox">
+                            </td>
+                            <td>20160210</td>
+                            <td>林七</td>
+                            <td>普通用户</td>
+                            <td>第一中队</td>
+                            <td>2016-09-28</td>
+                            <td>停用</td>
+                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
+                        </tr> -->
+        </table>
+        <div class="bottom-search">
+            <div class="allSelectBtn normalBtn">全选</div>
+            <div class="urgeBtn normalBtn">删除</div>
+            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                    <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                </a>
+                <a href="javascript:void(0)" @click="nextPage">
+                    <span id="Next">下一页 »</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
+        }
+    });
+        $(".addBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".mask,.addAccount").show();
+    });
+    $(".allSelectBtn ").on('click', function(event) {
+        $("th .checkBox").trigger('click');
+    });
+    $(".searchButtom").on('click', function(event) {
+        event.preventDefault();
+        vm.companyName = $(".searchInput").val();
+        vm.showTasks = vm.tasks.filter(function(data) {
+            return vm.companyNameFilter(data)
+        });
+    });
+    $(".searchInput").on('propertyChange input', function(event) {
+        if ($(this).val()=="") {
+            vm.showTasks=vm.tasks;
+        }
+    });
+    var vm = new Vue({
+        el: "#staffBody",
+        data: {
+            tagState: 1,
+            tasks: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            region: "",
+            risks: {},
+            taskNum: "",
+            recordLimit: 5,
+            pageIndex: 1,
+            showTasks: []
+        },
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.showTasks.length / this.recordLimit)
+            },
+        },
+        methods: {
+            userDetail: function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                }
+                vm.tasks = data;
+                vm.showTasks = data;
+            },
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return year + "-" + month + "-" + day;
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            companyNameFilter: function(data) {
+                if (vm.companyName !== "" && (!data.name || !data.name.match(vm.companyName))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            saveDetail: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("accountDetail", data);
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            $.post('/model', {
+                name: "User",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.userDetail(data.data)
+                }
+            });
+        },
+        ready: function() {
+
+        }
+    })
+});
+</script>
