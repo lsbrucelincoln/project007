@@ -8,7 +8,7 @@
         <div class="contentBody">
             <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px">
                 <div class="inputShort">
-                    <span>机构名称：</span>
+                    <span>企业名称：</span>
                     <i>{{td.name}}</i>
                 </div>
                 <div class="inputShort">
@@ -21,52 +21,74 @@
                 </div>
                 <div class="inputShort">
                     <span>企业类型：</span>
-                    <i>{{td.type.name}}</i>
+                    <select name="" id="" v-model="params.type" :disabled="disabled">
+                        <option v-for="type in companyType" value="{{type.id}}">{{type.name}}</option>
+                    </select>
                 </div>
                 <div class="inputShort">
                     <span>所属港区：</span>
-                    <i>{{td.region.area}}</i>
+                    <select name="" id="" v-model="params.area" :disabled="disabled">
+                        <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
+                    </select>
                 </div>
                 <div class="inputShort">
                     <span>港口管理部门：</span>
-                    <i>{{td.region.name}}</i>
+                    <select name="" id="" v-model="params.region" :disabled="disabled">
+                        <option v-for="place in region" value="{{place.id}}">{{place.name}}</option>
+                    </select>
                 </div>
-                <div class="inputShort digitMap"><span>电子地图：</span>
-                    X:<input type="text" value="750" disabled> —
-                    y:<input type="text" value="145" disabled><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
+                <div class="inputShort digitMap"><span>电子地图：</span> X:
+                    <input type="text" value="750" v-model="x" :disabled="disabled"> — Y:
+                    <input type="text" value="145" v-model="y" :disabled="disabled">
                 </div>
             </div>
             <div class="textInfo">
                 <div class="inputShort">
                     <span>安全负责人：</span>
-                    <i>张三</i>
+                    <input type="text" v-model="params.contact" :disabled="disabled">
                 </div>
                 <div class="inputShort">
                     <span>机构代码：</span>
-                    <i>2328947239482</i>
+                    <input type="text" v-model="params.id" :disabled="disabled">
                 </div>
                 <div class="inputShort">
                     <span>固定电话：</span>
-                    <i>0574-097678833</i>
-                </div>
-                <div class="inputShort">
-                    <span>证书附件：</span>
-                    <a class="admin_ui_link">查看</a>
+                    <input type="text" v-model="params.telephone" :disabled="disabled">
                 </div>
                 <br/>
                 <div class="inputShort">
                     <span>手机号码：</span>
-                    <i>13805741235</i>
+                    <input type="text" v-model="params.phone" :disabled="disabled">
                 </div>
                 <br/>
                 <div class="inputShort companyAddress">
                     <span>企业地址：</span>
-                    <i>宁波市江东区世纪大道34324号11楼</i>
+                    <input type="text" v-model="params.address" :disabled="disabled">
+                </div>
+                <div class="inputShort">
+                    <span>证书附件：</span>
+                    <a class="admin_ui_link" href="/map?id={{params.photo}}">查看</a>
+                    <br/>
+                    <div class="picUpload" style="margin-left:40%" v-show="!disabled">
+                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                            <input type="file" id="uploadPic" name="file" @change="upload">
+                            <label for="uploadPic" id="fileBtn">
+                                +
+                                <img class="showPic" :src="url" />
+                            </label>
+                            <span class="tip"></span>
+                            <input type="text" name="turnUrl" class="turnUrl">
+                            <input type="submit" value="submit">
+                            <canvas id="uploadImg" style="display:none"></canvas>
+                        </form>
+                        <iframe src="" frameborder="0" id="turnPage"></iframe>
+                    </div>
                 </div>
             </div>
             <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-                <div class="allSelectBtn normalBtn" style="margin-top:15px">确定</div>
-                <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                <div class="comfirmBtn normalBtn" style="margin-top:15px" @click="confirm">确定</div>
+                <div class="updateBtn normalBtn" style="margin-top:15px" @click="disabled=false">修改</div>
+                <div class="deleteBtn normalBtn" style="margin-top:15px">删除</div>
             </div>
         </div>
     </div>
@@ -102,9 +124,22 @@ $(document).ready(function() {
     var vm = new Vue({
         el: "#staffDetail",
         data: {
-            td: JSON.parse(localStorage.getItem("companyDetail"))
+            td: "",
+            companyType: "",
+            region: "",
+            area: "",
+            params: {},
+            x: "",
+            y: "",
+            disabled: true,
+            url: ""
         },
         computed: {
+            coordinate: function() {
+                var place = vm.x + "+" + vm.y;
+                this.params.coordinate = place;
+                return place;
+            }
         },
         methods: {
             stamp2time: function(stamp) {
@@ -133,9 +168,142 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
+            addCompany: function() {
+                $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        alert("增加成功");
+                        history.back();
+                    }
+                });
+            },
+            confirm: function() {
+                if (vm.disabled) {
+                    history.back();
+                } else {
+                    console.log(vm.params);
+                    $.post('/region/modifyCompany', vm.params, function(data, textStatus, xhr) {
+                        if (data.state == 0) {
+                            alert("修改成功");
+                            history.back();
+                        }
+                    });
+                }
+            },
+            upload: function(event) {
+                event.preventDefault();
+                console.log($(event.target)[0].files);
+                var file = $(event.target)[0].files[0];
+                if (!/image\/\w+/.test(file.type)) {
+                    alert("文件必须为图片！");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    vm.createCanvas(this.result);
+                }
+            },
+            createCanvas: function(src) {
+                var canvas = document.getElementById("uploadImg");
+                var cxt = canvas.getContext('2d');
+                // canvas.width = 640;
+                // canvas.height = 400;
+                var img = new Image();
+                img.src = src;
+                img.onload = function() {
+                    var w = img.width;
+                    var h = img.height;
+                    canvas.width = w;
+                    canvas.height = h;
+                    cxt.drawImage(img, 0, 0);
+                    var dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                    $(".showPic").show().attr('src', dataUrl);
+                    var blob = vm.dataURLtoBlob(dataUrl);
+                    var fd = new FormData();
+                    fd.append("file", blob, "1.png");
+                    console.log(fd);
+                    $.ajax({
+                        url: "/upload",
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fd,
+                        success: function(data) {
+                            vm.params.photo = data.id;
+                            console.log(data);
+                            // vm.url = "/map/" + vm.params.photo
+                            $(".showPic").show().attr('data-id', "/" + data.id);
+                        }
+                    });
+                }
+            },
+            dataURLtoBlob: function(dataurl) {
+                var arr = dataurl.split(','),
+                    mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {
+                    type: mime
+                });
+            },
         },
         created: function() {
+            var td = this.td = JSON.parse(localStorage.getItem("companyDetail"));
+            this.params = {
+                id: td.id,
+                code: td.code,
+                name: td.name,
+                address: td.address,
+                type: td.type.id,
+                region: td.region.id,
+                contact: td.contact,
+                phone: td.phone,
+                telephone: td.telephone,
+                coordinate: td.coordinate,
+                area: td.area,
+            }
+            if (td.photo) {
+                this.params.photo = td.photo.id
+            } else {
+                this.params.photo = 1
+            }
+            if (td.coordinate) {
+                this.x = td.coordinate.split("+")[0];
+                this.y = td.coordinate.split("+")[1];
+            }
 
+            $.post('/model', {
+                name: "CompanyType",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.companyType = data.data;
+                }
+            });
+            $.post('/model', {
+                name: "Region",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.region = data.data;
+                }
+            });
+            $.post('/model', {
+                name: "Area",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.area = data.data;
+                }
+            });
         },
         ready: function() {}
     })

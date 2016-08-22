@@ -1,9 +1,9 @@
-<div class="addAssessment admin_content_innerBox">
+<div class="addAssessment admin_content_innerBox" id="addAssessment2Body">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
-        <div class="backBtn normalBtn">返回</div>
+            <div class="backBtn normalBtn">返回</div>
             <div class="stateBox">
                 <div class="state">
                     <i class="circle"></i>
@@ -33,6 +33,9 @@
                 </div>
                 <div class="assess2Body">
                     <div class="ztreeBox ztree">
+                        <a class="category1" v-for="(index,item) in category" @click="category1Click(data,$index,index)"><i class="flaticon-add-1" v-if="!state[$index]==1"></i><i class="flaticon-square" v-if="state[$index]==1"></i>{{index}}
+                            <ul class="line" v-if="state[$index]==1"><li class="category2" v-for="(index2,item2) in item"  @click.stop="showData(item2,$event,index2,index)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
+                            </a>
                     </div>
                     <div class="tableBox">
                         <table>
@@ -44,47 +47,25 @@
                                 <th>当前状态</th>
                                 <th>操作</th>
                             </tr>
-                            <tr>
-                                <td style="text-align:left">港口危险货物作业附证（港口经营人、经营范围、附证事项、有效期限）</td>
-                                <td>1</td>
-                                <td>是</td>
+                            <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
+                                <td style="text-align:left">{{rule.text}}</td>
+                                <td>{{rule.safetyLevel}}</td>
+                                <td>{{rule.must?"是":""}}</td>
                                 <td>06/01 20:00</td>
-                                <td>正常</td>
-                                <td><a href="">查看</a></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:left">港口经营许可证（港口经营人、经营范围、附证事项、有效期限）</td>
-                                <td>1</td>
-                                <td>是</td>
-                                <td>06/01 20:00</td>
-                                <td>正常</td>
-                                <td><a href="">查看</a></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:left">安全生产委员会健全，职位分工明确</td>
-                                <td>1</td>
                                 <td></td>
-                                <td>06/01 20:00</td>
-                                <td>失效</td>
-                                <td><a href="">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:left">安全生产管理机构健全，有专职管理人员</td>
-                                <td>2</td>
-                                <td>是</td>
-                                <td>06/01 20:00</td>
-                                <td>正常</td>
-                                <td><a href="">查看</a></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:left">安全生产管理机构工作制度健全，流程明确</td>
-                                <td>1</td>
-                                <td>是</td>
-                                <td>06/01 20:00</td>
-                                <td>正常</td>
-                                <td><a href="">查看</a></td>
+                                <td><a href="">查看</a> <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
                             </tr>
                         </table>
+                        <div class="bottom-search">
+                            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                                <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                                    <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                                </a>
+                                <a href="javascript:void(0)" @click="nextPage">
+                                    <span id="Next">下一页 »</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <a class="normalBtn cancel" href="#/addAssessment.html">上一步</a>
@@ -115,31 +96,176 @@ $(document).ready(function() {
     $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
     });
-
-    function getZTreeData() {
-        var ajax = $.ajax({
-            url: "../source/JSON/get_org.json"
-        });
-        return ajax;
-    }
-    var ztreeSetting = {
-        async: {
-            enable: false
-        },
+    var vm = new Vue({
+        el: "#addAssessment2Body",
         data: {
-            key: {
-                name: "name",
-                children: "data"
-            }
+            state: [1],
+            rules: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            risks: {},
+            category: {},
+            recordLimit: 7,
+            pageIndex: 1,
+            startAttr: "",
+            startAttr2: "",
+            category1: "",
+            category2: "",
+            showRules: [],
+            params:{}
         },
-        callback: {
-            onClick: function(event, treeId, treeNode, clickFlag) {
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.showRules.length / this.recordLimit)
+            },
+        },
+        methods: {
+            rulesDetail: function(data) {
+                this.rules = data;
+                this.showRules = data;
+                var category = {};
+                var category2 = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        vm.startAttr = data[i].category1;
+                        vm.categroy1 = data[i].category1;
+                        vm.startAttr2 = data[i].category2;
+                        vm.category2 = data[i].category2;
+                    }
+                    if (!category[data[i].category1]) {
+                        category[data[i].category1] = {}
+                        category[data[i].category1][data[i].category2] = [];
+                        category[data[i].category1][data[i].category2].push(data[i]);
+                    } else {
+                        if (!category[data[i].category1][data[i].category2]) {
+                            category[data[i].category1][data[i].category2] = [];
+                            category[data[i].category1][data[i].category2].push(data[i]);
+                        } else {
+                            category[data[i].category1][data[i].category2].push(data[i]);
+                        }
+                    }
+                }
+                for (var i = 0; i < vm.category.length; i++) {
+                    vm.state[i] = 1;
+                    vm.state.$set(i, 1);
+                }
+    
+                // vm.rules = (category[this.startAttr][this.startAttr2]);
+                this.category = category;
+            },
+            categoryFilter: function(data) {
 
-            }
+                if (this.category1 !== "" && this.category2 !== "" && (this.category1 !== data.category1 || this.category2 !== data.category2)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            showData: function(data, event, index2, index) {
+                // this.rules = data;
+                this.pageIndex = 1;
+                console.log(index);
+                this.category2 = index2;
+                this.category1 = index;
+                $(".category2").removeClass('chosenCategory');
+                $(event.target).addClass('chosenCategory');
+                this.showRules = this.rules.filter(function(index) {
+                    return vm.categoryFilter(index);
+                });
+            },
+            stateChange: function(index) {},
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return month + "/" + day + " " + hours + ":" + minutes;
+            },
+            dayPeriodCompute: function(startTime, endTime) {
+                var nowTime = new Date(startTime);
+                var theTime = new Date(endTime);
+                return theTime.getDate() - nowTime.getDate();
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+            deleteItem: function(data) {
+                vm.rules.$remove(data);
+            },
+            category1Click: function(data, $index, index) {
+                this.state[$index] == 1 ? this.state.$set($index, 0) : this.state.$set($index, 1);
+                this.category1 = index;
+                this.category2 = "";
+            },
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            this.params=JSON.parse(localStorage.getItem("params"));
+
+            $.post('/model', {
+                name: "SafeRule",
+                "params['companyType']": 1
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.rulesDetail(data.data)
+                }
+            });
+        },
+        ready: function() {
+
         }
-    };
-    $.when(getZTreeData()).done(function(data) {
-        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
-    });
+    })
 });
 </script>

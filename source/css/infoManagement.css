@@ -217,7 +217,8 @@
   width: 400px;
 }
 .companyInfoManagement .contentBody .companyNumber {
-  margin-bottom: 0px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 .companyInfoManagement .contentBody .companyNumber .picUpload {
   margin-top: 10px;
@@ -236,6 +237,12 @@
   width: 500px;
   height: 20px;
   display: none;
+}
+.companyInfoManagement .addBtn {
+  margin-left: 45%;
+}
+.companyInfoManagement .changeBtn {
+  margin-left: 40%;
 }
 .editMode .contentHeader .manageBtn,
 .editMode .contentHeader .searchBox {
