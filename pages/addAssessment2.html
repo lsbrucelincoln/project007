@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <a class="normalBtn cancel" href="#/addAssessment.html">上一步</a>
-                <a class="normalBtn nextStep" href="#/addAssessment3.html">下一步</a>
+                <a class="normalBtn nextStep" href="#/addAssessment3.html" @click="nextStep">下一步</a>
             </div>
         </div>
     </div>
@@ -247,16 +247,27 @@ $(document).ready(function() {
                 this.category1 = index;
                 this.category2 = "";
             },
+            nextStep:function(){
+                vm.params.safeties=[];
+                for (var i = 0; i < vm.rules.length; i++) {
+                    vm.params.safeties.push(vm.rules[i].id);
+                }
+                localStorage.setItem("params",JSON.stringify(vm.params));
+            }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
             this.params=JSON.parse(localStorage.getItem("params"));
-
-            $.post('/model', {
-                name: "SafeRule",
-                "params['companyType']": 1
-            }, function(data, textStatus, xhr) {
+            var data={
+                name:"SafeRule",
+                "params['companyType']": this.params.type,
+                "params['mode']":this.params.mode,
+            }
+            if (this.params.special) {
+                data["params['special']"]=this.params.special;
+            }
+            $.post('/model', data, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
                     vm.rulesDetail(data.data)

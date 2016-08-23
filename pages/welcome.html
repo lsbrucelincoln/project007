@@ -45,34 +45,6 @@
                             <td>{{task.leader.name}}</td>
                             <td>{{task.state}}</td>
                         </tr>
-                        <!--                         <tr>
-                            <td>宁波港航港口服务类测试公司</td>
-                            <td>综合评估</td>
-                            <td>6/1 20:00</td>
-                            <td>竹林风</td>
-                            <td>已同步</td>
-                        </tr>
-                        <tr>
-                            <td>宁波港航集装箱类测试公司</td>
-                            <td>防火专项</td>
-                            <td>6/1 20:00</td>
-                            <td>竹林风</td>
-                            <td>正在执行</td>
-                        </tr>
-                        <tr>
-                            <td>宁波港航普通运输类测试公司</td>
-                            <td>防爆专项</td>
-                            <td>6/1 20:00</td>
-                            <td>竹林风</td>
-                            <td>新增任务</td>
-                        </tr>
-                        <tr>
-                            <td>宁波港航客运类测试公司</td>
-                            <td>日常评估</td>
-                            <td>6/1 20:00</td>
-                            <td>竹林风</td>
-                            <td>新增任务</td>
-                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -93,35 +65,11 @@
                         <th>登记时间</th>
                     </tr>
                     <tr v-for="risk in risks">
-                        <td>{{risk.taskDetail.company.name}}</td>
+                        <td>{{risk.task.company.name}}</td>
                         <td>{{risk.restDay}}天</td>
                         <td>{{risk.safeRule.safetyLevel}}</td>
                         <td>{{risk.time}}</td>
                     </tr>
-                    <!--                     <tr>
-                        <td>宁波港航港口服务类测试公司</td>
-                        <td>4天</td>
-                        <td>2级</td>
-                        <td>6/1 20:00</td>
-                    </tr>
-                    <tr>
-                        <td>宁波港航集装箱类测试公司</td>
-                        <td>4天</td>
-                        <td>2级</td>
-                        <td>6/1 20:00</td>
-                    </tr>
-                    <tr>
-                        <td>宁波港航普通运输类测试公司</td>
-                        <td>4天</td>
-                        <td>2级</td>
-                        <td>6/1 20:00</td>
-                    </tr>
-                    <tr>
-                        <td>宁波港航客运类测试公司</td>
-                        <td>4天</td>
-                        <td>2级</td>
-                        <td>6/1 20:00</td>
-                    </tr> -->
                 </table>
             </div>
             <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大威胁源备案登记数：<a href=""><span>{{statistics.Dangerous}} </span>项</a>

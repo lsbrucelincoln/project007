@@ -400,6 +400,12 @@
   width: 15px;
   height: 10px;
 }
+.addAssessment .contentBody .actionPerson label {
+  margin-right: 5px;
+}
+.addAssessment .contentBody .actionPerson .person {
+  display: inline-block;
+}
 .addAssessment .contentBody .leftBox,
 .addAssessment .contentBody .rightBox {
   width: 165px;

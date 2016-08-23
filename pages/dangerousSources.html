@@ -66,7 +66,7 @@
                             <td>{{dangerous.time}}</td>
                             <td>{{dangerous.company.region.area}}</td>
                             <td>{{dangerous.company.region.name}}</td>
-                            <td><a href="#/dangerousSourcesDetail.html">查看</a></td>
+                            <td><a href="#/dangerousSourcesDetail.html" @click="saveDetail(dangerous)">查看</a></td>
                         </tr>
                     </table>
                     <div class="bottom-search">
@@ -111,6 +111,22 @@ $(document).ready(function() {
             $("td .checkBox").prop("checked", false);
         }
     });
+    $.ajax({
+        url: '/region/createTask',
+        type: 'post',
+        traditional: true,
+        data: {data: [0,1,2,3]},
+    })
+    .done(function() {
+        console.log("success");
+    })
+    .fail(function() {
+        console.log("error");
+    })
+    .always(function() {
+        console.log("complete");
+    });
+    
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
         vm.region = $(".regionName").val();
@@ -230,7 +246,7 @@ $(document).ready(function() {
             },
             saveDetail: function(data) {
                 data = JSON.stringify(data);
-                localStorage.setItem("taskDetail", data);
+                localStorage.setItem("dangerousDetail", data);
             },
             prevPage: function() {
                 if (this.pageIndex - 1 > 0) {

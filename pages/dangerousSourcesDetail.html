@@ -1,9 +1,9 @@
 <style>
-    .headTable td{
-        vertical-align: top;
-    }
+.headTable td {
+    vertical-align: top;
+}
 </style>
-<div class="addAssessment admin_content_innerBox dataManagement">
+<div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
     <div class="minibar">
         <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 重大危险源 ><span class="nowPlace">详细信息</span></span>
     </div>
@@ -12,27 +12,27 @@
             <div class="textInfo">
                 <div class="inputShort">
                     <span>备案编号：</span>
-                    <i>NB01020120160809001</i>
+                    <i>{{params.code}}</i>
                 </div>
                 <div class="inputShort">
                     <span>备案时间：</span>
-                    <i>2016-08-01</i>
+                    <i>{{params.createTime}}</i>
                 </div>
                 <div class="inputShort">
                     <span>企业对象：</span>
-                    <i>宁波市北高顺城无牵无挂拿腔作势佣兵有限公司</i>
+                    <i>{{params.company.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span>企业类型：</span>
-                    <i>港口服务类</i>
+                    <i>{{params.company.type.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span style="width:100px">重大危险源名称：</span>
-                    <i>宁波市北高顺无牵无重大危险源信息</i>
+                    <i>{{params.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span>等级：</span>
-                    <i>二级</i>
+                    <i>{{params.level}}</i>
                 </div>
             </div>
             <table class="headTable tem_headTable" style="margin: 15px 0;">
@@ -53,30 +53,33 @@
                     </tr>
                     <tr>
                         <td colspan="2" rowspan="2">
-                            <span style="margin-bottom: 10px;display: inline-block;">描述：</span><br />
+                            <span style="margin-bottom: 10px;display: inline-block;">描述：</span>
+                            <br />
                             <textarea name="" id="" cols="30" rows="10" style="width:600px;height:120px;padding:10px"></textarea>
                         </td>
                         <td>
-                            坐标： <input type="text" value="X:750" style="width:65px;"> - <input type="text" value="Y:145" style="width:65px;"> <div class="normalBtn">设定</div>
+                            坐标：
+                            X:<input type="text" value="750" style="width:65px;" v-model="x" :disabled="changeState"> -
+                            Y:<input type="text" value="145" style="width:65px;" v-model="y" :disabled="changeState">
+                            <div class="normalBtn" @click="changeState=false">设定</div>
                         </td>
                     </tr>
                     <tr>
                         <td>附件：<a class="admin_ui_link">查看</a></td>
                     </tr>
-
                 </tbody>
             </table>
             <div class="dataPage">
                 <div class="assess2Body">
                     <div class="tableBox" style="text-align:center;margin-bottom:20px">
-                            <div class="addBtn normalBtn" >确认</div>
-                            <div class="urgeBtn normalBtn" >删除</div>
-                        </div>
+                        <div class="addBtn normalBtn">确认</div>
+                        <div class="urgeBtn normalBtn">删除</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <script>
 $(document).ready(function() {
@@ -100,35 +103,30 @@ $(document).ready(function() {
     $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
     });
-
-    function getZTreeData() {
-        var ajax = $.ajax({
-            url: "../source/JSON/get_org.json"
-        });
-        return ajax;
-    }
-    var ztreeSetting = {
-        async: {
-            enable: false
-        },
+    var vm = new Vue({
+        el: "#dangerDetail",
         data: {
-            key: {
-                name: "name",
-                children: "data"
-            }
+            params: {},
+            x: null,
+            y: null,
+            url: "",
+            changeState:true
         },
-        view: {},
-        edit: {
-            enable: true
+        computed: {
         },
-        callback: {
-            onClick: function(event, treeId, treeNode, clickFlag) {
+        methods: {
 
-            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            this.params=JSON.parse(localStorage.getItem("dangerousDetail"));
+            this.x=this.params.coordinate.split(" ")[0]
+            this.y=this.params.coordinate.split(" ")[1]
+        },
+        ready: function() {
+
         }
-    };
-    $.when(getZTreeData()).done(function(data) {
-        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
-    });
+    })
 });
 </script>

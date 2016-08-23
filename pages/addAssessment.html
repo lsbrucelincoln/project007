@@ -35,8 +35,14 @@
                         <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
                     </select>
                 </div>
+                <div class="inputShort"><span>选择区域:</span>
+                    <input type="checkBox" id="port" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="1" v-model="place1">
+                    <label for="port">码头</label>
+                    <input type="checkBox" id="workingArea" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="2" v-model="place2">
+                    <label for="workingArea">作业区</label>
+                </div>
                 <div class="inputShort inputLong companyObject"><span>选择企业对象:</span>
-                    <select name="" id="" v-model="params.company">
+                    <select name="" id="" v-model="params.company" @change="setCompany">
                         <option v-for="company in companyList| filterBy typeFilter company|filterBy areaFilter company" value="{{company.id}}">{{company.name}}</option>
                     </select>
                 </div>
@@ -68,7 +74,7 @@
                         <i class="flaticon-arrows-2"></i>
                     </div>
                     <div class="rightBox">
-                        <p v-for="item in teamList" @click="returnUser(item)">{{item.name}}</p >
+                        <p v-for="item in teamList" @click="returnUser(item)">{{item.name}}</p>
                     </div>
                 </div>
                 <br/>
@@ -85,6 +91,7 @@ $(document).ready(function() {
         onChangeDateTime: function(dp, $input) {
             var d = $('.excuteTime').datetimepicker('getValue');
             vm.params.dead_line = d.getTime();
+            vm.deadLine = $input;
         }
     });
     $("#processingBtn").on('click', function(event) {
@@ -124,14 +131,28 @@ $(document).ready(function() {
             team: "",
             user: "",
             special: "",
-            teamList:[]
+            teamList: [],
+            deadLine: "",
+            choseCompany: {},
+            place1: "1",
+            place2: ""
         },
         computed: {
+            place: function() {
+                vm.params.places = [];
+                if (this.place1) {
+                    vm.params.places.push(this.place1);
+                }
+                if (this.place2) {
+                    vm.params.places.push(this.place2);
+                }
+                 return vm.params.places
+            }
         },
         methods: {
             typeFilter: function(data) {
-                console.log(this.params.type);
-                if (this.type !== "" && this.type !== data.type.id) {
+                var type = data.type.id + "";
+                if (this.type !== "" && this.type !== type) {
                     return false;
                 } else {
                     return true;
@@ -151,17 +172,24 @@ $(document).ready(function() {
                     return true;
                 }
             },
-            pushTeam:function(data,index){
+            pushTeam: function(data, index) {
                 this.teamList.push(data);
                 this.user.$remove(data);
             },
-            returnUser:function(data){
+            returnUser: function(data) {
                 this.teamList.$remove(data);
                 this.user.push(data)
             },
-            saveDetail:function(data){
-                localStorage.setItem("params",JSON.stringify(this.params));
-                localStorage.setItem("teamList",JSON.stringify(this.teamList));
+            saveDetail: function(data) {
+                localStorage.setItem("params", JSON.stringify(this.params));
+                localStorage.setItem("teamList", JSON.stringify(this.teamList));
+                console.log(this.$data);
+                localStorage.setItem("data", JSON.stringify(this.$data));
+            },
+            setCompany: function() {
+                vm.choseCompany = vm.companyList.filter(function(index) {
+                    return index.id == vm.params.company;
+                });
             }
         },
         created: function() {

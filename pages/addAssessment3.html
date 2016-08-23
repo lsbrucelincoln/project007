@@ -1,4 +1,4 @@
-<div class="addAssessment admin_content_innerBox">
+<div class="addAssessment admin_content_innerBox" id="addAssessment3Body">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
@@ -19,40 +19,34 @@
                 </div>
             </div>
             <div class="thirdPage">
-                <div class="inputShort"><span>企业类型:</span><u>港口服务企业</u></div>
-                <div class="inputShort"><span>港区:</span><u>象山</u></div>
-                <div class="inputShort inputLong companyObject"><span>企业对象:</span><u>宁波港航危险品类测试公司</u></div>
-                <div class="inputShort assessType"><span>评估类型:</span><u>日常评估检查</u><span class="hide">—<u></u></span></div>
-                <div class="inputShort inputLong"><span>创建时间:</span><u>06/01 20：00</u></div>
-                <div class="inputShort inputLong"><span>执行中队:</span><u>第一中队</u></div>
+                <div class="inputShort"><span>任务标题:</span><u>{{params.title}}</u></div>
+                <div class="inputShort"><span>企业类型:</span><u>{{rawData.choseCompany[0].type.name}}</u></div>
+                <div class="inputShort"><span>港区:</span><u>{{rawData.choseCompany[0].area}}</u></div>
+                <div class="inputShort inputLong companyObject"><span>企业对象:</span><u>{{rawData.choseCompany[0].name}}</u></div>
+                <div class="inputShort assessType"><span>评估类型:</span><u>{{params.mode}}</u><span class="hide">—<u></u></span></div>
+                <div class="inputShort inputLong"><span>创建时间:</span><u>{{time}}</u></div>
+                <div class="inputShort inputLong"><span>执行中队:</span><u>{{rawData.team}}</u></div>
                 <div class="actionPerson inputShort inputLong">
                     <span>执行人员:</span>
                     <div class="chooseBox">
-                        <input type="radio" name="person" id="person1" checked disabled>
-                        <label for="person1">张三</label>
-                        <input type="radio" name="person" id="person2" disabled>
-                        <label for="person2">李四</label>
-                        <input type="radio" name="person" id="person3" disabled>
-                        <label for="person3">张五</label>
-                        <div class="settingBtn normalBtn">设置负责人</div>
+                        <div class="person" v-for="person in rawData.teamList">
+                            <input type="radio" name="person" id="person{{person.id}}" :checked="$index==0" :disabled="changeState" v-model="params.leader" :value="person.id">
+                            <label for="person{{person.id}}">{{person.name}}</label>
+                        </div>
+                        <div class="settingBtn normalBtn" @click="changeState=false">设置负责人</div>
                         <div class="confirmBtn normalBtn">确定</div>
                     </div>
                 </div>
                 <br/>
                 <a href="#/addAssessment2.html" class="normalBtn cancel">上一步</a>
-                <a href="#/assessmentCheck.html" class="normalBtn nextStep">确认生成</a>
+                <a href="#/assessmentCheck.html" class="normalBtn nextStep" @click.prevent="createTask">确认生成</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    var isChoose=false;
-    $(".settingBtn").on('click', function(event) {
-        event.preventDefault();
-        isChoose=true;
-        $(".chooseBox input").removeAttr('disabled');
-    });
+    var isChoose = false;
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();
@@ -73,11 +67,117 @@ $(document).ready(function() {
     $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
     });
-    $(".nextStep").on('click', function(event) {
-        if(!isChoose){
-            alert("请选择负责人");
-            event.preventDefault();
+    // $(".nextStep").on('click', function(event) {
+    //     event.preventDefault();
+    //     console.log(vm.params);
+    //     $.post('/region/createTask', vm.params, function(data, textStatus, xhr) {
+    //         console.log(data);
+    //         if (data.state == 0) {
+    //             alert("新增成功");
+    //             window.location.href = "index.html#/assessmentCheck.html";
+    //         }
+    //     });
+    // });
+    var vm = new Vue({
+        el: "#addAssessment3Body",
+        data: {
+            params: {},
+            rawData: {},
+            changeState: true,
+        },
+        computed: {
+            time: function() {
+                return this.stamp2time(this.params.dead_line)
+            },
+            otherMember: function() {
+                this.params.member = [];
+                for (var i = 0; i < this.rawData.teamList.length; i++) {
+                    var msg = this.rawData.teamList[i];
+                    var leader = this.params.leader;
+                    console.log(leader);
+                    console.log(msg.id !== leader);
+                    if (msg.id !== leader) {
+                        this.params.member.push(msg.id)
+                    }
+                }
+                return this.params.member
+            }
+        },
+        methods: {
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return month + "/" + day + " " + hours + ":" + minutes;
+            },
+            createTask: function() {
+                console.log(this.params);
+                var data = this.params;
+                // data.member=this.arrayChange(data.member);
+                // data.places=this.arrayChange(data.places);
+                // data.safeties=this.arrayChange(data.safeties);
+                // console.log(data.member);
+                // $.post('/region/createTask', data, function(data, textStatus, xhr) {
+                //     console.log(data);
+                //     if (data.state == 0) {
+                //         alert("新增成功");
+                //         window.location.href = "index.html#/assessmentCheck.html";
+                //     }
+                // });
+                $.ajax({
+                        url: '/region/createTask',
+                        type: 'POST',
+                        traditional: true,
+                        data: data,
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("新增成功");
+                            window.location.href = "index.html#/assessmentCheck.html";
+                        }
+
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
+
+            },
+            arrayChange: function(param) {
+                var result = {};
+                for (var x in param) {
+                    y = param[x];
+                    if (y instanceof Array) {
+                        for (var i = 0; i < y.length; y++) {
+                            result[x + '[' + i + ']'] = y[i];
+                        }
+                    } else {
+                        result[x] = y;
+                    }
+                }
+                return result;
+            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            this.params = JSON.parse(localStorage.getItem("params"));
+            this.rawData = JSON.parse(localStorage.getItem("data"));
+            this.params.area = this.rawData.choseCompany[0].area;
+        },
+        ready: function() {
+
         }
-    });
+    })
 });
 </script>
