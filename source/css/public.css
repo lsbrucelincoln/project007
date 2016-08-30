@@ -221,6 +221,12 @@
   position: relative;
   top: -2px;
 }
+.tableBox .dataTables_scrollBody {
+  border-bottom: none;
+}
+.tableBox .dataTables_scrollBody thead {
+  display: none;
+}
 .tableBox table {
   border-collapse: collapse;
 }
@@ -267,6 +273,7 @@
 .tableBox table th {
   position: relative;
   padding-left: 3px;
+  border-bottom: 1px solid #dfe9ef !important;
 }
 .tableBox table th i {
   position: absolute;

@@ -175,11 +175,10 @@
   width: 100%;
   padding-top: 20px;
 }
-.assessmentCheck .contentBody .checkBody .tableBox th,
-.assessmentCheck .contentBody .practiceBody .tableBox th,
-.assessmentCheck .contentBody .historyBody .tableBox th {
-  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
-  background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
+.assessmentCheck .contentBody .checkBody .tableBox tbody,
+.assessmentCheck .contentBody .practiceBody .tableBox tbody,
+.assessmentCheck .contentBody .historyBody .tableBox tbody {
+  height: 200px;
 }
 .assessmentCheck .contentBody .practiceBody,
 .assessmentCheck .contentBody .historyBody {

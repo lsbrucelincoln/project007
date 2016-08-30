@@ -117,7 +117,9 @@ $(document).ready(function() {
     var vm = new Vue({
         el: "#addAssessmentBody",
         data: {
-            params: {},
+            params: {
+                places: [1]
+            },
             url: "",
             companyType: "",
             region: "",
@@ -137,16 +139,23 @@ $(document).ready(function() {
             place1: "1",
             place2: ""
         },
-        computed: {
-            place: function() {
-                vm.params.places = [];
-                if (this.place1) {
-                    vm.params.places.push(this.place1);
+        watch: {
+            place1: function(val, oldVal) {
+                console.log('test');
+                console.log(oldVal);
+                if (val) {
+                    this.params.places.push(val);
+                }else{
+                    this.params.places.$remove(1);
                 }
-                if (this.place2) {
-                    vm.params.places.push(this.place2);
+            },
+            place2: function(val, oldVal) {
+                console.log('test');
+                if (val) {
+                    this.params.places.push(val);
+                }else{
+                    this.params.places.$remove(2)
                 }
-                 return vm.params.places
             }
         },
         methods: {
@@ -166,7 +175,7 @@ $(document).ready(function() {
                 }
             },
             teamFilter: function(data) {
-                if (this.team !== "" && this.team !== data.squadron) {
+                if (this.team == "" || (this.team !== "" && this.team !== data.squadron)) {
                     return false;
                 } else {
                     return true;

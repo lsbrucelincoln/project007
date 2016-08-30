@@ -6,22 +6,22 @@
         <a href="#" class="addBtn normalBtn">添加账号</a>
     </div>
     <div class="tableBox">
-        <table id="checkTable">
+        <table id="checkTable" class="display compact">
             <thead>
                 <tr>
                     <th>
                         <input type="checkBox" id="person1" class="checkBox">
                     </th>
-                    <th>序号<i class="flaticon-technology"></i></th>
-                    <th>姓名<i class="flaticon-sort"></i></th>
+                    <th>序号</th>
+                    <th>姓名</th>
                     <th>角色</th>
                     <th>所属中队</th>
                     <th>注册时间</th>
-                    <th>当前状态<i class="flaticon-technology"></i></th>
+                    <th>当前状态</th>
                     <th>操作</th>
                 </tr>
             </thead>
-            <tr v-for="account in showTasks">
+            <tr v-for="account in showTasks ">
                 <td>
                     <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0">
                     <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0">
@@ -34,66 +34,18 @@
                 <td>{{account.no_lock?"正常":"停用"}}</td>
                 <td><a href="#/staffAccountManagementDetail.html" @click="saveDetail(account)">查看</a></td>
             </tr>
-            <!--                         <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160210</td>
-                            <td>张三</td>
-                            <td>普通用户</td>
-                            <td>第二中队</td>
-                            <td>2016-09-28</td>
-                            <td>停用</td>
-                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160210</td>
-                            <td>李四</td>
-                            <td>普通用户</td>
-                            <td>第三中队</td>
-                            <td>2016-09-28</td>
-                            <td>正常</td>
-                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160210</td>
-                            <td>王五</td>
-                            <td>普通用户</td>
-                            <td>第四中队</td>
-                            <td>2016-09-28</td>
-                            <td>正常</td>
-                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>20160210</td>
-                            <td>林七</td>
-                            <td>普通用户</td>
-                            <td>第一中队</td>
-                            <td>2016-09-28</td>
-                            <td>停用</td>
-                            <td><a href="#/staffAccountManagementDetail.html">查看</a></td>
-                        </tr> -->
         </table>
         <div class="bottom-search">
             <div class="allSelectBtn normalBtn">全选</div>
             <div class="urgeBtn normalBtn">删除</div>
-            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+<!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
                 </a>
                 <a href="javascript:void(0)" @click="nextPage">
                     <span id="Next">下一页 »</span>
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -101,12 +53,17 @@
 $(document).ready(function() {
     $("th .checkBox").on('click', function(event) {
         if ($(this).prop('checked')) {
-            $("td .checkBox").prop("checked", true);
+            $("td .checkBox").each(function(index, el) {
+                if (!$(this).attr('disabled')) {
+                    $(this).prop("checked", true);
+                }
+            });
+
         } else {
             $("td .checkBox").prop("checked", false);
         }
     });
-        $(".addBtn").on('click', function(event) {
+    $(".addBtn").on('click', function(event) {
         event.preventDefault();
         $(".mask,.addAccount").show();
     });
@@ -121,8 +78,8 @@ $(document).ready(function() {
         });
     });
     $(".searchInput").on('propertyChange input', function(event) {
-        if ($(this).val()=="") {
-            vm.showTasks=vm.tasks;
+        if ($(this).val() == "") {
+            vm.showTasks = vm.tasks;
         }
     });
     var vm = new Vue({
@@ -233,7 +190,43 @@ $(document).ready(function() {
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
-                    vm.userDetail(data.data)
+                    vm.userDetail(data.data);
+                    vm.$nextTick(function() {
+                        $('table.display').DataTable({
+                            "order": [
+                                [2, "desc"]
+                            ],
+                            "searching": false,
+                            "pageLength": 5,
+                            "dom": 'rtp',
+                            "columnDefs": [{
+                                "orderable": false,
+                                "targets": [0, 7]
+                            }],
+                            language: {
+                                processing: "处理中...",
+                                search: "Rechercher&nbsp;:",
+                                lengthMenu: "显示 _MENU_ 项结果",
+                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                infoPostFix: "",
+                                loadingRecords: "载入中...",
+                                zeroRecords: "没有匹配结果",
+                                emptyTable: "表中数据为空",
+                                paginate: {
+                                    first: "首页",
+                                    previous: "上页",
+                                    next: "下页",
+                                    last: "末页"
+                                },
+                                aria: {
+                                    sortAscending: ": 以升序排列此列",
+                                    sortDescending: ":  以降序排列此列"
+                                }
+                            }
+                        });
+                    })
                 }
             });
         },

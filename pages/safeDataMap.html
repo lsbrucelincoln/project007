@@ -1,7 +1,8 @@
 <div class="welcome admin_content_innerBox" style="height: 100%">
     <div class="admin_scrollBox">
         <div class="infoHeader">
-            <div class="leftInfo"><span class="title">通知公告</span><div class="scrollBox"><i class="flaticon-music"></i>这里可以插入下载超链接，不够显示，可以左右滚动播放。</div>
+            <div class="leftInfo"><span class="title">通知公告</span>
+                <div class="scrollBox"><i class="flaticon-music"></i>这里可以插入下载超链接，不够显示，可以左右滚动播放。</div>
             </div>
             <a href="#/welcome.html" class="normalBtn"><i class="flaticon-location"></i><span>返回</span></a>
         </div>
@@ -10,89 +11,82 @@
 </div>
 <script src="http://api.map.baidu.com/api?v=2.0&ak=Ogc3s9tT2jSfg8GvYBScols0iyeSoUGG&callback=initialize"></script>
 <script type="text/javascript">
-function initialize(){
-    $("#baiduMap").height($("#admin_content_table").height()-30);
-    $(window).bind('resize',function(){
-        $("#baiduMap").height($("#admin_content_table").height()-30);
+function initialize() {
+    $("#baiduMap").height($("#admin_content_table").height() - 30);
+    $(window).bind('resize', function() {
+        $("#baiduMap").height($("#admin_content_table").height() - 30);
     });
-    var map = new BMap.Map("baiduMap");          // 创建地图实例  
-    var point = new BMap.Point(121.556686, 29.880177);  // 创建点坐标  
-    map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别  
+    var map = new BMap.Map("baiduMap"); // 创建地图实例  
+    var point = new BMap.Point(121.556686, 29.880177); // 创建点坐标  
+    map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别  
+    var top_left_control = new BMap.ScaleControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT
+    }); // 左上角，添加比例尺
+    var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
+    var top_right_navigation = new BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_RIGHT,
+        type: BMAP_NAVIGATION_CONTROL_SMALL
+    }); //右上角，仅包含平移和缩放按钮
+    map.addControl(top_left_control);
+    map.addControl(top_left_navigation);
+    map.addControl(top_right_navigation);
 
-
-    var marker1 = new BMap.Marker(new BMap.Point(121.566686, 29.889177)); 
+    var marker1 = new BMap.Marker(new BMap.Point(121.566686, 29.889177));
     map.addOverlay(marker1);
-    marker1.addEventListener('click',function(e){
+    marker1.addEventListener('click', function(e) {
         map.openInfoWindow(infoWindow1, marker1.getPosition());
     });
-    var marker2 = new BMap.Marker(new BMap.Point(121.5606865, 29.870177)); 
+    var marker2 = new BMap.Marker(new BMap.Point(121.5606865, 29.870177));
     map.addOverlay(marker2);
-    marker2.addEventListener('click',function(e){
+    marker2.addEventListener('click', function(e) {
         map.openInfoWindow(infoWindow2, marker2.getPosition());
     });
-    var marker3 = new BMap.Marker(new BMap.Point(121.5516869, 29.881)); 
+    var marker3 = new BMap.Marker(new BMap.Point(121.5516869, 29.881));
     map.addOverlay(marker3);
-    marker3.addEventListener('click',function(e){
+    marker3.addEventListener('click', function(e) {
         map.openInfoWindow(infoWindow3, marker3.getPosition());
     });
-    var marker4 = new BMap.Marker(new BMap.Point(121.549686, 29.88197)); 
+    var marker4 = new BMap.Marker(new BMap.Point(121.549686, 29.88197));
     map.addOverlay(marker4);
-    marker1.addEventListener('click',function(e){
+    marker1.addEventListener('click', function(e) {
         map.openInfoWindow(infoWindow1, marker1.getPosition());
     });
-    var marker5 = new BMap.Marker(new BMap.Point(121.5536865, 29.863177)); 
+    var marker5 = new BMap.Marker(new BMap.Point(121.5536865, 29.863177));
     map.addOverlay(marker5);
-    marker2.addEventListener('click',function(e){
+    marker2.addEventListener('click', function(e) {
         map.openInfoWindow(infoWindow2, marker2.getPosition());
     });
-    var marker6 = new BMap.Marker(new BMap.Point(121.5586869, 29.871)); 
+    var marker6 = new BMap.Marker(new BMap.Point(121.5586869, 29.871));
     map.addOverlay(marker6);
-    marker3.addEventListener('click',function(e){
+    marker3.addEventListener('click', function(e) {
         map.openInfoWindow(infoWindow3, marker3.getPosition());
     });
 
 
-    var opts = {    
-     width : 220,     // 信息窗口宽度    
-     height: 60,     // 信息窗口高度    
+    var opts = {
+        width: 220, // 信息窗口宽度    
+        height: 60, // 信息窗口高度    
     };
-    var html = '<table>'+
-        '<tbody>'+
-            '<tr>'+
-                '<td>隐患编号：</td>'+
-                '<td>NBYH010220160810001</td>'+
-            '</tr>'+
-            '<tr>'+
-                '<td>等级：</td>'+
-                '<td>2</td>'+
-            '</tr>'+
-            '<tr>'+
-                '<td>登记时间：</td>'+
-                '<td>2016-08-10</td>'+
-            '</tr>'+
-        '</tbody>'+
-    '</table>';
-    var infoWindow1 = new BMap.InfoWindow(html, opts);   
-    var infoWindow2 = new BMap.InfoWindow(html, opts); 
+    var html = '<table>' +
+        '<tbody>' +
+        '<tr>' +
+        '<td>隐患编号：</td>' +
+        '<td>NBYH010220160810001</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>等级：</td>' +
+        '<td>2</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>登记时间：</td>' +
+        '<td>2016-08-10</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>';
+    var infoWindow1 = new BMap.InfoWindow(html, opts);
+    var infoWindow2 = new BMap.InfoWindow(html, opts);
     var infoWindow3 = new BMap.InfoWindow(html, opts);
 
     map.openInfoWindow(infoWindow1, new BMap.Point(121.5606865, 29.870177));
 }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

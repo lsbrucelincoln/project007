@@ -17,28 +17,22 @@
                 <p class="tableHeader">
                     <i class="flaticon-pc-computer-with-monitor"></i><span>评估任务监控</span>
                 </p>
-                <table>
+                <table id="taskTable" class="compact display">
                     <thead>
                         <tr>
-                            <th>
-                                <select name="" id="" v-model="companyName">
-                                    <option value="">企业名称</option>
-                                    <option v-for="company in companyList" value="{{company}}">{{company}}</option>
-                                </select>
+                            <th @click=" nameOrder1 = nameOrder1 * -1 ">
+                                企业名称
                             </th>
                             <th>评估类</th>
-                            <th>
-                                <select name="" id="" v-model="createTime">
-                                    <option value="">创建时间</option>
-                                    <option v-for="time in createTimeList" value="{{time}}">{{time}}</option>
-                                </select>
+                            <th @click=" timeOrder1 = timeOrder1 * -1 ">
+                                创建时间
                             </th>
                             <th>负责人</th>
                             <th>当前状态</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task|limitBy 5">
+                        <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task">
                             <td>{{task.company.name}}</td>
                             <td>{{task.mode}}</td>
                             <td>{{task.time}}</td>
@@ -52,19 +46,20 @@
                 <p class="tableHeader">
                     <i class="flaticon-computer-service"></i><span>隐患问题监控</span>
                 </p>
-                <table>
-                    <tr>
-                        <th>
-                            <select name="" id="">
-                                <option value="">企业名称</option>
-                                <option v-for="company in companyList" value="{{company}}">{{company}}</option>
-                            </select>
-                        </th>
-                        <th>整改期限</th>
-                        <th>隐患等级</th>
-                        <th>登记时间</th>
-                    </tr>
-                    <tr v-for="risk in risks">
+                <table id="riskTable" class="compact display">
+                    <thead>
+                        <tr>
+                            <th>
+                                企业名称
+                            </th>
+                            <th>整改期限</th>
+                            <th>隐患等级</th>
+                            <th>
+                            登记时间
+                            </th>
+                        </tr>
+                    </thead>
+                    <tr v-for="risk in risks|filterBy companyName2Filter risk |filterBy setTimeFilter risk">
                         <td>{{risk.task.company.name}}</td>
                         <td>{{risk.restDay}}天</td>
                         <td>{{risk.safeRule.safetyLevel}}</td>
@@ -72,7 +67,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大威胁源备案登记数：<a href=""><span>{{statistics.Dangerous}} </span>项</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大危险源备案登记数：<a href=""><span>{{statistics.Dangerous}} </span>项</a>
                 </span>
             </div>
             <div class="reportBox"><span class="reportIcon"><i class="flaticon-alarm"></i></span><span class="reportText">当前辖区内隐患整改到期预警：<a href=""><span>{{statistics.recheckDeadline}} </span>项</a>
@@ -110,6 +105,7 @@ $(document).ready(function() {
         myScroll = setInterval(scrollUp, 50);
     };
     $(document).ready(function() {
+
         var vm = new Vue({
             el: "#welcomeBody",
             data: {
@@ -119,7 +115,12 @@ $(document).ready(function() {
                 createTimeList: [],
                 createTime: "",
                 risks: {},
-                statistics:{}
+                statistics: {},
+                companyName2: "",
+                companyList2: [],
+                setTimeList: [],
+                setTime: "",
+                ajaxState: 0
             },
             methods: {
                 taskGetDetail: function(data) {
@@ -131,24 +132,24 @@ $(document).ready(function() {
                         companyList.push(data[i].company.name)
                         timeList.push(data[i].createTime)
                     }
-                    vm.tasks = data.reverse();
+                    vm.tasks = data;
                     vm.companyList = vm.unique(companyList);
                     vm.createTimeList = vm.unique(timeList);
                 },
                 riskGetDetail: function(data) {
-                    var companyList = [];
+                    var companyList2 = [];
                     var timeList = [];
                     for (var i = 0; i < data.length; i++) {
                         data[i].time = vm.stamp2time(data[i].in_time);
                         data[i].createTime = data[i].time.split(" ")[0];
                         var restDay = vm.dayPeriodCompute(data[i].in_time, data[i].deadline);
                         data[i].restDay = restDay;
-                        // companyList.push(data[i].company.name)
-                        // timeList.push(data[i].createTime)
+                        companyList2.push(data[i].task.company.name)
+                        timeList.push(data[i].createTime)
                     }
                     vm.risks = data;
-                    // vm.companyList = vm.unique(companyList);
-                    // vm.createTimeList = vm.unique(timeList);
+                    vm.companyList2 = vm.unique(companyList2);
+                    vm.setTimeList = vm.unique(timeList);
                 },
                 stamp2time: function(stamp) {
                     var time = new Date(stamp);
@@ -188,8 +189,22 @@ $(document).ready(function() {
                         return true;
                     }
                 },
+                companyName2Filter: function(data) {
+                    if (vm.companyName2 !== "" && vm.companyName2 !== data.task.company.name) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
                 createTimeFilter: function(data) {
                     if (vm.createTime !== "" && vm.createTime !== data.createTime) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                setTimeFilter: function(data) {
+                    if (vm.setTime !== "" && vm.setTime !== data.createTime) {
                         return false;
                     } else {
                         return true;
@@ -201,27 +216,58 @@ $(document).ready(function() {
                 var id = localStorage.getItem("id");
                 $.post('/model', {
                     name: "Task",
-                    rows: 0
+                    rows: 0,
+                    remove: "safeRules"
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
-                        vm.taskGetDetail(data.data)
+                        vm.taskGetDetail(data.data);
+                        self.ajaxState++;
+                        if (self.ajaxState == 2) {
+                            vm.$nextTick(function() {
+                                $('table.display').DataTable({
+                                    // paging: false,
+                                    "order": [
+                                        [2, "desc"]
+                                    ],
+                                    "searching": false,
+                                    "pageLength": 5,
+                                    "dom": 'rt',
+                                    "language":'//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
+                                });
+                            })
+                        }
                     }
                 });
                 $.post('/model', {
                     name: "Censor",
                     rows: 0,
-                    "params['taday']": '1'
+                    "params['taday']": '1',
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
                         vm.riskGetDetail(data.data);
+                        self.ajaxState++;
+                        if (self.ajaxState == 2) {
+                            vm.$nextTick(function() {
+                                $('table.display').DataTable({
+                                    // paging: false,
+                                    "order": [
+                                        [2, "desc"]
+                                    ],
+                                    "searching": false,
+                                    "pageLength": 5,
+                                    "dom": 'rt',
+                                    "language":'//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
+                                });
+                            })
+                        }
                     }
                 });
                 $.get('/region/getStatistics', function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
-                        vm.statistics=data;
+                        vm.statistics = data;
                     }
                 });
             },
