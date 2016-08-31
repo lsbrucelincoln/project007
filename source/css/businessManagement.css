@@ -312,18 +312,34 @@
   margin-top: 20px;
 }
 .addAssessment .contentBody .assess2Body .ztreeBox {
-  width: 200px;
-  height: 217px;
-  border: 1px solid #dfe9ef;
+  height: 292px;
+  border: 0;
+  width: 25%;
+  padding: 5px;
+  line-height: 1.5;
   float: left;
 }
-.addAssessment .contentBody .assess2Body .ztreeBox li a {
-  height: 20px;
+.addAssessment .contentBody .assess2Body .ztreeBox .chosenCategory {
+  background-color: #ccc;
+}
+.addAssessment .contentBody .assess2Body .ztreeBox .chosenCategory i {
+  background-color: #ccc;
+}
+.addAssessment .contentBody .assess2Body .ztreeBox a {
+  display: block;
+  line-height: 20px;
+}
+.addAssessment .contentBody .assess2Body .ztreeBox a ul {
+  margin-left: 20px;
+}
+.addAssessment .contentBody .assess2Body .ztreeBox a i {
+  font-size: 14px;
+  margin-right: 2px;
 }
 .addAssessment .contentBody .assess2Body .tableBox {
   display: block;
   float: left;
-  width: 80%;
+  width: 75%;
 }
 .addAssessment .contentBody .assess2Body .normalBtn {
   margin-top: 20px;

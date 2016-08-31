@@ -1,3 +1,4 @@
+var baseUrl="http://120.26.58.36"
 var ADMIN_CONFIG = {
     "homePage": "welcome.html",
     "mainBodySelector": "#admin_body",
@@ -161,7 +162,7 @@ function eventBind() {
 
 function basicAjax() {
     var id = localStorage.getItem("id");
-    $.post('/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
+    $.post(baseUrl+'/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
         console.log(data);
         if (data.state == 0) {
             console.log(data);
@@ -169,7 +170,7 @@ function basicAjax() {
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
         }
     });
-    $.get('/region/getStatistics', function(data) {
+    $.get(baseUrl+'/region/getStatistics', function(data) {
         if (data.state==0) {
             $(".tips #todayTask").text(data.todayTask);
             $(".tips #todayCensor").text(data.todayCensor);
@@ -323,10 +324,12 @@ function resizeContentTable() {
 function loadContent() {
     var hash = window.location.hash;
     var url = window.location.href;
-    if (hash == "" && !url.match("index_c")) {
+    console.log(url);
+    console.log(url.search("Index_c")==-1);
+    if (hash == "" && url.search("Index_c")==-1) {
         hash = "#/" + ADMIN_CONFIG.homePage;
-    } else if (hash == "" && url.match("index_c")) {
-        hash = "#/" + "companyInfoManagement.html"
+    } else if (hash == "" && url.search("Index_c")!==-1) {
+        hash = "#/" + "assessmentCheck.html"
     }
     var hashArray = hash.split("/");
     $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {

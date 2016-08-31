@@ -1,56 +1,55 @@
 <div class="admin_content_innerBox">
-	<div class="minibar">
-		<i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">隐患分析</span></span>
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">隐患分析</span></span>
     </div>
     <div class="contentBody">
-    	<table class="headTable">
-	    	<tbody>
-	    		<tr>
-	    			<td>
-	    				统计范围：
-				    	<div class="admin_ui_select" style="width: 180px;">
-							<select>
-								<option>宁波市港航管理局</option>
-								<option>大榭港行管理局</option>
-								<option>北仓港行管理局</option>
-								<option>宁波市港航局市区所</option>
-								<option>宁波市港航局运政所</option>
-								<option>鄞州港航管理处</option>
-								<option>镇海港航管理所</option>
-								<option>东钱湖港航管理所</option>
-								<option>宁海港航管理处</option>
-								<option>宁波市港航局直属所</option>
-								<option>余姚港航管理处</option>
-								<option>奉化港航管理处</option>
-								<option>慈溪港航管理处</option>
-							</select>
-						</div>
-        <div class="chartConditionBox">
-            展示粒度：
-            <label for="zsld_byYear" style="margin-right: 10px;">
-                <input id="zsld_byYear" name="zsld_by" type="radio">按年
-            </label>
-            <label for="zsld_bySeason" style="margin-right: 10px;">
-                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
-            </label>
-            <label for="zsld_byMonth" style="margin-right: 10px;">
-                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
-            </label>
-            <label for="zsld_byCustom" style="margin-right: 10px;">
-                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
-            </label>
-            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
-            <i class="fa fa-calendar"></i>
-            -
-            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
-            <i class="fa fa-calendar"></i>
-        </div>
-	    			</td>
-	    			<td>
-	    			</td>
-	    		</tr>
-	    	</tbody>
-	    </table>
+        <table class="headTable">
+            <tbody>
+                <tr>
+                    <td>
+                        统计范围：
+                        <div class="admin_ui_select" style="width: 180px;">
+                            <select>
+                                <option>宁波市港航管理局</option>
+                                <option>大榭港行管理局</option>
+                                <option>北仓港行管理局</option>
+                                <option>宁波市港航局市区所</option>
+                                <option>宁波市港航局运政所</option>
+                                <option>鄞州港航管理处</option>
+                                <option>镇海港航管理所</option>
+                                <option>东钱湖港航管理所</option>
+                                <option>宁海港航管理处</option>
+                                <option>宁波市港航局直属所</option>
+                                <option>余姚港航管理处</option>
+                                <option>奉化港航管理处</option>
+                                <option>慈溪港航管理处</option>
+                            </select>
+                        </div>
+                        <div class="chartConditionBox">
+                            展示粒度：
+                            <label for="zsld_byYear" style="margin-right: 10px;">
+                                <input id="zsld_byYear" name="zsld_by" type="radio">按年
+                            </label>
+                            <label for="zsld_bySeason" style="margin-right: 10px;">
+                                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
+                            </label>
+                            <label for="zsld_byMonth" style="margin-right: 10px;">
+                                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
+                            </label>
+                            <label for="zsld_byCustom" style="margin-right: 10px;">
+                                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
+                            </label>
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <i class="fa fa-calendar"></i> -
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div class="dataBody" style="margin-bottom: 20px;">
             <div class="dataBox">
                 <span class="data">15</span>
@@ -61,41 +60,37 @@
                 <span class="title">消除隐患数量</span>
             </div>
             <div class="dataBox">
-                <span class="data">3</span><span class="title">逾期处置隐患</span></div></div>
-	    <div class="echartBox" style="border-bottom: 1px solid #ddd;margin-bottom: 10px;">
+                <span class="data">3</span><span class="title">逾期处置隐患</span></div>
+        </div>
+        <div class="echartBox" style="border-bottom: 1px solid #ddd;margin-bottom: 10px;">
             <table class="headTable">
                 <tbody>
                     <tr>
                         <td>
-                            
                         </td>
                     </tr>
                 </tbody>
             </table>
-	    	<div id="echartLine_AccessmentAnalysis" style="width: 950px;height: 300px;"></div>
-
-	    </div>
-        
+            <div id="echartLine_AccessmentAnalysis" style="width: 100%;height: 300px;"></div>
+        </div>
     </div>
-	    
 </div>
-
-
 <script>
 $(document).ready(function() {
-        $.datetimepicker.setLocale('zh');
-        $(".datepicker").datetimepicker({
+    $.datetimepicker.setLocale('zh');
+    $(".datepicker").datetimepicker({
         timepicker: false,
-         format:"Y-m-d",
+        format: "Y-m-d",
     });
 });
+
 var echartPie_AccessmentAnalysis_option = {
     title: {
         text: "新增隐患数",
-        left:"center",
-        top:"bottom"
+        left: "center",
+        top: "bottom"
     },
-    tooltip : {
+    tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
     },
@@ -103,101 +98,107 @@ var echartPie_AccessmentAnalysis_option = {
         orient: 'horizontal',
         left: 'center',
         top: 'top',
-        data: ['一级','二级','三级']
+        data: ['一级', '二级', '三级']
     },
-    series : [
-        {
-            name: '隐患等级',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '50%'],
-            label: {
-                normal: {
-                    show: true,
-                    position: "inside",
-                    formatter: "{c}",
-                    textStyle: {
-                        color: "#fff"
-                    }
+    series: [{
+        name: '隐患等级',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '50%'],
+        label: {
+            normal: {
+                show: true,
+                position: "inside",
+                formatter: "{c}",
+                textStyle: {
+                    color: "#fff"
                 }
-            },
-            data:[
-                {value:335, name:'一级'},
-                {value:310, name:'二级'},
-                {value:234, name:'三级'}
-            ]
-        }
-    ],
+            }
+        },
+        data: [{
+            value: 335,
+            name: '一级'
+        }, {
+            value: 310,
+            name: '二级'
+        }, {
+            value: 234,
+            name: '三级'
+        }]
+    }],
     animation: false
 };
 echartPie_AccessmentAnalysis_option.title.text = "逾期处置隐患";
+var month = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+var level = ['一级','二级','三级','四级'];
 
+var data = [[0,0,120],[0,1,132],[0,2,101],[0,3,134],[0,4,90],[0,5,230],[0,6,210],[0,7,182],[0,8,191],[0,9,234],[0,10,190],[0,11,330],[1,0,220],[1,1,182],[1,2,191],[1,3,234],[1,4,290],[1,5,330],[1,6,310],[1,7,301],[1,8,334],[1,9,201],[1,10,154],[1,11,190],[2,0,150],[2,1,232],[2,2,201],[2,3,154],[2,4,190],[2,5,330],[2,6,410],[2,7,132],[2,8,101],[2,9,134],[2,10,90],[2,11,230],[3,0,320],[3,1,332],[3,2,301],[3,3,334],[3,4,390],[3,5,330],[3,6,320],[3,7,234],[3,8,290],[3,9,330],[3,10,310],[3,11,301]]
+
+data = data.map(function (item) {
+    return [item[1], item[0], item[2] || '-'];
+});
 
 var echartLine_AccessmentAnalysis_option = {
     tooltip: {
-        trigger: 'axis'
+        position: 'top'
     },
-    legend: {
-        data:['一级','二级','三级','四级']
-    },
+    animation: false,
     grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
+        height: '50%',
+        y: '10%'
     },
     xAxis: {
-    	name: '月份',
         type: 'category',
-        boundaryGap: false,
-        data: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+        data: month,
+        splitArea: {
+            show: true
+        }
     },
     yAxis: {
-    	name: '数量',
-        type: 'value'
-    },
-    series: [
-        {
-            name:'一级',
-            type:'line',
-            stack: '级别',
-            data:[120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 190, 330]
-        },
-        {
-            name:'二级',
-            type:'line',
-            stack: '级别',
-            data:[220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
-        },
-        {
-            name:'三级',
-            type:'line',
-            stack: '级别',
-            data:[150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
-        },
-        {
-            name:'四级',
-            type:'line',
-            stack: '级别',
-            data:[320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
+        type: 'category',
+        data: level,
+        splitArea: {
+            show: true
         }
-    ]
+    },
+    visualMap: {
+        min: 0,
+        max: 500,
+        calculable: true,
+        orient: 'horizontal',
+        left: 'center',
+        bottom: '15%'
+    },
+    series: [{
+        name: 'Punch Card',
+        type: 'heatmap',
+        data: data,
+        label: {
+            normal: {
+                show: true
+            }
+        },
+        itemStyle: {
+            emphasis: {
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
 };
 var echartLine_AccessmentAnalysis = echarts.init(document.getElementById("echartLine_AccessmentAnalysis"));
 echartLine_AccessmentAnalysis.setOption(echartLine_AccessmentAnalysis_option);
+var table = [
+    [120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 190, 330],
+    [220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190],
+    [150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230],
+    [320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
+];
+var array = [];
+for (var i = 0, len = table.length; i < len; i++) {
+    for (var j = 0, len1 = table[i].length; j < len1; j++) {
+        array.push([i, j, table[i][j]])
+    }
+}
+console.log(JSON.stringify(array));
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

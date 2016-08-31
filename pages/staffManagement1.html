@@ -38,7 +38,7 @@
         <div class="bottom-search">
             <div class="allSelectBtn normalBtn">全选</div>
             <div class="urgeBtn normalBtn">删除</div>
-<!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+            <!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
                 </a>
@@ -72,15 +72,7 @@ $(document).ready(function() {
     });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
-        vm.companyName = $(".searchInput").val();
-        vm.showTasks = vm.tasks.filter(function(data) {
-            return vm.companyNameFilter(data)
-        });
-    });
-    $(".searchInput").on('propertyChange input', function(event) {
-        if ($(this).val() == "") {
-            vm.showTasks = vm.tasks;
-        }
+        $("table.display").DataTable().columns(2).search($(".searchInput").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#staffBody",
@@ -94,17 +86,9 @@ $(document).ready(function() {
             region: "",
             risks: {},
             taskNum: "",
-            recordLimit: 5,
-            pageIndex: 1,
             showTasks: []
         },
         computed: {
-            startPoint: function() {
-                return (this.pageIndex - 1) * 5
-            },
-            pageNum: function() {
-                return Math.ceil(this.showTasks.length / this.recordLimit)
-            },
         },
         methods: {
             userDetail: function(data) {
@@ -140,51 +124,15 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
-            companyNameFilter: function(data) {
-                if (vm.companyName !== "" && (!data.name || !data.name.match(vm.companyName))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
             saveDetail: function(data) {
                 data = JSON.stringify(data);
                 localStorage.setItem("accountDetail", data);
             },
-            prevPage: function() {
-                if (this.pageIndex - 1 > 0) {
-                    this.pageIndex = this.pageIndex - 1;
-                }
-            },
-            nextPage: function() {
-                if (this.pageIndex + 1 <= this.pageNum) {
-                    this.pageIndex = this.pageIndex + 1;
-                }
-            },
-            turnPage: function(data) {
-                vm.pageIndex = data + 1;
-            },
-            clickPageFilter: function(data) {
-                console.log(data);
-                if (data + 1 == vm.pageIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            showPageTag: function(data) {
-                console.log(data - this.pageIndex);
-                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
-                    return true
-                } else {
-                    return false
-                }
-            }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            $.post('/model', {
+            $.post(baseUrl + '/model', {
                 name: "User",
                 rows: 0
             }, function(data, textStatus, xhr) {
@@ -194,9 +142,8 @@ $(document).ready(function() {
                     vm.$nextTick(function() {
                         $('table.display').DataTable({
                             "order": [
-                                [2, "desc"]
+                                [5, "desc"]
                             ],
-                            "searching": false,
                             "pageLength": 5,
                             "dom": 'rtp',
                             "columnDefs": [{
@@ -205,7 +152,7 @@ $(document).ready(function() {
                             }],
                             language: {
                                 processing: "处理中...",
-                                search: "Rechercher&nbsp;:",
+                                search: "查找中...",
                                 lengthMenu: "显示 _MENU_ 项结果",
                                 info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
                                 infoEmpty: "显示第 0 至 0 项结果，共 0 项",

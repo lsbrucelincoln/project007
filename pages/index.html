@@ -361,7 +361,7 @@
         computed: {},
         methods: {
             createUser: function() {
-                $.post('/region/createUser', vm.$data, function(data, textStatus, xhr) {
+                $.post(baseUrl+'/region/createUser', vm.$data, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         alert("新增成功")
                         $(".mask,.addAccount").hide();

@@ -45,7 +45,8 @@
   display: none;
 }
 .picUpload {
-  float: left;
+  height: 100%;
+  text-align: center;
 }
 .picUpload span:first-child {
   width: 110px;
@@ -56,15 +57,14 @@
 }
 .picUpload #uploadPic + label {
   position: relative;
-  width: 200px;
+  width: 50%;
   border: 1px solid #dfe9ef;
   display: inline-block;
-  height: 120px;
-  line-height: 118px;
+  height: 250px;
+  line-height: 248px;
   text-align: center;
   font-size: 50px;
   color: #ccc;
-  font-size: 100;
   margin-right: 20px;
   cursor: pointer;
 }

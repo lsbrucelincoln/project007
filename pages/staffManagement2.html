@@ -6,7 +6,7 @@
         <a href="#" class="addBtn normalBtn">添加公司</a>
     </div>
     <div class="tableBox">
-        <table>
+        <table class="display">
             <thead>
                 <tr>
                     <th></th>
@@ -54,15 +54,7 @@ $(document).ready(function() {
     });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
-        vm.companyName = $(".searchInput").val();
-        vm.showTasks = vm.tasks.filter(function(data) {
-            return vm.companyNameFilter(data)
-        });
-    });
-    $(".searchInput").on('propertyChange input', function(event) {
-        if ($(this).val() == "") {
-            vm.showTasks = vm.tasks;
-        }
+        $("table.display").DataTable().columns(2).search($(".searchInput").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#staffBody",
@@ -76,17 +68,9 @@ $(document).ready(function() {
             region: "",
             risks: {},
             taskNum: "",
-            recordLimit: 5,
-            pageIndex: 1,
             showTasks: []
         },
         computed: {
-            startPoint: function() {
-                return (this.pageIndex - 1) * 5
-            },
-            pageNum: function() {
-                return Math.ceil(this.showTasks.length / this.recordLimit)
-            },
         },
         methods: {
             userDetail: function(data) {
@@ -122,46 +106,10 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
-            companyNameFilter: function(data) {
-                if (vm.companyName !== "" && (!data.name || !data.name.match(vm.companyName))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
             saveDetail: function(data) {
                 data = JSON.stringify(data);
                 localStorage.setItem("companyDetail", data);
             },
-            prevPage: function() {
-                if (this.pageIndex - 1 > 0) {
-                    this.pageIndex = this.pageIndex - 1;
-                }
-            },
-            nextPage: function() {
-                if (this.pageIndex + 1 <= this.pageNum) {
-                    this.pageIndex = this.pageIndex + 1;
-                }
-            },
-            turnPage: function(data) {
-                vm.pageIndex = data + 1;
-            },
-            clickPageFilter: function(data) {
-                console.log(data);
-                if (data + 1 == vm.pageIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            showPageTag: function(data) {
-                console.log(data - this.pageIndex);
-                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
-                    return true
-                } else {
-                    return false
-                }
-            }
         },
         created: function() {
             var self = this;
@@ -173,6 +121,41 @@ $(document).ready(function() {
                 console.log(data);
                 if (data.state == 0) {
                     vm.userDetail(data.data)
+                    vm.$nextTick(function() {
+                        $('table.display').DataTable({
+                            "order": [
+                                [4, "desc"]
+                            ],
+                            "pageLength": 5,
+                            "dom": 'rtp',
+                            "columnDefs": [{
+                                "orderable": false,
+                                "targets": [0, 6]
+                            }],
+                            language: {
+                                processing: "处理中...",
+                                search: "查找中...",
+                                lengthMenu: "显示 _MENU_ 项结果",
+                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                infoPostFix: "",
+                                loadingRecords: "载入中...",
+                                zeroRecords: "没有匹配结果",
+                                emptyTable: "表中数据为空",
+                                paginate: {
+                                    first: "首页",
+                                    previous: "上页",
+                                    next: "下页",
+                                    last: "末页"
+                                },
+                                aria: {
+                                    sortAscending: ": 以升序排列此列",
+                                    sortDescending: ":  以降序排列此列"
+                                }
+                            }
+                        });
+                    })
                 }
             });
         },

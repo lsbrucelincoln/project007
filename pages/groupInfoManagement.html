@@ -13,6 +13,9 @@
                     <span>机构代码：</span>
                     <span>{{params.code}}</span>
                 </div>
+                <div class="inputShort"><span>业务责任人：</span>
+                    <input type="text" value="张三" v-model="params.contact">
+                </div>
                 <div class="inputShort">
                     <span>上级管理部门：</span>
                     <div class="admin_ui_select">
@@ -21,9 +24,6 @@
                             <option>选项2</option>
                         </select>
                     </div>
-                </div>
-                <div class="inputShort"><span>业务责任人：</span>
-                    <input type="text" value="张三" v-model="params.contact">
                 </div>
                 <div class="inputShort"><span>所属港区：</span>
                     <div class="admin_ui_select">
@@ -58,7 +58,6 @@
                 <br/>
                 <div class="inputShort companyNumber"><span>机构组织机构代码证：</span>
                     <br/>
-                    <div class="picUpload">
                         <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
                             <input type="file" id="uploadPic" name="file" @change="upload">
                             <label for="uploadPic" id="fileBtn">
@@ -71,7 +70,6 @@
                             <canvas id="uploadImg" style="display:none"></canvas>
                         </form>
                         <iframe src="" frameborder="0" id="turnPage"></iframe>
-                    </div>
                 </div>
                 <div class="changeBtn normalBtn" @click="update">修改</div>
                 <div class="updateBtn normalBtn" @click="update">更新</div>
@@ -113,7 +111,7 @@ $(document).ready(function() {
             params: {},
             x: null,
             y: null,
-            url:""
+            url: ""
         },
         computed: {
             coordinate: function() {
@@ -163,7 +161,7 @@ $(document).ready(function() {
                         processData: false,
                         data: fd,
                         success: function(data) {
-                            vm.params.photo=data.id;
+                            vm.params.photo = data.id;
                             console.log(data);
                             $(".showPic").show().attr('data-id', "/" + data.id);
                         }
@@ -183,10 +181,10 @@ $(document).ready(function() {
                     type: mime
                 });
             },
-            update:function(){
+            update: function() {
                 $.post('/region/editRegion', vm.params, function(data, textStatus, xhr) {
                     console.log(data);
-                    if (data.state==0) {
+                    if (data.state == 0) {
                         alert("修改成功");
                     }
                 });
@@ -207,8 +205,8 @@ $(document).ready(function() {
                         vm.y = vm.params.coordinate.split("+")[1];
                     }
                     if (vm.params.photo) {
-                        vm.params.photo=vm.params.photo.id
-                        vm.url="/map/"+vm.params.photo
+                        vm.params.photo = vm.params.photo.id
+                        vm.url = "/map/" + vm.params.photo
                     }
                 }
             });

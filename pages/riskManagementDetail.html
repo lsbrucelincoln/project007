@@ -7,19 +7,19 @@
             <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px;">
                 <div class="inputShort">
                     <span>隐患编号：</span>
-                    <i>NB01020120160809001</i>
+                    <i>{{taskDetail.code}}</i>
                 </div>
                 <div class="inputShort">
                     <span>企业类型：</span>
-                    <i>港口服务企业</i>
+                    <i>{{taskDetail.company.type.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span>企业对象：</span>
-                    <i>{{taskDetail.taskDetail.company.name}}</i>
+                    <i>{{taskDetail.company.name}}</i>
                 </div>
                 <div class="inputShort">
                     <span>隐患等级：</span>
-                    <i>{{taskDetail.safeRule.safetyLevel}}</i>
+                    <i>{{taskDetail.censor.safeRule.safetyLevel}}</i>
                 </div>
                 <div class="inputShort">
                     <span>登记时间：</span>
@@ -27,26 +27,26 @@
                 </div>
                 <div class="inputShort">
                     <span>当前状态：</span>
-                    <i>未整改</i>
+                    <i>{{taskDetail.recheckState}}</i>
                 </div>
             </div>
             <table class="tem_headTable">
                 <tbody>
                     <tr>
                         <th style="width: 120px;">评估机构：</th>
-                        <td>{{taskDetail.user.region.name}}</td>
+                        <td>{{taskDetail.censor.user.region.name}}</td>
                         <th>登记人：</th>
                         <td>
                             <label for="djr_by1">
-                                <input id="djr_by1" type="radio" name="djr"> {{taskDetail.user.name}}
+                                <input id="djr_by1" type="radio" name="djr"> {{taskDetail.censor.user.name}}
                             </label>
                         </td>
                         <th>评估编号：</th>
-                        <td>{{taskDetail.taskDetail.code}}</td>
+                        <td>{{taskDetail.censor.task.code}}</td>
                     </tr>
                     <tr>
                         <th>评估标准：</th>
-                        <td colspan="5">{{taskDetail.safeRule.category1}} > {{taskDetail.safeRule.category2}} > {{taskDetail.safeRule.text}}</td>
+                        <td colspan="5">{{taskDetail.censor.safeRule.category1}} > {{taskDetail.censor.safeRule.category2}} > {{taskDetail.censor.safeRule.text}}</td>
                     </tr>
                     <tr>
                         <th>补充描述：</th>
@@ -58,7 +58,7 @@
                     </tr>
                     <tr>
                         <th>处置方式：</th>
-                        <td>{{taskDetail.safeRule.punishment}}</td>
+                        <td>{{taskDetail.censor.safeRule.punishment}}</td>
                         <th>整改期限：</th>
                         <td>
                             {{excuteTime}}
@@ -83,10 +83,10 @@ var vm = new Vue({
     },
     computed: {
         excuteTime: function() {
-            return this.stamp2time(this.taskDetail.deadline);
+            return this.stamp2time(this.taskDetail.censor.deadline);
         },
         startTime:function(){
-            return this.stamp2time(this.taskDetail.in_time);
+            return this.stamp2time(this.taskDetail.censor.in_time);
         }
     },
     methods: {

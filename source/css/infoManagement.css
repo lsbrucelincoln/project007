@@ -49,6 +49,7 @@
   height: 100%;
   line-height: 28px;
   position: static;
+  cursor: pointer;
 }
 .staffManagement .contentBody .infoTable .number {
   width: 23%;
@@ -219,6 +220,7 @@
 .companyInfoManagement .contentBody .companyNumber {
   margin-bottom: 20px;
   width: 100%;
+  height: 300px;
 }
 .companyInfoManagement .contentBody .companyNumber .picUpload {
   margin-top: 10px;

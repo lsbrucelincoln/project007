@@ -166,9 +166,8 @@ $(document).ready(function() {
                     return month + "/" + day + " " + hours + ":" + minutes;
                 },
                 dayPeriodCompute: function(startTime, endTime) {
-                    var nowTime = new Date(startTime);
-                    var theTime = new Date(endTime);
-                    return theTime.getDate() - nowTime.getDate();
+                var day = endTime - startTime;
+                return parseInt(day / (1000 * 60 * 60 * 24));
                 },
                 unique: function(arr) {
                     var result = [],
@@ -182,39 +181,11 @@ $(document).ready(function() {
                     }
                     return result.reverse();
                 },
-                companyNameFilter: function(data) {
-                    if (vm.companyName !== "" && vm.companyName !== data.company.name) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                companyName2Filter: function(data) {
-                    if (vm.companyName2 !== "" && vm.companyName2 !== data.task.company.name) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                createTimeFilter: function(data) {
-                    if (vm.createTime !== "" && vm.createTime !== data.createTime) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                setTimeFilter: function(data) {
-                    if (vm.setTime !== "" && vm.setTime !== data.createTime) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
             },
             created: function() {
                 var self = this;
                 var id = localStorage.getItem("id");
-                $.post('/model', {
+                $.post(baseUrl+'/model', {
                     name: "Task",
                     rows: 0,
                     remove: "safeRules"
@@ -239,7 +210,7 @@ $(document).ready(function() {
                         }
                     }
                 });
-                $.post('/model', {
+                $.post(baseUrl+'/model', {
                     name: "Censor",
                     rows: 0,
                     "params['taday']": '1',
@@ -264,7 +235,7 @@ $(document).ready(function() {
                         }
                     }
                 });
-                $.get('/region/getStatistics', function(data, textStatus, xhr) {
+                $.get(baseUrl+'/region/getStatistics', function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
                         vm.statistics = data;

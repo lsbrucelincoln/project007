@@ -37,48 +37,43 @@
                 </div>
                 <div class="btnBox" v-if="tagState==1">
                     <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">过期警告</div>
-                    <div class="endProgramBtn normalBtn">结束跟踪</div>
+                    <div class="urgeBtn normalBtn" v-if="competence">过期警告</div>
+                    <div class="endProgramBtn normalBtn" v-if="competence">结束跟踪</div>
+                    <div class="endProgramBtn normalBtn" v-if="!competence">指派处置</div>
                 </div>
                 <div class="tableBox">
-                    <table id="checkTable">
-                        <tr>
-                            <th>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </th>
-                            <th>隐患编号<i class="flaticon-sort"></i></th>
-                            <th>隐患等级</th>
-                            <th>企业对象</th>
-                            <th>管理机构</th>
-                            <th>登记时间</th>
-                            <th>整改限期</th>
-                            <th>当前状态<i class="flaticon-technology"></i></th>
-                            <th>操作</th>
-                        </tr>
-                        <tr v-for="task in showTasks |limitBy recordLimit startPoint ">
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>NBYH010220160810001</td>
-                            <td>{{task.safeRule.safetyLevel}}</td>
-                            <td>{{task.taskDetail.company.name}}</td>
-                            <td>{{task.user.region.name}}</td>
-                            <td>{{task.time}}</td>
-                            <td>{{task.restDay}}天</td>
-                            <td></td>
-                            <td><a href="#/riskManagementDetail.html" @click="saveTask(task)">查看</a></td>
-                        </tr>
+                    <table id="checkTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </th>
+                                <th>隐患编号</th>
+                                <th>隐患等级</th>
+                                <th>企业对象</th>
+                                <th>管理机构</th>
+                                <th>登记时间</th>
+                                <th>整改限期</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="task in showTasks |limitBy recordLimit startPoint ">
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
+                                <td>{{task.code}}</td>
+                                <td>{{task.censor.safeRule.safetyLevel}}</td>
+                                <td>{{task.company.name}}</td>
+                                <td>{{task.censor.user.region.name}}</td>
+                                <td>{{task.time}}</td>
+                                <td>{{task.restDay}}天</td>
+                                <td>{{task.recheckState}}</td>
+                                <td><a href="#/riskManagementDetail.html" @click="saveTask(task)">查看</a></td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <div class="bottom-search">
-                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
-                            <a href="javascript:void(0)" v-for="n in pageNum">
-                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
-                            </a>
-                            <a href="javascript:void(0)" @click="nextPage">
-                                <span id="Next">下一页 »</span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -98,25 +93,22 @@ $(document).ready(function() {
     });
     $("th .checkBox").on('click', function(event) {
         if ($(this).prop('checked')) {
-            $("td .checkBox").prop("checked",true);
-        }else{
-            $("td .checkBox").prop("checked",false);
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
         }
     });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
-        vm.region = $(".regionName").val();
-        vm.createTime = $(".createTime").val();
-        vm.taskNum = $(".taskNum").val();
-        vm.companyName = $(".companyName").val();
-        vm.showTasks = vm.tasks.filter(function(data) {
-            return vm.companyNameFilter(data) && vm.createTimeFilter(data) && vm.regionFilter(data) && vm.taskNumFilter(data)
-        });
+        $("#checkTable").DataTable().columns(5).search($(".createTime").val(),false,true).draw();
+        $("#checkTable").DataTable().columns(4).search($(".regionName").val(),false,true).draw();
+        $("#checkTable").DataTable().columns(1).search($(".taskNum").val(),false,true).draw();
+        $("#checkTable").DataTable().columns(3).search($(".companyName").val(),false,true).draw();
     });
     var vm = new Vue({
         el: "#riskManagementBody",
         data: {
-            tagState:1,
+            tagState: 1,
             tasks: [],
             companyList: [],
             companyName: "",
@@ -142,10 +134,10 @@ $(document).ready(function() {
                 var companyList = [];
                 var timeList = [];
                 for (var i = 0; i < data.length; i++) {
-                    data[i].time = vm.stamp2time(data[i].in_time,"normal");
-                    data[i].date = vm.stamp2time(data[i].in_time,"year");
+                    data[i].time = vm.stamp2time(data[i].censor.in_time, "normal");
+                    data[i].date = vm.stamp2time(data[i].censor.in_time, "year");
                     data[i].createTime = data[i].time.split(" ")[0];
-                    var restDay = vm.dayPeriodCompute(data[i].in_time, data[i].deadline);
+                    var restDay = vm.dayPeriodCompute(data[i].censor.in_time, data[i].censor.deadline);
                     data[i].restDay = restDay;
                 }
                 vm.tasks = data.reverse();
@@ -153,7 +145,7 @@ $(document).ready(function() {
                 vm.companyList = vm.unique(companyList);
                 vm.createTimeList = vm.unique(timeList);
             },
-            stamp2time: function(stamp,type) {
+            stamp2time: function(stamp, type) {
                 var time = new Date(stamp);
                 var year = time.getFullYear();
                 var month = time.getMonth() - 0 + 1;
@@ -165,12 +157,12 @@ $(document).ready(function() {
                 hours = hours < 10 ? "0" + hours : hours;
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 var timeString = '';
-                if (type=="normal") {
+                if (type == "normal") {
                     return month + "/" + day + " " + hours + ":" + minutes;
-                }else{
-                     return year + "-" + month + "-" + day;
+                } else {
+                    return year + "-" + month + "-" + day;
                 }
-                
+
             },
             unique: function(arr) {
                 var result = [],
@@ -184,63 +176,13 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
-            companyNameFilter: function(data) {
-                if (vm.companyName !== "" && (!data.company.name || !data.taskDetail.company.name.match(vm.companyName))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            createTimeFilter: function(data) {
-                if (vm.createTime !== "" && vm.createTime !== data.date) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            regionFilter: function(data) {
-                if (vm.region !== "" && vm.region !== data.taskDetail.company.region.name) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            taskNumFilter: function(data) {
-                if (vm.taskNum !== "" && (!data.code || !data.task.match(vm.taskNum))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            prevPage: function() {
-                if (this.pageIndex - 1 > 0) {
-                    this.pageIndex = this.pageIndex - 1;
-                }
-            },
-            nextPage: function() {
-                if (this.pageIndex + 1 <= this.pageNum) {
-                    this.pageIndex = this.pageIndex + 1;
-                }
-            },
-            turnPage: function(data) {
-                vm.pageIndex = data + 1;
-            },
-            clickPageFilter: function(data) {
-                console.log(data);
-                if (data + 1 == vm.pageIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
             dayPeriodCompute: function(startTime, endTime) {
-                var nowTime = new Date(startTime);
-                var theTime = new Date(endTime);
-                return theTime.getDate() - nowTime.getDate();
+                var day = endTime - startTime;
+                return parseInt(day / (1000 * 60 * 60 * 24));
             },
-            saveTask:function(data){
-                data=JSON.stringify(data);
-                localStorage.setItem("riskDetail",data);
+            saveTask: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("riskDetail", data);
             }
         },
         created: function() {
@@ -252,7 +194,43 @@ $(document).ready(function() {
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
-                    vm.taskGetDetail(data.data)
+                    vm.taskGetDetail(data.data);
+                    vm.$nextTick(function() {
+                        $('table.display').DataTable({
+                            "order": [
+                                [5, "desc"]
+                            ],
+                            // "searching": false,
+                            "pageLength": 5,
+                            "dom": 'rtp',
+                            "columnDefs": [{
+                                "orderable": false,
+                                "targets": [0, 8]
+                            }],
+                            language: {
+                                processing: "处理中...",
+                                search: "Rechercher&nbsp;:",
+                                lengthMenu: "显示 _MENU_ 项结果",
+                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                infoPostFix: "",
+                                loadingRecords: "载入中...",
+                                zeroRecords: "没有匹配结果",
+                                emptyTable: "表中数据为空",
+                                paginate: {
+                                    first: "首页",
+                                    previous: "上页",
+                                    next: "下页",
+                                    last: "末页"
+                                },
+                                aria: {
+                                    sortAscending: ": 以升序排列此列",
+                                    sortDescending: ":  以降序排列此列"
+                                }
+                            }
+                        });
+                    })
                 }
             });
         },

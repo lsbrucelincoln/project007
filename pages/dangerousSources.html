@@ -3,8 +3,8 @@
     </div>
     <div class="contentBody">
         <div class="tagBar">
-            <a class="tag  chosenBtn checkBtn" @click="tagState=1">重大危险源监控信息</a>
-            <a class="tag praticeBtn" @click="tagState=2">历史重大危险源信息</a>
+            <a class="tag  chosenBtn checkBtn" @click="changeState(1)">重大危险源监控信息</a>
+            <a class="tag praticeBtn" @click="changeState(2)">历史重大危险源信息</a>
         </div>
         <div class="contenBox">
             <div class="checkBody">
@@ -13,7 +13,7 @@
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width:200px">
                         <select name="" id="" class="regionName">
-                        <option value="北仑港航局">北仑港航局</option>
+                            <option value="北仑港航局">北仑港航局</option>
                             <option value="宁波市港航管理局">宁波市港航管理局</option>
                         </select>
                     </div>
@@ -39,46 +39,40 @@
                     <div class="urgeBtn normalBtn">失效操作</div>
                 </div>
                 <div class="tableBox">
-                    <table id="checkTable">
-                        <tr>
-                            <th>
-                                <input type="checkBox" class="checkBox">
-                            </th>
-                            <th>序号<i class="flaticon-technology"></i></th>
-                            <th>企业名称<i class="flaticon-sort"></i></th>
-                            <th>重大危险源名称</th>
-                            <th>等级</th>
-                            <th>备案编号</th>
-                            <th>备案日期</th>
-                            <th>所在港区</th>
-                            <th>管理机构<i class="flaticon-technology"></i></th>
-                            <th>操作</th>
-                        </tr>
-                        <tr v-for="dangerous in showTasks">
-                            <td>
-                                <input type="checkBox" class="checkBox">
-                            </td>
-                            <td>{{dangerous.id}}</td>
-                            <td>{{dangerous.company.name}}</td>
-                            <td>{{dangerous.name}}</td>
-                            <td>{{dangerous.level}}</td>
-                            <td>{{dangerous.code}}</td>
-                            <td>{{dangerous.time}}</td>
-                            <td>{{dangerous.company.region.area}}</td>
-                            <td>{{dangerous.company.region.name}}</td>
-                            <td><a href="#/dangerousSourcesDetail.html" @click="saveDetail(dangerous)">查看</a></td>
-                        </tr>
+                    <table id="checkTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkBox" class="checkBox">
+                                </th>
+                                <th>序号</th>
+                                <th>企业名称</th>
+                                <th>重大危险源名称</th>
+                                <th>等级</th>
+                                <th>备案编号</th>
+                                <th>备案日期</th>
+                                <th>所在港区</th>
+                                <th>管理机构</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="dangerous in showTasks">
+                                <td>
+                                    <input type="checkBox" class="checkBox">
+                                </td>
+                                <td>{{dangerous.id}}</td>
+                                <td>{{dangerous.company.name}}</td>
+                                <td>{{dangerous.name}}</td>
+                                <td>{{dangerous.level}}</td>
+                                <td>{{dangerous.code}}</td>
+                                <td>{{dangerous.time}}</td>
+                                <td>{{dangerous.company.region.area}}</td>
+                                <td>{{dangerous.company.region.name}}</td>
+                                <td><a href="#/dangerousSourcesDetail.html" @click="saveDetail(dangerous)">查看</a></td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <div class="bottom-search">
-                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
-                            <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
-                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
-                            </a>
-                            <a href="javascript:void(0)" @click="nextPage">
-                                <span id="Next">下一页 »</span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -111,31 +105,12 @@ $(document).ready(function() {
             $("td .checkBox").prop("checked", false);
         }
     });
-    $.ajax({
-        url: '/region/createTask',
-        type: 'post',
-        traditional: true,
-        data: {data: [0,1,2,3]},
-    })
-    .done(function() {
-        console.log("success");
-    })
-    .fail(function() {
-        console.log("error");
-    })
-    .always(function() {
-        console.log("complete");
-    });
-    
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
-        vm.region = $(".regionName").val();
-        vm.createTime = $(".createTime").val();
-        vm.taskNum = $(".taskNum").val();
-        vm.companyName = $(".companyName").val();
-        vm.showTasks = vm.tasks.filter(function(data) {
-            return vm.companyNameFilter(data) && vm.createTimeFilter(data) && vm.regionFilter(data) && vm.taskNumFilter(data)
-        });
+        $("#checkTable").DataTable().columns(6).search($(".createTime").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(8).search($(".regionName").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(4).search($(".taskNum").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(2).search($(".companyName").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#dangerousBody",
@@ -152,16 +127,9 @@ $(document).ready(function() {
             recordLimit: 5,
             pageIndex: 1,
             showTasks: [],
-            region:""
+            region: ""
         },
-        computed: {
-            startPoint: function() {
-                return (this.pageIndex - 1) * 5
-            },
-            pageNum: function() {
-                return Math.ceil(this.showTasks.length / this.recordLimit)
-            },
-        },
+        computed: {},
         methods: {
             taskGetDetail: function(data) {
                 var companyList = [];
@@ -176,19 +144,6 @@ $(document).ready(function() {
                 vm.showTasks = vm.tasks;
                 vm.companyList = vm.unique(companyList);
                 vm.createTimeList = vm.unique(timeList);
-            },
-            riskGetDetail: function(data) {
-                var companyList = [];
-                var timeList = [];
-                for (var i = 0; i < data.length; i++) {
-                    data[i].time = vm.stamp2time(data[i].in_time);
-                    data[i].createTime = data[i].time.split(" ")[0];
-                    // companyList.push(data[i].company.name)
-                    // timeList.push(data[i].createTime)
-                }
-                vm.risks = data;
-                // vm.companyList = vm.unique(companyList);
-                // vm.createTimeList = vm.unique(timeList);
             },
             stamp2time: function(stamp) {
                 var time = new Date(stamp);
@@ -216,80 +171,69 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
-            companyNameFilter: function(data) {
-                if (vm.companyName !== "" && (!data.company.name || !data.company.name.match(vm.companyName))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            createTimeFilter: function(data) {
-                if (vm.createTime !== "" && vm.createTime !== data.createTime) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            regionFilter: function(data) {
-                if (vm.region !== "" && vm.region !== data.company.region.name) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            taskNumFilter: function(data) {
-                if (vm.taskNum !== "" && (!data.level || !data.level.match(vm.taskNum))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
             saveDetail: function(data) {
                 data = JSON.stringify(data);
                 localStorage.setItem("dangerousDetail", data);
             },
-            prevPage: function() {
-                if (this.pageIndex - 1 > 0) {
-                    this.pageIndex = this.pageIndex - 1;
-                }
+            changeState: function(state) {
+                this.tagState = state;
+                $('table.display').DataTable().destroy();
+                this.getData(state - 1);
+
             },
-            nextPage: function() {
-                if (this.pageIndex + 1 <= this.pageNum) {
-                    this.pageIndex = this.pageIndex + 1;
-                }
-            },
-            turnPage: function(data) {
-                vm.pageIndex = data + 1;
-            },
-            clickPageFilter: function(data) {
-                console.log(data);
-                if (data + 1 == vm.pageIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            showPageTag: function(data) {
-                console.log(data - this.pageIndex);
-                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
-                    return true
-                } else {
-                    return false
-                }
+            getData: function(state) {
+                $.post('/model', {
+                    name: "Dangerous",
+                    rows: 0,
+                    "params['delete']": state
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.taskGetDetail(data.data);
+                        vm.$nextTick(function() {
+                            $('table.display').DataTable({
+                                "order": [
+                                    [6, "desc"]
+                                ],
+                                // "searching": false,
+                                "pageLength": 5,
+                                "dom": 'rtp',
+                                "columnDefs": [{
+                                    "orderable": false,
+                                    "targets": [0, 9]
+                                }],
+                                language: {
+                                    processing: "处理中...",
+                                    search: "Rechercher&nbsp;:",
+                                    lengthMenu: "显示 _MENU_ 项结果",
+                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    infoPostFix: "",
+                                    loadingRecords: "载入中...",
+                                    zeroRecords: "没有匹配结果",
+                                    emptyTable: "表中数据为空",
+                                    paginate: {
+                                        first: "首页",
+                                        previous: "上页",
+                                        next: "下页",
+                                        last: "末页"
+                                    },
+                                    aria: {
+                                        sortAscending: ": 以升序排列此列",
+                                        sortDescending: ":  以降序排列此列"
+                                    }
+                                }
+                            });
+                        })
+                    }
+                });
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            $.post('/model', {
-                name: "Dangerous",
-                rows: 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.taskGetDetail(data.data)
-                }
-            });
+            self.getData(0);
         },
         ready: function() {
 

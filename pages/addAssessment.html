@@ -19,10 +19,6 @@
                 </div>
             </div>
             <div class="firstPage">
-                <div class="inputShort">
-                    <span>填写任务标题：</span>
-                    <input type="text" v-model="params.title">
-                </div>
                 <div class="inputShort"><span>选择企业类型:</span>
                     <select name="" id="" v-model="type">
                         <option value="">全部</option>
@@ -145,7 +141,7 @@ $(document).ready(function() {
                 console.log(oldVal);
                 if (val) {
                     this.params.places.push(val);
-                }else{
+                } else {
                     this.params.places.$remove(1);
                 }
             },
@@ -153,7 +149,7 @@ $(document).ready(function() {
                 console.log('test');
                 if (val) {
                     this.params.places.push(val);
-                }else{
+                } else {
                     this.params.places.$remove(2)
                 }
             }
@@ -204,6 +200,9 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
+            if (localStorage.getItem("params")) {
+                self.params = JSON.parse(localStorage.getItem("params"));
+            }
             $.post('/model', {
                 name: "CompanyType",
                 "row": 0

@@ -1,9 +1,9 @@
 <style>
-    #urgeSetTable tr td:nth-child(2){
-        text-align: left;
-    }
+#urgeSetTable tr td:nth-child(2) {
+    text-align: left;
+}
 </style>
-<div class="addAssessment admin_content_innerBox dataManagement">
+<div class="addAssessment admin_content_innerBox dataManagement" id="urgeBody">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">应急演练预设</span></span>
     </div>
     <div class="admin_scrollBox">
@@ -22,9 +22,12 @@
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
+                            <a class="category1" v-for="(index,item) in category" @click="state[$index]==1?state.$set($index,0):state.$set($index,1)"><i class="flaticon-add-1" v-if="!state[$index]==1"></i><i class="flaticon-square" v-if="state[$index]==1"></i>{{index}}
+                            <ul class="line" v-if="state[$index]==1"><li class="category2" v-for="(index2,item2) in item"  @click.stop="showData(item2,$event)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
+                            </a>
                         </div>
-                        <i class="flaticon-add"></i>
-                        <i class="flaticon-cancel"></i></div>
+                        <i class="treeAdd">+</i>
+                        <i class="treeRemove">-</i></div>
                     <div class="tableBox">
                         <table id="urgeSetTable">
                             <tr>
@@ -125,30 +128,144 @@ $(document).ready(function() {
         $(".rightBox").append($(this));
     });
 
-    function getZTreeData() {
-        var ajax = $.ajax({
-            url: "../source/JSON/get_org2.json"
-        });
-        return ajax;
-    }
-    var ztreeSetting = {
-        async: {
-            enable: false
-        },
+    var vm = new Vue({
+        el: "#urgeBody",
         data: {
-            key: {
-                name: "name",
-                children: "data"
+            state: [1],
+            rules: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            risks: {},
+            category: {},
+            recordLimit: 7,
+            pageIndex: 1,
+            startAttr: "",
+            startAttr2: ""
+        },
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.rules.length / this.recordLimit)
+            },
+        },
+        methods: {
+            rulesDetail: function(data) {
+                var category = {};
+                var category2 = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        vm.startAttr = data[i].category1;
+                        vm.startAttr2 = data[i].category2;
+                    }
+                    if (!category[data[i].category1]) {
+                        category[data[i].category1] = {}
+                        category[data[i].category1][data[i].category2] = [];
+                        category[data[i].category1][data[i].category2].push(data[i]);
+                    } else {
+                        if (!category[data[i].category1][data[i].category2]) {
+                            category[data[i].category1][data[i].category2] = [];
+                            category[data[i].category1][data[i].category2].push(data[i]);
+                        } else {
+                            category[data[i].category1][data[i].category2].push(data[i]);
+                        }
+                    }
+                }
+                for (var i = 0; i < vm.category.length; i++) {
+                    vm.state[i] = 1;
+                    vm.state.$set(i, 1);
+                }
+                console.log(category);
+                vm.rules = (category[this.startAttr][this.startAttr2]);
+                this.category = category;
+            },
+            showData: function(data, event) {
+                this.rules = data;
+                this.pageIndex = 1;
+                $(".category2").removeClass('chosenCategory');
+                $(event.target).addClass('chosenCategory');
+            },
+            stateChange: function(index) {},
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return month + "/" + day + " " + hours + ":" + minutes;
+            },
+            dayPeriodCompute: function(startTime, endTime) {
+                var nowTime = new Date(startTime);
+                var theTime = new Date(endTime);
+                return theTime.getDate() - nowTime.getDate();
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
+                    return true
+                } else {
+                    return false
+                }
             }
         },
-        callback: {
-            onClick: function(event, treeId, treeNode, clickFlag) {
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            $.post('/model', {
+                name: "EmergencyRule",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.rulesDetail(data.data)
+                }
+            });
+        },
+        ready: function() {
 
-            }
         }
-    };
-    $.when(getZTreeData()).done(function(data) {
-        $.fn.zTree.init($(".ztreeBox"), ztreeSetting, data.org);
-    });
+    })
 });
 </script>

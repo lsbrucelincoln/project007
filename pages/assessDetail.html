@@ -15,64 +15,39 @@
                 <h3>评估详情</h3>
                 <p class="halfText">评估类型：<span>{{taskDetail.mode}}</span></p>
                 <p class="halfText">执行时间：<span>{{excuteTime}}</span></p>
-                <p class="halfText">评估队伍：<span>*{{taskDetail.leader.name}} <span v-for="member in taskDetail.member">{{member.name}}</span></span></p>
+                <p class="halfText">评估队伍：<span>*{{taskDetail.leader.name}} <span v-for="member in taskDetail.member">{{member.name}}</span></span>
+                </p>
                 <p class="halfText">评估结论：<span>新增 <u>3</u> 条隐患</span></p>
             </div>
             <div class="textInfo" style="margin-top:10px">
                 <h3>隐患信息</h3>
                 <div class="tableBox">
-                    <table id="practiceTable">
+                    <table id="practiceTable" v-if="riskList.length>0">
                         <tr>
                             <th>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </th>
-                            <th>序号<i class="flaticon-technology"></i></th>
+                            <th>序号</th>
                             <th>隐患等级</th>
                             <th>企业对象</th>
                             <th>管理机构</th>
                             <th>登记时间</th>
                             <th>整改限期</th>
-                            <th>当前状态<i class="flaticon-technology"></i></th>
+                            <th>当前状态</th>
                             <th>操作</th>
                         </tr>
-                        <tr>
+                        <tr v-for="risk in riskList">
                             <td>
                                 <input type="checkBox" id="person1" class="checkBox">
                             </td>
-                            <td>1000001</td>
-                            <td>2级</td>
-                            <td>宁波港航集装箱类测试公司</td>
-                            <td>宁波港航管理局</td>
-                            <td>2016-01-01</td>
-                            <td>6天</td>
-                            <td>正在跟踪</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>1000001</td>
-                            <td>2级</td>
-                            <td>宁波港航普通运输类测试公司</td>
-                            <td>宁波港航管理局</td>
-                            <td>2016-01-01</td>
-                            <td>6天</td>
-                            <td>正在跟踪</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkBox" id="person1" class="checkBox">
-                            </td>
-                            <td>1000001</td>
-                            <td>2级</td>
-                            <td>宁波港航客运类测试公司</td>
-                            <td>宁波港航管理局</td>
-                            <td>2016-01-01</td>
-                            <td>6天</td>
-                            <td>正在跟踪</td>
-                            <td><a href="#/assessDetail.html">查看</a></td>
+                            <td>{{risk.code}}</td>
+                            <td>{{risk.censor.safeRule.safetyLevel}}</td>
+                            <td>{{risk.company.name}}</td>
+                            <td>{{risk.company.region.parent}}</td>
+                            <td>{{risk.date}}</td>
+                            <td>{{risk.restDay}}天</td>
+                            <td>{{risk.recheckState}}</td>
+                            <td><a href="#/riskManagementDetail.html" @click="saveTask(risk)">查看</a></td>
                         </tr>
                     </table>
                     <div class="bottom-search" style="margin-top:20px">
@@ -102,7 +77,8 @@ $(document).ready(function() {
     var vm = new Vue({
         el: "#assessDetailBody",
         data: {
-            taskDetail: JSON.parse(localStorage.getItem("taskDetail"))
+            taskDetail: JSON.parse(localStorage.getItem("taskDetail")),
+            riskList: []
         },
         computed: {
             excuteTime: function() {
@@ -110,7 +86,20 @@ $(document).ready(function() {
             }
         },
         methods: {
-            stamp2time: function(stamp) {
+            riskGetDetail: function(data) {
+                var companyList = [];
+                var timeList = [];
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].censor.in_time, "normal");
+                    data[i].date = vm.stamp2time(data[i].censor.in_time, "year");
+                    data[i].createTime = data[i].time.split(" ")[0];
+                    var restDay = vm.dayPeriodCompute(data[i].censor.in_time, data[i].censor.deadline);
+                    data[i].restDay = restDay;
+                }
+                vm.riskList = data;
+                vm.showTasks = vm.tasks;
+            },
+            stamp2time: function(stamp, type) {
                 var time = new Date(stamp);
                 var year = time.getFullYear();
                 var month = time.getMonth() - 0 + 1;
@@ -122,7 +111,12 @@ $(document).ready(function() {
                 hours = hours < 10 ? "0" + hours : hours;
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 var timeString = '';
-                return month + "/" + day + " " + hours + ":" + minutes;
+                if (type == "normal") {
+                    return month + "/" + day + " " + hours + ":" + minutes;
+                } else {
+                    return year + "-" + month + "-" + day;
+                }
+
             },
             unique: function(arr) {
                 var result = [],
@@ -136,9 +130,23 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
+            dayPeriodCompute: function(startTime, endTime) {
+                var day = endTime - startTime;
+                return parseInt(day / (1000 * 60 * 60 * 24));
+            },
+            saveTask: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("riskDetail", data);
+            }
         },
         created: function() {
-
+            var self = this;
+            $.post('/model', {
+                name: "Recheck",
+                "params['task']": self.taskDetail.id
+            }, function(data, textStatus, xhr) {
+                self.riskGetDetail(data.data);
+            });
         },
         ready: function() {}
     })

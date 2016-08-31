@@ -3,9 +3,9 @@
     </div>
     <div class="contentBody">
         <div class="tagBar">
-            <a class="tag  chosenBtn checkBtn" @click="tagState=1">评估检查任务</a>
-            <a class="tag praticeBtn" @click="tagState=2">应急演练</a>
-            <a class="tag historyBtn" @click="tagState=3">评估历史</a>
+            <a class="tag  chosenBtn checkBtn" @click="changeState(1)">评估检查任务</a>
+            <a class="tag praticeBtn" @click="changeState(2)">应急演练</a>
+            <a class="tag historyBtn" @click="changeState(3)">评估历史</a>
         </div>
         <div class="contenBox">
             <div class="checkBody">
@@ -36,7 +36,7 @@
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
                 </div>
-                <div class="btnBox" v-if="tagState!==3">
+                <div class="btnBox" v-if="tagState!==3&&competence">
                     <a href="#/addAssessment.html" class="addBtn normalBtn">添加任务</a>
                     <div class="allSelectBtn normalBtn">全选</div>
                     <div class="urgeBtn normalBtn">催促执行</div>
@@ -75,20 +75,14 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!--                     <div class="bottom-search">
-                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
-                            <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
-                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
-                            </a>
-                            <a href="javascript:void(0)" @click="nextPage">
-                                <span id="Next">下一页 »</span>
-                            </a>
-                        </div>
-                    </div> -->
+                    <div class="bottom-search" v-if="!competence">
+                        <div class="allSelectBtn normalBtn">全选</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <script>
 $(document).ready(function() {
@@ -125,13 +119,11 @@ $(document).ready(function() {
     });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
-        vm.region = $(".regionName").val();
-        vm.createTime = $(".createTime").val();
-        vm.taskNum = $(".taskNum").val();
-        vm.companyName = $(".companyName").val();
-        vm.showTasks = vm.tasks.filter(function(data) {
-            return vm.companyNameFilter(data) && vm.createTimeFilter(data) && vm.regionFilter(data) && vm.taskNumFilter(data);
-        });
+        console.log('test');
+        $("#checkTable").DataTable().columns(5).search($(".createTime").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(4).search($(".regionName").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(1).search($(".taskNum").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(3).search($(".companyName").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#assessmentBody",
@@ -145,18 +137,10 @@ $(document).ready(function() {
             region: "",
             risks: {},
             taskNum: "",
-            recordLimit: 5,
-            pageIndex: 1,
-            showTasks: []
+            showTasks: [],
+            competence: true
         },
-        computed: {
-            startPoint: function() {
-                return (this.pageIndex - 1) * 5
-            },
-            pageNum: function() {
-                return Math.ceil(this.showTasks.length / this.recordLimit)
-            },
-        },
+        computed: {},
         methods: {
             taskGetDetail: function(data) {
                 var companyList = [];
@@ -171,19 +155,6 @@ $(document).ready(function() {
                 vm.showTasks = vm.tasks;
                 vm.companyList = vm.unique(companyList);
                 vm.createTimeList = vm.unique(timeList);
-            },
-            riskGetDetail: function(data) {
-                var companyList = [];
-                var timeList = [];
-                for (var i = 0; i < data.length; i++) {
-                    data[i].time = vm.stamp2time(data[i].in_time);
-                    data[i].createTime = data[i].time.split(" ")[0];
-                    // companyList.push(data[i].company.name)
-                    // timeList.push(data[i].createTime)
-                }
-                vm.risks = data;
-                // vm.companyList = vm.unique(companyList);
-                // vm.createTimeList = vm.unique(timeList);
             },
             stamp2time: function(stamp) {
                 var time = new Date(stamp);
@@ -211,117 +182,94 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
-            companyNameFilter: function(data) {
-                if (vm.companyName !== "" && (!data.company.name || !data.company.name.match(vm.companyName))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            createTimeFilter: function(data) {
-                if (vm.createTime !== "" && vm.createTime !== data.createTime) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            regionFilter: function(data) {
-                if (vm.region !== "" && vm.region !== data.company.region.name) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            taskNumFilter: function(data) {
-                if (vm.taskNum !== "" && (!data.code || !data.code.match(vm.taskNum))) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
             saveDetail: function(data) {
                 data = JSON.stringify(data);
                 localStorage.setItem("taskDetail", data);
             },
-            prevPage: function() {
-                if (this.pageIndex - 1 > 0) {
-                    this.pageIndex = this.pageIndex - 1;
-                }
+            changeState: function(state) {
+                this.tagState == state;
+                this.showTasks = [];
+                $('table.display').DataTable().destroy();
+
+                this.getData(state);
             },
-            nextPage: function() {
-                if (this.pageIndex + 1 <= this.pageNum) {
-                    this.pageIndex = this.pageIndex + 1;
+            getData: function(state) {
+                var data = {}
+                switch (state) {
+                    case 1:
+                        data = {
+                            name: 'Task',
+                            rows: 0,
+                            remove: "safeRules",
+                            "params['state']": "未检"
+                        };
+                        break;
+                    case 2:
+                        data = {
+                            name: 'Emergency',
+                            rows: 0,
+                        };
+                        break;
+                    case 3:
+                        data = {
+                            name: 'Task',
+                            rows: 0,
+                            remove: "safeRules",
+                            "params['state']": "已检"
+                        };
                 }
-            },
-            turnPage: function(data) {
-                vm.pageIndex = data + 1;
-            },
-            clickPageFilter: function(data) {
-                console.log(data);
-                if (data + 1 == vm.pageIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            showPageTag: function(data) {
-                console.log(data - this.pageIndex);
-                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
-                    return true
-                } else {
-                    return false
-                }
+                $.post('/model', data, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.taskGetDetail(data.data);
+                        vm.$nextTick(function() {
+                            $('table.display').DataTable({
+                                "order": [
+                                    [5, "desc"]
+                                ],
+                                // "searching": false,
+                                "pageLength": 5,
+                                "dom": 'rtp',
+                                "columnDefs": [{
+                                    "orderable": false,
+                                    "targets": [0, 7]
+                                }],
+                                language: {
+                                    processing: "处理中...",
+                                    search: "Rechercher&nbsp;:",
+                                    lengthMenu: "显示 _MENU_ 项结果",
+                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    infoPostFix: "",
+                                    loadingRecords: "载入中...",
+                                    zeroRecords: "没有匹配结果",
+                                    emptyTable: "表中数据为空",
+                                    paginate: {
+                                        first: "首页",
+                                        previous: "上页",
+                                        next: "下页",
+                                        last: "末页"
+                                    },
+                                    aria: {
+                                        sortAscending: ": 以升序排列此列",
+                                        sortDescending: ":  以降序排列此列"
+                                    }
+                                }
+                            });
+                        })
+                    }
+                });
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            $.post('/model', {
-                name: "Task",
-                rows: 0,
-                remove: "safeRules"
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.taskGetDetail(data.data);
-                    vm.$nextTick(function() {
-                        $('table.display').DataTable({
-                            "order": [
-                                [5, "desc"]
-                            ],
-                            "searching": false,
-                            "pageLength": 5,
-                            "dom": 'rtp',
-                            "columnDefs": [{
-                                "orderable": false,
-                                "targets": [0, 7]
-                            }],
-                            language: {
-                                processing: "处理中...",
-                                search: "Rechercher&nbsp;:",
-                                lengthMenu: "显示 _MENU_ 项结果",
-                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                infoFiltered: "(由 _MAX_ 项结果过滤)",
-                                infoPostFix: "",
-                                loadingRecords: "载入中...",
-                                zeroRecords: "没有匹配结果",
-                                emptyTable: "表中数据为空",
-                                paginate: {
-                                    first: "首页",
-                                    previous: "上页",
-                                    next: "下页",
-                                    last: "末页"
-                                },
-                                aria: {
-                                    sortAscending: ": 以升序排列此列",
-                                    sortDescending: ":  以降序排列此列"
-                                }
-                            }
-                        });
-                    })
-                }
-            });
+            var competence = localStorage.getItem("competence");
+            if (competence = "企业负责人") {
+                this.competence = false;
+            }
+            this.getData(1);
         },
         ready: function() {
 

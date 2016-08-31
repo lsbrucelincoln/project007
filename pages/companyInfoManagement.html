@@ -63,9 +63,20 @@
                     <input type="text" value="浙江省宁波市XXX街XX路XXXX">
                 </div>
                 <br/>
-                <div class="inputShort companyNumber"><span>企业组织机构代码证：</span>
+                <div class="inputShort companyNumber"><span>机构组织机构代码证：</span>
                     <br/>
-                    <iframe src="photoIframe.html" frameborder="0"></iframe>
+                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                            <input type="file" id="uploadPic" name="file" @change="upload">
+                            <label for="uploadPic" id="fileBtn">
+                                +
+                                <img class="showPic" :src="url" />
+                            </label>
+                            <span class="tip"></span>
+                            <input type="text" name="turnUrl" class="turnUrl">
+                            <input type="submit" value="submit">
+                            <canvas id="uploadImg" style="display:none"></canvas>
+                        </form>
+                        <iframe src="" frameborder="0" id="turnPage"></iframe>
                 </div>
                 <div class="changeBtn normalBtn">修改</div>
                 <div class="updateBtn normalBtn">更新</div>
