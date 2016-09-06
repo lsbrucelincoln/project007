@@ -39,29 +39,30 @@
                 <tbody>
                     <tr>
                         <td>
-                            管理机构:宁波市港航管理局
+                            管理机构:{{params.company.region.name}}
                         </td>
                         <td>
-                            登记人:
-                            <label for="zxry_by1" style="margin-right: 10px;">
-                                <input id="zxry_by1" name="zxry_by" type="radio" checked>张三
-                            </label>
+                            登记人:{{params.user_name}}
                         </td>
                         <td>
-                            当前状态:有效
+                            当前状态:{{params._delete?"失效":"有效"}}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" rowspan="2">
+                        <td colspan="2">
                             <span style="margin-bottom: 10px;display: inline-block;">描述：</span>
                             <br />
-                            <textarea name="" id="" cols="30" rows="10" style="width:600px;height:120px;padding:10px"></textarea>
                         </td>
                         <td>
-                            坐标：
-                            X:<input type="text" value="750" style="width:65px;" v-model="x" :disabled="changeState"> -
-                            Y:<input type="text" value="145" style="width:65px;" v-model="y" :disabled="changeState">
+                            坐标： X:
+                            <input type="text" value="750" style="width:65px;" v-model="x" :disabled="changeState"> - Y:
+                            <input type="text" value="145" style="width:65px;" v-model="y" :disabled="changeState">
                             <div class="normalBtn" @click="changeState=false">设定</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align:center;">
+                            <textarea name="" id="" cols="30" rows="10" style="width:80%;height:120px;padding:10px" v-model="params.description"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -71,7 +72,7 @@
             </table>
             <div class="dataPage">
                 <div class="assess2Body">
-                    <div class="tableBox" style="text-align:center;margin-bottom:20px">
+                    <div class="tableBox" style="text-align:center;margin-bottom:20px;width:100%">
                         <div class="addBtn normalBtn">确认</div>
                         <div class="urgeBtn normalBtn">删除</div>
                     </div>
@@ -107,12 +108,16 @@ $(document).ready(function() {
         el: "#dangerDetail",
         data: {
             params: {},
-            x: null,
-            y: null,
             url: "",
-            changeState:true
+            changeState: true
         },
         computed: {
+            x: function() {
+                return this.params.coordinate.split(" ")[0]
+            },
+            y: function() {
+                return this.params.coordinate.split(" ")[1]
+            },
         },
         methods: {
 
@@ -120,9 +125,7 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            this.params=JSON.parse(localStorage.getItem("dangerousDetail"));
-            this.x=this.params.coordinate.split(" ")[0]
-            this.y=this.params.coordinate.split(" ")[1]
+            this.params = JSON.parse(localStorage.getItem("dangerousDetail"));
         },
         ready: function() {
 

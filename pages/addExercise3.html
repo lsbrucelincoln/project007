@@ -22,22 +22,20 @@
                 <div class="inputShort"><span>企业类型:</span><u>{{rawData.choseCompany[0].type.name}}</u></div>
                 <div class="inputShort"><span>港区:</span><u>{{rawData.choseCompany[0].area}}</u></div>
                 <div class="inputShort inputLong companyObject"><span>企业对象:</span><u>{{rawData.choseCompany[0].name}}</u></div>
-                <div class="inputShort assessType"><span>评估类型:</span><u>{{params.mode}}</u><span class="hide">—<u></u></span></div>
                 <div class="inputShort inputLong"><span>创建时间:</span><u>{{time}}</u></div>
                 <div class="inputShort inputLong"><span>执行中队:</span><u>{{rawData.team}}</u></div>
                 <div class="actionPerson inputShort inputLong">
                     <span>执行人员:</span>
                     <div class="chooseBox">
-                        <div class="person" v-for="person in rawData.teamList">
-                            <input type="radio" name="person" id="person{{person.id}}" :checked="$index==0" :disabled="changeState" v-model="params.leader" :value="person.id">
-                            <label for="person{{person.id}}">{{person.name}}</label>
+                        <div class="person" >
+                            <input type="radio" name="person"  checked :disabled="changeState" :value="rawData.player.name">
+                            <label >{{rawData.player.name}}</label>
                         </div>
-                        <div class="settingBtn normalBtn" @click="changeState=false">设置负责人</div>
                         <div class="confirmBtn normalBtn">确定</div>
                     </div>
                 </div>
                 <br/>
-                <a href="#/addAssessment2.html" class="normalBtn cancel">上一步</a>
+                <a href="#/addExercise2.html" class="normalBtn cancel">上一步</a>
                 <a href="#/assessmentCheck.html" class="normalBtn nextStep" @click.prevent="createTask">确认生成</a>
             </div>
         </div>
@@ -86,21 +84,8 @@ $(document).ready(function() {
         },
         computed: {
             time: function() {
-                return this.stamp2time(this.params.dead_line)
+                return this.stamp2time(this.params.deadline)
             },
-            otherMember: function() {
-                this.params.member = [];
-                for (var i = 0; i < this.rawData.teamList.length; i++) {
-                    var msg = this.rawData.teamList[i];
-                    var leader = this.params.leader;
-                    console.log(leader);
-                    console.log(msg.id !== leader);
-                    if (msg.id !== leader) {
-                        this.params.member.push(msg.id)
-                    }
-                }
-                return this.params.member
-            }
         },
         methods: {
             stamp2time: function(stamp) {
@@ -120,7 +105,6 @@ $(document).ready(function() {
             createTask: function() {
                 console.log(this.params);
                 var data = this.params;
-                // data.title="";
                 // data.member=this.arrayChange(data.member);
                 // data.places=this.arrayChange(data.places);
                 // data.safeties=this.arrayChange(data.safeties);
@@ -132,9 +116,8 @@ $(document).ready(function() {
                 //         window.location.href = "index.html#/assessmentCheck.html";
                 //     }
                 // });
-                console.log(this.otherMember);
                 $.ajax({
-                        url: '/region/createTask',
+                        url: '/region/createEmergency',
                         type: 'POST',
                         traditional: true,
                         data: data,
@@ -143,8 +126,8 @@ $(document).ready(function() {
                         if (data.state == 0) {
                             alert("新增成功");
                             window.location.href = "index.html#/assessmentCheck.html";
-                            localStorage.removeItem("data");
-                            localStorage.removeItem("params");
+                            localStorage.removeItem("dataEx");
+                            localStorage.removeItem("paramsEx");
                         }
                     })
                     .fail(function() {
@@ -173,9 +156,9 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            this.params = JSON.parse(localStorage.getItem("params"));
-            this.rawData = JSON.parse(localStorage.getItem("data"));
-            this.params.area = this.rawData.choseCompany[0].area;
+            this.params = JSON.parse(localStorage.getItem("paramsEx"));
+            this.rawData = JSON.parse(localStorage.getItem("dataEx"));
+            // this.params.area = this.rawData.choseCompany[0].area;
         },
         ready: function() {
 

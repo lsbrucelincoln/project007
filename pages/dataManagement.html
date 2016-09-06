@@ -38,7 +38,7 @@
                                 <td style="text-align:left">{{rule.text}}</td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
-                                <td>06/01 20:00</td>
+                                <td>{{rule.updateTime}}</td>
                                 <td></td>
                                 <td><a href="">查看</a></td>
                             </tr>
@@ -115,6 +115,7 @@ $(document).ready(function() {
                 var category = {};
                 var category2 = [];
                 for (var i = 0; i < data.length; i++) {
+                    data[i].updateTime=this.stamp2time(data[i].in_time)
                     if (i==0) {
                         vm.startAttr=data[i].category1;
                         vm.startAttr2=data[i].category2;

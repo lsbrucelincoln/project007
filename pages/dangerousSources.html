@@ -34,9 +34,9 @@
                     <span class="searchButtom normalBtn" id="searchBtn">搜索</span>
                 </div>
                 <div class="btnBox" v-if="tagState==1">
-                    <a href="#/addCompany.html" class="addBtn normalBtn">新建危险源</a>
+                    <a href="#/addDangerousSources.html" class="addBtn normalBtn" v-if="!competence">新建备案</a>
                     <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">失效操作</div>
+                    <div class="urgeBtn normalBtn" v-if="competence">失效操作</div>
                 </div>
                 <div class="tableBox">
                     <table id="checkTable" class="display">
@@ -127,7 +127,8 @@ $(document).ready(function() {
             recordLimit: 5,
             pageIndex: 1,
             showTasks: [],
-            region: ""
+            region: "",
+            competence:true
         },
         computed: {},
         methods: {
@@ -234,6 +235,10 @@ $(document).ready(function() {
             var self = this;
             var id = localStorage.getItem("id");
             self.getData(0);
+            var competence = localStorage.getItem("competence");
+            if (competence == "企业负责人") {
+                this.competence = false;
+            }
         },
         ready: function() {
 

@@ -1,0 +1,207 @@
+<style>
+.headTable td {
+    vertical-align: top;
+}
+</style>
+<div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 重大危险源 ><span class="nowPlace">新增备案</span></span>
+    </div>
+    <div class="admin_scrollBox">
+        <div class="contentBody">
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>备案编号：</span>
+                    <input type="text" v-model="params.code">
+                </div>
+                <div class="inputShort">
+                    <span style="width:100px">重大危险源名称：</span>
+                    <input type="text" v-model="params.name">
+                </div>
+                <div class="inputShort">
+                    <span>等级：</span>
+                    <select name="" id="" v-model="params.level">
+                        <option value="1">一级</option>
+                        <option value="2">二级</option>
+                        <option value="3">三级</option>
+                        <option value="4">四级</option>
+                    </select>
+                </div>
+                <div class="inputShort">
+                    <span>坐标：</span> X:
+                    <input type="text" style="width:65px;" v-model="x"> - Y:
+                    <input type="text" style="width:65px;" v-model="y">
+                </div>
+            </div>
+            <table class="headTable tem_headTable" style="margin: 15px 0;">
+                <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <span style="margin-bottom: 10px;display: inline-block;">描述：</span>
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align:center;">
+                            <textarea name="" id="" cols="30" rows="10" style="width:80%;height:120px;padding:10px" v-model="params.description"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="margin-bottom: 10px;display: inline-block;">附件：</span>
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align:center">
+                            <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                                <input type="file" id="uploadPic" name="file" @change="upload">
+                                <label for="uploadPic" id="fileBtn" style="width:25%;height:120px;line-height:120px">
+                                    +
+                                    <img class="showPic" :src="url" />
+                                </label>
+                                <span class="tip"></span>
+                                <input type="text" name="turnUrl" class="turnUrl">
+                                <input type="submit" value="submit">
+                                <canvas id="uploadImg" style="display:none"></canvas>
+                            </form>
+                            <iframe src="" frameborder="0" id="turnPage" style="display:none"></iframe>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="dataPage">
+                <div class="assess2Body">
+                    <div class="tableBox" style="text-align:center;margin-bottom:20px;width:100%">
+                        <div class="addBtn normalBtn" @click="addDangerous">确认</div>
+                        <div class="urgeBtn normalBtn">删除</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+$(document).ready(function() {
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+    $(".rightBox").on('click', "p", function(event) {
+        $(".leftBox").append($(this));
+    });
+    $(".leftBox").on('click', "p", function(event) {
+        $(".rightBox").append($(this));
+    });
+    var vm = new Vue({
+        el: "#dangerDetail",
+        data: {
+            params: {},
+            x: null,
+            y: null,
+            url: "",
+            changeState: true
+        },
+        watch: {
+            x: function(val, oldVal) {
+                this.params.coordinate = val + " " + this.y
+            },
+            y: function(val, oldVal) {
+                this.params.coordinate = this.x + " " + val
+            }
+        },
+        computed: {
+
+        },
+        methods: {
+            upload: function(event) {
+                event.preventDefault();
+                console.log($(event.target)[0].files);
+                var file = $(event.target)[0].files[0];
+                if (!/image\/\w+/.test(file.type)) {
+                    alert("文件必须为图片！");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    vm.createCanvas(this.result);
+                }
+            },
+            createCanvas: function(src) {
+                var canvas = document.getElementById("uploadImg");
+                var cxt = canvas.getContext('2d');
+                // canvas.width = 640;
+                // canvas.height = 400;
+                var img = new Image();
+                img.src = src;
+                img.onload = function() {
+                    var w = img.width;
+                    var h = img.height;
+                    canvas.width = w;
+                    canvas.height = h;
+                    cxt.drawImage(img, 0, 0);
+                    var dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                    $(".showPic").show().attr('src', dataUrl);
+                    var blob = vm.dataURLtoBlob(dataUrl);
+                    var fd = new FormData();
+                    fd.append("file", blob, "1.png");
+                    console.log(fd);
+                    $.ajax({
+                        url: "/upload",
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fd,
+                        success: function(data) {
+                            vm.params.photo = data.id;
+                            console.log(data);
+                            $(".showPic").show().attr('data-id', "/" + data.id);
+                        }
+                    });
+                }
+            },
+            dataURLtoBlob: function(dataurl) {
+                var arr = dataurl.split(','),
+                    mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]),
+                    n = bstr.length,
+                    u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {
+                    type: mime
+                });
+            },
+            addDangerous: function() {
+                $.post('/company/editDangerous', vm.params, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        alert("修改成功");
+                        history.back();
+                    }
+                });
+            }
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+        },
+        ready: function() {
+
+        }
+    })
+});
+</script>

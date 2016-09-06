@@ -1,5 +1,5 @@
 <div class="addAssessment admin_content_innerBox" id="addAssessmentBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 应急演练 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
@@ -31,18 +31,18 @@
                         <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
                     </select>
                 </div>
-                <div class="inputShort"><span>选择区域:</span>
+<!--                 <div class="inputShort"><span>选择区域:</span>
                     <input type="checkBox" id="port" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="1" v-model="place1">
                     <label for="port">码头</label>
                     <input type="checkBox" id="workingArea" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="2" v-model="place2">
                     <label for="workingArea">作业区</label>
-                </div>
+                </div> -->
                 <div class="inputShort inputLong companyObject"><span>选择企业对象:</span>
                     <select name="" id="" v-model="params.company" @change="setCompany">
                         <option v-for="company in companyList| filterBy typeFilter company|filterBy areaFilter company" value="{{company.id}}">{{company.name}}</option>
                     </select>
                 </div>
-                <div class="inputShort assessType"><span>选择评估类型:</span>
+<!--                 <div class="inputShort assessType"><span>选择评估类型:</span>
                     <select name="" id="" v-model="params.mode">
                         <option value="日常评估">日常评估检查</option>
                         <option value="专项">专项评估检查</option>
@@ -51,7 +51,7 @@
                     <select name="" id="" v-if="params.mode=='专项'" v-model="special">
                         <option v-for="check in specialCheck" value="check">{{check}}</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="inputShort inputLong"><span>选择执行时间:</span>
                     <input type="text" class="excuteTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort inputLong companyObject"><span>选择执行中队:</span>
@@ -61,21 +61,14 @@
                 </div>
                 <div class="actionPerson inputShort inputLong">
                     <span>选择执行人员:</span>
-                    <div class="leftBox">
-                        <p v-for="player in user |filterBy teamFilter player" @click="pushTeam(player,$index)">{{player.name}}</p>
-                    </div>
-                    <div class="iconBox">
-                        <i class="flaticon-arrows-3"></i>
-                        <br/>
-                        <i class="flaticon-arrows-2"></i>
-                    </div>
-                    <div class="rightBox">
-                        <p v-for="item in teamList" @click="returnUser(item)">{{item.name}}</p>
+                    <div class="person" v-for="person in user |filterBy teamFilter player"">
+                        <input type="radio" name="person" id="person{{person.id}}" :checked="$index==0" v-model="player" :value="person" >
+                        <label for="person{{person.id}}">{{person.name}}</label>
                     </div>
                 </div>
                 <br/>
                 <a class="normalBtn cancel" href="#/assessmentCheck.html">取消</a>
-                <a class="normalBtn nextStep" href="#/addAssessment2.html" @click="saveDetail">下一步</a>
+                <a class="normalBtn nextStep" href="#/addExercise2.html" @click="saveDetail">下一步</a>
             </div>
         </div>
     </div>
@@ -87,7 +80,7 @@ $(document).ready(function() {
         minDate:0,
         onChangeDateTime: function(dp, $input) {
             var d = $('.excuteTime').datetimepicker('getValue');
-            vm.params.dead_line = d.getTime();
+            vm.params.deadline = d.getTime();
             vm.deadLine = $input;
         }
     });
@@ -115,7 +108,6 @@ $(document).ready(function() {
         el: "#addAssessmentBody",
         data: {
             params: {
-                places: [1]
             },
             url: "",
             companyType: "",
@@ -134,7 +126,8 @@ $(document).ready(function() {
             deadLine: "",
             choseCompany: {},
             place1: "1",
-            place2: ""
+            place2: "",
+            player:""
         },
         watch: {
             place1: function(val, oldVal) {
@@ -187,10 +180,10 @@ $(document).ready(function() {
                 this.user.push(data)
             },
             saveDetail: function(data) {
-                localStorage.setItem("params", JSON.stringify(this.params));
-                localStorage.setItem("teamList", JSON.stringify(this.teamList));
+                this.params.user=this.player.id;
+                localStorage.setItem("paramsEx", JSON.stringify(this.params));
                 console.log(this.$data);
-                localStorage.setItem("data", JSON.stringify(this.$data));
+                localStorage.setItem("dataEx", JSON.stringify(this.$data));
             },
             setCompany: function() {
                 vm.choseCompany = vm.companyList.filter(function(index) {
@@ -201,8 +194,8 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            if (localStorage.getItem("params")) {
-                self.params = JSON.parse(localStorage.getItem("params"));
+            if (localStorage.getItem("paramsEx")) {
+                self.params = JSON.parse(localStorage.getItem("paramsEx"));
             }
             $.post('/model', {
                 name: "CompanyType",

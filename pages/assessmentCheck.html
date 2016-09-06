@@ -37,13 +37,13 @@
                     <span class="searchButtom normalBtn">搜索</span>
                 </div>
                 <div class="btnBox" v-if="tagState!==3&&competence">
-                    <a href="#/addAssessment.html" class="addBtn normalBtn">添加任务</a>
+                    <a :href="addTask" class="addBtn normalBtn">添加任务</a>
                     <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn">催促执行</div>
-                    <div class="endProgramBtn normalBtn">结束任务</div>
+                    <div class="urgeBtn normalBtn" @click="urgeExecute">催促执行</div>
+                    <div class="endProgramBtn normalBtn" @click="endProgram">结束任务</div>
                 </div>
                 <div class="tableBox">
-                    <table id="checkTable" class="display compact">
+                    <table id="checkTable" class="display">
                         <thead>
                             <tr>
                                 <th>
@@ -62,16 +62,16 @@
                         <tbody>
                             <tr v-for="task in showTasks">
                                 <td>
-                                    <input type="checkBox" id="person1" class="checkBox">
+                                    <input type="checkBox" class="checkBox" data-id="{{task.id}}">
                                 </td>
                                 <td>{{task.code}}</td>
-                                <td>{{task.mode}}</td>
+                                <td>{{task.mode?task.mode:"应急演练"}}</td>
                                 <td>{{task.company.name}}</td>
                                 <td>{{task.company.region.name}}</td>
                                 <td>{{task.time}}</td>
-                                <td>{{task.leader.name}}</td>
+                                <td>{{responsePerson(task)}}</td>
                                 <td>{{task.state}}</td>
-                                <td><a href="#/assessDetail.html" @click="saveDetail(task)">查看</a></td>
+                                <td><a :href="tagState==1?'#/assessDetail.html':'#/emergencyDetail.html'" @click="saveDetail(task)">查看</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,10 +138,28 @@ $(document).ready(function() {
             risks: {},
             taskNum: "",
             showTasks: [],
-            competence: true
+            competence: true,
+            chosenList: []
         },
-        computed: {},
+        computed: {
+            addTask: function() {
+                if (this.tagState == 1) {
+                    return "#/addAssessment.html"
+                } else {
+                    return "#/addExercise.html"
+                }
+            },
+        },
         methods: {
+            responsePerson: function(data) {
+                if (data.user) {
+                    return data.user.name
+                } else if (data.leader) {
+                    return data.leader.name
+                } else {
+                    return ""
+                }
+            },
             taskGetDetail: function(data) {
                 var companyList = [];
                 var timeList = [];
@@ -187,11 +205,47 @@ $(document).ready(function() {
                 localStorage.setItem("taskDetail", data);
             },
             changeState: function(state) {
-                this.tagState == state;
+                this.tagState = state;
                 this.showTasks = [];
                 $('table.display').DataTable().destroy();
 
                 this.getData(state);
+            },
+            urgeExecute: function() {
+                this.getChosenList();
+            },
+            endProgram: function() {
+                var self = this;
+                self.getChosenList();
+                console.log(data);
+                var url = self.tagState == 1 ? '/region/completeTask' : '/region/completeEmergency';
+                var data = self.tagState == 1 ? {
+                    task: self.chosenList
+                } : {
+                    emergency: self.chosenList
+                };
+                $.ajax({
+                        url: url,
+                        type: 'POST',
+                        traditional: true,
+                        data: data,
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            this.showTasks = [];
+                            $('table.display').DataTable().destroy();
+                            self.getData(self.tagState)
+                        }
+                    })
+            },
+            getChosenList: function() {
+                var self = this;
+                console.log('test');
+                self.chosenList = [];
+                $("td .checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
             },
             getData: function(state) {
                 var data = {}
@@ -219,7 +273,6 @@ $(document).ready(function() {
                         };
                 }
                 $.post('/model', data, function(data, textStatus, xhr) {
-                    console.log(data);
                     if (data.state == 0) {
                         vm.taskGetDetail(data.data);
                         vm.$nextTick(function() {
@@ -260,13 +313,13 @@ $(document).ready(function() {
                         })
                     }
                 });
-            }
+            },
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
             var competence = localStorage.getItem("competence");
-            if (competence = "企业负责人") {
+            if (competence == "企业负责人") {
                 this.competence = false;
             }
             this.getData(1);

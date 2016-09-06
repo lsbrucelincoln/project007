@@ -1,0 +1,301 @@
+<style>
+.headTable td {
+    vertical-align: top;
+}
+</style>
+<div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
+    <div class="minibar">
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 应急演练 ><span class="nowPlace">详细信息</span></span>
+    </div>
+    <div class="admin_scrollBox">
+        <div class="contentBody">
+            <div class="textInfo">
+                <div class="inputShort">
+                    <span>任务编号：</span>
+                    <i>{{params.code}}</i>
+                </div>
+                <div class="inputShort">
+                    <span>企业类型：</span>
+                    <i>{{params.company.type.name}}</i>
+                </div>
+                <div class="inputShort">
+                    <span>企业对象：</span>
+                    <i>{{params.company.name}}</i>
+                </div>
+                <div class="inputShort">
+                    <span>评估类型：</span>
+                    <i>应急演练</i>
+                </div>
+                <div class="inputShort">
+                    <span>执行时间：</span>
+                    <i>{{stamp2time(params.deadline)}}</i>
+                </div>
+                <div class="inputShort">
+                    <span>当前状态：</span>
+                    <i>{{params.state}}</i>
+                </div>
+            </div>
+            <table class="headTable tem_headTable" style="margin: 15px 0;">
+                <tbody>
+                    <tr>
+                        <td>
+                            执行中队:{{params.user.squadron}}
+                        </td>
+                        <td>
+                            登记人:{{params.user.name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="margin-bottom: 10px;display: inline-block;">评估信息：</span>
+                            <br />
+                        </td>
+                        <td>
+                            总体得分：{{params.score}}分 优秀 扣分项 {{deductNum}}项
+                        </td>
+                        <td>
+                            观察记录：{{recordNum}}条
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="assess2Body">
+                <div class="ztreeBox ztree">
+                    <a class="category1" @click="state[0]==1?state.$set(0,0):state.$set(0,1)"><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
+                            <ul class="line" v-if="state[0]==1"><li class="category2" v-for="(index2,item2) in category"  @click.stop="showData(item2,$event,index2)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
+                            </a>
+                </div>
+                <div class="tableBox">
+                    <table>
+                        <tr>
+                            <th style="width:100px">序号</th>
+                            <th>评估内容</th>
+                            <th style="width:50px;">总分</th>
+                            <th style="width:50px;">得分</th>
+                            <th style="width:250px;">观察记录</th>
+                        </tr>
+                        <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
+                            <td>{{rule.emergencyRule.id}}</td>
+                            <td>{{rule.emergencyRule.text}}</td>
+                            <td>{{rule.emergencyRule.score}}</td>
+                            <td>{{rule.score}}</td>
+                            <td>{{rule.text}}</td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td style="width:100px">总得分</td>
+                            <td>{{params.score}}</td>
+                            <td style="width:50px;"></td>
+                            <td style="width:50px;"></td>
+                            <td style="width:250px;"></td>
+                        </tr>
+                    </table>
+                    <div class="bottom-search">
+                        <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                            <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                                <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                            </a>
+                            <a href="javascript:void(0)" @click="nextPage">
+                                <span id="Next">下一页 »</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dataPage">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+$(document).ready(function() {
+    $("#processingBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").show();
+        $(".finishedTable").hide();
+        $(this).addClass('chosen');
+        $("#finishedBtn").removeClass('chosen');
+    });
+    $("#finishedBtn").on('click', function(event) {
+        event.preventDefault();
+        $(".processingTable").hide();
+        $(".finishedTable").show();
+        $(this).addClass('chosen');
+        $("#processingBtn").removeClass('chosen');
+    });
+    $(".rightBox").on('click', "p", function(event) {
+        $(".leftBox").append($(this));
+    });
+    $(".leftBox").on('click', "p", function(event) {
+        $(".rightBox").append($(this));
+    });
+    var vm = new Vue({
+        el: "#dangerDetail",
+        data: {
+            params: {},
+            url: "",
+            changeState: true,
+            state: [1],
+            rules: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            risks: {},
+            category: {},
+            recordLimit: 5,
+            pageIndex: 1,
+            startAttr: "",
+            startAttr2: "",
+            category1: "",
+            category2: "",
+            showRules: [],
+        },
+        computed: {
+            startPoint: function() {
+                return (this.pageIndex - 1) * 5
+            },
+            pageNum: function() {
+                return Math.ceil(this.showRules.length / this.recordLimit)
+            },
+            recordNum: function() {
+                var num = 0;
+                for (var i = 0; i < this.rules.length; i++) {
+                    if (this.rules[i].text) {
+                        num++
+                    }
+                }
+                return num;
+            },
+            deductNum: function() {
+                var num = 0;
+                for (var i = 0; i < this.rules.length; i++) {
+                    if (this.rules[i].score!==this.rules[i].emergencyRule.score) {
+                        num++
+                    }
+                }
+                return num;
+            }
+        },
+        methods: {
+            rulesDetail: function(data) {
+                this.rules = data;
+                this.showRules = data;
+                var category = {};
+                var category2 = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (i == 0) {
+                        this.startAttr = data[i].emergencyRule.category1;
+                        this.startAttr2 = data[i].emergencyRule.category2;
+                    }
+                    if (!category[data[i].emergencyRule.category2]) {
+                        category[data[i].emergencyRule.category2] = [];
+                        category[data[i].emergencyRule.category2].push(data[i]);
+                    } else {
+                        category[data[i].emergencyRule.category2].push(data[i]);
+                    }
+                }
+                for (var i = 0; i < this.category.length; i++) {
+                    this.state[i] = 1;
+                    this.state.$set(i, 1);
+                }
+                console.log(category);
+                this.category = category;
+            },
+            categoryFilter: function(data) {
+                if (this.category2 !== "" && this.category2 !== data.emergencyRule.category2) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            showData: function(data, event, index2) {
+                console.log(data);
+                this.pageIndex = 1;
+                this.category2 = index2;
+                $(".category2").removeClass('chosenCategory');
+                $(event.target).addClass('chosenCategory');
+                this.showRules = this.rules.filter(function(index) {
+                    return vm.categoryFilter(index);
+                });
+            },
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return year + "-" + month + "-" + day;
+            },
+            dayPeriodCompute: function(startTime, endTime) {
+                var nowTime = new Date(startTime);
+                var theTime = new Date(endTime);
+                return theTime.getDate() - nowTime.getDate();
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            prevPage: function() {
+                if (this.pageIndex - 1 > 0) {
+                    this.pageIndex = this.pageIndex - 1;
+                }
+            },
+            nextPage: function() {
+                if (this.pageIndex + 1 <= this.pageNum) {
+                    this.pageIndex = this.pageIndex + 1;
+                }
+            },
+            turnPage: function(data) {
+                vm.pageIndex = data + 1;
+            },
+            clickPageFilter: function(data) {
+                console.log(data);
+                if (data + 1 == vm.pageIndex) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+            category1Click: function(data, $index, index) {
+                this.state[$index] == 1 ? this.state.$set($index, 0) : this.state.$set($index, 1);
+                this.category1 = index;
+                this.category2 = "";
+            },
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            this.params = JSON.parse(localStorage.getItem("taskDetail"));
+            this.rulesDetail(this.params.details)
+        },
+        ready: function() {
+
+        }
+    })
+});
+</script>

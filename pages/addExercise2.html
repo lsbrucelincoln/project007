@@ -1,35 +1,44 @@
-<style>
-#urgeSetTable tr td:nth-child(2) {
-    text-align: left;
-}
-</style>
-<div class="addAssessment admin_content_innerBox dataManagement" id="urgeBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">应急演练预设</span></span>
+<div class="addAssessment admin_content_innerBox" id="addAssessment2Body">
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 应急演练 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
-            <div class="dataPage">
-                <div class="inputShort assessType"><span>选择企业类型:</span>
-                    <div class="admin_ui_select" style="width: 140px;">
-                        <select>
-                            <option value="">日常评估检查</option>
-                        </select>
-                    </div>
-                    <input type="checkBox" id="canUse">
-                    <label for="canUse">只看有效</label>
+            <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
+            <div class="stateBox">
+                <div class="state">
+                    <i class="circle"></i>
+                    <br/><span>基本信息设置</span>
                 </div>
-                <div class="dataOutBtn normalBtn">导出数据</div>
+                <div class="state">
+                    <i class="circle chosen"></i>
+                    <br/><span>选择评估模板</span>
+                </div>
+                <div class="state">
+                    <i class="circle"></i>
+                    <br/><span>确认发布</span>
+                </div>
+            </div>
+            <div class="secondPage">
+                <!--                 <div class="inputShort assessType"><span>选择评估类型:</span>
+                    <select name="" id="">
+                        <option value="">日常评估检查</option>
+                        <option value="">专项评估检查</option>
+                        <option value="">综合评估检查</option>
+                    </select> —
+                    <select name="" id="">
+                        <option value="">防火专项评估</option>
+                        <option value="">防爆专项评估</option>
+                        <option value="">设备专项评估</option>
+                    </select>
+                </div> -->
                 <div class="assess2Body">
-                    <div class="ztrbox">
-                        <div class="ztreeBox ztree">
-                            <a class="category1" @click="state[0]==1?state.$set(0,0):state.$set(0,1)"><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
-                            <ul class="line" v-if="state[0]==1"><li class="category2" v-for="(index2,item2) in category"  @click.stop="showData(item2,$event)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
+                    <div class="ztreeBox ztree">
+                        <a class="category1" @click="state[0]==1?state.$set(0,0):state.$set(0,1)"><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
+                            <ul class="line" v-if="state[0]==1"><li class="category2" v-for="(index2,item2) in category"  @click.stop="showData(item2,$event,index2)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
                             </a>
-                        </div>
-                        <i class="treeAdd">+</i>
-                        <i class="treeRemove">-</i></div>
+                    </div>
                     <div class="tableBox">
-                        <table id="urgeSetTable">
+                        <table>
                             <tr>
                                 <th style="width: 40px;">
                                     <input type="checkBox" id="person1" class="checkBox">
@@ -39,20 +48,17 @@
                                 <th style="80px;">当前状态</th>
                                 <th style="80px;">操作</th>
                             </tr>
-                            <tr v-for="rule in rules |limitBy recordLimit startPoint">
+                            <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
                                 <td>
                                     <input type="checkBox" id="person1" class="checkBox">
                                 </td>
                                 <td>{{rule.text}}</td>
                                 <td>{{rule.score}}</td>
                                 <td>{{rule._delete?"失效":"正常"}}</td>
-                                <td><a href="">查看</a></td>
+                                <td><a href="" @click.prevent="deleteItem(rule)">删除</a></td>
                             </tr>
                         </table>
                         <div class="bottom-search">
-                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -64,13 +70,14 @@
                         </div>
                     </div>
                 </div>
+                <a class="normalBtn cancel" href="#/addExercise.html">上一步</a>
+                <a class="normalBtn nextStep" href="#/addExercise3.html" @click="nextStep">下一步</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    // TablePage("table", 10);
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();
@@ -91,9 +98,8 @@ $(document).ready(function() {
     $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
     });
-
     var vm = new Vue({
-        el: "#urgeBody",
+        el: "#addAssessment2Body",
         data: {
             state: [1],
             rules: [],
@@ -103,22 +109,27 @@ $(document).ready(function() {
             createTime: "",
             risks: {},
             category: {},
-            recordLimit: 7,
+            recordLimit: 5,
             pageIndex: 1,
             startAttr: "",
             startAttr2: "",
-            rawData: []
+            category1: "",
+            category2: "",
+            showRules: [],
+            params: {}
         },
         computed: {
             startPoint: function() {
                 return (this.pageIndex - 1) * 5
             },
             pageNum: function() {
-                return Math.ceil(this.rules.length / this.recordLimit)
+                return Math.ceil(this.showRules.length / this.recordLimit)
             },
         },
         methods: {
             rulesDetail: function(data) {
+                this.rules = data;
+                this.showRules = data;
                 var category = {};
                 var category2 = [];
                 for (var i = 0; i < data.length; i++) {
@@ -138,15 +149,24 @@ $(document).ready(function() {
                     vm.state.$set(i, 1);
                 }
                 console.log(category);
-                vm.rules = (category[this.startAttr2]);
                 this.category = category;
             },
-            showData: function(data, event) {
+            categoryFilter: function(data) {
+                if (this.category2 !== "" && this.category2 !== data.category2) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            showData: function(data, event,index2) {
                 console.log(data);
-                this.rules = data;
                 this.pageIndex = 1;
+                this.category2 = index2;
                 $(".category2").removeClass('chosenCategory');
                 $(event.target).addClass('chosenCategory');
+                this.showRules = this.rules.filter(function(index) {
+                    return vm.categoryFilter(index);
+                });
             },
             stateChange: function(index) {},
             stamp2time: function(stamp) {
@@ -208,11 +228,27 @@ $(document).ready(function() {
                 } else {
                     return false
                 }
+            },
+            deleteItem: function(data) {
+                vm.rules.$remove(data);
+            },
+            category1Click: function(data, $index, index) {
+                this.state[$index] == 1 ? this.state.$set($index, 0) : this.state.$set($index, 1);
+                this.category1 = index;
+                this.category2 = "";
+            },
+            nextStep: function() {
+                vm.params.rules = [];
+                for (var i = 0; i < vm.rules.length; i++) {
+                    vm.params.rules.push(vm.rules[i].id);
+                }
+                localStorage.setItem("paramsEx", JSON.stringify(vm.params));
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
+            this.params = JSON.parse(localStorage.getItem("paramsEx"));
             $.post('/model', {
                 name: "EmergencyRule",
                 rows: 0

@@ -1,0 +1,40 @@
+<div class="assessmentCheck staffManagement" id="staffBody">
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">企业&账号管理</span></span>
+    </div>
+    <div class="contentBody">
+        <div class="tagBar">
+            <a class="tag  chosenBtn checkBtn">账号管理</a>
+            <a class="tag praticeBtn">辖区企业管理</a>
+        </div>
+        <div class="contenBox">
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    // TablePage("#checkTable", 5);
+    $(".contenBox").load('staffManagement1.html',
+        function() {});
+    $(".mask,.cancel").on('click', function(event) {
+        event.preventDefault();
+        $(".mask,.addAccount").hide();
+    });
+    $(".tag").on('click', function(event) {
+        $(this).addClass('chosenBtn');
+        $(this).siblings('.tag').removeClass('chosenBtn');
+        $(".checkBtn").css('z-index', '3');
+    });
+    $(".checkBtn").on('click', function(event) {
+        $(".checkBody").show();
+        $(".checkBody").siblings().hide();
+    });
+    $(".praticeBtn").on('click', function(event) {
+        $(".contenBox").load('staffManagement2.html',
+            function() {});
+    });
+    $(".checkBtn").on('click', function(event) {
+        $(".contenBox").load('staffManagement1.html',
+            function() {});
+    });
+});
+</script>
