@@ -1,20 +1,48 @@
 <div class="assessmentCheck staffManagement" id="staffBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">企业&账号管理</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">通知公告</span></span>
     </div>
     <div class="contentBody">
-        <div class="tagBar">
-            <a class="tag  chosenBtn checkBtn">账号管理</a>
-            <a class="tag praticeBtn">辖区企业管理</a>
-        </div>
         <div class="contenBox">
+            <div class="checkBody" style="border-top:0px">
+                <div class="tableBox">
+                    <table id="checkTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>生成时间</th>
+                                <th>标题</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="report in showTasks ">
+                                <td>{{report.id}}</td>
+                                <td>{{report.time}}</td>
+                                <td>{{report.title}}</td>
+                                <td>{{report.text}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="bottom-search">
+                        <!--                      <div class="allSelectBtn normalBtn">全选</div>
+                        <div class="urgeBtn normalBtn">删除</div> -->
+                        <!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                    <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                </a>
+                <a href="javascript:void(0)" @click="nextPage">
+                    <span id="Next">下一页 »</span>
+                </a>
+            </div> -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
     // TablePage("#checkTable", 5);
-    $(".contenBox").load('staffManagement1.html',
-        function() {});
     $(".mask,.cancel").on('click', function(event) {
         event.preventDefault();
         $(".mask,.addAccount").hide();
@@ -28,13 +56,111 @@ $(document).ready(function() {
         $(".checkBody").show();
         $(".checkBody").siblings().hide();
     });
-    $(".praticeBtn").on('click', function(event) {
-        $(".contenBox").load('staffManagement2.html',
-            function() {});
-    });
-    $(".checkBtn").on('click', function(event) {
-        $(".contenBox").load('staffManagement1.html',
-            function() {});
-    });
+    var vm = new Vue({
+        el: "#staffBody",
+        data: {
+            tagState: 1,
+            tasks: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            region: "",
+            risks: {},
+            taskNum: "",
+            showTasks: []
+        },
+        computed: {},
+        methods: {
+            userDetail: function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                }
+                vm.tasks = data;
+                vm.showTasks = data;
+            },
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return year + "-" + month + "-" + day;
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            saveDetail: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("accountDetail", data);
+            },
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            $.post(baseUrl + '/model', {
+                name: "Message",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.userDetail(data.data);
+                    vm.$nextTick(function() {
+                        $('table.display').DataTable({
+                            "order": [
+                                [1, "desc"]
+                            ],
+                            "pageLength": 5,
+                            "dom": 'rtp',
+                            // "columnDefs": [{
+                            //     "orderable": false,
+                            //     "targets": [0, 7]
+                            // }],
+                            language: {
+                                processing: "处理中...",
+                                search: "查找中...",
+                                lengthMenu: "显示 _MENU_ 项结果",
+                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                infoPostFix: "",
+                                loadingRecords: "载入中...",
+                                zeroRecords: "没有匹配结果",
+                                emptyTable: "表中数据为空",
+                                paginate: {
+                                    first: "首页",
+                                    previous: "上页",
+                                    next: "下页",
+                                    last: "末页"
+                                },
+                                aria: {
+                                    sortAscending: ": 以升序排列此列",
+                                    sortDescending: ":  以降序排列此列"
+                                }
+                            }
+                        });
+                    })
+                }
+            });
+        },
+        ready: function() {
+
+        }
+    })
 });
 </script>
