@@ -5,7 +5,7 @@
         </div>
         <a href="#" class="addBtn normalBtn">添加公司</a>
     </div>
-    <div class="tableBox">
+    <div class="tableBox" v-show="showState">
         <table class="display">
             <thead>
                 <tr>
@@ -68,7 +68,8 @@ $(document).ready(function() {
             region: "",
             risks: {},
             taskNum: "",
-            showTasks: []
+            showTasks: [],
+            showState:false
         },
         computed: {
         },
@@ -122,6 +123,7 @@ $(document).ready(function() {
                 if (data.state == 0) {
                     vm.userDetail(data.data)
                     vm.$nextTick(function() {
+                        vm.showState=true;
                         $('table.display').DataTable({
                             "order": [
                                 [4, "desc"]

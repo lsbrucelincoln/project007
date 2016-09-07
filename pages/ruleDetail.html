@@ -1,0 +1,74 @@
+<div class="companyInfoManagement admin_content_innerBox" id="riskManagementDetail">
+    <div class="admin_scrollBox">
+        <div class="minibar">
+            <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 业务操作 > 评估标准 > <span class="nowPlace">详细信息</span></span>
+        </div>
+        <div class="contentBody">
+            <table class="tem_headTable">
+                <tbody>
+                    <tr>
+                        <th>评估标准：</th>
+                        <td colspan="5">{{taskDetail.category1}} > {{taskDetail.category2}} > {{taskDetail.text}}</td>
+                    </tr>
+                    <tr>
+                        <th>补充描述：</th>
+                        <td colspan="5">缺失</td>
+                    </tr>
+                    <tr>
+                        <th>执行依据：</th>
+                        <td colspan="5">{{taskDetail.based}}</td>
+                    </tr>
+                    <tr>
+                        <th>处置方式：</th>
+                        <td colspan="5">{{taskDetail.punishment}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
+    <div class="allSelectBtn normalBtn" style="margin-top:15px">确认</div>
+    <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+</div>
+<script>
+var vm = new Vue({
+    el: "#riskManagementDetail",
+    data: {
+        taskDetail: JSON.parse(localStorage.getItem("ruleDetail"))
+    },
+    computed: {},
+    methods: {
+        stamp2time: function(stamp) {
+            var time = new Date(stamp);
+            var year = time.getFullYear();
+            var month = time.getMonth() - 0 + 1;
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            month = month < 10 ? "0" + month : month;
+            var day = time.getDate();
+            day = day < 10 ? "0" + day : day;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            var timeString = '';
+            return year + "-" + month + "-" + day;
+        },
+        unique: function(arr) {
+            var result = [],
+                hash = {};
+            for (var i = 0, elem;
+                (elem = arr[i]) != null; i++) {
+                if (!hash[elem]) {
+                    result.push(elem);
+                    hash[elem] = true;
+                }
+            }
+            return result.reverse();
+        },
+    },
+    created: function() {
+
+    },
+    ready: function() {}
+})
+</script>

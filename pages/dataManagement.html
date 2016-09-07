@@ -40,7 +40,7 @@
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>{{rule.updateTime}}</td>
                                 <td></td>
-                                <td><a href="">查看</a></td>
+                                <td><a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a></td>
                             </tr>
                         </table>
                         <div class="bottom-search">
@@ -208,6 +208,9 @@ $(document).ready(function() {
                 }else{
                     return false
                 }
+            },
+            saveDetail:function(data){
+                localStorage.setItem("ruleDetail",JSON.stringify(data))
             }
         },
         created: function() {

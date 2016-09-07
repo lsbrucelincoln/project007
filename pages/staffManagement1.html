@@ -1,12 +1,12 @@
-<div class="checkBody" v-cloak>
+<div class="checkBody" v-cloak >
     <div class="btnBox">
         <div class="searchBox">
             <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtom">搜索</span>
         </div>
         <a href="#" class="addBtn normalBtn">添加账号</a>
     </div>
-    <div class="tableBox">
-        <table id="checkTable" class="display compact">
+    <div class="tableBox" v-show="showState">
+        <table id="checkTable" class="display">
             <thead>
                 <tr>
                     <th>
@@ -86,7 +86,8 @@ $(document).ready(function() {
             region: "",
             risks: {},
             taskNum: "",
-            showTasks: []
+            showTasks: [],
+            showState:false
         },
         computed: {
         },
@@ -140,6 +141,7 @@ $(document).ready(function() {
                 if (data.state == 0) {
                     vm.userDetail(data.data);
                     vm.$nextTick(function() {
+                        vm.showState=true;
                         $('table.display').DataTable({
                             "order": [
                                 [5, "desc"]
