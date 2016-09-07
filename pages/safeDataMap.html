@@ -13,35 +13,7 @@
 </div>
 <script src="http://api.map.baidu.com/api?v=2.0&ak=Ogc3s9tT2jSfg8GvYBScols0iyeSoUGG&callback=initialize"></script>
 <script type="text/javascript">
-var vm = new Vue({
-    el: '#safeDataMapContent',
-    data:{
-        Dangerous: [],
-        Company: [],
-        Recheck: [],
-        Task: []
-    },
-    computed: {
-        AllData: function(){
-            return [].concat(this.Dangerous,this.Company,this.Recheck,this.Task)
-        }
-    },
-    created: function(){
-        var self = this;
-        // 获取危险源
-        $.when(getModels()).done(function(data){
-            if(data.state == 0){
-                var _data = data.data;
-                console.log(_data);
-                self.Dangerous = _data[0];
-                self.Company = _data[1];
-                self.Recheck = _data[2];
-                self.Task = _data[3];
-                console.log(self.AllData);
-            }
-        })
-    }
-});
+
 
         
 function initialize() {
@@ -146,14 +118,59 @@ function initialize() {
             else{
 
             }
-        })
+        });
         map.getContainer().appendChild(_selectBox[0]);
     }
     var mySelectBoxCtrl = new selectBoxControl();
     map.addControl(mySelectBoxCtrl);
+    var vm = new Vue({
+        el: '#safeDataMapContent',
+        data:{
+            Dangerous: [],
+            Company: [],
+            Recheck: [],
+            Task: []
+        },
+        computed: {
+            AllData: function(){
+                return [].concat(this.Dangerous,this.Company,this.Recheck,this.Task)
+            }
+        },
+        created: function(){
+            var self = this;
+            // 获取危险源
+            $.when(getModels()).done(function(data){
+                if(data.state == 0){
+                    var _data = data.data;
+                    self.Dangerous = _data[0];
+                    self.Company = _data[1];
+                    self.Recheck = _data[2];
+                    self.Task = _data[3];
+                    showMarkerByDataList(self.AllData);
+                }
+            })
+        }
+    });
 }
-
-
+function showMarkerByDataList(dataList){
+    for(var i = 0, length = dataList.length; i < length; i++){
+        var data = dataList[i];
+        setMarkerByData(data);
+    }
+}
+function setMarkerByData(data){
+    var coordinate = data.coordinate;
+    coordinate = coordinate.split(" ");
+    if(coordinate.length < 2){
+        // 无坐标
+    }
+    else{
+        var lat = coordinate[0], lng = coordinate[1];
+        console.log(lat,lng);
+        var marker = new BMap.Marker(new BMap.Point(lng, lat));
+        map.addOverlay(marker);
+    }
+}
 
 
 function getModels(){
