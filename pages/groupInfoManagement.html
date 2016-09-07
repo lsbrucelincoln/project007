@@ -68,7 +68,16 @@
     </div>
 </div>
 <script>
+
 $(document).ready(function() {
+    window.page.beforeUnload = function(){
+        if(confirm("未保存修改的信息，确定要离开吗？")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     $(".settingBtn").on('click', function(event) {
         event.preventDefault();
         $(".digitMap input").removeAttr('disabled');

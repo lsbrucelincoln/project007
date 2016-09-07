@@ -21,14 +21,10 @@ $(function() {
     adminInit();
     resizeContentTable();
     window.page = {};
-    window.page.beforeUnload = function(){
-        return true;
-    };
     function adminInit() {
         eventBind();
         basicAjax();
     }
-
 });
 
 function eventBind() {
@@ -53,11 +49,6 @@ function eventBind() {
             $(".dropdown-menu").hide();
         }
         e.stopPropagation();
-    });
-    $(".submenu .line").on('click', function(event) {
-        $(".submenu .line").removeClass('chosen');
-        $(".line").removeClass("chosenLine");
-        $(this).addClass('chosen');
     });
     $(".admin_content").on('click', '.backBtn', function(event) {
         history.back();
@@ -177,9 +168,6 @@ function basicAjax() {
     $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
         if (data.state == 0) {
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
-        } else if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
-            alert("登录超时，请重新登录");
-            window.location.href = "sign_in.html"
         }
     });
     $.get(baseUrl + '/region/getStatistics', function(data) {
@@ -333,7 +321,7 @@ function resizeContentTable() {
     });
 }
 
-function loadContent() {
+function loadContent(event) {
     var hash = window.location.hash;
     var url = window.location.href;
     
@@ -343,13 +331,27 @@ function loadContent() {
         hash = "#/" + "assessmentCheck.html"
     }
     var hashArray = hash.split("/");
-    if(window.page.beforeUnload()){
-        $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
-            uiComponentEventBind();
-        });
+    
+    window.page.beforeUnload = function(){
+        return true;
     }
+    $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
+        uiComponentEventBind();
+        // $(".line").removeClass("chosenLine");
+        $(".submenu .line").removeClass('chosen')
+        .filter("[href='"+hash+"']").addClass("chosen")
+        .closest(".submenu").prev(".line").not(".active").trigger("click");
+    });
+    
 }
+$(document).on('click','a[href^="#/"]',function(){
+    if(window.page.beforeUnload()){
 
+    }
+    else{
+        event.preventDefault();
+    }
+})
 function leftMenuPlace() {
     var hash = window.location.hash;
     if (window.location.href.search("Index_c") == -1) {
