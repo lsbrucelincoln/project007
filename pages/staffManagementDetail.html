@@ -39,8 +39,8 @@
                     </select>
                 </div>
                 <div class="inputShort digitMap"><span>电子地图：</span> X:
-                    <input type="text" value="750" v-model="x" :disabled="disabled"> — Y:
-                    <input type="text" value="145" v-model="y" :disabled="disabled">
+                    <input type="text" v-model="x" :disabled="disabled"> — Y:
+                    <input type="text" v-model="y" :disabled="disabled">
                 </div>
             </div>
             <div class="textInfo">
@@ -171,7 +171,6 @@ $(document).ready(function() {
             },
             addCompany: function() {
                 $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
-                    console.log(data);
                     if (data.state == 0) {
                         alert("增加成功");
                         history.back();
@@ -179,6 +178,7 @@ $(document).ready(function() {
                 });
             },
             confirm: function() {
+                console.log(this.coordinate);
                 if (vm.disabled) {
                     history.back();
                 } else {

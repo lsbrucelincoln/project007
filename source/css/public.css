@@ -12,7 +12,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 .minibar {
@@ -20,6 +21,7 @@
   padding-left: 20px;
   line-height: 32px;
   font-size: 14px;
+  background-image: -webkit-linear-gradient(270deg, #f0f0f0 0%, #dddddd 100%);
   background-image: linear-gradient(-180deg, #f0f0f0 0%, #dddddd 100%);
 }
 .minibar i {
@@ -72,6 +74,7 @@
   padding: 10px 20px;
 }
 .normalBtn {
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
   border: 1px solid #50a8e7;
   border-radius: 6px;
@@ -133,7 +136,7 @@
 .inputShort input {
   height: 24px;
   width: 200px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   padding: 5px;
 }
 .infoTable {
@@ -144,6 +147,7 @@
 .infoTable .tableHeader {
   color: #333;
   height: 50px;
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
   border: 1px solid #a9dbf6;
 }
@@ -202,6 +206,7 @@
 }
 .tableBox .tableHeader {
   height: 40px;
+  background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
   border: 1px solid #a9dbf6;
   padding-top: 10px;
@@ -312,3 +317,4 @@
   background-color: #50a8e7;
   color: #fff;
 }
+/*# sourceMappingURL=public.css.map */
