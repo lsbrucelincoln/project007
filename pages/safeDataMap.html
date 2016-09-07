@@ -6,11 +6,19 @@
             </div>
             <a href="#/welcome.html" class="normalBtn"><i class="flaticon-location"></i><span>返回</span></a>
         </div>
-        <div id="baiduMap"></div>
+        <div id="baiduMap">
+            
+        </div>
     </div>
 </div>
 <script src="http://api.map.baidu.com/api?v=2.0&ak=Ogc3s9tT2jSfg8GvYBScols0iyeSoUGG&callback=initialize"></script>
 <script type="text/javascript">
+// 获取危险源
+$.when(getModels()).done(function(data){
+    if(data.state == 0){
+        console.log(data);
+    }
+})
 function initialize() {
     $("#baiduMap").height($("#admin_content_table").height() - 30);
     $(window).bind('resize', function() {
@@ -23,13 +31,9 @@ function initialize() {
         anchor: BMAP_ANCHOR_TOP_LEFT
     }); // 左上角，添加比例尺
     var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
-    var top_right_navigation = new BMap.NavigationControl({
-        anchor: BMAP_ANCHOR_TOP_RIGHT,
-        type: BMAP_NAVIGATION_CONTROL_SMALL
-    }); //右上角，仅包含平移和缩放按钮
+    
     map.addControl(top_left_control);
     map.addControl(top_left_navigation);
-    map.addControl(top_right_navigation);
 
     var marker1 = new BMap.Marker(new BMap.Point(121.566686, 29.889177));
     map.addOverlay(marker1);
@@ -88,5 +92,65 @@ function initialize() {
     var infoWindow3 = new BMap.InfoWindow(html, opts);
 
     map.openInfoWindow(infoWindow1, new BMap.Point(121.5606865, 29.870177));
+
+    // 添加自定义控件： 右上角的4个选项
+    function selectBoxControl(){    
+        // 设置默认停靠位置和偏移量  
+        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;    
+        this.defaultOffset = new BMap.Size(10, 10);    
+    }    
+    selectBoxControl.prototype = new BMap.Control();
+    selectBoxControl.prototype.initialize = function(map){
+        var _selectBox = $('<div class="map_selectBox">'+
+                            '<div data-name="Dangerous">重大危险源</div>'+
+                            '<div data-name="Company">注册企业</div>'+
+                            '<div data-name="Recheck">隐患问题</div>'+
+                            '<div data-name="Task">评估任务</div>'+
+                        '</div>');
+        _selectBox.find('[data-name]').bind('click',function(){
+            var name = $(this).attr("data-name");
+            if(name == "Dangerous"){
+
+            }
+            else if (name == "Company"){
+
+            }
+            else if (name == "Recheck"){
+                
+            }
+            else{
+
+            }
+        })
+        map.getContainer().appendChild(_selectBox[0]);
+    }
+    var mySelectBoxCtrl = new selectBoxControl();
+    map.addControl(mySelectBoxCtrl);
+}
+
+
+
+
+function getModels(){
+    var ajax = $.ajax({
+                    url: "/models",
+                    type: "POST",
+                    data: "models[0].name=Dangerous&models[0].name=Recheck&models[0].name=Company&models[0].name=Task"
+                });
+    return ajax;
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
