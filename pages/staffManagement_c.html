@@ -3,16 +3,18 @@
     </div>
     <div class="contentBody">
         <div class="contenBox">
-            <div class="checkBody">
-                <div class="inputShort"><span>创建时间：</span>
+            <div class="checkBody" style="border-top:0">
+                <div class="inputShort"><span>注册时间：</span>
                     <input type="text"><i class="flaticon-small-calendar"></i></div>
-                <div class="inputShort"><span>管理机构：</span>
-                    <select name="" id=""></select>
+                <div class="inputShort"><span>审核单位：</span>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select name="" id=""></select>
+                    </div>
                 </div>
-                <div class="inputShort"><span>任务编号：</span>
+                <div class="inputShort"><span>账号名称：</span>
                     <input type="text">
                 </div>
-                <div class="inputShort"><span>企业对象：</span>
+                <div class="inputShort"><span>审核时间：</span>
                     <input type="text">
                 </div>
                 <div class="searchBody">
@@ -47,10 +49,10 @@
                             <td><a href="#/staffAccountManagementDetail.html" @click="saveDetail(account)">查看</a></td>
                         </tr>
                     </table>
-                            <div class="bottom-search">
-            <div class="allSelectBtn normalBtn">全选</div>
-            <div class="urgeBtn normalBtn">删除</div>
-        </div>
+                    <div class="bottom-search">
+                        <div class="allSelectBtn normalBtn">全选</div>
+                        <div class="urgeBtn normalBtn">删除</div>
+                    </div>
                 </div>
             </div>
             <div class="practiceBody"></div>

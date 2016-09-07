@@ -53,17 +53,17 @@
                                 企业名称
                             </th>
                             <th>整改期限</th>
-                            <th>隐患等级</th>
                             <th>
-                            登记时间
+                                登记时间
                             </th>
+                            <th>隐患等级</th>
                         </tr>
                     </thead>
                     <tr v-for="risk in risks|filterBy companyName2Filter risk |filterBy setTimeFilter risk">
-                        <td>{{risk.task.company.name}}</td>
-                        <td>{{risk.restDay}}天</td>
-                        <td>{{risk.safeRule.safetyLevel}}</td>
+                        <td>{{risk.censor.task.company.name}}</td>
+                        <td>{{risk.restDay}}</td>
                         <td>{{risk.time}}</td>
+                        <td>{{risk.censor.safeRule.safetyLevel}}</td>
                     </tr>
                 </table>
             </div>
@@ -140,14 +140,27 @@ $(document).ready(function() {
                     var companyList2 = [];
                     var timeList = [];
                     for (var i = 0; i < data.length; i++) {
-                        data[i].time = vm.stamp2time(data[i].in_time);
+                        data[i].time = this.stamp2time(data[i].censor.in_time);
                         data[i].createTime = data[i].time.split(" ")[0];
-                        var restDay = vm.dayPeriodCompute(data[i].in_time, data[i].deadline);
-                        data[i].restDay = restDay;
-                        companyList2.push(data[i].task.company.name)
+                        var restDay = this.dayPeriodCompute(data[i].censor.in_time, data[i].dead_line);
+                        data[i].restDay = restDay+"天";
+                        companyList2.push(data[i].censor.task.company.name)
                         timeList.push(data[i].createTime)
                     }
-                    vm.risks = data;
+                    this.risks = data;
+                    var len = this.risks.length;
+                    if (len < 5) {
+                        for (var i = 0; i < 5 - len; i++) {
+                            this.risks.push({
+                                censor: {
+                                    task:{
+                                        company:""
+                                    },
+                                    safeRule:[],
+                                }
+                            });
+                        }
+                    }
                     vm.companyList2 = vm.unique(companyList2);
                     vm.setTimeList = vm.unique(timeList);
                 },
@@ -166,8 +179,8 @@ $(document).ready(function() {
                     return month + "/" + day + " " + hours + ":" + minutes;
                 },
                 dayPeriodCompute: function(startTime, endTime) {
-                var day = endTime - startTime;
-                return parseInt(day / (1000 * 60 * 60 * 24));
+                    var day = endTime - startTime;
+                    return parseInt(day / (1000 * 60 * 60 * 24));
                 },
                 unique: function(arr) {
                     var result = [],
@@ -185,7 +198,7 @@ $(document).ready(function() {
             created: function() {
                 var self = this;
                 var id = localStorage.getItem("id");
-                $.post(baseUrl+'/model', {
+                $.post(baseUrl + '/model', {
                     name: "Task",
                     rows: 0,
                     remove: "safeRules"
@@ -204,16 +217,15 @@ $(document).ready(function() {
                                     "searching": false,
                                     "pageLength": 5,
                                     "dom": 'rt',
-                                    "language":'//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
+                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
                                 });
                             })
                         }
                     }
                 });
-                $.post(baseUrl+'/model', {
-                    name: "Censor",
+                $.post(baseUrl + '/model', {
+                    name: "Recheck",
                     rows: 0,
-                    "params['taday']": '1',
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
@@ -224,18 +236,18 @@ $(document).ready(function() {
                                 $('table.display').DataTable({
                                     // paging: false,
                                     "order": [
-                                        [2, "desc"]
+                                        [3, "desc"]
                                     ],
                                     "searching": false,
                                     "pageLength": 5,
                                     "dom": 'rt',
-                                    "language":'//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
+                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
                                 });
                             })
                         }
                     }
                 });
-                $.get(baseUrl+'/region/getStatistics', function(data, textStatus, xhr) {
+                $.get(baseUrl + '/region/getStatistics', function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
                         vm.statistics = data;

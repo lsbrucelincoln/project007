@@ -6,80 +6,69 @@
             <div class="textInfo">
                 <div class="inputShort">
                     <span>企业名称：</span>
-                    <i>浙江省杭州某某有限公司</i>
+                    <i>{{params.name}}</i>
                 </div>
                 <div class="inputShort"><span>企业类型：</span>
                     <div class="admin_ui_select">
-                        <select>
-                            <option>港口服务企业</option>
-                            <option>选项2</option>
+                        <select v-model="params.type.id">
+                            <option v-for="type in companyType" value="{{type.id}}">{{type.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort">
                     <span>企业代码：</span>
-                    <span>5615132156356156</span>
+                    <i>{{params.code}}</i>
                 </div>
                 <div class="inputShort">
                     <span>港口管理部门：</span>
                     <div class="admin_ui_select">
-                        <select>
-                            <option>宁波市港航管理局</option>
-                            <option>选项2</option>
+                        <select v-model="params.region.id">
+                            <option v-for="place in region" value="{{place.id}}">{{place.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>安全责任人：</span>
-                    <input type="text" value="张三">
+                    <input type="text" v-model="params.contact">
                 </div>
                 <div class="inputShort"><span>所属港区：</span>
                     <div class="admin_ui_select">
-                        <select>
-                            <option>余姚港航局</option>
-                            <option>慈溪港航局</option>
-                            <option>奉化港航局</option>
-                            <option>宁海港航局</option>
-                            <option>象山港航局</option>
-                            <option>鄞州港航局</option>
-                            <option>海曙港航局</option>
-                            <option>江东港航局</option>
-                            <option>江北港航局</option>
-                            <option>北仑港航局</option>
+                        <select v-model="params.area">
+                            <option v-for="place in area" value={{place.name}}>{{place.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>固定电话：</span>
-                    <input type="text" value="0574-65825478">
+                    <input type="text" v-model="params.phone">
                 </div>
-                <div class="inputShort digitMap"><span>电子地图：</span>
-                    <input type="text" value="X:750" disabled> —
-                    <input type="text" value="Y:145" disabled><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
+                <div class="inputShort digitMap"><span>电子地图：</span>X:
+                    <input type="text" disabled v-model="x"> — Y:
+                    <input type="text" disabled v-model="y"><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
-                    <input type="text" value="13805741235">
+                    <input type="text" v-model="params.telephone">
                 </div>
                 <br/>
                 <div class="inputShort companyAddress"><span>企业地址：</span>
-                    <input type="text" value="浙江省宁波市XXX街XX路XXXX">
+                    <input type="text" v-model="params.address">
                 </div>
                 <br/>
-                <div class="inputShort companyNumber"><span>机构组织机构代码证：</span>
+                <div class="inputShort companyNumber"><span style="padding-right:10px">机构组织机构代码证：</span>
                     <br/>
-                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
-                            <input type="file" id="uploadPic" name="file" @change="upload">
-                            <label for="uploadPic" id="fileBtn">
-                                +
-                                <img class="showPic" :src="url" />
-                            </label>
-                            <span class="tip"></span>
-                            <input type="text" name="turnUrl" class="turnUrl">
-                            <input type="submit" value="submit">
-                            <canvas id="uploadImg" style="display:none"></canvas>
-                        </form>
-                        <iframe src="" frameborder="0" id="turnPage"></iframe>
+                    <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                        <input type="file" id="uploadPic" name="file" @change="upload">
+                        <label for="uploadPic" id="fileBtn">
+                            +
+                            <img class="showPic" :src="url" />
+                        </label>
+                        <span class="tip"></span>
+                        <input type="text" name="turnUrl" class="turnUrl">
+                        <input type="submit" value="submit">
+                        <canvas id="uploadImg" style="display:none"></canvas>
+                    </form>
+                    <iframe src="" frameborder="0" id="turnPage"></iframe>
                 </div>
-                <div class="changeBtn normalBtn">修改</div>
-                <div class="updateBtn normalBtn">更新</div>
+                <div class="changeBtn normalBtn" @click="update">修改</div>
+                <div class="updateBtn normalBtn" @click="update">更新</div>
             </div>
         </div>
     </div>
@@ -115,10 +104,16 @@ $(document).ready(function() {
     var vm = new Vue({
         el: "#companyInfoBody",
         data: {
-            params: {},
+            params: {
+                region: [],
+                type: []
+            },
             x: null,
             y: null,
-            url: ""
+            url: "",
+            companyType: [],
+            region: [],
+            area: []
         },
         computed: {
             coordinate: function() {
@@ -189,10 +184,24 @@ $(document).ready(function() {
                 });
             },
             update: function() {
-                $.post('/region/editRegion', vm.params, function(data, textStatus, xhr) {
+                var params={
+                    code:this.params.code,
+                    name:this.params.name,
+                    address:this.params.address,
+                    type:this.params.type.id,
+                    region:this.params.region.id,
+                    contact:this.params.contact,
+                    phone :this.params.photo,
+                    telephone :this.params.telephone,
+                    coordinate :this.params.coordinate,
+                    photo :this.params.photo,
+                    area :this.params.area
+                }
+                $.post('/company/modifyCompany', params, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
                         alert("修改成功");
+                        window.reload();
                     }
                 });
             }
@@ -201,8 +210,7 @@ $(document).ready(function() {
             var self = this;
             var id = localStorage.getItem("id");
             $.post('/model', {
-                name: "Region",
-                "params['my']": 1
+                name: "Company",
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
@@ -215,6 +223,33 @@ $(document).ready(function() {
                         vm.params.photo = vm.params.photo.id
                         vm.url = "/map/" + vm.params.photo
                     }
+                }
+            });
+            $.post('/model', {
+                name: "CompanyType",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.companyType = data.data;
+                }
+            });
+            $.post('/model', {
+                name: "Region",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.region = data.data;
+                }
+            });
+            $.post('/model', {
+                name: "Area",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.area = data.data;
                 }
             });
         },

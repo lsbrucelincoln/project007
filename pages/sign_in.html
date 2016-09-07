@@ -82,13 +82,13 @@
             var username = $("#account").val();
             var password = $("#password").val();
             if ($("#rememberBtn").prop('checkBox', true)) {
-                localStorage.setItem("username",username );
-                localStorage.setItem("pd",password);
+                localStorage.setItem("username", username);
+                localStorage.setItem("pd", password);
             }
             $.ajaxSetup({
-                withCredentials:true
+                withCredentials: true
             })
-            $.post(baseUrl+'/auth/login', {
+            $.post(baseUrl + '/auth/login', {
                 username: username,
                 password: password,
                 // "remember-me": "on"
@@ -96,12 +96,18 @@
                 console.log(data);
                 if (data.state == 0) {
                     localStorage.setItem("id", data.id);
-                    localStorage.setItem("competence",data.competence)
+                    localStorage.setItem("competence", data.competence)
                     switch (data.competence) {
                         case "机构管理员":
+                            if ($(".loginBtn").attr('href') == "Index_c.html") {
+                                alert("您是机构管理员，将进入机构管理页面")
+                            }
                             window.location.href = "index.html";
                             break;
                         case "企业负责人":
+                            if ($(".loginBtn").attr('href') == "index.html") {
+                                alert("您是企业负责人，将进入企业管理页面")
+                            }
                             window.location.href = "Index_c.html"
                             break;
                         case "检查评估员":

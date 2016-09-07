@@ -1,4 +1,4 @@
-var baseUrl="http://120.26.58.36"
+var baseUrl = "http://120.26.58.36"
 var ADMIN_CONFIG = {
     "homePage": "welcome.html",
     "mainBodySelector": "#admin_body",
@@ -59,9 +59,9 @@ function eventBind() {
         });
     });
     if (!document.addEventListener) {
-    // IE6~IE8
-    document.write('<script src="ieBetter.js"><\/script>');   
-}
+        // IE6~IE8
+        document.write('<script src="ieBetter.js"><\/script>');
+    }
     // if (navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0" || navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE9.0") {
     //     $(".admin_body").on('change', "#uploadPic", function(event) {
     //         $("form").submit();
@@ -162,16 +162,19 @@ function eventBind() {
 
 function basicAjax() {
     var id = localStorage.getItem("id");
-    $.post(baseUrl+'/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
+    $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
         console.log(data);
         if (data.state == 0) {
             console.log(data);
             console.log($(".client .name"));
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
+        } else if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
+            alert("登录超时，请重新登录");
+            window.location.href = "sign_in.html"
         }
     });
-    $.get(baseUrl+'/region/getStatistics', function(data) {
-        if (data.state==0) {
+    $.get(baseUrl + '/region/getStatistics', function(data) {
+        if (data.state == 0) {
             $(".tips #todayTask").text(data.todayTask);
             $(".tips #todayCensor").text(data.todayCensor);
         }
@@ -325,10 +328,10 @@ function loadContent() {
     var hash = window.location.hash;
     var url = window.location.href;
     console.log(url);
-    console.log(url.search("Index_c")==-1);
-    if (hash == "" && url.search("Index_c")==-1) {
+    console.log(url.search("Index_c") == -1);
+    if (hash == "" && url.search("Index_c") == -1) {
         hash = "#/" + ADMIN_CONFIG.homePage;
-    } else if (hash == "" && url.search("Index_c")!==-1) {
+    } else if (hash == "" && url.search("Index_c") !== -1) {
         hash = "#/" + "assessmentCheck.html"
     }
     var hashArray = hash.split("/");
@@ -340,9 +343,16 @@ function loadContent() {
 function leftMenuPlace() {
     var hash = window.location.hash;
     console.log(hash);
-    if (hash.match("safeDataMap") || !hash || hash.match("welcome")) {
-        $("#homePageBtn").addClass('chosenLine');
+    if (window.location.href.search("Index_c") == -1) {
+        if (hash.match("safeDataMap") || !hash || hash.match("welcome")) {
+            $("#homePageBtn").addClass('chosenLine');
+        }
+    }else if(!hash){
+        
+        $(".leftmenu>div>.line").eq(1).trigger("click");
+        $(".active+.submenu>.line").eq(0).addClass('chosen');
     }
+
     // if (hash.match("companyInfoManagement") || hash.match("staffManagement")) {
     //     console.log($(".leftmenu>div>.line"));
     //     $(".leftmenu>div>.line").eq(1).trigger("click");
