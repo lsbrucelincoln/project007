@@ -1,4 +1,4 @@
-<div class="welcome admin_content_innerBox" style="height: 100%">
+<div id="safeDataMapContent" class="welcome admin_content_innerBox" style="height: 100%">
     <div class="admin_scrollBox">
         <div class="infoHeader">
             <div class="leftInfo"><span class="title">通知公告</span>
@@ -13,12 +13,37 @@
 </div>
 <script src="http://api.map.baidu.com/api?v=2.0&ak=Ogc3s9tT2jSfg8GvYBScols0iyeSoUGG&callback=initialize"></script>
 <script type="text/javascript">
-// 获取危险源
-$.when(getModels()).done(function(data){
-    if(data.state == 0){
-        console.log(data);
+var vm = new Vue({
+    el: '#safeDataMapContent',
+    data:{
+        Dangerous: [],
+        Company: [],
+        Recheck: [],
+        Task: []
+    },
+    computed: {
+        AllData: function(){
+            return [].concat(this.Dangerous,this.Company,this.Recheck,this.Task)
+        }
+    },
+    created: function(){
+        var self = this;
+        // 获取危险源
+        $.when(getModels()).done(function(data){
+            if(data.state == 0){
+                var _data = data.data;
+                console.log(_data);
+                self.Dangerous = _data[0];
+                self.Company = _data[1];
+                self.Recheck = _data[2];
+                self.Task = _data[3];
+                console.log(self.AllData);
+            }
+        })
     }
-})
+});
+
+        
 function initialize() {
     $("#baiduMap").height($("#admin_content_table").height() - 30);
     $(window).bind('resize', function() {
@@ -135,7 +160,16 @@ function getModels(){
     var ajax = $.ajax({
                     url: "/models",
                     type: "POST",
-                    data: "models[0].name=Dangerous&models[0].name=Recheck&models[0].name=Company&models[0].name=Task"
+                    data: {
+                        "models[0].name": "Dangerous",
+                        "models[0].row": "0",
+                        "models[1].name": "Recheck",
+                        "models[1].row": "0",
+                        "models[2].name": "Company",
+                        "models[2].row": "0",
+                        "models[3].name": "Task",
+                        "models[3].row": "0"
+                    }
                 });
     return ajax;
 }
