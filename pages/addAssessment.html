@@ -82,11 +82,10 @@
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(hash == "#/addAssessment2.html" || confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (hash == "#/addAssessment2.html" || confirm("未保存修改的信息，确定要离开吗？")) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -201,14 +200,14 @@ $(document).ready(function() {
                     alert("请选择评估类型");
                 } else if (!this.params.dead_line) {
                     alert("请选择执行时间");
-                } else if (this.teamList.length==0) {
+                } else if (this.teamList.length == 0) {
                     alert("请选择执行人员");
                 } else {
                     localStorage.setItem("params", JSON.stringify(this.params));
                     localStorage.setItem("teamList", JSON.stringify(this.teamList));
                     console.log(this.$data);
                     localStorage.setItem("data", JSON.stringify(this.$data));
-                    window.location.href="index.html#/addAssessment2.html"
+                    window.location.href = "index.html#/addAssessment2.html"
                 }
             },
             setCompany: function() {
@@ -220,70 +219,64 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            if (localStorage.getItem("params")) {
-                self.params = JSON.parse(localStorage.getItem("params"));
+            if (localStorage.getItem("data")) {
+                self.$data = JSON.parse(localStorage.getItem("data"));
+            } else {
+                $.post('/model', {
+                    name: "CompanyType",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.companyType = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Region",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.region = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Area",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.area = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Company",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.companyList = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Region",
+                    "params['my']": 1
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.specialCheck = data.data[0].special;
+                    }
+                });
+                $.post('/model', {
+                    name: "Squadron",
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.squadron = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "User",
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.user = data.data;
+                    }
+                });
             }
-            $.post('/model', {
-                name: "CompanyType",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.companyType = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Region",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.region = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Area",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.area = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Company",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.companyList = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Region",
-                "params['my']": 1
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.specialCheck = data.data[0].special;
-                }
-            });
-            $.post('/model', {
-                name: "Squadron",
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.squadron = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "User",
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.user = data.data;
-                }
-            });
         },
         ready: function() {
 
