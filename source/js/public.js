@@ -8,10 +8,22 @@ var ADMIN_CONFIG = {
     "footerSelector": "#admin_footer",
     "contentTableSelector": "#admin_content_table"
 };
+$.ajaxSetup({
+    success: function(data){
+        if(data.state == 10001){
+            alert("登录超时");
+            window.location.href="sign_in.html";
+        }
+    }
+});
+
 $(function() {
     adminInit();
     resizeContentTable();
-
+    window.page = {};
+    window.page.beforeUnload = function(){
+        return true;
+    };
     function adminInit() {
         eventBind();
         basicAjax();
@@ -163,10 +175,7 @@ function eventBind() {
 function basicAjax() {
     var id = localStorage.getItem("id");
     $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
-        console.log(data);
         if (data.state == 0) {
-            console.log(data);
-            console.log($(".client .name"));
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
         } else if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
             alert("登录超时，请重新登录");
@@ -327,22 +336,22 @@ function resizeContentTable() {
 function loadContent() {
     var hash = window.location.hash;
     var url = window.location.href;
-    console.log(url);
-    console.log(url.search("Index_c") == -1);
+    
     if (hash == "" && url.search("Index_c") == -1) {
         hash = "#/" + ADMIN_CONFIG.homePage;
     } else if (hash == "" && url.search("Index_c") !== -1) {
         hash = "#/" + "assessmentCheck.html"
     }
     var hashArray = hash.split("/");
-    $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
-        uiComponentEventBind();
-    });
+    if(window.page.beforeUnload()){
+        $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
+            uiComponentEventBind();
+        });
+    }
 }
 
 function leftMenuPlace() {
     var hash = window.location.hash;
-    console.log(hash);
     if (window.location.href.search("Index_c") == -1) {
         if (hash.match("safeDataMap") || !hash || hash.match("welcome")) {
             $("#homePageBtn").addClass('chosenLine');

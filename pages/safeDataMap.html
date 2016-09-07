@@ -15,15 +15,16 @@
 <script type="text/javascript">
 
 
-        
+var map; 
+var vm;   
 function initialize() {
     $("#baiduMap").height($("#admin_content_table").height() - 30);
     $(window).bind('resize', function() {
         $("#baiduMap").height($("#admin_content_table").height() - 30);
     });
-    var map = new BMap.Map("baiduMap"); // 创建地图实例  
+    map = new BMap.Map("baiduMap"); // 创建地图实例  
     var point = new BMap.Point(121.556686, 29.880177); // 创建点坐标  
-    map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别  
+    map.centerAndZoom(point, 13); // 初始化地图，设置中心点坐标和地图级别  
     var top_left_control = new BMap.ScaleControl({
         anchor: BMAP_ANCHOR_TOP_LEFT
     }); // 左上角，添加比例尺
@@ -32,63 +33,63 @@ function initialize() {
     map.addControl(top_left_control);
     map.addControl(top_left_navigation);
 
-    var marker1 = new BMap.Marker(new BMap.Point(121.566686, 29.889177));
-    map.addOverlay(marker1);
-    marker1.addEventListener('click', function(e) {
-        map.openInfoWindow(infoWindow1, marker1.getPosition());
-    });
-    var marker2 = new BMap.Marker(new BMap.Point(121.5606865, 29.870177));
-    map.addOverlay(marker2);
-    marker2.addEventListener('click', function(e) {
-        map.openInfoWindow(infoWindow2, marker2.getPosition());
-    });
-    var marker3 = new BMap.Marker(new BMap.Point(121.5516869, 29.881));
-    map.addOverlay(marker3);
-    marker3.addEventListener('click', function(e) {
-        map.openInfoWindow(infoWindow3, marker3.getPosition());
-    });
-    var marker4 = new BMap.Marker(new BMap.Point(121.549686, 29.88197));
-    map.addOverlay(marker4);
-    marker1.addEventListener('click', function(e) {
-        map.openInfoWindow(infoWindow1, marker1.getPosition());
-    });
-    var marker5 = new BMap.Marker(new BMap.Point(121.5536865, 29.863177));
-    map.addOverlay(marker5);
-    marker2.addEventListener('click', function(e) {
-        map.openInfoWindow(infoWindow2, marker2.getPosition());
-    });
-    var marker6 = new BMap.Marker(new BMap.Point(121.5586869, 29.871));
-    map.addOverlay(marker6);
-    marker3.addEventListener('click', function(e) {
-        map.openInfoWindow(infoWindow3, marker3.getPosition());
-    });
+    // var marker1 = new BMap.Marker(new BMap.Point(121.566686, 29.889177));
+    // map.addOverlay(marker1);
+    // marker1.addEventListener('click', function(e) {
+    //     map.openInfoWindow(infoWindow1, marker1.getPosition());
+    // });
+    // var marker2 = new BMap.Marker(new BMap.Point(121.5606865, 29.870177));
+    // map.addOverlay(marker2);
+    // marker2.addEventListener('click', function(e) {
+    //     map.openInfoWindow(infoWindow2, marker2.getPosition());
+    // });
+    // var marker3 = new BMap.Marker(new BMap.Point(121.5516869, 29.881));
+    // map.addOverlay(marker3);
+    // marker3.addEventListener('click', function(e) {
+    //     map.openInfoWindow(infoWindow3, marker3.getPosition());
+    // });
+    // var marker4 = new BMap.Marker(new BMap.Point(121.549686, 29.88197));
+    // map.addOverlay(marker4);
+    // marker1.addEventListener('click', function(e) {
+    //     map.openInfoWindow(infoWindow1, marker1.getPosition());
+    // });
+    // var marker5 = new BMap.Marker(new BMap.Point(121.5536865, 29.863177));
+    // map.addOverlay(marker5);
+    // marker2.addEventListener('click', function(e) {
+    //     map.openInfoWindow(infoWindow2, marker2.getPosition());
+    // });
+    // var marker6 = new BMap.Marker(new BMap.Point(121.5586869, 29.871));
+    // map.addOverlay(marker6);
+    // marker3.addEventListener('click', function(e) {
+    //     map.openInfoWindow(infoWindow3, marker3.getPosition());
+    // });
 
 
-    var opts = {
-        width: 220, // 信息窗口宽度    
-        height: 60, // 信息窗口高度    
-    };
-    var html = '<table>' +
-        '<tbody>' +
-        '<tr>' +
-        '<td>隐患编号：</td>' +
-        '<td>NBYH010220160810001</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>等级：</td>' +
-        '<td>2</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>登记时间：</td>' +
-        '<td>2016-08-10</td>' +
-        '</tr>' +
-        '</tbody>' +
-        '</table>';
-    var infoWindow1 = new BMap.InfoWindow(html, opts);
-    var infoWindow2 = new BMap.InfoWindow(html, opts);
-    var infoWindow3 = new BMap.InfoWindow(html, opts);
+    // var opts = {
+    //     width: 220, // 信息窗口宽度    
+    //     height: 60, // 信息窗口高度    
+    // };
+    // var html = '<table>' +
+    //     '<tbody>' +
+    //     '<tr>' +
+    //     '<td>隐患编号：</td>' +
+    //     '<td>NBYH010220160810001</td>' +
+    //     '</tr>' +
+    //     '<tr>' +
+    //     '<td>等级：</td>' +
+    //     '<td>2</td>' +
+    //     '</tr>' +
+    //     '<tr>' +
+    //     '<td>登记时间：</td>' +
+    //     '<td>2016-08-10</td>' +
+    //     '</tr>' +
+    //     '</tbody>' +
+    //     '</table>';
+    // var infoWindow1 = new BMap.InfoWindow(html, opts);
+    // var infoWindow2 = new BMap.InfoWindow(html, opts);
+    // var infoWindow3 = new BMap.InfoWindow(html, opts);
 
-    map.openInfoWindow(infoWindow1, new BMap.Point(121.5606865, 29.870177));
+    // map.openInfoWindow(infoWindow1, new BMap.Point(121.5606865, 29.870177));
 
     // 添加自定义控件： 右上角的4个选项
     function selectBoxControl(){    
@@ -98,43 +99,32 @@ function initialize() {
     }    
     selectBoxControl.prototype = new BMap.Control();
     selectBoxControl.prototype.initialize = function(map){
-        var _selectBox = $('<div class="map_selectBox">'+
+        var _selectBox = $('<div id="map_selectBox" class="map_selectBox">'+
+                            '<div data-name="All" style="border-bottom: 1px solid #eee;">显示全部</div>'+
                             '<div data-name="Dangerous">重大危险源</div>'+
                             '<div data-name="Company">注册企业</div>'+
                             '<div data-name="Recheck">隐患问题</div>'+
                             '<div data-name="Task">评估任务</div>'+
                         '</div>');
-        _selectBox.find('[data-name]').bind('click',function(){
-            var name = $(this).attr("data-name");
-            if(name == "Dangerous"){
-
-            }
-            else if (name == "Company"){
-
-            }
-            else if (name == "Recheck"){
-                
-            }
-            else{
-
-            }
-        });
         map.getContainer().appendChild(_selectBox[0]);
     }
     var mySelectBoxCtrl = new selectBoxControl();
     map.addControl(mySelectBoxCtrl);
-    var vm = new Vue({
+    vm = new Vue({
         el: '#safeDataMapContent',
         data:{
-            Dangerous: [],
-            Company: [],
-            Recheck: [],
-            Task: []
+            markerList_Dangerous: [],
+            markerList_Company: [],
+            markerList_Recheck: [],
+            markerList_Task: []
         },
         computed: {
-            AllData: function(){
-                return [].concat(this.Dangerous,this.Company,this.Recheck,this.Task)
+            markerList_All: function(){
+                return [].concat(this.markerList_Dangerous,this.markerList_Company,this.markerList_Recheck,this.markerList_Task)
             }
+        },
+        method: {
+
         },
         created: function(){
             var self = this;
@@ -142,34 +132,188 @@ function initialize() {
             $.when(getModels()).done(function(data){
                 if(data.state == 0){
                     var _data = data.data;
-                    self.Dangerous = _data[0];
-                    self.Company = _data[1];
-                    self.Recheck = _data[2];
-                    self.Task = _data[3];
-                    showMarkerByDataList(self.AllData);
+                    self.markerList_Dangerous = getMarkerList_Dangerous(_data[0]);
+                    self.markerList_Company = getMarkerList_Company(_data[1]);
+                    self.markerList_Recheck = getMarkerList_Recheck(_data[2]);
+                    self.markerList_Task = getMarkerList_Task(_data[3]);
+                    addMarkerByMarkerList(self.markerList_All);
                 }
-            })
+            });
+        },
+        ready: function(){
+            var self = this;
+            $("#map_selectBox").find('[data-name]').bind('click',function(){
+                var name = $(this).attr("data-name");
+                showMarkerByType(name);
+            });
         }
     });
 }
-function showMarkerByDataList(dataList){
+function getMarkerList_Dangerous(dataList){
+    var markers = [];
     for(var i = 0, length = dataList.length; i < length; i++){
         var data = dataList[i];
-        setMarkerByData(data);
+        var coordinate = data.coordinate;
+        if(coordinate&&coordinate.split(" ").length == 2){
+            coordinate = coordinate.split(" ");
+            var lat = coordinate[0], lng = coordinate[1];
+            var marker = new BMap.Marker(new BMap.Point(lng, lat));
+            var opts = {
+                width: 220, // 信息窗口宽度    
+                height: 60, // 信息窗口高度    
+            };
+            var html = '<table>' +
+                '<tbody>' +
+                '<tr>' +
+                '<td>危险源名称：</td>' +
+                '<td>'+data.name+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>等级：</td>' +
+                '<td>'+data.level+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>相关企业：</td>' +
+                '<td>'+data.company+'</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            var infoWindow = new BMap.InfoWindow(html, opts);
+            marker.addEventListener('click', function(e) {
+                this.openInfoWindow(infoWindow);
+            });
+            markers.push(marker);
+        }
+    }
+    return markers;
+}
+function getMarkerList_Company(dataList){
+    var markers = [];
+    for(var i = 0, length = dataList.length; i < length; i++){
+        var data = dataList[i];
+        var coordinate = data.company.coordinate;
+        if(coordinate&&coordinate.split("+").length == 2){
+            coordinate = coordinate.split("+");
+            var lat = coordinate[0], lng = coordinate[1];
+            var marker = new BMap.Marker(new BMap.Point(lat, lng));
+            var opts = {
+                width: 220, // 信息窗口宽度    
+                height: 60, // 信息窗口高度    
+            };
+            var html = '<table>' +
+                '<tbody>' +
+                '<tr>' +
+                '<td>隐患编号：</td>' +
+                '<td>'+data.code+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>等级：</td>' +
+                '<td>'+data.level+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>整改状态：</td>' +
+                '<td>'+data.recheckState+'</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            var infoWindow = new BMap.InfoWindow(html, opts);
+            marker.addEventListener('click', function(e) {
+                this.openInfoWindow(infoWindow);
+            });
+            markers.push(marker);
+        }
+    }
+    return markers;
+}
+function getMarkerList_Recheck(dataList){
+    var markers = [];
+    for(var i = 0, length = dataList.length; i < length; i++){
+        var data = dataList[i];
+        var coordinate = data.coordinate;
+        if(coordinate&&coordinate.split("+").length == 2){
+            coordinate = coordinate.split("+");
+            var lat = coordinate[0], lng = coordinate[1];
+            console.log(lat,lng);
+            var marker = new BMap.Marker(new BMap.Point(lat, lng));
+            var opts = {
+                width: 220, // 信息窗口宽度    
+                height: 60, // 信息窗口高度    
+            };
+            var html = '<table>' +
+                '<tbody>' +
+                '<tr>' +
+                '<td>隐患类型：</td>' +
+                '<td>'+data.type.name+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>等级：</td>' +
+                '<td>'+data.level+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>整改状态：</td>' +
+                '<td>'+data.recheckState+'</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            var infoWindow = new BMap.InfoWindow(html, opts);
+            marker.addEventListener('click', function(e) {
+                this.openInfoWindow(infoWindow);
+            });
+            markers.push(marker);
+        }
+    }
+    return markers;
+}
+function getMarkerList_Task(dataList){
+    var markers = [];
+    for(var i = 0, length = dataList.length; i < length; i++){
+        var data = dataList[i];
+        var coordinate = data.coordinate;
+        if(coordinate&&coordinate.split("+").length == 2){
+            coordinate = coordinate.split("+");
+            var lat = coordinate[0], lng = coordinate[1];
+            console.log(lat,lng);
+            var marker = new BMap.Marker(new BMap.Point(lat, lng));
+            markers.push(marker);
+        }
+    }
+    return markers;
+}
+function addMarkerByMarkerList(markerList){
+    for(var i = 0, length = markerList.length; i < length; i++){
+        map.addOverlay(markerList[i]);
     }
 }
-function setMarkerByData(data){
-    var coordinate = data.coordinate;
-    coordinate = coordinate.split(" ");
-    if(coordinate.length < 2){
-        // 无坐标
+function showMarkerByType(type){
+    $.each(vm.markerList_All,function(){
+        this.hide();
+    });
+    $.each(vm["markerList_"+type],function(){
+        this.show();
+    });
+}
+function setMarkerByData(data,type){
+    if(type == "Dangerous"){
+        var coordinate = data.coordinate;
+        if(coordinate&&coordinate.split(" ").length == 2){
+            coordinate = coordinate.split(" ");
+            var lat = coordinate[0], lng = coordinate[1];
+            console.log(lat,lng);
+            var marker = new BMap.Marker(new BMap.Point(lng, lat));
+            map.addOverlay(marker);
+        }
     }
-    else{
-        var lat = coordinate[0], lng = coordinate[1];
-        console.log(lat,lng);
-        var marker = new BMap.Marker(new BMap.Point(lng, lat));
-        map.addOverlay(marker);
+    else if(type == "Company"){
+        var coordinate = data.company.coordinate;
+        if(coordinate&&coordinate.split("+").length == 2){
+            coordinate = coordinate.split("+");
+            var lat = coordinate[0], lng = coordinate[1];
+            console.log(lat,lng);
+            var marker = new BMap.Marker(new BMap.Point(lng, lat));
+            map.addOverlay(marker);
+        }
     }
+    
 }
 
 
