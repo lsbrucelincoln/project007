@@ -84,6 +84,14 @@
 </div>
 <script>
 $(document).ready(function() {
+    window.page.beforeUnload = function(hash){
+        if(confirm("未保存修改的信息，确定要离开吗？")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();

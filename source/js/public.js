@@ -8,14 +8,6 @@ var ADMIN_CONFIG = {
     "footerSelector": "#admin_footer",
     "contentTableSelector": "#admin_content_table"
 };
-$.ajaxSetup({
-    success: function(data){
-        if(data.state == 10001){
-            alert("登录超时");
-            window.location.href="sign_in.html";
-        }
-    }
-});
 
 $(function() {
     adminInit();
@@ -168,6 +160,10 @@ function basicAjax() {
     $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
         if (data.state == 0) {
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
+        }
+        else if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
+            alert("登录超时，请重新登录");
+            window.location.href = "sign_in.html"
         }
     });
     $.get(baseUrl + '/region/getStatistics', function(data) {
@@ -344,8 +340,9 @@ function loadContent(event) {
     });
     
 }
-$(document).on('click','a[href^="#/"]',function(){
-    if(window.page.beforeUnload()){
+$(document).on('click','a[href^="#/"]',function(e){
+    var hash = $(this).attr("href");
+    if(window.page.beforeUnload(hash)){
 
     }
     else{

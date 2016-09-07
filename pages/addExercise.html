@@ -75,6 +75,14 @@
 </div>
 <script>
 $(document).ready(function() {
+    window.page.beforeUnload = function(hash){
+        if(hash == "#/addExercise2.html" || confirm("未保存修改的信息，确定要离开吗？")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     $.datetimepicker.setLocale('zh');
     $(".excuteTime").datetimepicker({
         minDate:0,
