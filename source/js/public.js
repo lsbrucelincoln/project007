@@ -340,8 +340,9 @@ function loadContent(event) {
     });
     
 }
-$(document).on('click','a[href^="#/"]',function(){
-    if(window.page.beforeUnload()){
+$(document).on('click','a[href^="#/"]',function(e){
+    var hash = $(this).attr("href");
+    if(window.page.beforeUnload(hash)){
 
     }
     else{
