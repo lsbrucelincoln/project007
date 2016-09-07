@@ -11,45 +11,45 @@
                 </div>
                 <div class="inputShort">
                     <span>机构代码：</span>
-                    <span>{{params.code}}</span>
+                    <i>{{params.code}}</i>
                 </div>
                 <div class="inputShort"><span>业务责任人：</span>
-                    <input type="text" value="张三" v-model="params.contact">
+                    <input type="text" value="张三" v-model="params.contact" :disabled="disabled">
                 </div>
                 <div class="inputShort">
                     <span>上级管理部门：</span>
-                    <div class="admin_ui_select">
-                        <select v-model="params.parent">
+                    <div class="admin_ui_select" style="width:200px">
+                        <select v-model="params.parent" :disabled="disabled" >
                             <option>宁波市港航管理局</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>所属港区：</span>
-                    <div class="admin_ui_select">
-                        <select v-model="params.area">
+                    <div class="admin_ui_select" style="width:200px">
+                        <select v-model="params.area" :disabled="disabled" :disabled="disabled">
                             <option v-for="place in area" value={{place.name}}>{{place.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>固定电话：</span>
-                    <input type="text" v-model="params.phone">
+                    <input type="text" v-model="params.phone" :disabled="disabled">
                 </div>
                 <div class="inputShort digitMap"><span>电子地图：</span> X:
-                    <input type="text" value="750" disabled v-model="x"> — Y:
-                    <input type="text" value="145" disabled v-model="y">
+                    <input type="text" value="750" disabled v-model="x" :disabled="disabled"> — Y:
+                    <input type="text" value="145" disabled v-model="y" :disabled="disabled">
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
-                    <input type="text" v-model="params.telephone">
+                    <input type="text" v-model="params.telephone" :disabled="disabled">
                 </div>
                 <br/>
                 <div class="inputShort companyAddress"><span>机构地址：</span>
-                    <input type="text" v-model="params.address">
+                    <input type="text" v-model="params.address" :disabled="disabled">
                 </div>
                 <br/>
                 <div class="inputShort companyNumber"><span style="padding-right:10px">机构组织机构代码证：</span>
                     <br/>
                     <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
-                        <input type="file" id="uploadPic" name="file" @change="upload">
+                        <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
                         <label for="uploadPic" id="fileBtn">
                             +
                             <img class="showPic" :src="url" />
@@ -61,23 +61,14 @@
                     </form>
                     <iframe src="" frameborder="0" id="turnPage"></iframe>
                 </div>
-                <div class="changeBtn normalBtn" @click="update">修改</div>
+                <div class="changeBtn normalBtn" @click="disabled=false">修改</div>
                 <div class="updateBtn normalBtn" @click="update">更新</div>
             </div>
         </div>
     </div>
 </div>
 <script>
-
 $(document).ready(function() {
-    window.page.beforeUnload = function(){
-        if(confirm("未保存修改的信息，确定要离开吗？")){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
     $(".settingBtn").on('click', function(event) {
         event.preventDefault();
         $(".digitMap input").removeAttr('disabled');
@@ -114,7 +105,8 @@ $(document).ready(function() {
             y: null,
             url: "",
             region: [],
-            area: []
+            area: [],
+            disabled:true
         },
         computed: {
             coordinate: function() {

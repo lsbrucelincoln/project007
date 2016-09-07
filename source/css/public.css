@@ -34,6 +34,12 @@
 .minibar .nowPlace {
   color: #d9b497;
 }
+.dataTables_paginate {
+  margin-top: 10px;
+}
+.dataTables_wrapper:after {
+  clear: none;
+}
 .ztree li span.button.diy02_ico_open::before {
   font-family: Flaticon;
   content: "\f122";
@@ -267,6 +273,7 @@
 }
 .tableBox table td {
   position: relative;
+  padding: 0 5px;
 }
 .tableBox table td a {
   text-decoration: underline;

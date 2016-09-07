@@ -75,7 +75,7 @@
                 </div>
                 <br/>
                 <a class="normalBtn cancel" href="#/assessmentCheck.html">取消</a>
-                <a class="normalBtn nextStep" href="#/addAssessment2.html" @click="saveDetail">下一步</a>
+                <a class="normalBtn nextStep" @click.prevent="saveDetail">下一步</a>
             </div>
         </div>
     </div>
@@ -84,7 +84,7 @@
 $(document).ready(function() {
     $.datetimepicker.setLocale('zh');
     $(".excuteTime").datetimepicker({
-        minDate:0,
+        minDate: 0,
         onChangeDateTime: function(dp, $input) {
             var d = $('.excuteTime').datetimepicker('getValue');
             vm.params.dead_line = d.getTime();
@@ -187,10 +187,21 @@ $(document).ready(function() {
                 this.user.push(data)
             },
             saveDetail: function(data) {
-                localStorage.setItem("params", JSON.stringify(this.params));
-                localStorage.setItem("teamList", JSON.stringify(this.teamList));
-                console.log(this.$data);
-                localStorage.setItem("data", JSON.stringify(this.$data));
+                if (!this.params.company) {
+                    alert("请选择公司");
+                } else if (!this.params.mode) {
+                    alert("请选择评估类型");
+                } else if (!this.params.dead_line) {
+                    alert("请选择执行时间");
+                } else if (this.teamList.length==0) {
+                    alert("请选择执行人员");
+                } else {
+                    localStorage.setItem("params", JSON.stringify(this.params));
+                    localStorage.setItem("teamList", JSON.stringify(this.teamList));
+                    console.log(this.$data);
+                    localStorage.setItem("data", JSON.stringify(this.$data));
+                    window.location.href="index.html#/addAssessment2.html"
+                }
             },
             setCompany: function() {
                 vm.choseCompany = vm.companyList.filter(function(index) {

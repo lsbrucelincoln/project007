@@ -61,7 +61,7 @@
                 </div>
                 <div class="actionPerson inputShort inputLong">
                     <span>选择执行人员:</span>
-                    <div class="person" v-for="person in user |filterBy teamFilter player"">
+                    <div class="person" v-for="person in user |filterBy teamFilter player">
                         <input type="radio" name="person" id="person{{person.id}}" :checked="$index==0" v-model="player" :value="person" >
                         <label for="person{{person.id}}">{{person.name}}</label>
                     </div>

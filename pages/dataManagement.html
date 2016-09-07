@@ -7,7 +7,7 @@
                 <div class="inputShort assessType"><span>选择企业类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
-                            <option value="">日常评估检查</option>
+                            <option value="">危险品类</option>
                         </select>
                     </div>
                     <input type="checkBox" id="canUse">
@@ -30,7 +30,7 @@
                                 <th width="240px">内容</th>
                                 <th style="width: 40px;">等级</th>
                                 <th style="width: 60px;">强制执行</th>
-                                <th style="width: 100px;">更新时间<i class="flaticon-sort"></i></th>
+                                <th style="width: 100px;">更新时间</th>
                                 <th style="width: 100px;">当前状态</th>
                                 <th style="width: 80px;">操作</th>
                             </tr>
@@ -44,8 +44,8 @@
                             </tr>
                         </table>
                         <div class="bottom-search">
-                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
@@ -99,8 +99,8 @@ $(document).ready(function() {
             category: {},
             recordLimit: 7,
             pageIndex: 1,
-            startAttr:"",
-            startAttr2:"",
+            startAttr: "",
+            startAttr2: "",
         },
         computed: {
             startPoint: function() {
@@ -115,10 +115,10 @@ $(document).ready(function() {
                 var category = {};
                 var category2 = [];
                 for (var i = 0; i < data.length; i++) {
-                    data[i].updateTime=this.stamp2time(data[i].in_time)
-                    if (i==0) {
-                        vm.startAttr=data[i].category1;
-                        vm.startAttr2=data[i].category2;
+                    data[i].updateTime = this.stamp2time(data[i].in_time)
+                    if (i == 0) {
+                        vm.startAttr = data[i].category1;
+                        vm.startAttr2 = data[i].category2;
                     }
                     if (!category[data[i].category1]) {
                         category[data[i].category1] = {}
@@ -139,12 +139,12 @@ $(document).ready(function() {
                 }
                 console.log(category);
                 console.log(this.startAttr);
-                vm.rules=(category[this.startAttr][this.startAttr2]);
+                vm.rules = (category[this.startAttr][this.startAttr2]);
                 this.category = category;
             },
-            showData: function(data,event) {
+            showData: function(data, event) {
                 this.rules = data;
-                this.pageIndex=1;
+                this.pageIndex = 1;
                 $(".category2").removeClass('chosenCategory');
                 $(event.target).addClass('chosenCategory');
             },
@@ -201,16 +201,16 @@ $(document).ready(function() {
                     return false;
                 }
             },
-            showPageTag:function(data){
-                console.log(data-this.pageIndex);
-                if (data==this.pageNum-1||data==0||((data-this.pageIndex)<1)&&(data-this.pageIndex)>=-2){
+            showPageTag: function(data) {
+                console.log(data - this.pageIndex);
+                if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
                     return true
-                }else{
+                } else {
                     return false
                 }
             },
-            saveDetail:function(data){
-                localStorage.setItem("ruleDetail",JSON.stringify(data))
+            saveDetail: function(data) {
+                localStorage.setItem("ruleDetail", JSON.stringify(data))
             }
         },
         created: function() {

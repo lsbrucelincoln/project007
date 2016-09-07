@@ -4,7 +4,7 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span>选择企业类型:</span>
+                <div class="inputShort assessType"><span>选择任务类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
                             <option value="">日常评估检查</option>
@@ -21,15 +21,16 @@
                             <ul class="line" v-if="state[$index]==1"><li class="category2" v-for="(index2,item2) in item"  @click.stop="showData(item2,$event)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
                             </a>
                         </div>
-                        <i class="treeAdd">+</i>
-                        <i class="treeRemove">-</i></div>
+<!--                         <i class="treeAdd">+</i>
+                        <i class="treeRemove">-</i> -->
+                        </div>
                     <div class="tableBox">
                         <table>
                             <tr>
                                 <th width="240px">内容</th>
                                 <th style="width: 40px;">等级</th>
                                 <th style="width: 60px;">强制执行</th>
-                                <th style="width: 100px;">更新时间<i class="flaticon-sort"></i></th>
+                                <th style="width: 100px;">更新时间</th>
                                 <th style="width: 100px;">当前状态</th>
                                 <th style="width: 80px;">操作</th>
                             </tr>
@@ -44,7 +45,6 @@
                         </table>
                         <div class="bottom-search">
                             <div class="addBtn normalBtn" style="margin-top:15px">添加</div>
-                            <a href="#/analysisSituationSet_batchAdd.html" class="allSelectBtn normalBtn" style="margin-top:15px">批量增加</a>
                             <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
