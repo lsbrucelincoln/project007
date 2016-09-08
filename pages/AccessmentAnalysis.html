@@ -1,4 +1,4 @@
-<div class="admin_content_innerBox">
+<div class="admin_content_innerBox" id="analysisBody">
     <div class="minibar">
         <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">评估分析</span></span>
     </div>
@@ -28,20 +28,20 @@
                         <div class="chartConditionBox">
                             展示粒度：
                             <label for="zsld_byYear" style="margin-right: 10px;">
-                                <input id="zsld_byYear" name="zsld_by" type="radio">按年
+                                <input id="zsld_byYear" name="zsld_by" type="radio" value="year" v-model=" granularity" @click="isCustom=false">按年
                             </label>
                             <label for="zsld_bySeason" style="margin-right: 10px;">
-                                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
+                                <input id="zsld_bySeason" name="zsld_by" type="radio" value="quarter" v-model=" granularity">按季度
                             </label>
                             <label for="zsld_byMonth" style="margin-right: 10px;">
-                                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
+                                <input id="zsld_byMonth" name="zsld_by" type="radio" v-model=" granularity" value="month">按月
                             </label>
                             <label for="zsld_byCustom" style="margin-right: 10px;">
-                                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
+                                <input id="zsld_byCustom" name="zsld_by" type="radio" value="self" v-model="granularity">自定义
                             </label>
-                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="startTime">
                             <i class="fa fa-calendar"></i> -
-                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="endTime">
                             <i class="fa fa-calendar"></i>
                         </div>
                     </td>
@@ -52,9 +52,8 @@
             </tbody>
         </table>
         <div class="echartBox">
-        <div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 60%;height: 250px;"></div>
+            <div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 60%;height: 250px;"></div>
             <div id="echartPie_AccessmentAnalysis" class="echartBlock echartPie" style="width: 40%;height: 250px;"></div>
-            
         </div>
         <div>
             <div class="tableBox" style="display: block;">
@@ -109,6 +108,68 @@ $(document).ready(function() {
         format: "Y-m-d",
     });
 });
+var nowTime = new Date();
+var monthName = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+var nowMonth = nowTime.getMonth();
+var nowMonthName = monthName.slice(nowMonth + 1, 12).concat(monthName.slice(0, nowMonth + 1));
+var vm = new Vue({
+    el: "#analysisBody",
+    data: {
+        granularity: "month",
+        startTime: "",
+        endTime: "",
+        xName: nowMonthName,
+        lineData:[]
+    },
+    watch: {
+
+    },
+    computed: {
+        nowTime:function(){
+            var time=new Date()
+            return time.getTime();
+        },
+        oneYear:function(){
+            var time=new Date()
+            time.setFullYear(time.getFullYear()-1);
+            return time.getTime();
+        },
+        start:function(){
+            if (this.granularity=="self") {
+                return this.startTime
+            }else{
+                return this.oneYear;
+            }
+        },
+        end:function(){
+            if (this.granularity=="self") {
+                return this.endTime
+            }else{
+                return this.nowTime;
+            }
+        }
+    },
+    methods: {
+
+    },
+    created: function() {
+        var self = this;
+        var data = {
+            models: [
+            {"name":'Task',"params['month_time_begin']":self.start,"params['month_time_end']":self.end,"params['mode']":"日常"},
+            {"name":'Task',"params['month_time_begin']":self.start,"params['month_time_end']":self.end,"params['mode']":"专项"},
+            {"name":'Task',"params['month_time_begin']":self.start,"params['month_time_end']":self.end,"params['mode']":"综合"}
+            ]
+        }
+        $.post('/models', data, function(data, textStatus, xhr) {
+            self.lineData=data
+        });
+    },
+    ready: function() {
+
+    }
+})
+console.log(nowMonthName);
 var echartPie_AccessmentAnalysis_option = {
     tooltip: {
         trigger: 'item',
@@ -173,7 +234,7 @@ var echartLine_AccessmentAnalysis_option = {
         name: '月份',
         type: 'category',
         boundaryGap: false,
-        data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+        data: vm.xName
     },
     yAxis: {
         name: '数量',

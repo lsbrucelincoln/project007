@@ -37,8 +37,8 @@
                 </div>
                 <div class="btnBox" v-if="tagState==1">
                     <div class="allSelectBtn normalBtn">全选</div>
-                    <div class="urgeBtn normalBtn" v-if="competence">过期警告</div>
-                    <div class="endProgramBtn normalBtn" v-if="competence">结束跟踪</div>
+                    <div class="urgeBtn normalBtn" v-if="competence" @click="urgeExecute">过期警告</div>
+                    <div class="endProgramBtn normalBtn" v-if="competence" @click="endProgram">结束跟踪</div>
                     <div class="endProgramBtn normalBtn" v-if="!competence">指派处置</div>
                 </div>
                 <div class="tableBox">
@@ -61,16 +61,16 @@
                         <tbody>
                             <tr v-for="task in showTasks |limitBy recordLimit startPoint ">
                                 <td>
-                                    <input type="checkBox" id="person1" class="checkBox">
+                                    <input type="checkBox" id="person1" class="checkBox" v-if="task.code" data-id="{{task.id}}">
                                 </td>
                                 <td>{{task.code}}</td>
                                 <td>{{task.censor.safeRule.safetyLevel}}</td>
                                 <td>{{task.company.name}}</td>
                                 <td>{{task.censor.user.region.name}}</td>
                                 <td>{{task.time}}</td>
-                                <td>{{task.restDay}}天</td>
+                                <td>{{task.restDay}}</td>
                                 <td>{{task.recheckState}}</td>
-                                <td><a href="#/riskManagementDetail.html" @click="saveTask(task)">查看</a></td>
+                                <td><a href="#/riskManagementDetail.html" @click="saveTask(task)" v-if="task.code">查看</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -109,7 +109,7 @@ $(document).ready(function() {
         el: "#riskManagementBody",
         data: {
             tagState: 1,
-            tasks: [],
+            tasks: {},
             companyList: [],
             companyName: "",
             createTimeList: [],
@@ -120,7 +120,8 @@ $(document).ready(function() {
             recordLimit: 5,
             pageIndex: 1,
             showTasks: [],
-            competence:true
+            competence: true,
+            chosenList: []
         },
         computed: {
             startPoint: function() {
@@ -139,10 +140,27 @@ $(document).ready(function() {
                     data[i].date = vm.stamp2time(data[i].censor.in_time, "year");
                     data[i].createTime = data[i].time.split(" ")[0];
                     var restDay = vm.dayPeriodCompute(data[i].censor.in_time, data[i].censor.deadline);
-                    data[i].restDay = restDay;
+                    data[i].restDay = restDay + "天";
                 }
                 vm.tasks = data.reverse();
                 vm.showTasks = vm.tasks;
+                var len = this.showTasks.length;
+                if (len < 5) {
+                    for (var i = 0; i < 5 - len; i++) {
+                        this.showTasks.push({
+                            censor: {
+                                user: {
+                                    region: {}
+                                },
+                                task: {
+                                    company: []
+                                },
+                                safeRule: [],
+                            },
+                            company: []
+                        });
+                    }
+                }
                 vm.companyList = vm.unique(companyList);
                 vm.createTimeList = vm.unique(timeList);
             },
@@ -163,7 +181,57 @@ $(document).ready(function() {
                 } else {
                     return year + "-" + month + "-" + day;
                 }
-
+            },
+            getChosenList: function() {
+                var self = this;
+                console.log('test');
+                self.chosenList = [];
+                $("td .checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
+            },
+            urgeExecute: function() {
+                var self = this;
+                this.getChosenList();
+                var url = '/region/urgeRecheck';
+                console.log(self.chosenList);
+                var data = {
+                    recheck: self.chosenList
+                }
+                $.ajax({
+                        url: url,
+                        type: 'POST',
+                        traditional: true,
+                        data: data,
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("催促成功");
+                        }
+                    })
+            },
+            endProgram: function() {
+                var self = this;
+                self.getChosenList();
+                console.log(data);
+                var url = '/region/completeRecheck';
+                var data = {
+                    recheck: self.chosenList
+                }
+                $.ajax({
+                        url: url,
+                        type: 'POST',
+                        traditional: true,
+                        data: data,
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            this.showTasks = [];
+                            $('table.display').DataTable().destroy();
+                            self.getData(self.tagState)
+                        }
+                    })
             },
             unique: function(arr) {
                 var result = [],
@@ -198,14 +266,14 @@ $(document).ready(function() {
                         data = {
                             name: 'Recheck',
                             rows: 0,
-                            "params['expired']": 0
+                            "params['notcompelete']": 1
                         };
                         break;
                     case 2:
                         data = {
                             name: 'Recheck',
                             rows: 0,
-                            "params['expired']": 1
+                            "params['type']": '已完成'
                         };
                         break;
                 }

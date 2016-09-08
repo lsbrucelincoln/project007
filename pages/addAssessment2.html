@@ -6,30 +6,35 @@
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="stateBox">
                 <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>基本信息设置</span>
+                    <div class="stateBody">
+                    <i class="flaticon-arrows-3"></i>
+                        <i class="circle"></i>
+                        <br/><span>基本信息设置</span>
+                    </div>
                 </div>
                 <div class="state">
-                    <i class="circle chosen"></i>
-                    <br/><span>选择评估模板</span>
+                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
+                        <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>确认发布</span>
+                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                        <br/><span>确认发布</span> </div>
                 </div>
             </div>
             <div class="secondPage">
                 <div class="inputShort assessType"><span>选择评估类型:</span>
-                    <select name="" id="">
-                        <option value="">日常评估检查</option>
-                        <option value="">专项评估检查</option>
-                        <option value="">综合评估检查</option>
-                    </select> —
-                    <select name="" id="">
-                        <option value="">防火专项评估</option>
-                        <option value="">防爆专项评估</option>
-                        <option value="">设备专项评估</option>
+                    <select name="" id="" v-model="params.mode">
+                        <option value="日常评估">日常评估检查</option>
+                        <option value="专项">专项评估检查</option>
+                        <option value="综合评估">综合评估检查</option>
                     </select>
+                    <div style="display:inline-block" v-if="params.mode=='专项'">—
+                        <select name="" id="">
+                            <option value="">防火专项评估</option>
+                            <option value="">防爆专项评估</option>
+                            <option value="">设备专项评估</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="assess2Body">
                     <div class="ztreeBox ztree">
@@ -43,7 +48,7 @@
                                 <th width="50%">内容</th>
                                 <th>等级</th>
                                 <th>强制执行</th>
-                                <th>更新时间<i class="flaticon-sort"></i></th>
+                                <th>更新时间</th>
                                 <th>当前状态</th>
                                 <th>操作</th>
                             </tr>
@@ -57,6 +62,8 @@
                             </tr>
                         </table>
                         <div class="bottom-search">
+                            <a class="normalBtn cancel" href="#/addAssessment.html">上一步</a>
+                            <a class="normalBtn nextStep" href="#/addAssessment3.html" @click="nextStep">下一步</a>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -68,20 +75,24 @@
                         </div>
                     </div>
                 </div>
-                <a class="normalBtn cancel" href="#/addAssessment.html">上一步</a>
-                <a class="normalBtn nextStep" href="#/addAssessment3.html" @click="nextStep">下一步</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(hash == "#/addAssessment3.html" || hash == "#/addAssessment.html" || confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (hash == "#/addAssessment3.html" || hash == "#/addAssessment.html") {
             return true;
-        }
-        else{
-            return false;
+        } else {
+            var r = confirm("未保存修改的信息，确定要离开吗？")
+            if (r == true) {
+                localStorage.removeItem("data");
+                localStorage.removeItem("params");
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     $("#processingBtn").on('click', function(event) {
@@ -122,7 +133,7 @@ $(document).ready(function() {
             category1: "",
             category2: "",
             showRules: [],
-            params:{}
+            params: {}
         },
         computed: {
             startPoint: function() {
@@ -162,7 +173,7 @@ $(document).ready(function() {
                     vm.state[i] = 1;
                     vm.state.$set(i, 1);
                 }
-    
+
                 // vm.rules = (category[this.startAttr][this.startAttr2]);
                 this.category = category;
             },
@@ -255,25 +266,25 @@ $(document).ready(function() {
                 this.category1 = index;
                 this.category2 = "";
             },
-            nextStep:function(){
-                vm.params.safeties=[];
+            nextStep: function() {
+                vm.params.safeties = [];
                 for (var i = 0; i < vm.rules.length; i++) {
                     vm.params.safeties.push(vm.rules[i].id);
                 }
-                localStorage.setItem("params",JSON.stringify(vm.params));
+                localStorage.setItem("params", JSON.stringify(vm.params));
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            this.params=JSON.parse(localStorage.getItem("params"));
-            var data={
-                name:"SafeRule",
+            this.params = JSON.parse(localStorage.getItem("params"));
+            var data = {
+                name: "SafeRule",
                 "params['companyType']": this.params.type,
-                "params['mode']":this.params.mode,
+                "params['mode']": this.params.mode,
             }
             if (this.params.special) {
-                data["params['special']"]=this.params.special;
+                data["params['special']"] = this.params.special;
             }
             $.post('/model', data, function(data, textStatus, xhr) {
                 console.log(data);

@@ -2,11 +2,11 @@
     <div class="admin_scrollBox">
         <div class="infoHeader">
             <div class="leftInfo"><span class="title">通知公告</span>
+                <i class="flaticon-music"></i>
                 <div class="scrollBox">
-                    <div class="list1"></div>
-                    <p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p>
-                    <p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p>
-                    <p><i class="flaticon-music"></i><a href="">这里可以插入下载超链接，不够显示，可以上下滚动播放。</a></p>
+                    <div class="list1">
+                        <p v-for="message in messages"><a href="#/noticeReport.html">{{message.text}}</a></p>
+                    </div>
                 </div>
             </div>
             <a href="#/safeDataMap.html" class="normalBtn"><i class="flaticon-location"></i><span>安全信息地图</span></a>
@@ -89,20 +89,18 @@ $(document).ready(function() {
 
     function scrollUp() {
         if (area.scrollTop >= con1.offsetHeight) {
-            // area.scrollTop = 0;
+            area.scrollTop = 5;
         } else {
             area.scrollTop++;
         }
-        // console.log(area.scrollTop);
-        // console.log(con1.offsetHeight);
     }
-    var time = 50;
-    var myScroll = setInterval(scrollUp, 50);
+    var time = 100;
+    var myScroll = setInterval(scrollUp, time);
     area.onmouseover = function() {
         clearInterval(myScroll);
     };
     area.onmouseout = function() {
-        myScroll = setInterval(scrollUp, 50);
+        myScroll = setInterval(scrollUp, time);
     };
     $(document).ready(function() {
 
@@ -120,7 +118,8 @@ $(document).ready(function() {
                 companyList2: [],
                 setTimeList: [],
                 setTime: "",
-                ajaxState: 0
+                ajaxState: 0,
+                messages: []
             },
             methods: {
                 taskGetDetail: function(data) {
@@ -133,6 +132,16 @@ $(document).ready(function() {
                         timeList.push(data[i].createTime)
                     }
                     vm.tasks = data;
+                    var len = this.tasks.length;
+                    if (len < 5) {
+                        for (var i = 0; i < 5 - len; i++) {
+                            this.tasks.push({
+                                company: [],
+                                leader: [],
+                                safeRule: [],
+                            });
+                        }
+                    }
                     vm.companyList = vm.unique(companyList);
                     vm.createTimeList = vm.unique(timeList);
                 },
@@ -143,7 +152,7 @@ $(document).ready(function() {
                         data[i].time = this.stamp2time(data[i].censor.in_time);
                         data[i].createTime = data[i].time.split(" ")[0];
                         var restDay = this.dayPeriodCompute(data[i].censor.in_time, data[i].dead_line);
-                        data[i].restDay = restDay+"天";
+                        data[i].restDay = restDay + "天";
                         companyList2.push(data[i].censor.task.company.name)
                         timeList.push(data[i].createTime)
                     }
@@ -153,10 +162,10 @@ $(document).ready(function() {
                         for (var i = 0; i < 5 - len; i++) {
                             this.risks.push({
                                 censor: {
-                                    task:{
-                                        company:""
+                                    task: {
+                                        company: ""
                                     },
-                                    safeRule:[],
+                                    safeRule: [],
                                 }
                             });
                         }
@@ -198,6 +207,18 @@ $(document).ready(function() {
             created: function() {
                 var self = this;
                 var id = localStorage.getItem("id");
+                $.post(baseUrl + '/model', {
+                    name: "Message",
+                    rows: 0
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        if (data.data.length > 5) {
+                            self.messages = data.data.slice(0, 6)
+                        } else {
+                            self.messages = data.data
+                        }
+                    }
+                })
                 $.post(baseUrl + '/model', {
                     name: "Task",
                     rows: 0,

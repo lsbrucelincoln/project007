@@ -76,7 +76,10 @@
         $("#government").on('click', function(event) {
             $(".loginBtn").attr('href', 'index.html');
         });
-
+        $(".companyRegister").on('click', function(event) {
+            event.preventDefault();
+            alert("该功能尚未开放");
+        });
         $(".loginBtn").on('click', function(event) {
             event.preventDefault();
             var username = $("#account").val();

@@ -4,6 +4,7 @@
             <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 业务操作 > 隐患跟踪 > <span class="nowPlace">详细信息</span></span>
         </div>
         <div class="contentBody">
+            <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px;">
                 <div class="inputShort">
                     <span>隐患编号：</span>
@@ -85,7 +86,7 @@ var vm = new Vue({
         excuteTime: function() {
             return this.stamp2time(this.taskDetail.censor.deadline);
         },
-        startTime:function(){
+        startTime: function() {
             return this.stamp2time(this.taskDetail.censor.in_time);
         }
     },

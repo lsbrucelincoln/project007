@@ -10,7 +10,7 @@
                 </div>
                 <div class="inputShort"><span>企业类型：</span>
                     <div class="admin_ui_select">
-                        <select v-model="params.type.id">
+                        <select v-model="params.type.id" :disabled="disabled">
                             <option v-for="type in companyType" value="{{type.id}}">{{type.name}}</option>
                         </select>
                     </div>
@@ -22,40 +22,40 @@
                 <div class="inputShort">
                     <span>港口管理部门：</span>
                     <div class="admin_ui_select">
-                        <select v-model="params.region.id">
+                        <select v-model="params.region.id" :disabled="disabled">
                             <option v-for="place in region" value="{{place.id}}">{{place.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>安全责任人：</span>
-                    <input type="text" v-model="params.contact">
+                    <input type="text" v-model="params.contact" :disabled="disabled">
                 </div>
                 <div class="inputShort"><span>所属港区：</span>
                     <div class="admin_ui_select">
-                        <select v-model="params.area">
+                        <select v-model="params.area" :disabled="disabled">
                             <option v-for="place in area" value={{place.name}}>{{place.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="inputShort"><span>固定电话：</span>
-                    <input type="text" v-model="params.phone">
+                    <input type="text" v-model="params.phone" :disabled="disabled">
                 </div>
                 <div class="inputShort digitMap"><span>电子地图：</span>X:
-                    <input type="text" disabled v-model="x"> — Y:
-                    <input type="text" disabled v-model="y"><a href="" class="normalBtn settingBtn">设置</a><a href="" class="normalBtn confirmBtn" style="display:none;">确定</a>
+                    <input type="text" disabled v-model="x" :disabled="disabled"> — Y:
+                    <input type="text" disabled v-model="y" :disabled="disabled">
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
-                    <input type="text" v-model="params.telephone">
+                    <input type="text" v-model="params.telephone" :disabled="disabled">
                 </div>
                 <br/>
                 <div class="inputShort companyAddress"><span>企业地址：</span>
-                    <input type="text" v-model="params.address">
+                    <input type="text" v-model="params.address" :disabled="disabled">
                 </div>
                 <br/>
                 <div class="inputShort companyNumber"><span style="padding-right:10px">机构组织机构代码证：</span>
                     <br/>
                     <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
-                        <input type="file" id="uploadPic" name="file" @change="upload">
+                        <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
                         <label for="uploadPic" id="fileBtn">
                             +
                             <img class="showPic" :src="url" />
@@ -67,20 +67,29 @@
                     </form>
                     <iframe src="" frameborder="0" id="turnPage"></iframe>
                 </div>
-                <div class="changeBtn normalBtn" @click="update">修改</div>
-                <div class="updateBtn normalBtn" @click="update">更新</div>
+                <div class="changeBtn normalBtn" @click="disabled=false" v-show="disabled==true" :class="{'leftBtn':disabled}">修改</div>
+                <div class="updateBtn normalBtn" @click="update" v-show="disabled==false" :class="{'leftBtn':!disabled}">更新</div>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    $(".settingBtn").on('click', function(event) {
-        event.preventDefault();
-        $(".digitMap input").removeAttr('disabled');
-        $(this).hide();
-        $(".confirmBtn").show();
-    });
+
+    window.page.beforeUnload = function(hash) {
+        if (vm.disabled) {
+            return true;
+        } else {
+            var r = confirm("未保存修改的信息，确定要离开吗？")
+            if (r == true) {
+                localStorage.removeItem("dataEx");
+                localStorage.removeItem("paramsEx");
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
     $(".confirmBtn").on('click', function(event) {
         event.preventDefault();
         $(".digitMap input").attr('disabled', "disabled");
@@ -113,14 +122,15 @@ $(document).ready(function() {
             url: "",
             companyType: [],
             region: [],
-            area: []
+            area: [],
+            disabled: true
         },
         computed: {
             coordinate: function() {
                 var place = vm.x + "+" + vm.y;
                 this.params.coordinate = place;
                 return place;
-            }
+            },
         },
         methods: {
             upload: function(event) {
@@ -184,24 +194,24 @@ $(document).ready(function() {
                 });
             },
             update: function() {
-                var params={
-                    code:this.params.code,
-                    name:this.params.name,
-                    address:this.params.address,
-                    type:this.params.type.id,
-                    region:this.params.region.id,
-                    contact:this.params.contact,
-                    phone :this.params.photo,
-                    telephone :this.params.telephone,
-                    coordinate :this.params.coordinate,
-                    photo :this.params.photo,
-                    area :this.params.area
+                var params = {
+                    code: this.params.code,
+                    name: this.params.name,
+                    address: this.params.address,
+                    type: this.params.type.id,
+                    region: this.params.region.id,
+                    contact: this.params.contact,
+                    phone: this.params.photo,
+                    telephone: this.params.telephone,
+                    coordinate: this.params.coordinate,
+                    photo: this.params.photo,
+                    area: this.params.area
                 }
                 $.post('/company/modifyCompany', params, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
                         alert("修改成功");
-                        window.reload();
+                        vm.disabled=true;
                     }
                 });
             }

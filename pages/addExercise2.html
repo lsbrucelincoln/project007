@@ -6,16 +6,19 @@
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="stateBox">
                 <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>基本信息设置</span>
+                    <div class="stateBody">
+                        <i class="flaticon-arrows-3"></i>
+                        <i class="circle"></i>
+                        <br/><span>基本信息设置</span>
+                    </div>
                 </div>
                 <div class="state">
-                    <i class="circle chosen"></i>
-                    <br/><span>选择评估模板</span>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
+                        <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>确认发布</span>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                        <br/><span>确认发布</span> </div>
                 </div>
             </div>
             <div class="secondPage">
@@ -59,6 +62,8 @@
                             </tr>
                         </table>
                         <div class="bottom-search">
+                            <a class="normalBtn cancel" href="#/addExercise.html">上一步</a>
+                            <a class="normalBtn nextStep" href="#/addExercise3.html" @click="nextStep">下一步</a>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -70,20 +75,24 @@
                         </div>
                     </div>
                 </div>
-                <a class="normalBtn cancel" href="#/addExercise.html">上一步</a>
-                <a class="normalBtn nextStep" href="#/addExercise3.html" @click="nextStep">下一步</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(hash == "#/addExercise3.html" || hash == "#/addExercise1.html" ||confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (hash == "#/addExercise3.html" || hash == "#/addExercise.html") {
             return true;
-        }
-        else{
-            return false;
+        } else {
+            var r = confirm("未保存修改的信息，确定要离开吗？")
+            if (r == true) {
+                localStorage.removeItem("dataEx");
+                localStorage.removeItem("paramsEx");
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     $("#processingBtn").on('click', function(event) {
@@ -117,7 +126,7 @@ $(document).ready(function() {
             createTime: "",
             risks: {},
             category: {},
-            recordLimit: 5,
+            recordLimit: 7,
             pageIndex: 1,
             startAttr: "",
             startAttr2: "",
@@ -128,7 +137,7 @@ $(document).ready(function() {
         },
         computed: {
             startPoint: function() {
-                return (this.pageIndex - 1) * 5
+                return (this.pageIndex - 1) * 7
             },
             pageNum: function() {
                 return Math.ceil(this.showRules.length / this.recordLimit)
@@ -166,7 +175,7 @@ $(document).ready(function() {
                     return true;
                 }
             },
-            showData: function(data, event,index2) {
+            showData: function(data, event, index2) {
                 console.log(data);
                 this.pageIndex = 1;
                 this.category2 = index2;

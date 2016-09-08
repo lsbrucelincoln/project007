@@ -75,8 +75,7 @@
             <div class="dataPage">
                 <div class="assess2Body">
                     <div class="tableBox" style="text-align:center;margin-bottom:20px;width:100%">
-                        <div class="addBtn normalBtn" @click="addDangerous" style="position:relative;left:-44px">确认</div>
-                        <div class="urgeBtn normalBtn">删除</div>
+                        <div class="addBtn normalBtn" @click="addDangerous" style="position:relative;left:-22px">新增</div>
                     </div>
                 </div>
             </div>
@@ -86,6 +85,21 @@
 </div>
 <script>
 $(document).ready(function() {
+    window.page.beforeUnload = function(hash) {
+        console.log(vm.notEmpty);
+        if (vm.notEmpty) {
+            var r = confirm("未保存修改的信息，确定要离开吗？")
+            if (r == true) {
+                localStorage.removeItem("dataEx");
+                localStorage.removeItem("paramsEx");
+                return true;
+            } else {
+                return false;
+            }
+        }else{
+            return true
+        }
+    }
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();
@@ -124,7 +138,13 @@ $(document).ready(function() {
             }
         },
         computed: {
-
+            notEmpty: function() {
+                if (this.params.code || this.params.coordinate || this.params.description || this.params.level || this.params.name) {
+                    return true
+                } else {
+                    return false
+                }
+            }
         },
         methods: {
             upload: function(event) {

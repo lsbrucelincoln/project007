@@ -5,10 +5,11 @@
 </style>
 <div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
     <div class="minibar">
-        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 重大危险源 ><span class="nowPlace">详细信息</span></span>
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 业务操作 > 重大危险源 ><span class="nowPlace"> 详细信息</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
+            <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="textInfo">
                 <div class="inputShort">
                     <span>备案编号：</span>
@@ -62,7 +63,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align:center;">
-                            <textarea name="" id="" cols="30" rows="10" style="width:80%;height:120px;padding:10px" v-model="params.description"></textarea>
+                            <textarea name="" id="" cols="30" rows="10" style="width:80%;height:120px;padding:10px;background:#fff" v-model="params.description" disabled></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -84,11 +85,10 @@
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (confirm("未保存修改的信息，确定要离开吗？")) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }

@@ -333,7 +333,6 @@ function loadContent(event) {
     }
     $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
         uiComponentEventBind();
-        // $(".line").removeClass("chosenLine");
         $(".submenu .line").removeClass('chosen')
         .filter("[href='"+hash+"']").addClass("chosen")
         .closest(".submenu").prev(".line").not(".active").trigger("click");
@@ -341,6 +340,10 @@ function loadContent(event) {
     
 }
 $(document).on('click','a[href^="#/"]',function(e){
+    $(".line").removeClass('chosenLine');
+    if ($(this).attr('id')=="homePageBtn") {
+        $(this).addClass('chosenLine')
+    }
     var hash = $(this).attr("href");
     if(window.page.beforeUnload(hash)){
 
@@ -356,7 +359,6 @@ function leftMenuPlace() {
             $("#homePageBtn").addClass('chosenLine');
         }
     }else if(!hash){
-        
         $(".leftmenu>div>.line").eq(1).trigger("click");
         $(".active+.submenu>.line").eq(0).addClass('chosen');
     }

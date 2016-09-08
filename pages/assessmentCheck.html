@@ -62,16 +62,16 @@
                         <tbody>
                             <tr v-for="task in showTasks">
                                 <td>
-                                    <input type="checkBox" class="checkBox" data-id="{{task.id}}">
+                                    <input type="checkBox" class="checkBox" data-id="{{task.id}}" v-if="task.company.name">
                                 </td>
                                 <td>{{task.code}}</td>
-                                <td>{{task.mode?task.mode:"应急演练"}}</td>
+                                <td>{{task.mode}}</td>
                                 <td>{{task.company.name}}</td>
                                 <td>{{task.company.region.name}}</td>
                                 <td>{{task.time}}</td>
                                 <td>{{responsePerson(task)}}</td>
                                 <td>{{task.state}}</td>
-                                <td><a :href="tagState==1?'#/assessDetail.html':'#/emergencyDetail.html'" @click="saveDetail(task)">查看</a></td>
+                                <td><a :href="tagState==1?'#/assessDetail.html':'#/emergencyDetail.html'" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -171,6 +171,18 @@ $(document).ready(function() {
                 }
                 vm.tasks = data.reverse();
                 vm.showTasks = vm.tasks;
+                var len = this.showTasks.length;
+                if (len < 5) {
+                    for (var i = 0; i < 5 - len; i++) {
+                        this.tasks.push({
+                            company: {
+                                region: []
+                            },
+                            leader: [],
+                            safeRule: [],
+                        });
+                    }
+                }
                 vm.companyList = vm.unique(companyList);
                 vm.createTimeList = vm.unique(timeList);
             },
@@ -208,11 +220,28 @@ $(document).ready(function() {
                 this.tagState = state;
                 this.showTasks = [];
                 $('table.display').DataTable().destroy();
-
                 this.getData(state);
             },
             urgeExecute: function() {
+                var self = this;
                 this.getChosenList();
+                var url = self.tagState == 1 ? '/region/urgeTask' : '/region/urgeEmergency';
+                var data = self.tagState == 1 ? {
+                    task: self.chosenList
+                } : {
+                    emergency: self.chosenList
+                };
+                $.ajax({
+                        url: url,
+                        type: 'POST',
+                        traditional: true,
+                        data: data,
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("催促成功");
+                        }
+                    })
             },
             endProgram: function() {
                 var self = this;
@@ -242,7 +271,7 @@ $(document).ready(function() {
                 var self = this;
                 console.log('test');
                 self.chosenList = [];
-                $("td .checkBox:checked").each(function(index, el) {
+                $("td>.checkBox:checked").each(function(index, el) {
                     console.log($(el).attr('data-id'));
                     self.chosenList.push($(el).attr('data-id'));
                 });
@@ -285,7 +314,7 @@ $(document).ready(function() {
                                 "dom": 'rtp',
                                 "columnDefs": [{
                                     "orderable": false,
-                                    "targets": [0, 7]
+                                    "targets": [0, 8]
                                 }],
                                 language: {
                                     processing: "处理中...",

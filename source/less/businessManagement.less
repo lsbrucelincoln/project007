@@ -253,16 +253,30 @@
             margin-top: 20px;
         }
         .stateBox {
-            border-top: 1px solid @blueA;
             margin-top: 10px;
             margin-bottom: 10px;
             .state {
-                width: 30%;
+                border-top: 1px solid @blueA;
+                width: 22%;
                 position: relative;
                 display: inline-block;
-                text-align: center;
+                text-align: right;
                 font-size: 14px;
                 top: -5px;
+                margin-right:20px;
+                margin-left: 15px;
+                .stateBody {
+                    text-align:center;
+                    display:inline-block;
+                    position:relative;
+                    top:-4px;
+                    left:57px;
+                    .flaticon-arrows-3{
+                        color:#6db2fa;
+                        position:relative;
+                        top:-6px;
+                    }
+                };
                 .circle {
                     height: 13px;
                     width: 13px;
@@ -287,6 +301,11 @@
                 }
                 .chosen {
                     background-color: #6db2fa;
+                }
+                &:nth-child(3){
+                    .stateBody{
+                        left:45px
+                    }
                 }
             }
         }
@@ -334,7 +353,7 @@
         }
         .secondPage {
             .normalBtn {
-                margin-top: 20px;
+                margin-top: 10px;
             }
             select {
                 width: 120px

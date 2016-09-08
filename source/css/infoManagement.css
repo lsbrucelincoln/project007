@@ -49,7 +49,7 @@
   height: 58px;
   line-height: 58px;
   position: absolute;
-  top: 20px;
+  top: 5px;
   right: 20px;
 }
 .staffManagement .contentBody .infoTable .number {
@@ -244,7 +244,7 @@
 .companyInfoManagement .addBtn {
   margin-left: 45%;
 }
-.companyInfoManagement .changeBtn {
+.companyInfoManagement .leftBtn {
   margin-left: 40%;
 }
 .editMode .contentHeader .manageBtn,

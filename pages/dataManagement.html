@@ -101,6 +101,7 @@ $(document).ready(function() {
             pageIndex: 1,
             startAttr: "",
             startAttr2: "",
+            rawData:[]
         },
         computed: {
             startPoint: function() {
@@ -139,7 +140,7 @@ $(document).ready(function() {
                 }
                 console.log(category);
                 console.log(this.startAttr);
-                vm.rules = (category[this.startAttr][this.startAttr2]);
+                vm.rules = vm.rawData;
                 this.category = category;
             },
             showData: function(data, event) {
@@ -222,6 +223,7 @@ $(document).ready(function() {
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
+                    vm.rawData=data.data
                     vm.rulesDetail(data.data)
                 }
             });

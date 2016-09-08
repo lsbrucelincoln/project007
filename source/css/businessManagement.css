@@ -271,17 +271,31 @@
   margin-top: 20px;
 }
 .addAssessment .contentBody .stateBox {
-  border-top: 1px solid #50a8e7;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 .addAssessment .contentBody .stateBox .state {
-  width: 30%;
+  border-top: 1px solid #50a8e7;
+  width: 22%;
   position: relative;
   display: inline-block;
-  text-align: center;
+  text-align: right;
   font-size: 14px;
   top: -5px;
+  margin-right: 20px;
+  margin-left: 15px;
+}
+.addAssessment .contentBody .stateBox .state .stateBody {
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  top: -4px;
+  left: 57px;
+}
+.addAssessment .contentBody .stateBox .state .stateBody .flaticon-arrows-3 {
+  color: #6db2fa;
+  position: relative;
+  top: -6px;
 }
 .addAssessment .contentBody .stateBox .state .circle {
   height: 13px;
@@ -307,6 +321,9 @@
 }
 .addAssessment .contentBody .stateBox .state .chosen {
   background-color: #6db2fa;
+}
+.addAssessment .contentBody .stateBox .state:nth-child(3) .stateBody {
+  left: 45px;
 }
 .addAssessment .contentBody .assess2Body {
   margin-top: 20px;
@@ -351,7 +368,7 @@
   width: 120px;
 }
 .addAssessment .contentBody .secondPage .normalBtn {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .addAssessment .contentBody .secondPage select {
   width: 120px;

@@ -119,6 +119,7 @@
   top: 1px;
 }
 .searchBox span {
+  cursor: pointer;
   float: right;
   width: 60px;
   height: 100%;

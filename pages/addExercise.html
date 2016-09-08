@@ -6,16 +6,19 @@
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="stateBox">
                 <div class="state">
-                    <i class="circle chosen"></i>
-                    <br/><span>基本信息设置</span>
+                    <div class="stateBody">
+                    <i class="flaticon-arrows-3"></i>
+                        <i class="circle chosen"></i>
+                        <br/><span>基本信息设置</span>
+                    </div>
                 </div>
                 <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>选择评估模板</span>
+                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                        <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <i class="circle"></i>
-                    <br/><span>确认发布</span>
+                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                        <br/><span>确认发布</span> </div>
                 </div>
             </div>
             <div class="firstPage">
@@ -31,7 +34,7 @@
                         <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
                     </select>
                 </div>
-<!--                 <div class="inputShort"><span>选择区域:</span>
+                <!--                 <div class="inputShort"><span>选择区域:</span>
                     <input type="checkBox" id="port" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="1" v-model="place1">
                     <label for="port">码头</label>
                     <input type="checkBox" id="workingArea" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="2" v-model="place2">
@@ -42,7 +45,7 @@
                         <option v-for="company in companyList| filterBy typeFilter company|filterBy areaFilter company" value="{{company.id}}">{{company.name}}</option>
                     </select>
                 </div>
-<!--                 <div class="inputShort assessType"><span>选择评估类型:</span>
+                <!--                 <div class="inputShort assessType"><span>选择评估类型:</span>
                     <select name="" id="" v-model="params.mode">
                         <option value="日常评估">日常评估检查</option>
                         <option value="专项">专项评估检查</option>
@@ -62,34 +65,40 @@
                 <div class="actionPerson inputShort inputLong">
                     <span>选择执行人员:</span>
                     <div class="person" v-for="person in user |filterBy teamFilter player">
-                        <input type="radio" name="person" id="person{{person.id}}" :checked="$index==0" v-model="player" :value="person" >
+                        <input type="radio" name="person" id="person{{person.id}}" :checked="$index==0" v-model="player" :value="person">
                         <label for="person{{person.id}}">{{person.name}}</label>
                     </div>
                 </div>
                 <br/>
                 <a class="normalBtn cancel" href="#/assessmentCheck.html">取消</a>
-                <a class="normalBtn nextStep" href="#/addExercise2.html" @click="saveDetail">下一步</a>
+                <a class="normalBtn nextStep" @click.prevent="saveDetail">下一步</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(hash == "#/addExercise2.html" || confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (hash == "#/addExercise2.html") {
             return true;
-        }
-        else{
-            return false;
+        } else {
+            var r = confirm("未保存修改的信息，确定要离开吗？")
+            if (r == true) {
+                localStorage.removeItem("dataEx");
+                localStorage.removeItem("paramsEx");
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     $.datetimepicker.setLocale('zh');
     $(".excuteTime").datetimepicker({
-        minDate:0,
+        minDate: 0,
         onChangeDateTime: function(dp, $input) {
             var d = $('.excuteTime').datetimepicker('getValue');
             vm.params.deadline = d.getTime();
-            vm.deadLine = $input;
+            vm.deadLine = $('.excuteTime').val();
         }
     });
     $("#processingBtn").on('click', function(event) {
@@ -115,8 +124,7 @@ $(document).ready(function() {
     var vm = new Vue({
         el: "#addAssessmentBody",
         data: {
-            params: {
-            },
+            params: {},
             url: "",
             companyType: "",
             region: "",
@@ -135,7 +143,7 @@ $(document).ready(function() {
             choseCompany: {},
             place1: "1",
             place2: "",
-            player:""
+            player: ""
         },
         watch: {
             place1: function(val, oldVal) {
@@ -188,10 +196,19 @@ $(document).ready(function() {
                 this.user.push(data)
             },
             saveDetail: function(data) {
-                this.params.user=this.player.id;
-                localStorage.setItem("paramsEx", JSON.stringify(this.params));
-                console.log(this.$data);
-                localStorage.setItem("dataEx", JSON.stringify(this.$data));
+                if (!this.params.company) {
+                    alert("请选择企业对象")
+                } else if (!this.params.deadline) {
+                    alert("请选择执行时间")
+                } else if (!this.player) {
+                    alert("请选择执行人员")
+                } else {
+                    this.params.user = this.player.id;
+                    localStorage.setItem("paramsEx", JSON.stringify(this.params));
+                    console.log(this.$data);
+                    localStorage.setItem("dataEx", JSON.stringify(this.$data));
+                    window.location.href = "#/addExercise2.html"
+                }
             },
             setCompany: function() {
                 vm.choseCompany = vm.companyList.filter(function(index) {
@@ -202,70 +219,72 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            if (localStorage.getItem("paramsEx")) {
-                self.params = JSON.parse(localStorage.getItem("paramsEx"));
+            if (localStorage.getItem("dataEx")) {
+                self.$data = JSON.parse(localStorage.getItem("dataEx"));
+                $('.excuteTime').val(self.deadLine);
+            } else {
+                $.post('/model', {
+                    name: "CompanyType",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.companyType = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Region",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.region = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Area",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.area = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Company",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.companyList = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "Region",
+                    "params['my']": 1
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.specialCheck = data.data[0].special;
+                    }
+                });
+                $.post('/model', {
+                    name: "Squadron",
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.squadron = data.data;
+                    }
+                });
+                $.post('/model', {
+                    name: "User",
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.user = data.data;
+                    }
+                });
             }
-            $.post('/model', {
-                name: "CompanyType",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.companyType = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Region",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.region = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Area",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.area = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Company",
-                "row": 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.companyList = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "Region",
-                "params['my']": 1
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.specialCheck = data.data[0].special;
-                }
-            });
-            $.post('/model', {
-                name: "Squadron",
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.squadron = data.data;
-                }
-            });
-            $.post('/model', {
-                name: "User",
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.user = data.data;
-                }
-            });
         },
         ready: function() {
 
