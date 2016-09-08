@@ -778,6 +778,9 @@ body {
 .admin_ui_select > select::-ms-expand {
   display: none;
 }
+.admin_ui_select > select:disabled {
+  background-color: #ebebe4;
+}
 .admin_ui_select:before {
   position: absolute;
   right: 8px;

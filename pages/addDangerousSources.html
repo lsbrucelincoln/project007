@@ -9,9 +9,9 @@
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
-            <div class="textInfo">
+            <div class="textInfo" style="border:0px">
                 <div class="inputShort">
-                    <span>备案编号：</span>
+                    <span style="width:100px">备案编号：</span>
                     <input type="text" v-model="params.code">
                 </div>
                 <div class="inputShort">
@@ -19,16 +19,18 @@
                     <input type="text" v-model="params.name">
                 </div>
                 <div class="inputShort">
-                    <span>等级：</span>
-                    <select name="" id="" v-model="params.level">
-                        <option value="1">一级</option>
-                        <option value="2">二级</option>
-                        <option value="3">三级</option>
-                        <option value="4">四级</option>
-                    </select>
+                    <span style="width:100px">等级：</span>
+                    <div class="admin_ui_select" style="width:200px;">
+                        <select name="" id="" v-model="params.level">
+                            <option value="1">一级</option>
+                            <option value="2">二级</option>
+                            <option value="3">三级</option>
+                            <option value="4">四级</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort">
-                    <span>坐标：</span> X:
+                    <span style="width:100px">坐标：</span> X:
                     <input type="text" style="width:65px;" v-model="x"> - Y:
                     <input type="text" style="width:65px;" v-model="y">
                 </div>
@@ -73,7 +75,7 @@
             <div class="dataPage">
                 <div class="assess2Body">
                     <div class="tableBox" style="text-align:center;margin-bottom:20px;width:100%">
-                        <div class="addBtn normalBtn" @click="addDangerous">确认</div>
+                        <div class="addBtn normalBtn" @click="addDangerous" style="position:relative;left:-44px">确认</div>
                         <div class="urgeBtn normalBtn">删除</div>
                     </div>
                 </div>
@@ -186,13 +188,26 @@ $(document).ready(function() {
                 });
             },
             addDangerous: function() {
-                $.post('/company/editDangerous', vm.params, function(data, textStatus, xhr) {
-                    console.log(data);
-                    if (data.state == 0) {
-                        alert("修改成功");
-                        history.back();
-                    }
-                });
+                if (!this.params.code) {
+                    alert("请输入备案编号")
+                } else if (!this.params.name) {
+                    alert("请输入重大危险源名称")
+                } else if (!this.params.level) {
+                    alert("请选择等级")
+                } else if (!this.x || !this.y) {
+                    alert("请输入坐标")
+                } else if (!this.params.description) {
+                    alert("请输入描述")
+                } else {
+                    $.post('/company/editDangerous', vm.params, function(data, textStatus, xhr) {
+                        console.log(data);
+                        if (data.state == 0) {
+                            alert("新增成功");
+                            history.back();
+                        }
+                    });
+                }
+
             }
         },
         created: function() {
