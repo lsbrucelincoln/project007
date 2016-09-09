@@ -3,7 +3,7 @@
         <div class="contentHeader">
             <p style="font-size:16px;float:left;">评估编号：{{taskDetail.code}}</p>
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
-            <p style="font-size:16px;text-align:center;">正在执行</p>
+            <p style="font-size:16px;text-align:center;">{{taskDetail.state}}</p>
         </div>
         <div class="contentBody">
             <div class="textInfo">
@@ -17,7 +17,7 @@
                 <p class="halfText">执行时间：<span>{{excuteTime}}</span></p>
                 <p class="halfText">评估队伍：<span>*{{taskDetail.leader.name}} <span v-for="member in taskDetail.member">{{member.name}}</span></span>
                 </p>
-                <p class="halfText">评估结论：<span>新增 <u>3</u> 条隐患</span></p>
+                <p class="halfText">评估结论：<span>新增 <u>{{riskList.length}}</u> 条隐患</span></p>
             </div>
             <div class="textInfo" style="margin-top:10px">
                 <h3>隐患信息</h3>

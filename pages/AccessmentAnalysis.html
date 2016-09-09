@@ -39,10 +39,10 @@
                             <label for="zsld_byCustom" style="margin-right: 10px;">
                                 <input id="zsld_byCustom" name="zsld_by" type="radio" value="self" v-model="granularity">自定义
                             </label>
-                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="startTime">
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="startTime" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM'})" id="startTime">
                             <i class="fa fa-calendar"></i> -
-                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="endTime">
-                            <i class="fa fa-calendar"></i>
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="endTime" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'startTime\',{M:11});}',minDate:'#F{$dp.$D(\'startTime\');}'})">
+                            <i class="fa fa-calendar" id="endTime"></i>
                         </div>
                     </td>
                     <td width="14%">
@@ -102,68 +102,245 @@
 </div>
 <script>
 $(document).ready(function() {
-    $.datetimepicker.setLocale('zh');
-    $(".datepicker").datetimepicker({
-        timepicker: false,
-        format: "Y-m-d",
-    });
+    // $.datetimepicker.setLocale('zh');
+    // $(".datepicker").datetimepicker({
+    //     timepicker: false,
+    //     format:"Y-m-d"
+    // });
 });
 var nowTime = new Date();
 var monthName = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+var quarter = ['第一季度', '第二季度', '第三季度', '第四季度'];
 var nowMonth = nowTime.getMonth();
+var yearName = [];
+for (var i = 3; i >= 0; i--) {
+    yearName.push(nowTime.getFullYear() - i + "年")
+}
+console.log(yearName);
 var nowMonthName = monthName.slice(nowMonth + 1, 12).concat(monthName.slice(0, nowMonth + 1));
 var vm = new Vue({
     el: "#analysisBody",
     data: {
         granularity: "month",
-        startTime: "",
-        endTime: "",
-        xName: nowMonthName,
-        lineData:[]
+        startTime: null,
+        endTime: null,
+        lineData: [],
+        daily: [],
+        echartLine_AccessmentAnalysis_option: {},
+        xName: monthName
     },
     watch: {
-
-    },
-    computed: {
-        nowTime:function(){
-            var time=new Date()
-            return time.getTime();
-        },
-        oneYear:function(){
-            var time=new Date()
-            time.setFullYear(time.getFullYear()-1);
-            return time.getTime();
-        },
-        start:function(){
-            if (this.granularity=="self") {
-                return this.startTime
-            }else{
-                return this.oneYear;
+        granularity: function(val, oldVal) {
+            if (val == "month") {
+                this.xName = monthName;
+                this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
+                this.changeAll();
+            } else if (val == "self" && this.startTime && this.endTime) {
+                this.setTime();
+                console.log('test');
+            } else if (val == "quarter") {
+                this.xName = quarter;
+                this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
+                this.changeAll();
+            } else if (val == "year") {
+                this.xName = yearName;
+                this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
+                this.changeAll();
             }
         },
-        end:function(){
-            if (this.granularity=="self") {
-                return this.endTime
-            }else{
-                return this.nowTime;
+        startTime: function(val, oldVal) {
+            console.log((this.granularity == "self" && val && this.endTime));
+            if (this.granularity == "self" && val && this.endTime) {
+                console.log("text1");
+                this.setTime();
+            }
+        },
+        endTime: function(val, oldVal) {
+            console.log((this.granularity == "self" && val && this.startTime));
+            if (this.granularity == "self" && val && this.startTime) {
+                console.log("text2");
+                this.setTime();
+            }
+        }
+    },
+    computed: {
+        start: function() {
+            if (this.granularity == "self") {
+                var date = new Date();
+                if (this.startTime) {
+                    date.setFullYear(this.startTime.split("-")[0]);
+                    date.setMonth(this.startTime.split("-")[1] - 1);
+                    return date.getTime()
+                }
+            } else if (this.granularity == "year") {
+                return this.fixStart(3);
+            } else {
+                return this.fixStart(0);
+            }
+        },
+        end: function() {
+            if (this.granularity == "self") {
+                var date = new Date();
+                if (this.endTime) {
+                    date.setFullYear(this.endTime.split("-")[0]);
+                    date.setMonth(this.endTime.split("-")[1] - 1);
+                    return date.getTime()
+                }
+            } else if (this.granularity == "year") {
+                return this.fixEnd(3);
+            } else {
+                return this.fixEnd(0);
             }
         }
     },
     methods: {
-
+        fixEnd: function(x) {
+            var time = new Date();
+            var year = time.getFullYear();
+            time.setFullYear(year - x)
+            time.setMonth(11);
+            time.setDate(31);
+            time.setHours(23);
+            return time.getTime();
+        },
+        fixStart: function(x) {
+            var time = new Date();
+            var year = time.getFullYear();
+            time.setFullYear(year - x)
+            time.setMonth(0);
+            time.setDate(1);
+            time.setHours(0);
+            return time.getTime();
+        },
+        changeData: function(name, index) {
+            var self = this;
+            $.post('/model', {
+                "name": 'Task',
+                "params['month_time_begin']": self.start,
+                "params['month_time_end']": self.end,
+                "params['mode']": name
+            }, function(data, textStatus, xhr) {
+                var msg = data.data
+                var showData = [];
+                if (self.granularity == "quarter") {
+                    for (var i = 0; i < msg.length; i = i + 3) {
+                        showData.push(msg[i] - 0 + msg[i + 1] + msg[i + 2])
+                    }
+                } else {
+                    showData = msg
+                }
+                showData=msg
+                console.log(showData);
+                self.updateData(showData, index);
+            });
+        },
+        emergencyData: function() {
+            var self = this;
+            $.post('/model', {
+                "name": 'Emergency',
+                "params['month_time_begin']": self.start,
+                "params['month_time_end']": self.end,
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                var msg = data.data
+                var showData = [];
+                if (self.granularity == "quarter") {
+                    for (var i = 0; i < msg.length; i + 3) {
+                        showData.push(msg[i] - 0 + msg[i + 1] + msg[i + 2])
+                    }
+                } else {
+                    showData = msg
+                }
+                console.log(showData);
+                self.updateData(showData, 3);
+            });
+        },
+        updateData: function(data, index) {
+            var self = this;
+            self.echartLine_AccessmentAnalysis_option.series[index].data = data;
+            self.$nextTick(function() {
+                echartLine_AccessmentAnalysis.setOption(self.echartLine_AccessmentAnalysis_option);
+            })
+        },
+        changeAll: function(save) {
+            this.changeData("日常", 0, save);
+            this.changeData("专项", 1, save);
+            this.changeData("综合", 2, save);
+            this.emergencyData(save);
+        },
+        setTime: function() {
+            var startPoint, endPoint;
+            if (this.startTime && this.endTime) {
+                startPoint = this.startTime.split("-")[1] - 0;
+                console.log(startPoint);
+                endPoint = this.endTime.split("-")[1] - 0;
+                if (startPoint > endPoint) {
+                    this.xName = monthName.slice(startPoint - 1, 12).concat(monthName.slice(0, endPoint));
+                } else {
+                    this.xName = monthName.slice(startPoint - 1, endPoint);
+                }
+                console.log(endPoint);
+                this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
+                this.changeAll();
+            }
+        }
     },
     created: function() {
         var self = this;
-        var data = {
-            models: [
-            {"name":'Task',"params['month_time_begin']":self.start,"params['month_time_end']":self.end,"params['mode']":"日常"},
-            {"name":'Task',"params['month_time_begin']":self.start,"params['month_time_end']":self.end,"params['mode']":"专项"},
-            {"name":'Task',"params['month_time_begin']":self.start,"params['month_time_end']":self.end,"params['mode']":"综合"}
-            ]
-        }
-        $.post('/models', data, function(data, textStatus, xhr) {
-            self.lineData=data
+        $.post('/model', {
+            name: "Region",
+            "row": 0
+        }, function(data, textStatus, xhr) {
+            if (data.state == 0) {
+                vm.region = data.data;
+            }
         });
+        self.echartLine_AccessmentAnalysis_option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['日常评估', '专项评估', '综合评估', '应急演练']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                name: '月份',
+                type: 'category',
+                boundaryGap: false,
+                data: self.xName
+            },
+            yAxis: {
+                name: '数量',
+                type: 'value'
+            },
+            series: [{
+                name: '日常评估',
+                type: 'line',
+                stack: '总量',
+                data: self.daily
+            }, {
+                name: '专项评估',
+                type: 'line',
+                stack: '总量',
+                data: [220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
+            }, {
+                name: '综合评估',
+                type: 'line',
+                stack: '总量',
+                data: [150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
+            }, {
+                name: '应急演练',
+                type: 'line',
+                stack: '总量',
+                data: [320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
+            }]
+        };
+        self.changeAll(1);
     },
     ready: function() {
 
@@ -217,51 +394,5 @@ echartPie_AccessmentAnalysis.setOption(echartPie_AccessmentAnalysis_option);
 
 
 
-var echartLine_AccessmentAnalysis_option = {
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data: ['日常评估', '专项评估', '综合评估', '应急演练']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: {
-        name: '月份',
-        type: 'category',
-        boundaryGap: false,
-        data: vm.xName
-    },
-    yAxis: {
-        name: '数量',
-        type: 'value'
-    },
-    series: [{
-        name: '日常评估',
-        type: 'line',
-        stack: '总量',
-        data: [120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 190, 330]
-    }, {
-        name: '专项评估',
-        type: 'line',
-        stack: '总量',
-        data: [220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
-    }, {
-        name: '综合评估',
-        type: 'line',
-        stack: '总量',
-        data: [150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
-    }, {
-        name: '应急演练',
-        type: 'line',
-        stack: '总量',
-        data: [320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
-    }]
-};
 var echartLine_AccessmentAnalysis = echarts.init(document.getElementById("echartLine_AccessmentAnalysis"));
-echartLine_AccessmentAnalysis.setOption(echartLine_AccessmentAnalysis_option);
 </script>

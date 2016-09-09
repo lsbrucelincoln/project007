@@ -7,17 +7,17 @@
             <div class="stateBox">
                 <div class="state">
                     <div class="stateBody">
-                    <i class="flaticon-arrows-3"></i>
+                        <i class="flaticon-arrows-3"></i>
                         <i class="circle"></i>
                         <br/><span>基本信息设置</span>
                     </div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
                         <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle"></i>
                         <br/><span>确认发布</span> </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>06/01 20:00</td>
                                 <td></td>
-                                <td><a href="">查看</a> <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
+                                <td><a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a> <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
                             </tr>
                         </table>
                         <div class="bottom-search">
@@ -272,6 +272,9 @@ $(document).ready(function() {
                     vm.params.safeties.push(vm.rules[i].id);
                 }
                 localStorage.setItem("params", JSON.stringify(vm.params));
+            },
+            saveDetail: function(data) {
+                localStorage.setItem("ruleDetail", JSON.stringify(data))
             }
         },
         created: function() {
