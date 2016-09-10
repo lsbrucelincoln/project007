@@ -1,6 +1,6 @@
-<div class="admin_content_innerBox">
+<div class="admin_content_innerBox" id="analysisBody">
     <div class="minibar">
-        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace">隐患分析</span></span>
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 统计分析 > <span class="nowPlace"></span></span>
     </div>
     <div class="contentBody">
         <table class="headTable">
@@ -8,44 +8,33 @@
                 <tr>
                     <td>
                         统计范围：
-                        <div class="admin_ui_select" style="width: 180px;margin-right: 100px;">
-                            <select>
-                                <option>宁波市港航管理局</option>
-                                <option>大榭港行管理局</option>
-                                <option>北仓港行管理局</option>
-                                <option>宁波市港航局市区所</option>
-                                <option>宁波市港航局运政所</option>
-                                <option>鄞州港航管理处</option>
-                                <option>镇海港航管理所</option>
-                                <option>东钱湖港航管理所</option>
-                                <option>宁海港航管理处</option>
-                                <option>宁波市港航局直属所</option>
-                                <option>余姚港航管理处</option>
-                                <option>奉化港航管理处</option>
-                                <option>慈溪港航管理处</option>
+                        <div class="admin_ui_select" style="width: 180px;">
+                            <select v-model="region">
+                                <option v-for="region in regionList" value="{{region.id}}">{{region.name}}</option>
                             </select>
                         </div>
                         <div class="chartConditionBox">
                             展示粒度：
                             <label for="zsld_byYear" style="margin-right: 10px;">
-                                <input id="zsld_byYear" name="zsld_by" type="radio">按年
+                                <input id="zsld_byYear" name="zsld_by" type="radio" value="year" v-model=" granularity" @click="isCustom=false">按年
                             </label>
                             <label for="zsld_bySeason" style="margin-right: 10px;">
-                                <input id="zsld_bySeason" name="zsld_by" type="radio">按季度
+                                <input id="zsld_bySeason" name="zsld_by" type="radio" value="quarter" v-model=" granularity">按季度
                             </label>
                             <label for="zsld_byMonth" style="margin-right: 10px;">
-                                <input id="zsld_byMonth" name="zsld_by" type="radio">按月
+                                <input id="zsld_byMonth" name="zsld_by" type="radio" v-model=" granularity" value="month">按月
                             </label>
                             <label for="zsld_byCustom" style="margin-right: 10px;">
-                                <input id="zsld_byCustom" name="zsld_by" type="radio">自定义
+                                <input id="zsld_byCustom" name="zsld_by" type="radio" value="self" v-model="granularity">自定义
                             </label>
-                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="startTime" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM'})" id="startTime">
                             <i class="fa fa-calendar"></i> -
-                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;">
-                            <i class="fa fa-calendar"></i>
+                            <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="endTime" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM',maxDate:'#F{$dp.$D(\'startTime\',{M:11});}',minDate:'#F{$dp.$D(\'startTime\');}'})">
+                            <i class="fa fa-calendar" id="endTime"></i>
                         </div>
                     </td>
-                    <td>
+                    <td width="14%">
+                        <!-- 评估标准总项：23423项 -->
                     </td>
                 </tr>
             </tbody>
@@ -57,21 +46,19 @@
                         <td style="width: 50%">
                             选择企业：
                             <div class="admin_ui_select" style="width: 180px;">
-                                <select>
-                                    <option>宁波象山危货公司</option>
+                                <select v-model="company1">
+                                    <option v-for="company in companyList" value="{{company.id}}">{{company.name}}</option>
                                 </select>
                             </div>
                         </td>
                         <td>
                             选择企业：
                             <div class="admin_ui_select" style="width: 180px;">
-                                <select>
-                                    <option>宁波象山危货公司</option>
+                                <select v-model="company2">
+                                    <option v-for="company in companyList" value="{{company.id}}">{{company.name}}</option>
                                 </select>
                             </div>
-                            <div class="normalBtn">执行</div>
                         </td>
-                        
                     </tr>
                 </tbody>
             </table>
@@ -87,9 +74,313 @@
             format: "Y-m-d",
         });
     });
-    var myChart = echarts.init(demo);
+    var echartLine_AccessmentAnalysis = echarts.init(demo);
 
     var max = -1
+    var nowTime = new Date();
+    var monthName = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+    var quarter = ['第一季度', '第二季度', '第三季度', '第四季度'];
+    var nowMonth = nowTime.getMonth();
+    var yearName = [];
+    for (var i = 3; i >= 0; i--) {
+        yearName.push(nowTime.getFullYear() - i + "年")
+    }
+    console.log(yearName);
+    var nowMonthName = monthName.slice(nowMonth + 1, 12).concat(monthName.slice(0, nowMonth + 1));
+    var vm = new Vue({
+        el: "#analysisBody",
+        data: {
+            granularity: "month",
+            startTime: null,
+            endTime: null,
+            lineData: [],
+            daily: [],
+            echartLine_AccessmentAnalysis_option: {},
+            xName: monthName,
+            regionList: [],
+            region: 1,
+            company1: 4,
+            company2: 5,
+            companyList: [],
+
+        },
+        watch: {
+            granularity: function(val, oldVal) {
+                if (val == "month") {
+                    this.xName = monthName;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[0].data = this.xName;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[1].data = this.xName;
+                    this.changeAll();
+                } else if (val == "self" && this.startTime && this.endTime) {
+                    this.setTime();
+                } else if (val == "quarter") {
+                    this.xName = quarter;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[0].data = this.xName;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[1].data = this.xName;
+                    this.changeAll();
+                } else if (val == "year") {
+                    this.xName = yearName;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[0].data = this.xName;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[1].data = this.xName;
+                    this.changeAll();
+                }
+            },
+            startTime: function(val, oldVal) {
+                console.log((this.granularity == "self" && val && this.endTime));
+                if (this.granularity == "self" && val && this.endTime) {
+                    console.log("text1");
+                    this.setTime();
+                }
+            },
+            endTime: function(val, oldVal) {
+                console.log((this.granularity == "self" && val && this.startTime));
+                if (this.granularity == "self" && val && this.startTime) {
+                    console.log("text2");
+                    this.setTime();
+                }
+            },
+            company1:function(val,oldVal){
+                this.changeAll();
+            },
+            company2:function(val,oldVal){
+                this.changeAll();
+            }
+        },
+        computed: {
+            start: function() {
+                if (this.granularity == "self") {
+                    var date = new Date();
+                    if (this.startTime) {
+                        date.setFullYear(this.startTime.split("-")[0]);
+                        date.setMonth(this.startTime.split("-")[1] - 1);
+                        return date.getTime()
+                    }
+                } else if (this.granularity == "year") {
+                    return this.fixStart(3);
+                } else {
+                    return this.fixStart(0);
+                }
+            },
+            end: function() {
+                if (this.granularity == "self") {
+                    var date = new Date();
+                    if (this.endTime) {
+                        date.setFullYear(this.endTime.split("-")[0]);
+                        date.setMonth(this.endTime.split("-")[1] - 1);
+                        return date.getTime()
+                    }
+                } else {
+                    return this.fixEnd();
+                }
+            }
+        },
+        methods: {
+            fixEnd: function() {
+                var time = new Date();
+                time.setMonth(11);
+                time.setDate(31);
+                time.setHours(23);
+                console.log(time.getTime());
+                return time.getTime();
+            },
+            fixStart: function(x) {
+                var time = new Date();
+                var year = time.getFullYear();
+                time.setFullYear(year - x)
+                time.setMonth(0);
+                time.setDate(1);
+                time.setHours(0);
+                return time.getTime();
+            },
+            changeData: function(name, index,companyId) {
+                var self = this;
+                $.post('/model', {
+                    "name": 'Recheck',
+                    "params['month_time_begin']": self.start,
+                    "params['month_time_end']": self.end,
+                    "params['safetyLevel']": name,
+                    "params['company_id']":companyId
+                }, function(data, textStatus, xhr) {
+                    var msg = data.data
+                    var showData = [];
+                    if (self.granularity == "quarter") {
+                        for (var i = 0; i < msg.length; i = i + 3) {
+                            showData.push(parseInt(msg[i]) + parseInt(msg[i + 1]) + parseInt(msg[i + 2]))
+                        }
+                    } else if (self.granularity == "year") {
+                        for (var i = 0; i < msg.length; i = i + 12) {
+                            showData.push(msg.slice(i, i + 12).reduce(function(pre, cur) {
+                                return pre + cur
+                            }))
+                        }
+                    } else {
+                        showData = msg
+                    }
+                    self.updateData(showData, index);
+                });
+            },
+            updateData: function(data, index) {
+                var self = this;
+                self.echartLine_AccessmentAnalysis_option.series[index].data = data;
+                self.$nextTick(function() {
+                    echartLine_AccessmentAnalysis.setOption(self.echartLine_AccessmentAnalysis_option);
+                })
+            },
+            changeAll: function() {
+                this.changeData("一级", 0,this.company1);
+                this.changeData("二级", 1,this.company1);
+                this.changeData("三级", 2,this.company1);
+                this.changeData("四级", 3,this.company1);
+                this.changeData("一级", 4,this.company2);
+                this.changeData("二级", 5,this.company2);
+                this.changeData("三级", 6,this.company2);
+                this.changeData("四级", 7,this.company2);
+            },
+            setTime: function() {
+                var startPoint, endPoint;
+                if (this.startTime && this.endTime) {
+                    startPoint = this.startTime.split("-")[1] - 0;
+                    console.log(startPoint);
+                    endPoint = this.endTime.split("-")[1] - 0;
+                    if (startPoint > endPoint) {
+                        this.xName = monthName.slice(startPoint - 1, 12).concat(monthName.slice(0, endPoint));
+                    } else {
+                        this.xName = monthName.slice(startPoint - 1, endPoint);
+                    }
+                    console.log(endPoint);
+                    this.echartLine_AccessmentAnalysis_option.yAxis[0].data = this.xName;
+                    this.echartLine_AccessmentAnalysis_option.yAxis[1].data = this.xName;
+                    this.changeAll();
+                }
+            }
+        },
+        created: function() {
+            var self = this;
+            $.post('/model', {
+                name: "Region",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.regionList = data.data;
+                }
+            });
+            $.post('/model', {
+                name: "Company",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.companyList = data.data;
+                }
+            });
+            self.echartLine_AccessmentAnalysis_option = {
+                title: {
+                    text: 'VS',
+                    y: 'center',
+                    x: 'center'
+                },
+                legend: {
+                    y: "top",
+                    x: "center",
+                    data: ['一级', '二级', '三级', '四级']
+                },
+                grid: [{
+                    top: "5%",
+                    bottom: "2%",
+                    left: "5%",
+                    width: '40%',
+                    show: false,
+                    containLabel: true,
+                }, {
+                    top: "5%",
+                    bottom: "2%",
+                    right: "5%",
+                    width: '40%',
+                    containLabel: true
+                }],
+                xAxis: [{
+                    gridIndex: 0,
+                    type: "value",
+                    name: "数量",
+                    min: 0,
+                    // max: max,
+                    // interval: 300
+                }, {
+                    gridIndex: 1,
+                    inverse: true,
+                    type: "value",
+                    name: "数量",
+                    min: 0,
+                    // max: max,
+                    // interval: 300
+                }],
+                yAxis: [{
+                    gridIndex: 0,
+                    type: "category",
+                    name: "月份",
+                    data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+                }, {
+                    gridIndex: 1,
+                    position: "right",
+                    type: "category",
+                    name: "月份",
+                    data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+                }],
+                series: [{
+                    name: '一级',
+                    type: "bar",
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: 0
+                }, {
+                    name: '二级',
+                    type: "bar",
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: 0
+                }, {
+                    name: '三级',
+                    type: "bar",
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: 0
+                }, {
+                    name: '四级',
+                    type: "bar",
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: 0
+                }, {
+                    name: '一级',
+                    type: "bar",
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    data: 0
+                }, {
+                    name: '二级',
+                    type: "bar",
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    data: 0
+                }, {
+                    name: '三级',
+                    type: "bar",
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    data: 0
+                }, {
+                    name: '四级',
+                    type: "bar",
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    data: 0
+                }]
+            }
+            self.changeAll();
+        },
+        ready: function() {
+
+        }
+    })
 
     function getRandom() {
         var ret = []
@@ -102,123 +393,4 @@
         }
         return ret
     }
-    var data1 = {
-        '一级': getRandom(),
-        '二级': getRandom(),
-        '三级': getRandom(),
-        '四级': getRandom()
-    }
-    var data2 = {
-        '一级': getRandom(),
-        '二级': getRandom(),
-        '三级': getRandom(),
-        '四级': getRandom()
-    }
-
-    max += (300 - max % 300)
-    var option = {
-        title: {
-            text: 'VS',
-            y: 'center',
-            x: 'center'
-        },
-        legend: {
-            y: "top",
-            x: "center",
-            data: ['一级', '二级', '三级', '四级']
-        },
-        grid: [{
-            top: "5%",
-            bottom: "2%",
-            left: "5%",
-            width: '40%',
-            show: false,
-            containLabel: true,
-        }, {
-            top: "5%",
-            bottom: "2%",
-            right: "5%",
-            width: '40%',
-            containLabel: true
-        }],
-        xAxis: [{
-            gridIndex: 0,
-            type: "value",
-            name: "数量",
-            min: 0,
-            max: max,
-            interval: 300
-        }, {
-            gridIndex: 1,
-            inverse: true,
-            type: "value",
-            name: "数量",
-            min: 0,
-            max: max,
-            interval: 300
-        }],
-        yAxis: [{
-            gridIndex: 0,
-            type: "category",
-            name: "月份",
-            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-        }, {
-            gridIndex: 1,
-            position: "right",
-            type: "category",
-            name: "月份",
-            data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-        }],
-        series: [{
-            name: '一级',
-            type: "bar",
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            data: data1['一级']
-        }, {
-            name: '二级',
-            type: "bar",
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            data: data1['二级']
-        }, {
-            name: '三级',
-            type: "bar",
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            data: data1['三级']
-        }, {
-            name: '四级',
-            type: "bar",
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            data: data1['四级']
-        }, {
-            name: '一级',
-            type: "bar",
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: data2['一级']
-        }, {
-            name: '二级',
-            type: "bar",
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: data2['二级']
-        }, {
-            name: '三级',
-            type: "bar",
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: data2['三级']
-        }, {
-            name: '四级',
-            type: "bar",
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: data2['四级']
-        }]
-    }
-
-    myChart.setOption(option)
     </script>

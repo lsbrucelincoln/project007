@@ -9,20 +9,8 @@
                     <td>
                         统计范围：
                         <div class="admin_ui_select" style="width: 180px;">
-                            <select>
-                                <option>宁波市港航管理局</option>
-                                <option>大榭港行管理局</option>
-                                <option>北仓港行管理局</option>
-                                <option>宁波市港航局市区所</option>
-                                <option>宁波市港航局运政所</option>
-                                <option>鄞州港航管理处</option>
-                                <option>镇海港航管理所</option>
-                                <option>东钱湖港航管理所</option>
-                                <option>宁海港航管理处</option>
-                                <option>宁波市港航局直属所</option>
-                                <option>余姚港航管理处</option>
-                                <option>奉化港航管理处</option>
-                                <option>慈溪港航管理处</option>
+                            <select v-model="region">
+                                <option v-for="region in regionList" value="{{region.id}}">{{region.name}}</option>
                             </select>
                         </div>
                         <div class="chartConditionBox">
@@ -45,18 +33,18 @@
                             <i class="fa fa-calendar" id="endTime"></i>
                         </div>
                     </td>
-                    <td width="14%">
+<!--                     <td width="14%">
                         评估标准总项：23423项
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </table>
         <div class="echartBox">
-            <div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 60%;height: 250px;"></div>
-            <div id="echartPie_AccessmentAnalysis" class="echartBlock echartPie" style="width: 40%;height: 250px;"></div>
+            <div id="echartLine_AccessmentAnalysis" class="echartBlock echartLine" style="width: 60%;height: 300px;"></div>
+            <div id="echartPie_AccessmentAnalysis" class="echartBlock echartPie" style="width: 40%;height: 300px;"></div>
         </div>
         <div>
-            <div class="tableBox" style="display: block;">
+            <!--             <div class="tableBox" style="display: block;">
                 <table>
                     <tbody>
                         <tr>
@@ -96,7 +84,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -127,7 +115,11 @@ var vm = new Vue({
         lineData: [],
         daily: [],
         echartLine_AccessmentAnalysis_option: {},
-        xName: monthName
+        echartPie_AccessmentAnalysis_option: {},
+        xName: monthName,
+        regionList: [],
+        region: 1,
+        totalNum:0
     },
     watch: {
         granularity: function(val, oldVal) {
@@ -266,8 +258,12 @@ var vm = new Vue({
         updateData: function(data, index) {
             var self = this;
             self.echartLine_AccessmentAnalysis_option.series[index].data = data;
+            self.echartPie_AccessmentAnalysis_option.series[0].data[index].value = data.reduce(function(pre, cur) {
+                return pre + cur;
+            })
             self.$nextTick(function() {
                 echartLine_AccessmentAnalysis.setOption(self.echartLine_AccessmentAnalysis_option);
+                echartPie_AccessmentAnalysis.setOption(self.echartPie_AccessmentAnalysis_option);
             })
         },
         changeAll: function(save) {
@@ -300,7 +296,17 @@ var vm = new Vue({
             "row": 0
         }, function(data, textStatus, xhr) {
             if (data.state == 0) {
-                vm.region = data.data;
+                vm.regionList = data.data;
+            }
+        });
+        $.post('/model', {
+            name: "Task",
+            "count": true,
+            // "params['in_time']": self.start,
+            // "params['end']": self.end,
+        }, function(data, textStatus, xhr) {
+            if (data.state == 0) {
+                self.totalNum = data.data;
             }
         });
         self.echartLine_AccessmentAnalysis_option = {
@@ -348,6 +354,48 @@ var vm = new Vue({
                 data: [320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
             }]
         };
+        self.echartPie_AccessmentAnalysis_option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'horizontal',
+                left: 'center',
+                top: 'top',
+                data: ['日常评估', '专项评估', '综合评估', '应急演练']
+            },
+            series: [{
+                name: '项目分类',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '50%'],
+                label: {
+                    normal: {
+                        show: true,
+                        position: "inside",
+                        formatter: "{c}",
+                        textStyle: {
+                            color: "#fff"
+                        }
+                    }
+                },
+                data: [{
+                    value: 335,
+                    name: '日常评估'
+                }, {
+                    value: 310,
+                    name: '专项评估'
+                }, {
+                    value: 234,
+                    name: '综合评估'
+                }, {
+                    value: 135,
+                    name: '应急演练'
+                }]
+            }],
+            animation: false
+        };
         self.changeAll(1);
     },
     ready: function() {
@@ -355,50 +403,9 @@ var vm = new Vue({
     }
 })
 console.log(nowMonthName);
-var echartPie_AccessmentAnalysis_option = {
-    tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'horizontal',
-        left: 'center',
-        top: 'top',
-        data: ['日常评估', '专项评估', '综合评估', '应急演练']
-    },
-    series: [{
-        name: '项目分类',
-        type: 'pie',
-        radius: '55%',
-        center: ['50%', '50%'],
-        label: {
-            normal: {
-                show: true,
-                position: "inside",
-                formatter: "{c}",
-                textStyle: {
-                    color: "#fff"
-                }
-            }
-        },
-        data: [{
-            value: 335,
-            name: '日常评估'
-        }, {
-            value: 310,
-            name: '专项评估'
-        }, {
-            value: 234,
-            name: '综合评估'
-        }, {
-            value: 135,
-            name: '应急演练'
-        }]
-    }],
-    animation: false
-};
+
 var echartPie_AccessmentAnalysis = echarts.init(document.getElementById("echartPie_AccessmentAnalysis"));
-echartPie_AccessmentAnalysis.setOption(echartPie_AccessmentAnalysis_option);
+
 
 
 
