@@ -324,7 +324,7 @@ function loadContent(event) {
     if (hash == "" && url.search("Index_c") == -1) {
         hash = "#/" + ADMIN_CONFIG.homePage;
     } else if (hash == "" && url.search("Index_c") !== -1) {
-        hash = "#/" + "assessmentCheck.html"
+        hash = "#/" + "staffManagement_c.html"
     }
     var hashArray = hash.split("/");
     
@@ -359,7 +359,7 @@ function leftMenuPlace() {
             $("#homePageBtn").addClass('chosenLine');
         }
     }else if(!hash){
-        $(".leftmenu>div>.line").eq(1).trigger("click");
+        $(".leftmenu>div>.line").eq(0).trigger("click");
         $(".active+.submenu>.line").eq(0).addClass('chosen');
     }
 
