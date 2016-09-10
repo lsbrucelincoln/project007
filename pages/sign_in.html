@@ -103,15 +103,17 @@
                     switch (data.competence) {
                         case "机构管理员":
                             if ($(".loginBtn").attr('href') == "Index_c.html") {
-                                alert("您是机构管理员，将进入机构管理页面")
+                                alert("您不是企业负责人，没有权限进入")
+                            }else if($(".loginBtn").attr('href') == "index.html"){
+                                window.location.href = "index.html";
                             }
-                            window.location.href = "index.html";
                             break;
                         case "企业负责人":
                             if ($(".loginBtn").attr('href') == "index.html") {
-                                alert("您是企业负责人，将进入企业管理页面")
+                                alert("您不是机构管理员，没有权限进入")
+                            }else if($(".loginBtn").attr('href') == "Index_c.html"){
+                                window.location.href = "Index_c.html"
                             }
-                            window.location.href = "Index_c.html"
                             break;
                         case "检查评估员":
                             alert("您是检查评估员，没有权限进入后台");
