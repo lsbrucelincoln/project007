@@ -186,21 +186,18 @@ var vm = new Vue({
                     date.setMonth(this.endTime.split("-")[1] - 1);
                     return date.getTime()
                 }
-            } else if (this.granularity == "year") {
-                return this.fixEnd(3);
             } else {
-                return this.fixEnd(0);
+                return this.fixEnd();
             }
         }
     },
     methods: {
-        fixEnd: function(x) {
+        fixEnd: function() {
             var time = new Date();
-            var year = time.getFullYear();
-            time.setFullYear(year - x)
             time.setMonth(11);
             time.setDate(31);
             time.setHours(23);
+            console.log(time.getTime());
             return time.getTime();
         },
         fixStart: function(x) {
@@ -224,13 +221,17 @@ var vm = new Vue({
                 var showData = [];
                 if (self.granularity == "quarter") {
                     for (var i = 0; i < msg.length; i = i + 3) {
-                        showData.push(msg[i] - 0 + msg[i + 1] + msg[i + 2])
+                        showData.push(parseInt(msg[i]) + parseInt(msg[i + 1]) + parseInt(msg[i + 2]))
+                    }
+                } else if (self.granularity == "year") {
+                    for (var i = 0; i < msg.length; i = i + 12) {
+                        showData.push(msg.slice(i, i + 12).reduce(function(pre, cur) {
+                            return pre + cur
+                        }))
                     }
                 } else {
                     showData = msg
                 }
-                showData=msg
-                console.log(showData);
                 self.updateData(showData, index);
             });
         },
@@ -244,9 +245,16 @@ var vm = new Vue({
                 console.log(data);
                 var msg = data.data
                 var showData = [];
+                var textData = [];
                 if (self.granularity == "quarter") {
-                    for (var i = 0; i < msg.length; i + 3) {
-                        showData.push(msg[i] - 0 + msg[i + 1] + msg[i + 2])
+                    for (var i = 0; i < msg.length; i = i + 3) {
+                        showData.push(parseInt(msg[i]) + parseInt(msg[i + 1]) + parseInt(msg[i + 2]))
+                    }
+                } else if (self.granularity == "year") {
+                    for (var i = 0; i < msg.length; i = i + 12) {
+                        showData.push(msg.slice(i, i + 12).reduce(function(pre, cur) {
+                            return pre + cur
+                        }))
                     }
                 } else {
                     showData = msg

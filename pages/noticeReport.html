@@ -8,18 +8,18 @@
                     <table id="checkTable" class="display">
                         <thead>
                             <tr>
-                                <th>序号</th>
                                 <th>生成时间</th>
                                 <th>标题</th>
                                 <th>内容</th>
+                                <th>附件</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="report in showTasks ">
-                                <td>{{report.id}}</td>
                                 <td>{{report.time}}</td>
                                 <td>{{report.title}}</td>
                                 <td>{{report.text}}</td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
