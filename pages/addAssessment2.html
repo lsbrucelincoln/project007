@@ -22,18 +22,22 @@
                 </div>
             </div>
             <div class="secondPage">
-                <div class="inputShort assessType"><span>选择评估类型:</span>
-                    <select name="" id="" v-model="params.mode">
-                        <option value="日常评估">日常评估检查</option>
-                        <option value="专项">专项评估检查</option>
-                        <option value="综合评估">综合评估检查</option>
-                    </select>
-                    <div style="display:inline-block" v-if="params.mode=='专项'">—
-                        <select name="" id="">
-                            <option value="">防火专项评估</option>
-                            <option value="">防爆专项评估</option>
-                            <option value="">设备专项评估</option>
+                <div class="inputShort assessType" style="margin-bottom:0px"><span>选择评估类型:</span>
+                    <div class="admin_ui_select">
+                        <select name="" id="" v-model="params.mode">
+                            <option value="日常评估">日常评估检查</option>
+                            <option value="专项">专项评估检查</option>
+                            <option value="综合评估">综合评估检查</option>
                         </select>
+                    </div>
+                    <div style="display:inline-block" v-if="params.mode=='专项'">—
+                        <div class="admin_ui_select">
+                            <select name="" id="">
+                                <option value="">防火专项评估</option>
+                                <option value="">防爆专项评估</option>
+                                <option value="">设备专项评估</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="assess2Body">

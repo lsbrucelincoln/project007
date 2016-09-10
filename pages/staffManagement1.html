@@ -12,8 +12,7 @@
                     <th>
                         <input type="checkBox" id="person1" class="checkBox">
                     </th>
-                    <th>序号</th>
-                    <th>姓名</th>
+                    <th>用户名</th>
                     <th>角色</th>
                     <th>所属中队</th>
                     <th>注册时间</th>
@@ -26,7 +25,6 @@
                     <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0">
                     <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0">
                 </td>
-                <td>{{account.id}}</td>
                 <td>{{account.name}}</td>
                 <td>{{account.competence}}</td>
                 <td>{{account.squadron}}</td>
@@ -144,13 +142,13 @@ $(document).ready(function() {
                         vm.showState=true;
                         $('table.display').DataTable({
                             "order": [
-                                [5, "desc"]
+                                [4, "desc"]
                             ],
                             "pageLength": 7,
                             "dom": 'rtp',
                             "columnDefs": [{
                                 "orderable": false,
-                                "targets": [0, 7]
+                                "targets": [0, 6]
                             }],
                             language: {
                                 processing: "处理中...",

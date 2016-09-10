@@ -27,6 +27,9 @@
                     <div class="tableBox">
                         <table>
                             <tr>
+                                <th style="width: 40px;">
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </th>
                                 <th width="240px">内容</th>
                                 <th style="width: 40px;">等级</th>
                                 <th style="width: 60px;">强制执行</th>
@@ -35,6 +38,9 @@
                                 <th style="width: 80px;">操作</th>
                             </tr>
                             <tr v-for="rule in rules |limitBy recordLimit startPoint">
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td style="text-align:left">{{rule.text}}</td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
@@ -65,6 +71,16 @@
 <script>
 $(document).ready(function() {
     // TablePage("table", 10);
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
+        }
+    });
+    $(".admin_content_table").on('click', ".allSelectBtn", function(event) {
+        $("td .checkBox").prop("checked", true);
+    });
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();
@@ -101,7 +117,7 @@ $(document).ready(function() {
             pageIndex: 1,
             startAttr: "",
             startAttr2: "",
-            rawData:[]
+            rawData: []
         },
         computed: {
             startPoint: function() {
@@ -223,7 +239,7 @@ $(document).ready(function() {
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
-                    vm.rawData=data.data
+                    vm.rawData = data.data
                     vm.rulesDetail(data.data)
                 }
             });

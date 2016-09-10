@@ -12,7 +12,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
 }
 .tem_headTable {
@@ -33,6 +34,12 @@
   text-align: left;
   padding: 0 10px;
 }
+.useTable tr,
+.useTable th,
+.useTable td {
+  border: 1px solid #ccc;
+  vertical-align: middle;
+}
 .tem_clearFloatBox:after {
   display: block;
   content: '';
@@ -42,3 +49,4 @@
   position: relative;
   overflow: auto;
 }
+/*# sourceMappingURL=temporary.css.map */

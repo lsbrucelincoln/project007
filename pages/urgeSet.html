@@ -9,14 +9,12 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span>选择企业类型:</span>
+                <div class="inputShort assessType"><span>选择版本:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
-                            <option value="">日常评估检查</option>
+                            <option value="">版本1</option>
                         </select>
                     </div>
-                    <input type="checkBox" id="canUse">
-                    <label for="canUse">只看有效</label>
                 </div>
                 <div class="dataOutBtn normalBtn">导出数据</div>
                 <div class="assess2Body">
@@ -46,12 +44,12 @@
                                 <td>{{rule.text}}</td>
                                 <td>{{rule.score}}</td>
                                 <td>{{rule._delete?"失效":"正常"}}</td>
-                                <td><a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a> </td>
+                                <td><a href="#/urgeDetail.html" @click="saveDetail(rule)">查看</a> </td>
                             </tr>
                         </table>
                         <div class="bottom-search">
-                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
@@ -71,6 +69,16 @@
 <script>
 $(document).ready(function() {
     // TablePage("table", 10);
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
+        }
+    });
+    $(".admin_content_table").on('click', ".allSelectBtn", function(event) {
+        $("td .checkBox").prop("checked", true);
+    });
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();

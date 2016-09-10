@@ -271,8 +271,9 @@
   margin-top: 20px;
 }
 .addAssessment .contentBody .stateBox {
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
+  text-align: center;
 }
 .addAssessment .contentBody .stateBox .state {
   border-top: 1px solid #50a8e7;
@@ -297,13 +298,17 @@
   position: relative;
   top: -6px;
 }
+.addAssessment .contentBody .stateBox .state .stateBody span {
+  position: relative;
+  left: 8px;
+}
 .addAssessment .contentBody .stateBox .state .circle {
   height: 13px;
   width: 13px;
   border-radius: 13px;
   display: inline-block;
-  border: 1px solid #ccc;
-  background-color: #ccc;
+  border: 1px solid #fff;
+  background-color: #fff;
   position: relative;
   top: -4px;
   left: 4px;
@@ -335,6 +340,7 @@
   padding: 5px;
   line-height: 1.5;
   float: left;
+  border: 1px solid #dfe9ef;
 }
 .addAssessment .contentBody .assess2Body .ztreeBox .chosenCategory {
   background-color: #ccc;
@@ -363,18 +369,35 @@
 }
 .addAssessment .contentBody .firstPage {
   margin-left: 20px;
+  display: inline-block;
+  width: 600px;
+  text-align: left;
 }
-.addAssessment .contentBody .firstPage select {
+.addAssessment .contentBody .firstPage .inputShort {
+  width: 90%;
+}
+.addAssessment .contentBody .firstPage .inputShort .admin_ui_select {
+  display: inline-block;
   width: 120px;
+}
+.addAssessment .contentBody .firstPage .inputLong {
+  width: 95%;
+}
+.addAssessment .contentBody .firstPage .inputLong .admin_ui_select {
+  display: inline-block;
+  width: 386px;
 }
 .addAssessment .contentBody .secondPage .normalBtn {
   margin-top: 10px;
 }
 .addAssessment .contentBody .secondPage select {
-  width: 120px;
+  width: 150px;
 }
 .addAssessment .contentBody .thirdPage {
   margin-left: 20px;
+  text-align: left;
+  display: inline-block;
+  width: 600px;
 }
 .addAssessment .contentBody .thirdPage u {
   display: inline-block;
@@ -383,6 +406,9 @@
 }
 .addAssessment .contentBody .thirdPage select {
   width: 120px;
+}
+.addAssessment .contentBody .thirdPage .inputShort {
+  width: 90%;
 }
 .addAssessment .contentBody .thirdPage .companyObject u {
   display: inline-block;
@@ -401,11 +427,11 @@
   display: none;
 }
 .addAssessment .contentBody .thirdPage .chooseBox .settingBtn {
-  margin-left: 320px;
+  float: right;
 }
 .addAssessment .contentBody .thirdPage .cancel {
-  margin-left: 350px;
-  margin-top: 80px;
+  margin-left: 180px;
+  margin-top: 40px;
 }
 .addAssessment .contentBody .inputShort {
   display: inline-block;
@@ -418,12 +444,6 @@
 .addAssessment .contentBody .inputShort i {
   position: relative;
   left: -20px;
-}
-.addAssessment .contentBody .inputLong {
-  width: 80%;
-}
-.addAssessment .contentBody .inputLong select {
-  width: 386px;
 }
 .addAssessment .contentBody .actionPerson span {
   float: left;
@@ -440,6 +460,7 @@
 }
 .addAssessment .contentBody .leftBox,
 .addAssessment .contentBody .rightBox {
+  margin-left: 7px;
   width: 165px;
   min-height: 80px;
   border: 1px solid #dfe9ef;

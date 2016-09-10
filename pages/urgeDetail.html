@@ -9,23 +9,15 @@
                 <tbody>
                     <tr>
                         <td>评估标准：</td>
-                        <td colspan="5">{{taskDetail.category1}} > {{taskDetail.category2}} > {{taskDetail.text}}</td>
+                        <td colspan="5">{{taskDetail.category2}} > {{taskDetail.text}}</td>
                     </tr>
                     <tr>
                         <td>是否强制执行：</td>
                         <td>{{taskDetail.must?"是":"否"}}</td>
                         <td>分值</td>
                         <td>{{taskDetail.score}}</td>
-                        <td>安全等级</td>
-                        <td>{{taskDetail.safetyLevel}}</td>
-                    </tr>
-                    <tr>
-                        <td>执行依据：</td>
-                        <td colspan="5">{{taskDetail.based}}</td>
-                    </tr>
-                    <tr>
-                        <td>处置方式：</td>
-                        <td colspan="5">{{taskDetail.punishment}}</td>
+                        <td>当前状态</td>
+                        <td>{{taskDetail._delete?"启用":"禁用"}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -72,11 +64,7 @@ var vm = new Vue({
             return result.reverse();
         },
     },
-    created: function() {
-        if (window.location.href.search("urge") !== -1) {
-            this.state = urge;
-        }
-    },
+    created: function() {},
     ready: function() {}
 })
 </script>

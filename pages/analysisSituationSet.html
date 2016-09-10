@@ -4,7 +4,14 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span>选择任务类型:</span>
+                <div class="inputShort assessType" style="width:28%"><span>选择企业类型:</span>
+                    <div class="admin_ui_select" style="width: 140px;">
+                        <select>
+                            <option value="">危险品类</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputShort assessType" style="width:35%"><span>选择任务类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
                             <option value="">日常评估检查</option>
@@ -27,6 +34,9 @@
                     <div class="tableBox">
                         <table>
                             <tr>
+                                <th style="width: 40px;">
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </th>
                                 <th width="240px">内容</th>
                                 <th style="width: 40px;">等级</th>
                                 <th style="width: 60px;">强制执行</th>
@@ -35,6 +45,9 @@
                                 <th style="width: 80px;">操作</th>
                             </tr>
                             <tr v-for="rule in rules |limitBy recordLimit startPoint">
+                                <td>
+                                    <input type="checkBox" id="person1" class="checkBox">
+                                </td>
                                 <td style="text-align:left">{{rule.text}}</td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
@@ -44,8 +57,9 @@
                             </tr>
                         </table>
                         <div class="bottom-search">
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
                             <div class="addBtn normalBtn" style="margin-top:15px">添加</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -64,6 +78,16 @@
 <script>
 $(document).ready(function() {
     // TablePage("table", 10);
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
+        }
+    });
+    $(".admin_content_table").on('click', ".allSelectBtn", function(event) {
+        $("td .checkBox").prop("checked", true);
+    });
     $("#processingBtn").on('click', function(event) {
         event.preventDefault();
         $(".processingTable").show();

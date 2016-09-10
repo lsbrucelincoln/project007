@@ -2,22 +2,22 @@
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
-        <div class="contentBody">
+        <div class="contentBody" style="text-align:center">
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="stateBox">
                 <div class="state">
                     <div class="stateBody">
-                    <i class="flaticon-arrows-3"></i>
+                        <i class="flaticon-arrows-3"></i>
                         <i class="circle"></i>
                         <br/><span>基本信息设置</span>
                     </div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle"></i>
                         <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
                         <br/><span>确认发布</span> </div>
                 </div>
             </div>
@@ -30,9 +30,9 @@
                 <div class="actionPerson inputShort inputLong">
                     <span>执行人员:</span>
                     <div class="chooseBox">
-                        <div class="person" >
-                            <input type="radio" name="person"  checked :disabled="changeState" :value="rawData.player.name">
-                            <label >{{rawData.player.name}}</label>
+                        <div class="person">
+                            <input type="radio" name="person" checked :disabled="changeState" :value="rawData.player.name">
+                            <label>{{rawData.player.name}}</label>
                         </div>
                         <div class="confirmBtn normalBtn">确定</div>
                     </div>
@@ -46,11 +46,10 @@
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(hash == "#/addExercise2.html" || confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (hash == "#/addExercise2.html" || hash == "#/assessmentCheck.html" || confirm("未保存修改的信息，确定要离开吗？")) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }

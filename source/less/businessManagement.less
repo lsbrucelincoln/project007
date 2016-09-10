@@ -253,8 +253,9 @@
             margin-top: 20px;
         }
         .stateBox {
-            margin-top: 10px;
+            margin-top: 20px;
             margin-bottom: 10px;
+            text-align: center;
             .state {
                 border-top: 1px solid @blueA;
                 width: 22%;
@@ -263,27 +264,32 @@
                 text-align: right;
                 font-size: 14px;
                 top: -5px;
-                margin-right:20px;
+                margin-right: 20px;
                 margin-left: 15px;
                 .stateBody {
-                    text-align:center;
-                    display:inline-block;
-                    position:relative;
-                    top:-4px;
-                    left:57px;
-                    .flaticon-arrows-3{
-                        color:#6db2fa;
-                        position:relative;
-                        top:-6px;
+                    text-align: center;
+                    display: inline-block;
+                    position: relative;
+                    top: -4px;
+                    left: 57px;
+                    .flaticon-arrows-3 {
+                        color: #6db2fa;
+                        position: relative;
+                        top: -6px;
                     }
-                };
+                    span {
+                        position: relative;
+                        left: 8px;
+                    }
+                }
+                ;
                 .circle {
                     height: 13px;
                     width: 13px;
                     border-radius: 13px;
                     display: inline-block;
-                    border: 1px solid #ccc;
-                    background-color: #ccc;
+                    border: 1px solid #fff;
+                    background-color: #fff;
                     position: relative;
                     top: -4px;
                     left: 4px;
@@ -302,9 +308,9 @@
                 .chosen {
                     background-color: #6db2fa;
                 }
-                &:nth-child(3){
-                    .stateBody{
-                        left:45px
+                &:nth-child(3) {
+                    .stateBody {
+                        left: 45px
                     }
                 }
             }
@@ -318,6 +324,7 @@
                 padding: 5px;
                 line-height: 1.5;
                 float: left;
+                border: 1px solid #dfe9ef;
                 .chosenCategory {
                     background-color: #ccc;
                     i {
@@ -346,9 +353,25 @@
             }
         }
         .firstPage {
+            // margin-top:20px;
             margin-left: 20px;
-            select {
-                width: 120px
+            display: inline-block;
+            width: 600px;
+            text-align: left;
+            .inputShort {
+                width: 90%;
+                .admin_ui_select {
+                    display: inline-block;
+                    width: 120px
+                }
+            }
+            ;
+            .inputLong {
+                width: 95%;
+                .admin_ui_select {
+                    display: inline-block;
+                    width: 386px;
+                }
             }
         }
         .secondPage {
@@ -356,11 +379,14 @@
                 margin-top: 10px;
             }
             select {
-                width: 120px
+                width: 150px
             }
         }
         .thirdPage {
             margin-left: 20px;
+            text-align: left;
+            display: inline-block;
+            width: 600px;
             u {
                 display: inline-block;
                 text-decoration: none;
@@ -368,6 +394,9 @@
             }
             select {
                 width: 120px
+            }
+            .inputShort {
+                width: 90%;
             }
             .companyObject {
                 u {
@@ -390,12 +419,12 @@
                     display: none;
                 }
                 .settingBtn {
-                    margin-left: 320px;
+                    float:right;
                 }
             }
             .cancel {
-                margin-left: 350px;
-                margin-top: 80px;
+                margin-left: 180px;
+                margin-top: 40px;
             }
         }
         .inputShort {
@@ -408,12 +437,6 @@
             i {
                 position: relative;
                 left: -20px;
-            }
-        }
-        .inputLong {
-            width: 80%;
-            select {
-                width: 386px;
             }
         }
         .actionPerson {
@@ -433,6 +456,7 @@
         }
         .leftBox,
         .rightBox {
+            margin-left: 7px;
             width: 165px;
             min-height: 80px;
             .border;

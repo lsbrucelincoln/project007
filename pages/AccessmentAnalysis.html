@@ -33,7 +33,7 @@
                             <i class="fa fa-calendar" id="endTime"></i>
                         </div>
                     </td>
-<!--                     <td width="14%">
+                    <!--                     <td width="14%">
                         评估标准总项：23423项
                     </td> -->
                 </tr>
@@ -119,22 +119,27 @@ var vm = new Vue({
         xName: monthName,
         regionList: [],
         region: 1,
-        totalNum:0
+        totalNum: 0,
+        label: "月份"
     },
     watch: {
         granularity: function(val, oldVal) {
             if (val == "month") {
+                this.label = "月份";
                 this.xName = monthName;
                 this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
                 this.changeAll();
             } else if (val == "self" && this.startTime && this.endTime) {
+                this.label = "月份";
                 this.setTime();
                 console.log('test');
             } else if (val == "quarter") {
+                this.label = "季度";
                 this.xName = quarter;
                 this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
                 this.changeAll();
             } else if (val == "year") {
+                this.label = "年份";
                 this.xName = yearName;
                 this.echartLine_AccessmentAnalysis_option.xAxis.data = this.xName;
                 this.changeAll();
@@ -258,6 +263,7 @@ var vm = new Vue({
         updateData: function(data, index) {
             var self = this;
             self.echartLine_AccessmentAnalysis_option.series[index].data = data;
+            // self.echartLine_AccessmentAnalysis_option.xAxis.name = self.label;
             self.echartPie_AccessmentAnalysis_option.series[0].data[index].value = data.reduce(function(pre, cur) {
                 return pre + cur;
             })
@@ -267,9 +273,9 @@ var vm = new Vue({
             })
         },
         changeAll: function(save) {
-            this.changeData("日常", 0, save);
-            this.changeData("专项", 1, save);
-            this.changeData("综合", 2, save);
+            this.changeData("日常评估", 0, save);
+            this.changeData("专项评估", 1, save);
+            this.changeData("综合评估", 2, save);
             this.emergencyData(save);
         },
         setTime: function() {
@@ -323,7 +329,7 @@ var vm = new Vue({
                 containLabel: true
             },
             xAxis: {
-                name: '月份',
+                // name: '月份',
                 type: 'category',
                 boundaryGap: false,
                 data: self.xName
@@ -335,22 +341,22 @@ var vm = new Vue({
             series: [{
                 name: '日常评估',
                 type: 'line',
-                stack: '总量',
+                // stack: '总量',
                 data: self.daily
             }, {
                 name: '专项评估',
                 type: 'line',
-                stack: '总量',
+                // stack: '总量',
                 data: [220, 182, 191, 234, 290, 330, 310, 301, 334, 201, 154, 190]
             }, {
                 name: '综合评估',
                 type: 'line',
-                stack: '总量',
+                // stack: '总量',
                 data: [150, 232, 201, 154, 190, 330, 410, 132, 101, 134, 90, 230]
             }, {
                 name: '应急演练',
                 type: 'line',
-                stack: '总量',
+                // stack: '总量',
                 data: [320, 332, 301, 334, 390, 330, 320, 234, 290, 330, 310, 301]
             }]
         };

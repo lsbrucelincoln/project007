@@ -2,37 +2,41 @@
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
     </div>
     <div class="admin_scrollBox">
-        <div class="contentBody">
+        <div class="contentBody" style="text-align:center">
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
             <div class="stateBox">
                 <div class="state">
                     <div class="stateBody">
-                    <i class="flaticon-arrows-3"></i>
+                        <i class="flaticon-arrows-3"></i>
                         <i class="circle chosen"></i>
                         <br/><span>基本信息设置</span>
                     </div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle"></i>
                         <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle"></i>
                         <br/><span>确认发布</span> </div>
                 </div>
             </div>
             <div class="firstPage">
                 <div class="inputShort"><span>选择企业类型:</span>
-                    <select name="" id="" v-model="type">
-                        <option value="">全部</option>
-                        <option v-for="type in companyType" value="{{type.id}}">{{type.name}}</option>
-                    </select>
+                    <div class="admin_ui_select">
+                        <select name="" id="" v-model="type">
+                            <option value="">全部</option>
+                            <option v-for="type in companyType" value="{{type.id}}">{{type.name}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort"><span>选择港区:</span>
-                    <select name="" id="" v-model="chooseArea">
-                        <option value="">全部</option>
-                        <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
-                    </select>
+                    <div class="admin_ui_select">
+                        <select name="" id="" v-model="chooseArea">
+                            <option value="">全部</option>
+                            <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort"><span>选择区域:</span>
                     <input type="checkBox" id="port" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px" :true-value="1" v-model="place1">
@@ -41,26 +45,34 @@
                     <label for="workingArea">作业区</label>
                 </div>
                 <div class="inputShort inputLong companyObject"><span>选择企业对象:</span>
-                    <select name="" id="" v-model="params.company" @change="setCompany">
-                        <option v-for="company in companyList| filterBy typeFilter company|filterBy areaFilter company" value="{{company.id}}">{{company.name}}</option>
-                    </select>
+                    <div class="admin_ui_select">
+                        <select name="" id="" v-model="params.company" @change="setCompany">
+                            <option v-for="company in companyList| filterBy typeFilter company|filterBy areaFilter company" value="{{company.id}}">{{company.name}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort assessType"><span>选择评估类型:</span>
-                    <select name="" id="" v-model="params.mode">
-                        <option value="日常评估">日常评估检查</option>
-                        <option value="专项">专项评估检查</option>
-                        <option value="综合评估">综合评估检查</option>
-                    </select> <span v-if="params.mode=='专项'" style="width:5px">—</span>
-                    <select name="" id="" v-if="params.mode=='专项'" v-model="special">
-                        <option v-for="check in specialCheck" value="check">{{check}}</option>
-                    </select>
+                    <div class="admin_ui_select">
+                        <select name="" id="" v-model="params.mode">
+                            <option value="日常评估">日常评估检查</option>
+                            <option value="专项">专项评估检查</option>
+                            <option value="综合评估">综合评估检查</option>
+                        </select>
+                    </div> <span v-if="params.mode=='专项'" style="width:5px">—</span>
+                    <div class="admin_ui_select" v-if="params.mode=='专项'">
+                        <select name="" id="" v-model="special">
+                            <option v-for="check in specialCheck" value="check">{{check}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort inputLong"><span>选择执行时间:</span>
                     <input type="text" class="excuteTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort inputLong companyObject"><span>选择执行中队:</span>
-                    <select name="" id="" v-model="team">
-                        <option v-for="team in squadron" value="{{team.name}}">{{team.name}}</option>
-                    </select>
+                    <div class="admin_ui_select">
+                        <select name="" id="" v-model="team">
+                            <option v-for="team in squadron" value="{{team.name}}">{{team.name}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="actionPerson inputShort inputLong">
                     <span>选择执行人员:</span>
@@ -77,7 +89,7 @@
                     </div>
                 </div>
                 <br/>
-                <a class="normalBtn cancel" href="#/assessmentCheck.html">取消</a>
+                <a class="normalBtn cancel" href="#/assessmentCheck.html" style="margin-left:220px">取消</a>
                 <a class="normalBtn nextStep" @click.prevent="saveDetail">下一步</a>
             </div>
         </div>

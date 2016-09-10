@@ -44,13 +44,13 @@
                         <tbody>
                             <tr v-for="player in showTasks">
                                 <td>
-                                    <input type="checkBox" id="person1" class="checkBox">
+                                    <input v-if="player.name" type="checkBox" id="person1" class="checkBox">
                                 </td>
                                 <td>{{player.name}}</td>
                                 <td>{{player.competence}}</td>
                                 <td>{{player.time}}</td>
-                                <td>{{player.no_lock?"启用":"禁用"}}</td>
-                                <td><a href="#/staffAccountManagementDetail.html" @click="saveDetail(player)">查看</a></td>
+                                <td><span v-if="player.name">{{player.no_lock?"启用":"禁用"}}</span></td>
+                                <td><a v-if="player.name" href="#/staffAccountManagementDetail.html" @click="saveDetail(player)">查看</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,6 +138,18 @@ $(document).ready(function() {
                 }
                 vm.tasks = data;
                 vm.showTasks = data;
+                var len = this.showTasks.length;
+                if (len < 5) {
+                    for (var i = 0; i < 5 - len; i++) {
+                        this.showTasks.push({
+                            company: {
+                                region: []
+                            },
+                            leader: [],
+                            safeRule: [],
+                        });
+                    }
+                }
             },
             stamp2time: function(stamp) {
                 var time = new Date(stamp);
@@ -184,13 +196,13 @@ $(document).ready(function() {
                         vm.showState = true;
                         $('table.display').DataTable({
                             "order": [
-                                [4, "desc"]
+                                [3, "desc"]
                             ],
                             "pageLength": 5,
                             "dom": 'rtp',
                             "columnDefs": [{
                                 "orderable": false,
-                                "targets": [0, 6]
+                                "targets": [0, 5]
                             }],
                             language: {
                                 processing: "处理中...",
