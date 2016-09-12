@@ -345,7 +345,7 @@
 .addAssessment .contentBody .assess2Body .ztreeBox .chosenCategory {
   background-color: #ccc;
 }
-.addAssessment .contentBody .assess2Body .ztreeBox .chosenCategory i {
+.addAssessment .contentBody .assess2Body .ztreeBox .chosenCategory > i {
   background-color: #ccc;
 }
 .addAssessment .contentBody .assess2Body .ztreeBox a {
@@ -353,7 +353,7 @@
   line-height: 20px;
 }
 .addAssessment .contentBody .assess2Body .ztreeBox a ul {
-  margin-left: 20px;
+  padding-left: 20px;
 }
 .addAssessment .contentBody .assess2Body .ztreeBox a i {
   font-size: 14px;

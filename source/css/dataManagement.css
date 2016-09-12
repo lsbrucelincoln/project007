@@ -40,6 +40,13 @@
   padding: 5px;
   line-height: 1.5;
 }
+.dataManagement .contentBody .assess2Body .ztrbox input {
+  border: 1px solid #ccc;
+  line-height: 28px;
+}
+.dataManagement .contentBody .assess2Body .ztrbox input + i {
+  font-style: normal;
+}
 .dataManagement .contentBody .assess2Body .ztrbox .treeAdd,
 .dataManagement .contentBody .assess2Body .ztrbox .treeRemove {
   position: absolute;
@@ -57,15 +64,18 @@
 .dataManagement .contentBody .assess2Body .ztrbox .chosenCategory {
   background-color: #ccc;
 }
-.dataManagement .contentBody .assess2Body .ztrbox .chosenCategory i {
+.dataManagement .contentBody .assess2Body .ztrbox .chosenCategory > i {
+  background-color: #ccc;
+}
+.dataManagement .contentBody .assess2Body .ztrbox .chosenCategory > span {
   background-color: #ccc;
 }
 .dataManagement .contentBody .assess2Body .ztrbox a {
   display: block;
-  line-height: 20px;
+  line-height: 28px;
 }
 .dataManagement .contentBody .assess2Body .ztrbox a ul {
-  margin-left: 20px;
+  padding-left: 20px;
 }
 .dataManagement .contentBody .assess2Body .ztrbox a i {
   font-size: 14px;
