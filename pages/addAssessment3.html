@@ -25,7 +25,7 @@
                 <div class="inputShort"><span>企业类型:</span><u>{{rawData.choseCompany[0].type.name}}</u></div>
                 <div class="inputShort"><span>港区:</span><u>{{rawData.choseCompany[0].area}}</u></div>
                 <div class="inputShort inputLong companyObject"><span>企业对象:</span><u>{{rawData.choseCompany[0].name}}</u></div>
-                <div class="inputShort assessType"><span>评估类型:</span><u>{{params.mode}}</u><span class="hide">—<u></u></span></div>
+                <div class="inputShort assessType"><span>评估类型:</span><u>{{params.mode}}</u><span v-if="params.special" style="width:80px">— <u>{{params.special}}</u></span></div>
                 <div class="inputShort inputLong"><span>创建时间:</span><u>{{time}}</u></div>
                 <div class="inputShort inputLong"><span>执行中队:</span><u>{{rawData.team}}</u></div>
                 <div class="actionPerson inputShort inputLong">

@@ -58,10 +58,10 @@
                             <option value="专项评估">专项评估检查</option>
                             <option value="综合评估">综合评估检查</option>
                         </select>
-                    </div> <span v-if="params.mode=='专项'" style="width:5px">—</span>
+                    </div> <span v-if="params.mode=='专项评估'" style="width:5px">—</span>
                     <div class="admin_ui_select" v-if="params.mode=='专项评估'">
                         <select name="" id="" v-model="params.special">
-                            <option v-for="check in specialCheck" value="check">{{check}}</option>
+                            <option v-for="check in specialCheck" value="{{check}}">{{check}}</option>
                         </select>
                     </div>
                 </div>

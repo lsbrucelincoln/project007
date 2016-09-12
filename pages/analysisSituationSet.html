@@ -4,23 +4,33 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType" style="width:28%"><span>选择企业类型:</span>
+                <div class="inputShort assessType" style="width:250px"><span style="width:80px">选择企业类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
                             <option value="">危险品类</option>
                         </select>
                     </div>
                 </div>
-                <div class="inputShort assessType" style="width:35%"><span>选择任务类型:</span>
-                    <div class="admin_ui_select" style="width: 140px;">
-                        <select>
-                            <option value="">日常评估检查</option>
+                <div class="inputShort assessType" style="width:620px"><span style="width:80px">选择任务类型:</span>
+                    <div class="admin_ui_select" style="width:120px">
+                        <select name="" id="" v-model="mode">
+                            <option value="日常评估">日常评估检查</option>
+                            <option value="专项评估">专项评估检查</option>
+                            <option value="综合评估">综合评估检查</option>
+                        </select>
+                    </div> <span v-if="mode=='专项评估'" style="width:5px">—</span>
+                    <div class="admin_ui_select" v-if="mode=='专项评估'" style="width:100px">
+                        <select name="" id="" v-model="special">
+                            <option v-for="check in specialCheck" value="{{check}}">{{check}}</option>
+                            <option value="add">新增专项</option>
                         </select>
                     </div>
+                    <input type="text" v-model="addSpecial" v-if="mode=='专项评估'&special=='add'" style="width:100px">
+                    <div class="addBtn normalBtn" v-if="mode=='专项评估'&special=='add'" @click="addSpecialEvent">确认添加</div>
                     <input type="checkBox" id="canUse">
                     <label for="canUse">只看有效</label>
                 </div>
-                <div class="dataOutBtn normalBtn">导出数据</div>
+                <div class="dataOutBtn normalBtn" style="float:right">导出数据</div>
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
@@ -123,7 +133,11 @@ $(document).ready(function() {
             pageIndex: 1,
             startAttr: "",
             startAttr2: "",
-            rawData: []
+            rawData: [],
+            mode: "日常评估",
+            addSpecial: '',
+            special: "",
+            specialCheck: []
         },
         computed: {
             startPoint: function() {
@@ -232,6 +246,34 @@ $(document).ready(function() {
             },
             saveDetail: function(data) {
                 localStorage.setItem("ruleDetail", JSON.stringify(data))
+            },
+            addSpecialEvent: function(data) {
+                var self = this;
+                if (self.addSpecial) {
+                    if (confirm("确认增加一个专项")) {
+                        var list = self.specialCheck.slice(0);
+                        list.push(self.addSpecial);
+                        console.log(self.addSpecial);
+                        console.log(list);
+                        $.ajax({
+                                url: '/region/resetSpecial',
+                                type: 'POST',
+                                data: {
+                                    special: list
+                                },
+                                traditional :true,
+                            })
+                            .done(function(data) {
+                                if (data.state == 0) {
+                                    self.specialCheck.push(self.addSpecial);
+                                    alert("新增成功");
+                                    self.special=self.addSpecial;
+                                }
+                            })
+                    }
+                } else {
+                    alert("请输入新专项的名字")
+                }
             }
         },
         created: function() {
@@ -245,6 +287,13 @@ $(document).ready(function() {
                 if (data.state == 0) {
                     vm.rawData = data.data
                     vm.rulesDetail(data.data)
+                }
+            });
+            $.post('/model', {
+                name: "Region",
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.specialCheck = data.data[0].special;
                 }
             });
         },
