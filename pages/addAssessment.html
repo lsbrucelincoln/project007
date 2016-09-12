@@ -55,12 +55,12 @@
                     <div class="admin_ui_select">
                         <select name="" id="" v-model="params.mode">
                             <option value="日常评估">日常评估检查</option>
-                            <option value="专项">专项评估检查</option>
+                            <option value="专项评估">专项评估检查</option>
                             <option value="综合评估">综合评估检查</option>
                         </select>
                     </div> <span v-if="params.mode=='专项'" style="width:5px">—</span>
-                    <div class="admin_ui_select" v-if="params.mode=='专项'">
-                        <select name="" id="" v-model="special">
+                    <div class="admin_ui_select" v-if="params.mode=='专项评估'">
+                        <select name="" id="" v-model="params.special">
                             <option v-for="check in specialCheck" value="check">{{check}}</option>
                         </select>
                     </div>
@@ -201,7 +201,7 @@ $(document).ready(function() {
                 }
             },
             teamFilter: function(data) {
-                if (this.team == "" || (this.team !== "" && this.team !== data.squadron)) {
+                if (this.team == "" || (this.team !== "" && this.team !== data.squadron||data.competence!=="检查评估员")) {
                     return false;
                 } else {
                     return true;
