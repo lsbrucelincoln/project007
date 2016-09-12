@@ -324,7 +324,7 @@ function loadContent(event) {
     if (hash == "" && url.search("Index_c") == -1) {
         hash = "#/" + ADMIN_CONFIG.homePage;
     } else if (hash == "" && url.search("Index_c") !== -1) {
-        hash = "#/" + "staffManagement_c.html"
+        hash = "#/" + "companyInfoManagement.html"
     }
     var hashArray = hash.split("/");
     
