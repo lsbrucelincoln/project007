@@ -26,16 +26,14 @@
                     <div class="admin_ui_select">
                         <select name="" id="" v-model="params.mode">
                             <option value="日常评估">日常评估检查</option>
-                            <option value="专项">专项评估检查</option>
+                            <option value="专项评估">专项评估检查</option>
                             <option value="综合评估">综合评估检查</option>
                         </select>
                     </div>
-                    <div style="display:inline-block" v-if="params.mode=='专项'">—
+                    <div style="display:inline-block" v-if="params.mode=='专项评估'">—
                         <div class="admin_ui_select">
-                            <select name="" id="">
-                                <option value="">防火专项评估</option>
-                                <option value="">防爆专项评估</option>
-                                <option value="">设备专项评估</option>
+                            <select name="" id="" v-model="params.special">
+                                <option value="{{one}}" v-for="one in specialCheck">{{one}}</option>
                             </select>
                         </div>
                     </div>
@@ -137,7 +135,10 @@ $(document).ready(function() {
             category1: "",
             category2: "",
             showRules: [],
-            params: {}
+            params: {},
+            rawData: {},
+            specialCheck: [],
+            special: ''
         },
         computed: {
             startPoint: function() {
@@ -146,6 +147,19 @@ $(document).ready(function() {
             pageNum: function() {
                 return Math.ceil(this.showRules.length / this.recordLimit)
             },
+        },
+        watch: {
+            "params.mode": function(val, oldVal) {
+                console.log('test');
+                if (val !== "专项评估") {
+                    this.getData();
+                }
+            },
+            "params.special": function(val, oldVal) {
+                if (val && this.params.mode == "专项评估") {
+                    this.getData();
+                }
+            }
         },
         methods: {
             rulesDetail: function(data) {
@@ -279,24 +293,36 @@ $(document).ready(function() {
             },
             saveDetail: function(data) {
                 localStorage.setItem("ruleDetail", JSON.stringify(data))
+            },
+            getData: function() {
+                var self = this;
+                var data = {
+                    name: "SafeRule",
+                    "params['companyType']": this.rawData.choseCompany[0].type.id,
+                    "params['mode']": this.params.mode,
+                }
+                if (this.params.special&&this.params.mode=="专项评估") {
+                    data["params['special']"] = this.params.special;
+                }
+                $.post('/model', data, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.rulesDetail(data.data)
+                    }
+                });
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
             this.params = JSON.parse(localStorage.getItem("params"));
-            var data = {
-                name: "SafeRule",
-                "params['companyType']": this.params.type,
-                "params['mode']": this.params.mode,
-            }
-            if (this.params.special) {
-                data["params['special']"] = this.params.special;
-            }
-            $.post('/model', data, function(data, textStatus, xhr) {
-                console.log(data);
+            this.rawData = JSON.parse(localStorage.getItem("data"));
+            self.getData();
+            $.post('/model', {
+                name: "Region",
+            }, function(data, textStatus, xhr) {
                 if (data.state == 0) {
-                    vm.rulesDetail(data.data)
+                    vm.specialCheck = data.data[0].special;
                 }
             });
         },

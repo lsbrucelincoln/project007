@@ -1,4 +1,4 @@
-<div class="checkBody" v-cloak >
+<div class="checkBody" v-cloak>
     <div class="btnBox">
         <div class="searchBox">
             <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtomNormal">搜索</span>
@@ -22,8 +22,8 @@
             </thead>
             <tr v-for="account in showTasks ">
                 <td>
-                    <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0">
-                    <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0">
+                    <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0" data-id="{{account.id}}">
+                    <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0" data-id="{{account.id}}">
                 </td>
                 <td>{{account.name}}</td>
                 <td>{{account.competence}}</td>
@@ -35,7 +35,7 @@
         </table>
         <div class="bottom-search">
             <div class="allSelectBtn normalBtn">全选</div>
-            <div class="urgeBtn normalBtn">删除</div>
+            <div class="urgeBtn normalBtn" @click="delete">删除</div>
             <!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -68,9 +68,10 @@ $(document).ready(function() {
     $(".allSelectBtn ").on('click', function(event) {
         $("th .checkBox").trigger('click');
     });
-    $(".searchButtom").on('click', function(event) {
+    $(".searchButtomNormal").on('click', function(event) {
         event.preventDefault();
-        $("table.display").DataTable().columns(2).search($(".searchInput").val(), false, true).draw();
+        console.log('test');
+        $("table.display").DataTable().columns(1).search($(".searchInput").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#staffBody",
@@ -85,10 +86,10 @@ $(document).ready(function() {
             risks: {},
             taskNum: "",
             showTasks: [],
-            showState:false
+            showState: false,
+            chosenList: []
         },
-        computed: {
-        },
+        computed: {},
         methods: {
             userDetail: function(data) {
                 for (var i = 0; i < data.length; i++) {
@@ -127,6 +128,81 @@ $(document).ready(function() {
                 data = JSON.stringify(data);
                 localStorage.setItem("accountDetail", data);
             },
+            getChosenList: function() {
+                var self = this;
+                self.chosenList = [];
+                $("td>.checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
+            },
+            delete: function() {
+                var self = this;
+                self.getChosenList();
+                $.ajax({
+                        url: '/region/deleteUser',
+                        type: 'POST',
+                        data: {
+                            user_id: self.chosenList,
+                            no_lock: false
+                        },
+                        traditional: true
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("删除成功");
+                            $('table.display').DataTable().destroy();
+                            self.getData()
+                        }
+                    })
+            },
+            getData:function(){
+            $.post(baseUrl + '/model', {
+                name: "User",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.userDetail(data.data);
+                    vm.$nextTick(function() {
+                        vm.showState = true;
+                        $('table.display').DataTable({
+                            "order": [
+                                [4, "desc"]
+                            ],
+                            "pageLength": 7,
+                            "dom": 'rtp',
+                            "columnDefs": [{
+                                "orderable": false,
+                                "targets": [0, 6]
+                            }],
+                            language: {
+                                processing: "处理中...",
+                                search: "查找中...",
+                                lengthMenu: "显示 _MENU_ 项结果",
+                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                infoPostFix: "",
+                                loadingRecords: "载入中...",
+                                zeroRecords: "没有匹配结果",
+                                emptyTable: "表中数据为空",
+                                paginate: {
+                                    first: "首页",
+                                    previous: "上页",
+                                    next: "下页",
+                                    last: "末页"
+                                },
+                                aria: {
+                                    sortAscending: ": 以升序排列此列",
+                                    sortDescending: ":  以降序排列此列"
+                                }
+                            }
+                        });
+                    })
+                }
+            });
+            }
         },
         created: function() {
             var self = this;
@@ -139,7 +215,7 @@ $(document).ready(function() {
                 if (data.state == 0) {
                     vm.userDetail(data.data);
                     vm.$nextTick(function() {
-                        vm.showState=true;
+                        vm.showState = true;
                         $('table.display').DataTable({
                             "order": [
                                 [4, "desc"]

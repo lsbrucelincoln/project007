@@ -43,18 +43,18 @@
                     <div class="tableBox">
                         <table>
                             <tr>
-                                <th style="width: 40px;">
+<!--                                 <th style="width: 40px;">
                                     <input type="checkBox" id="person1" class="checkBox">
-                                </th>
+                                </th> -->
                                 <th style="width: 65%;">评估内容</th>
                                 <th style="40px;">总分</th>
                                 <th style="80px;">当前状态</th>
                                 <th style="80px;">操作</th>
                             </tr>
                             <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
-                                <td>
+<!--                                 <td>
                                     <input type="checkBox" id="person1" class="checkBox">
-                                </td>
+                                </td> -->
                                 <td>{{rule.text}}</td>
                                 <td>{{rule.score}}</td>
                                 <td>{{rule._delete?"失效":"正常"}}</td>

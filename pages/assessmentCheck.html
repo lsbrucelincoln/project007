@@ -14,16 +14,7 @@
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width: 200px;">
                         <select class="regionName">
-                            <option>北仑港航局</option>
-                            <option>余姚港航局</option>
-                            <option>慈溪港航局</option>
-                            <option>奉化港航局</option>
-                            <option>宁海港航局</option>
-                            <option>象山港航局</option>
-                            <option>鄞州港航局</option>
-                            <option>海曙港航局</option>
-                            <option>江东港航局</option>
-                            <option>江北港航局</option>
+                            <option v-for="place in region" value="place.id">{{place.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -71,7 +62,7 @@
                                 <td>{{task.time}}</td>
                                 <td>{{responsePerson(task)}}</td>
                                 <td>{{task.state}}</td>
-                                <td><a :href="tagState==1?'#/assessDetail.html':'#/emergencyDetail.html'" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
+                                <td><a :href="tagState==2?'#/emergencyDetail.html':'#/assessDetail.html'" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -139,7 +130,8 @@ $(document).ready(function() {
             taskNum: "",
             showTasks: [],
             competence: true,
-            chosenList: []
+            chosenList: [],
+            region: []
         },
         computed: {
             addTask: function() {
@@ -225,47 +217,52 @@ $(document).ready(function() {
             urgeExecute: function() {
                 var self = this;
                 this.getChosenList();
-                var url = self.tagState == 1 ? '/region/urgeTask' : '/region/urgeEmergency';
-                var data = self.tagState == 1 ? {
-                    task: self.chosenList
-                } : {
-                    emergency: self.chosenList
-                };
-                $.ajax({
-                        url: url,
-                        type: 'POST',
-                        traditional: true,
-                        data: data,
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            alert("催促成功");
-                        }
-                    })
+                if (self.chosenList.length > 0) {
+                    var url = self.tagState == 1 ? '/region/urgeTask' : '/region/urgeEmergency';
+                    var data = self.tagState == 1 ? {
+                        task: self.chosenList
+                    } : {
+                        emergency: self.chosenList
+                    };
+                    $.ajax({
+                            url: url,
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("催促成功");
+                            }
+                        })
+                }
             },
             endProgram: function() {
                 var self = this;
                 self.getChosenList();
                 console.log(data);
-                var url = self.tagState == 1 ? '/region/completeTask' : '/region/completeEmergency';
-                var data = self.tagState == 1 ? {
-                    task: self.chosenList
-                } : {
-                    emergency: self.chosenList
-                };
-                $.ajax({
-                        url: url,
-                        type: 'POST',
-                        traditional: true,
-                        data: data,
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            this.showTasks = [];
-                            $('table.display').DataTable().destroy();
-                            self.getData(self.tagState)
-                        }
-                    })
+                if (self.chosenList.length > 0) {
+                    var url = self.tagState == 1 ? '/region/completeTask' : '/region/completeEmergency';
+                    var data = self.tagState == 1 ? {
+                        task: self.chosenList
+                    } : {
+                        emergency: self.chosenList
+                    };
+                    $.ajax({
+                            url: url,
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("任务已结束");
+                                this.showTasks = [];
+                                $('table.display').DataTable().destroy();
+                                self.getData(self.tagState)
+                            }
+                        })
+                }
             },
             getChosenList: function() {
                 var self = this;
@@ -352,6 +349,14 @@ $(document).ready(function() {
                 this.competence = false;
             }
             this.getData(1);
+            $.post('/model', {
+                name: "Region",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.region = data.data;
+                }
+            });
         },
         ready: function() {
 

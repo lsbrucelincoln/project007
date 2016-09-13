@@ -52,9 +52,9 @@ $(document).ready(function() {
         event.preventDefault();
         window.location.href = "index.html#/addCompany.html"
     });
-    $(".searchButtom").on('click', function(event) {
+    $(".searchButtomNormal").on('click', function(event) {
         event.preventDefault();
-        $("table.display").DataTable().columns(2).search($(".searchInput").val(), false, true).draw();
+        $("table.display").DataTable().columns(1).search($(".searchInput").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#staffBody",

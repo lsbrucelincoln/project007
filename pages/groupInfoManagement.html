@@ -19,7 +19,7 @@
                 <div class="inputShort">
                     <span>上级管理部门：</span>
                     <div class="admin_ui_select" style="width:200px">
-                        <select v-model="params.parent" :disabled="disabled" >
+                        <select v-model="params.parent" :disabled="disabled">
                             <option>宁波市港航管理局</option>
                         </select>
                     </div>
@@ -61,8 +61,8 @@
                     </form>
                     <iframe src="" frameborder="0" id="turnPage"></iframe>
                 </div>
-                <div class="changeBtn normalBtn" @click="disabled=false" style="margin-left:40%">修改</div>
-                <div class="updateBtn normalBtn" @click="update">更新</div>
+                <div class="changeBtn normalBtn" @click="disabled=false" style="margin-left:40%" v-show="disabled==true" :class="{'leftBtn':disabled}">修改</div>
+                <div class="updateBtn normalBtn" @click="update" v-show="disabled==false" :class="{'leftBtn':!disabled}">更新</div>
             </div>
         </div>
     </div>
@@ -106,7 +106,7 @@ $(document).ready(function() {
             url: "",
             region: [],
             area: [],
-            disabled:true
+            disabled: true
         },
         computed: {
             coordinate: function() {
@@ -131,6 +131,7 @@ $(document).ready(function() {
                 }
             },
             createCanvas: function(src) {
+                var self = this;
                 var canvas = document.getElementById("uploadImg");
                 var cxt = canvas.getContext('2d');
                 // canvas.width = 640;
@@ -177,12 +178,19 @@ $(document).ready(function() {
                 });
             },
             update: function() {
-                $.post('/region/editRegion', vm.params, function(data, textStatus, xhr) {
-                    console.log(data);
-                    if (data.state == 0) {
-                        alert("修改成功");
-                    }
-                });
+
+                $.ajax({
+                        url: '/region/editRegion',
+                        type: 'POST',
+                        data: vm.params,
+                        traditional: true
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("修改成功");
+                            vm.disabled=true;
+                        }
+                    })
             }
         },
         created: function() {

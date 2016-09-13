@@ -1,3 +1,24 @@
+<style>
+.picUpload #uploadPic + label {
+    width: 240px;
+    height: 120px;
+    line-height: 120px;
+    margin-right: 0
+}
+
+.picUpload {
+    text-align: left;
+    float: left;
+}
+
+img {
+    float: left;
+    width: 240px;
+    height: 120px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+</style>
 <div class="companyInfoManagement admin_content_innerBox" id="riskManagementDetail">
     <div class="admin_scrollBox">
         <div class="minibar">
@@ -38,9 +59,7 @@
                         <td>{{taskDetail.censor.user.region.name}}</td>
                         <th>登记人：</th>
                         <td>
-                            <label for="djr_by1">
-                                <input id="djr_by1" type="radio" name="djr"> {{taskDetail.censor.user.name}}
-                            </label>
+                            {{taskDetail.censor.user.name}}
                         </td>
                         <th>评估编号：</th>
                         <td>{{taskDetail.censor.task.code}}</td>
@@ -50,16 +69,14 @@
                         <td colspan="5">{{taskDetail.censor.safeRule.category1}} > {{taskDetail.censor.safeRule.category2}} > {{taskDetail.censor.safeRule.text}}</td>
                     </tr>
                     <tr>
-                        <th>补充描述：</th>
-                        <td colspan="5">缺失</td>
-                    </tr>
-                    <tr>
                         <th>执行依据：</th>
                         <td colspan="5">《港口法》第二十二条 《港口经营管理规定》第六条、第十二条 《港口安全危险货物安全管理规定》第十七条、第二十条</td>
                     </tr>
                     <tr>
                         <th>处置方式：</th>
-                        <td>{{taskDetail.censor.safeRule.punishment}}</td>
+                        <td colspan="5">{{taskDetail.censor.safeRule.punishment}}</td>
+                    </tr>
+                    <tr>
                         <th>整改期限：</th>
                         <td>
                             {{excuteTime}}
@@ -67,20 +84,61 @@
                         <th>附件：</th>
                         <td><a class="admin_ui_link">查看</a></td>
                     </tr>
+                    <tr>
+                        <th>整改说明：</th>
+                        <td colspan="5">
+                            <textarea style="width:100%;height:50px;padding:5px" v-model="params.text" :disabled="taskDetail.recheckState!='未完成'"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>整改图片：</th>
+                        <td colspan="5" id="picTable">
+                            <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage" v-show="taskDetail.recheckState=='未完成'">
+                                <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
+                                <label for="uploadPic" id="fileBtn">
+                                    +
+                                </label>
+                                <span class="tip"></span>
+                                <input type="text" name="turnUrl" class="turnUrl">
+                                <input type="submit" value="submit">
+                                <canvas id="uploadImg" style="display:none"></canvas>
+                            </form>
+                            <iframe src="" frameborder="0" id="turnPage"></iframe>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
-<div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-    <div class="allSelectBtn normalBtn" style="margin-top:15px">确认</div>
-    <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+    <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
+        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="confirm">确认</div>
+        <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+    </div>
 </div>
 <script>
+$(".admin_content").on('click', 'img', function(event) {
+    if (vm.taskDetail.recheckState == "未完成") {
+        event.preventDefault();
+        if (confirm("是否删除该图？")) {
+            var id = $(this).attr('data-id');
+            vm.params.photos = vm.params.photos.filter(function(index) {
+                console.log(index);
+                console.log(id);
+                console.log(index != id);
+                return index !== id;
+            });
+            $(this).remove();
+        }
+    }
+});
 var vm = new Vue({
     el: "#riskManagementDetail",
     data: {
-        taskDetail: JSON.parse(localStorage.getItem("riskDetail"))
+        taskDetail: JSON.parse(localStorage.getItem("riskDetail")),
+        competence: false,
+        params: {
+            photos: []
+        }
     },
     computed: {
         excuteTime: function() {
@@ -117,9 +175,113 @@ var vm = new Vue({
             }
             return result.reverse();
         },
+        upload: function(event) {
+            console.log(this.params.photos.length);
+            if (this.params.photos.length <= 5) {
+                event.preventDefault();
+                console.log($(event.target)[0].files);
+                var file = $(event.target)[0].files[0];
+                if (!/image\/\w+/.test(file.type)) {
+                    alert("文件必须为图片！");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    vm.createCanvas(this.result);
+                }
+            } else {
+                alert("图片上限为5张")
+            }
+
+        },
+        createCanvas: function(src) {
+            var canvas = document.getElementById("uploadImg");
+            var cxt = canvas.getContext('2d');
+            // canvas.width = 640;
+            // canvas.height = 400;
+            var img = new Image();
+            img.src = src;
+            img.onload = function() {
+                var w = img.width;
+                var h = img.height;
+                canvas.width = w;
+                canvas.height = h;
+                cxt.drawImage(img, 0, 0);
+                var dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                // $(".showPic").show().attr('src', dataUrl);
+                var blob = vm.dataURLtoBlob(dataUrl);
+                var fd = new FormData();
+                fd.append("file", blob, "1.png");
+                console.log(fd);
+                $.ajax({
+                    url: "/upload",
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fd,
+                    success: function(data) {
+                        console.log(data);
+                        $("form").after('<img src=' + dataUrl + ' data-id=' + data.id + '>')
+                    }
+                });
+            }
+        },
+        confirm: function() {
+            console.log('test');
+            var data = this.params;
+            data.recheck = this.taskDetail.id;
+            data.photos = [];
+            console.log($("img").length);
+            if ($("img").length > 0) {
+                $("img").each(function(index, el) {
+                    if ($(el).attr('data-id')) {
+                        data.photos.push($(el).attr('data-id'));
+                    }
+                });
+            }
+            $.ajax({
+                    url: '/company/reCheck',
+                    type: 'POST',
+                    data: data,
+                    traditional: true
+                })
+                .done(function(data) {
+                    if (data.state == 0) {
+                        alert("提交成功");
+                        history.back();
+                    }
+                })
+        },
+        dataURLtoBlob: function(dataurl) {
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {
+                type: mime
+            });
+        },
     },
     created: function() {
+        var competence = localStorage.getItem("competence");
+        if (competence == "企业负责人") {
+            this.competence = true
+        }
+        if (this.taskDetail.details) {
+            this.params.text = this.taskDetail.details[0].text;
+            var photos = this.taskDetail.details[0].photos;
+            if (photos.length > 0) {
+                for (var i = 0; i < photos.length; i++) {
+                    $("#picTable").append('<img src="/map/' + photos[i].id + '">')
+                }
+            }
 
+        }
     },
     ready: function() {}
 })

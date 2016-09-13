@@ -16,25 +16,30 @@
         color: #d9b497;
     }
 }
-.dataTables_paginate{
+
+.dataTables_paginate {
     margin-top: 10px;
 }
-.dataTables_wrapper:after{
-    clear: none;
 
+.dataTables_wrapper:after {
+    clear: none;
 }
-.ztree li span.button.diy02_ico_open::before{
+
+.ztree li span.button.diy02_ico_open::before {
     font-family: Flaticon;
-    content:"\f122"
+    content: "\f122"
 }
-.ztree li span.button.diy02_ico_close::before{
+
+.ztree li span.button.diy02_ico_close::before {
     font-family: Flaticon;
-    content:"\f101"
+    content: "\f101"
 }
-.ztree li span.button.diy03_ico_docu::before{
+
+.ztree li span.button.diy03_ico_docu::before {
     font-family: Flaticon;
-    content:"\f110"
+    content: "\f110"
 }
+
 .contentHeader {
     height: 64px;
     border-bottom: 1px solid @blueB;
@@ -129,8 +134,11 @@
     input {
         height: 24px;
         width: 200px;
-        .border(#ccc);
+        .border(#ddd);
         padding: 5px;
+    }
+    input:disabled {
+        background-color: #ebebe4;
     }
     // select {
     //     height: 24px;
@@ -227,8 +235,8 @@
             top: -2px;
         }
     }
-    .dataTables_scrollBody{
-        thead{
+    .dataTables_scrollBody {
+        thead {
             display: none;
         }
         border-bottom:none;
@@ -274,75 +282,59 @@
         tr:nth-child(2n+1) {
             background-color: #fafbfd;
         }
-        td{
-            position:relative;
+        td {
+            position: relative;
             padding: 0 5px;
-            a{
-                text-decoration:underline;
-                color:@blueA;
+            a {
+                text-decoration: underline;
+                color: @blueA;
             }
         }
-        th{
-            position:relative;
-            padding-left:3px;
+        th {
+            position: relative;
+            padding-left: 3px;
             border-bottom: 1px solid #dfe9ef !important;
-            i{
-                position:absolute;
+            i {
+                position: absolute;
                 right: 1px;
-                top:10px;
-                font-size:#ccc;
+                top: 10px;
+                font-size: #ccc;
             }
-            select{
+            select {
                 width: 100%;
                 height: 100%;
                 background-color: transparent;
-                border:0;
-                text-align:center;
-                option{
-                    text-align:center;
+                border: 0;
+                text-align: center;
+                option {
+                    text-align: center;
                 }
             }
-            .flaticon-technology{
-                font-size:12px;
+            .flaticon-technology {
+                font-size: 12px;
             }
-            .flaticon-sort{
-                font-size:24px;
-                top:1px;
+            .flaticon-sort {
+                font-size: 24px;
+                top: 1px;
             }
         }
     }
 }
-.map_selectBox{
-    position: absolute;right: 10px;top: 10px;width: 100px;background-color: #fff;
+
+.map_selectBox {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 100px;
+    background-color: #fff;
     padding: 5px;
-    &>div{
+    &>div {
         padding: 5px;
         font-size: 14px;
         cursor: pointer;
-        &:hover{
+        &:hover {
             background-color: @blueA;
             color: #fff;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

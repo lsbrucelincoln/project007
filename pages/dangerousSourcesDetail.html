@@ -1,6 +1,12 @@
 <style>
 .headTable td {
-    vertical-align: top;
+    vertical-align: middle;
+}
+
+.headTable tr,
+.headTable td {
+    border: 1px solid #ccc;
+    text-align: center;
 }
 </style>
 <div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
@@ -10,72 +16,66 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
-            <div class="textInfo">
-                <div class="inputShort">
-                    <span>备案编号：</span>
-                    <i>{{params.code}}</i>
-                </div>
-                <div class="inputShort">
-                    <span>备案时间：</span>
-                    <i>{{params.createTime}}</i>
-                </div>
-                <div class="inputShort">
-                    <span>企业对象：</span>
-                    <i>{{params.company.name}}</i>
-                </div>
-                <div class="inputShort">
-                    <span>企业类型：</span>
-                    <i>{{params.company.type.name}}</i>
-                </div>
-                <div class="inputShort">
-                    <span style="width:100px">重大危险源名称：</span>
-                    <i>{{params.name}}</i>
-                </div>
-                <div class="inputShort">
-                    <span>等级：</span>
-                    <i>{{params.level}}</i>
-                </div>
-            </div>
             <table class="headTable tem_headTable" style="margin: 15px 0;">
                 <tbody>
                     <tr>
-                        <td>
-                            管理机构:{{params.company.region.name}}
-                        </td>
-                        <td>
-                            登记人:{{params.user_name}}
-                        </td>
-                        <td>
-                            当前状态:{{params._delete?"失效":"有效"}}
-                        </td>
+                        <td>备案编号：</td>
+                        <td>{{params.code}}</td>
+                        <td>备案时间：</td>
+                        <td>{{params.createTime}}</td>
+                        <td>企业对象：</td>
+                        <td>{{params.company.name}}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>企业类型：</td>
+                        <td>{{params.company.type.name}}</td>
+                        <td>重大危险源名称：</td>
+                        <td>{{params.name}}</td>
+                        <td>等级：</td>
+                        <td>{{params.level}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            管理机构：
+                        </td>
+                        <td>{{params.company.region.name}}</td>
+                        <td>
+                            登记人：
+                        </td>
+                        <td>{{params.user_name}}</td>
+                        <td>
+                            当前状态：
+                        </td>
+                        <td>{{params._delete?"失效":"有效"}}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
                             <span style="margin-bottom: 10px;display: inline-block;">描述：</span>
                             <br />
                         </td>
+                        <td colspan="2" rowspan="2" style="text-align:center;">
+                            <textarea name="" id="" cols="30" rows="10" style="width:100%;height:120px;padding:10px;background:#fff;border:0px" v-model="params.description" disabled></textarea>
+                        </td>
                         <td>
-                            坐标： X:
-                            <input type="text" value="750" style="width:65px;" v-model="x" :disabled="changeState"> - Y:
-                            <input type="text" value="145" style="width:65px;" v-model="y" :disabled="changeState">
-                            <div class="normalBtn" @click="changeState=false">设定</div>
+                            坐标：
+                        </td>
+                        <td colspan="2">
+                            X:
+                            <input type="text"  style="width:65px;" v-model="x"> - Y:
+                            <input type="text"  style="width:65px;" v-model="y">
+                            <div class="normalBtn" @click="setLocation">设定</div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style="text-align:center;">
-                            <textarea name="" id="" cols="30" rows="10" style="width:80%;height:120px;padding:10px;background:#fff" v-model="params.description" disabled></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>附件：<a class="admin_ui_link">查看</a></td>
+                        <td colspan="3">附件：<a class="admin_ui_link">查看</a></td>
                     </tr>
                 </tbody>
             </table>
             <div class="dataPage">
                 <div class="assess2Body">
                     <div class="tableBox" style="text-align:center;margin-bottom:20px;width:100%">
-                        <div class="addBtn normalBtn">确认</div>
-                        <div class="urgeBtn normalBtn">删除</div>
+                        <div class="addBtn normalBtn" @click="back">确认</div>
+                        <div class="urgeBtn normalBtn" @click="delete">删除</div>
                     </div>
                 </div>
             </div>
@@ -117,23 +117,67 @@ $(document).ready(function() {
         data: {
             params: {},
             url: "",
-            changeState: true
+            changeState: true,
+            x: "",
+            y: ""
         },
-        computed: {
-            x: function() {
-                return this.params.coordinate.split(" ")[0]
+        watch: {
+            x: function(val, oldVal) {
+                this.params.coordinate = val + " " + this.y
             },
-            y: function() {
-                return this.params.coordinate.split(" ")[1]
+            y: function(val, oldVal) {
+                this.params.coordinate = this.x + " " + val
             },
         },
         methods: {
-
+            delete: function() {
+                console.log('test');
+                var self = this;
+                $.ajax({
+                        url: '/region/deleteDangerous',
+                        type: 'POST',
+                        data: {
+                            delete: true,
+                            dangerous: self.params.id
+                        },
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("该危险源已删除");
+                            history.back();
+                        }
+                    })
+            },
+            back:function(){
+                history.back();
+            },
+            setLocation:function(){
+                var self=this;
+                var data={
+                    id:self.params.id,
+                    name:self.params.name,
+                    code:self.params.code,
+                    company:self.params.company.id,
+                    coordinate:self.params.coordinate,
+                    level:self.params.level,
+                    description:self.params.description,
+                }
+                if (self.params.photo) {
+                    data.photo=self.params.photo.id
+                }
+                $.post('/region/editDangerous', data, function(data, textStatus, xhr) {
+                    if (data.state==0) {
+                        alert("设定成功")
+                    }
+                });
+            }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
             this.params = JSON.parse(localStorage.getItem("dangerousDetail"));
+            self.x=self.params.coordinate.split(" ")[0];
+            self.y=self.params.coordinate.split(" ")[1];
         },
         ready: function() {
 

@@ -26,7 +26,6 @@
     <link rel="stylesheet" type="text/css" href="../source/css/dataManagement.css">
     <link rel="stylesheet" type="text/css" href="../source/css/iframe.css">
     <link rel="stylesheet" type="text/css" href="../source/css/temporary.css">
-
     <style>
     [v-cloak] {
         display: none
@@ -322,24 +321,30 @@
                     <input type="" name="" placeholder="输入姓名" v-model="name">
                 </div>
                 <div class="inputShort"><span>性别：</span>
-                    <select class="admin_ui_select" style="width:200px" v-model="sex">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                    </select>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select  v-model="sex">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort"><span>所属中队：</span>
-                    <select class="admin_ui_select" style="width:200px" v-model="squadron">
-                        <option>第一中队</option>
-                        <option>第二中队</option>
-                        <option>第三中队</option>
-                        <option>第四中队</option>
-                    </select>
+                    <div class="admin_ui_select" style="width:200px">
+                        <select  v-model="squadron">
+                            <option>第一中队</option>
+                            <option>第二中队</option>
+                            <option>第三中队</option>
+                            <option>第四中队</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="inputShort"><span>角色：</span>
-                    <select class="admin_ui_select" style="width:200px" v-model="competence">
-                        <option value="检查评估员">检查评估员</option>
-                        <option value="机构管理员">机构管理员</option>
-                    </select>
+                    <div class="admin_ui_select" style="width:200px" >
+                        <select v-model="competence">
+                            <option value="检查评估员">检查评估员</option>
+                            <option value="机构管理员">机构管理员</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="btnBox">
                     <div class="normalBtn cancel">取消</div>
@@ -362,7 +367,7 @@
         computed: {},
         methods: {
             createUser: function() {
-                $.post(baseUrl+'/region/createUser', vm.$data, function(data, textStatus, xhr) {
+                $.post(baseUrl + '/region/createUser', vm.$data, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         alert("新增成功")
                         $(".mask,.addAccount").hide();

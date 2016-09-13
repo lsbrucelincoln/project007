@@ -4,17 +4,19 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span>选择企业类型:</span>
+                <div class="inputShort assessType"><span style="width:80px">选择企业类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select v-model="selectCompany">
                             <option v-for="company in companyType" value="{{company.id}}">{{company.name}}</option>
                         </select>
                     </div>
-                    <input type="checkBox" id="canUse">
+                    <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label>
                 </div>
-                <div class="dataOutBtn normalBtn">导出数据</div>
-                <div class="dataOutBtn normalBtn">导入数据</div>
+                <input type="file" id="uploadData" style="display:none">
+                <div class="dataOutBtn normalBtn" style="float:right">导出数据</div>
+                <label class="dataInBtn normalBtn" for="uploadData" style="float:right">导入数据</label>
+                
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
@@ -37,9 +39,9 @@
                                 <th style="width: 100px;">当前状态</th>
                                 <th style="width: 80px;">操作</th>
                             </tr>
-                            <tr v-for="rule in rules |limitBy recordLimit startPoint">
+                            <tr v-for="rule in rules   |limitBy recordLimit startPoint">
                                 <td>
-                                    <input type="checkBox" id="person1" class="checkBox">
+                                    <input type="checkBox" id="person1" class="checkBox" data-id={{rule.id}}>
                                 </td>
                                 <td style="text-align:left">{{rule.text}}</td>
                                 <td>{{rule.safetyLevel}}</td>
@@ -52,7 +54,8 @@
                         <div class="bottom-search">
                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
                             <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -103,7 +106,12 @@ $(document).ready(function() {
     });
     $(".ztrbox").on('click', 'input', function(event) {
         event.stopPropagation();
+        console.log('test');
         $(this).removeClass('chosenCategory')
+    });
+    $(".ztrbox").on('click', '.removeConfirm', function(event) {
+        event.stopPropagation();
+        $(".ztrbox input,.addConfirm,.removeConfirm").remove();
     });
     $(".ztrbox").on('click', '.addConfirm ', function(event) {
         event.stopPropagation();
@@ -116,9 +124,9 @@ $(document).ready(function() {
             if (($(this).parent("ul").length == 0)) {
                 var index = ($(this).index());
                 vm.tree1.push(value);
-                Vue.set(vm.tree2,value,[])
+                Vue.set(vm.tree2, value, [])
                 vm.tree2[value] = [];
-                vm.category[value]={}
+                vm.category[value] = {}
                 $(".ztrbox input,.addConfirm").remove();
             } else {
                 var text = $(".ztrbox input").parents('a').children('span').text();
@@ -126,8 +134,8 @@ $(document).ready(function() {
                 tree2[text].splice($(".ztrbox input").index(), 0, value);
                 vm.$set("tree2", tree2);
                 console.log($(".ztrbox input").parents('a').index());
-                $(".ztrbox input,.addConfirm").remove();
-                vm.category[text][value]=[]
+                $(".ztrbox input,.addConfirm,.removeConfirm").remove();
+                vm.category[text][value] = []
             }
         }
 
@@ -151,7 +159,15 @@ $(document).ready(function() {
             companyType: [],
             selectCompany: 3,
             tree1: [],
-            tree2: {}
+            tree2: {},
+            showUsed: false,
+            chosenList: []
+        },
+        watch: {
+            selectCompany: function(val, oldVal) {
+                var self = this;
+                self.updateData();
+            }
         },
         computed: {
             startPoint: function() {
@@ -201,6 +217,39 @@ $(document).ready(function() {
                 this.tree2 = tree2;
                 this.category = category;
             },
+            updateState: function(state) {
+                var self = this;
+                self.getChosenList();
+                $.ajax({
+                        url: '/region/disableSafety',
+                        type: 'POST',
+                        data: {
+                            safety: self.chosenList,
+                            delete: state
+                        },
+                        traditional: true
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            if (state) {
+                                alert("禁用成功")
+                            } else {
+                                alert("启用成功")
+                            }
+                            self.updateData();
+                        }
+
+                    })
+
+            },
+            getChosenList: function() {
+                var self = this;
+                self.chosenList = [];
+                $("td>.checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
+            },
             showData: function(item2, event, item1) {
                 this.rules = this.category[item1][item2];
                 this.pageIndex = 1;
@@ -211,7 +260,8 @@ $(document).ready(function() {
                 } else {
                     $(event.target).parent("li").addClass('chosenCategory');
                 }
-                this.startAttr2=item2;
+                this.startAttr2 = item2;
+                $(".ztrbox input,.addConfirm").remove();
             },
             stateChange: function(index) {},
             stamp2time: function(stamp) {
@@ -232,6 +282,20 @@ $(document).ready(function() {
                 var nowTime = new Date(startTime);
                 var theTime = new Date(endTime);
                 return theTime.getDate() - nowTime.getDate();
+            },
+            updateData: function() {
+                var self = this;
+                $.post('/model', {
+                    name: "SafeRule",
+                    rows: 0,
+                    "params['companyType']": self.selectCompany
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.rawData = data.data
+                        vm.rulesDetail(data.data)
+                    }
+                });
             },
             unique: function(arr) {
                 var result = [],
@@ -275,7 +339,7 @@ $(document).ready(function() {
             },
             saveDetail: function(data) {
                 localStorage.setItem("ruleDetail", JSON.stringify(data));
-                localStorage.setItem("dataParams",JSON.stringify(this.$data));
+                localStorage.setItem("dataParams", JSON.stringify(this.$data));
             },
             category1Click: function(index, item, $index, event) {
                 var self = this;
@@ -291,37 +355,26 @@ $(document).ready(function() {
                     $(event.target).parent("a").addClass('chosenCategory');
                 }
                 self.state.$set($index, 1);
-                self.startAttr=item;
+                self.startAttr = item;
             },
             addTreeNode: function() {
                 $(".ztrbox input,.addConfirm").remove();
                 console.log($(".chosenCategory span").text());
                 if (!this.tree2[$(".chosenCategory span").text()] || this.tree2[$(".chosenCategory span").text()].length !== 0) {
-                    $(".chosenCategory").after('<input type="text"><i class="addConfirm">确定</i>');
+                    $(".chosenCategory").after('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>');
                 } else {
-                    $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm">确定</i>')
+                    $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i>')
                 }
-
             },
-            addOne:function(){
-                localStorage.setItem("dataParams",JSON.stringify(this.$data));
-                window.location.href="#/addRules.html"
+            addOne: function() {
+                localStorage.setItem("dataParams", JSON.stringify(this.$data));
+                window.location.href = "#/addRules.html"
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            $.post('/model', {
-                name: "SafeRule",
-                rows: 0,
-                "params['companyType']":self.selectCompany
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.rawData = data.data
-                    vm.rulesDetail(data.data)
-                }
-            });
+            self.updateData();
             $.post('/model', {
                 name: "CompanyType",
                 "row": 0

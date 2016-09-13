@@ -1,5 +1,5 @@
 <div class="assessmentCheck" id="riskManagementBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">隐患跟踪</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">隐患管理</span></span>
     </div>
     <div class="contentBody">
         <div class="tagBar">
@@ -13,16 +13,7 @@
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width: 200px;">
                         <select class="regionName">
-                            <option>余姚港航局</option>
-                            <option>慈溪港航局</option>
-                            <option>奉化港航局</option>
-                            <option>宁海港航局</option>
-                            <option>象山港航局</option>
-                            <option>鄞州港航局</option>
-                            <option>海曙港航局</option>
-                            <option>江东港航局</option>
-                            <option>江北港航局</option>
-                            <option>北仑港航局</option>
+                            <option v-for="place in region" value="place.id">{{place.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -98,6 +89,9 @@ $(document).ready(function() {
             $("td .checkBox").prop("checked", false);
         }
     });
+    $(".admin_content_table").on('click', ".allSelectBtn", function(event) {
+        $("td .checkBox").prop("checked", true);
+    });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
         $("#checkTable").DataTable().columns(5).search($(".createTime").val(), false, true).draw();
@@ -121,7 +115,8 @@ $(document).ready(function() {
             pageIndex: 1,
             showTasks: [],
             competence: true,
-            chosenList: []
+            chosenList: [],
+            region: []
         },
         computed: {
             startPoint: function() {
@@ -194,44 +189,48 @@ $(document).ready(function() {
             urgeExecute: function() {
                 var self = this;
                 this.getChosenList();
-                var url = '/region/urgeRecheck';
-                console.log(self.chosenList);
-                var data = {
-                    recheck: self.chosenList
+                if (self.chosenList.length > 0) {
+                    var url = '/region/urgeRecheck';
+                    console.log(self.chosenList);
+                    var data = {
+                        recheck: self.chosenList
+                    }
+                    $.ajax({
+                            url: url,
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("警告成功");
+                            }
+                        })
                 }
-                $.ajax({
-                        url: url,
-                        type: 'POST',
-                        traditional: true,
-                        data: data,
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            alert("催促成功");
-                        }
-                    })
             },
             endProgram: function() {
                 var self = this;
                 self.getChosenList();
                 console.log(data);
-                var url = '/region/completeRecheck';
-                var data = {
-                    recheck: self.chosenList
+                if (self.chosenList.length > 0) {
+                    var url = '/region/completeRecheck';
+                    var data = {
+                        recheck: self.chosenList
+                    }
+                    $.ajax({
+                            url: url,
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                this.showTasks = [];
+                                $('table.display').DataTable().destroy();
+                                self.getData(self.tagState)
+                            }
+                        })
                 }
-                $.ajax({
-                        url: url,
-                        type: 'POST',
-                        traditional: true,
-                        data: data,
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            this.showTasks = [];
-                            $('table.display').DataTable().destroy();
-                            self.getData(self.tagState)
-                        }
-                    })
             },
             unique: function(arr) {
                 var result = [],
@@ -329,6 +328,14 @@ $(document).ready(function() {
                 this.competence = false;
             }
             this.getData(1);
+            $.post('/model', {
+                name: "Region",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.region = data.data;
+                }
+            });
         },
         ready: function() {
 

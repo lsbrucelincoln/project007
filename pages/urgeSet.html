@@ -9,22 +9,24 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span>选择版本:</span>
+                <div class="inputShort assessType"><span style="width:80px">选择版本:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
                             <option value="">版本1</option>
                         </select>
                     </div>
+<!--                     <input type="checkBox" id="canUse" v-model="showUsed">
+                    <label for="canUse">只看有效</label> -->
                 </div>
                 <div class="dataOutBtn normalBtn">导出数据</div>
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
-                            <a class="category1" @click="state[0]==1?state.$set(0,0):state.$set(0,1)"><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
-                            <ul class="line" v-if="state[0]==1"><li class="category2" v-for="(index2,item2) in category"  @click.stop="showData(item2,$event)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
+                            <a class="category1"><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
+                            <ul class="line" v-if="state[0]==1"><li class="category2" v-for="item2 in tree2"  @click.stop="showData(item2,$event)"><i class="flaticon-interface"></i>{{item2}}</li></ul>
                             </a>
                         </div>
-                        <i class="treeAdd">+</i>
+                        <i class="treeAdd" @click="addTreeNode">+</i>
                         <i class="treeRemove">-</i></div>
                     <div class="tableBox">
                         <table id="urgeSetTable">
@@ -37,20 +39,21 @@
                                 <th style="80px;">当前状态</th>
                                 <th style="80px;">操作</th>
                             </tr>
-                            <tr v-for="rule in rules |limitBy recordLimit startPoint">
+                            <tr v-for="rule in rules |filterBy usedFilter rule |limitBy recordLimit startPoint">
                                 <td>
-                                    <input type="checkBox" id="person1" class="checkBox">
+                                    <input type="checkBox" id="person1" class="checkBox" data-id={{rule.id}}>
                                 </td>
                                 <td>{{rule.text}}</td>
                                 <td>{{rule.score}}</td>
-                                <td>{{rule._delete?"失效":"正常"}}</td>
-                                <td><a href="#/urgeDetail.html" @click="saveDetail(rule)">查看</a> </td>
+                                <td>{{rule._delete?"禁用":"启用"}}</td>
+                                <td><a href="#/addEmergenctyRules.html?edit" @click="saveDetail(rule)">查看</a> </td>
                             </tr>
                         </table>
                         <div class="bottom-search">
                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
-                            <div class="addBtn normalBtn" style="margin-top:15px">新增</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -99,7 +102,32 @@ $(document).ready(function() {
     $(".leftBox").on('click', "p", function(event) {
         $(".rightBox").append($(this));
     });
+    $(".ztrbox").on('click', 'input', function(event) {
+        event.stopPropagation();
+        console.log('test');
+        $(this).removeClass('chosenCategory');
+    });
+    $(".ztrbox").on('click', '.removeConfirm', function(event) {
+        event.stopPropagation();
+        $(".ztrbox input,.addConfirm,.removeConfirm").remove();
+    });
+    $(".ztrbox").on('click', '.addConfirm ', function(event) {
+        event.stopPropagation();
+        $(this).removeClass('chosenCategory');
+        var value = $(".ztrbox input").val();
+        console.log(value);
+        if (!value) {
+            alert("请输入类名")
+        } else if (confirm("是否增加该类别")) {
+            var tree2 = (vm.tree2);
+            tree2.splice($(".ztrbox input").index(), 0, value);
+            vm.$set("tree2", tree2);
+            console.log($(".ztrbox input").parents('a').index());
+            $(".ztrbox input,.addConfirm,.removeConfirm").remove();
+            vm.category[value] = []
+        }
 
+    });
     var vm = new Vue({
         el: "#urgeBody",
         data: {
@@ -115,7 +143,10 @@ $(document).ready(function() {
             pageIndex: 1,
             startAttr: "",
             startAttr2: "",
-            rawData: []
+            rawData: [],
+            tree2: [],
+            showUsed: false,
+            chosenList: []
         },
         computed: {
             startPoint: function() {
@@ -129,12 +160,14 @@ $(document).ready(function() {
             rulesDetail: function(data) {
                 var category = {};
                 var category2 = [];
+                var tree2 = [];
                 for (var i = 0; i < data.length; i++) {
                     if (i == 0) {
                         vm.startAttr = data[i].category1;
                         vm.startAttr2 = data[i].category2;
                     }
                     if (!category[data[i].category2]) {
+                        tree2.push(data[i].category2)
                         category[data[i].category2] = [];
                         category[data[i].category2].push(data[i]);
                     } else {
@@ -147,14 +180,58 @@ $(document).ready(function() {
                 }
                 console.log(category);
                 this.rules = this.rawData;
+                this.tree2 = tree2;
                 this.category = category;
+            },
+            usedFilter: function(data) {
+                console.log((this.showUsed && !data.used));
+                if (this.showUsed && !data.used) {
+                    return false
+                } else {
+                    return true;
+                }
+            },
+            updateState: function(state) {
+                var self = this;
+                self.getChosenList();
+                $.ajax({
+                        url: '/region/disableEmergencyRule',
+                        type: 'POST',
+                        data: {
+                            emergencyRule: self.chosenList,
+                            delete: state
+                        },
+                        traditional: true
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            if (state) {
+                                alert("禁用成功")
+                            } else {
+                                alert("启用成功")
+                            }
+                            self.updateData();
+                        }
+
+                    })
+
+            },
+            getChosenList: function() {
+                var self = this;
+                self.chosenList = [];
+                $("td>.checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
             },
             showData: function(data, event) {
                 console.log(data);
-                this.rules = data;
+                this.rules = this.category[data];
                 this.pageIndex = 1;
                 $(".category2").removeClass('chosenCategory');
                 $(event.target).addClass('chosenCategory');
+                this.startAttr2 = data;
+                $(".ztrbox input,.addConfirm").remove();
             },
             stateChange: function(index) {},
             stamp2time: function(stamp) {
@@ -218,22 +295,37 @@ $(document).ready(function() {
                 }
             },
             saveDetail: function(data) {
-                localStorage.setItem("ruleDetail", JSON.stringify(data))
+                localStorage.setItem("ruleDetail", JSON.stringify(data));
+                localStorage.setItem("dataParams", JSON.stringify(this.$data));
+            },
+            addTreeNode: function() {
+                $(".ztrbox input,.addConfirm,.removeConfirm").remove();
+                console.log($(".chosenCategory span").text());
+                $(".chosenCategory").after('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>');
+
+            },
+            addOne: function() {
+                localStorage.setItem("dataParams", JSON.stringify(this.$data));
+                window.location.href = "#/addEmergenctyRules.html"
+            },
+            updateData: function() {
+                var self = this;
+                $.post('/model', {
+                    name: "EmergencyRule",
+                    rows: 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        self.rawData = data.data;
+                        vm.rulesDetail(data.data)
+                    }
+                });
             }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            $.post('/model', {
-                name: "EmergencyRule",
-                rows: 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    self.rawData = data.data;
-                    vm.rulesDetail(data.data)
-                }
-            });
+            self.updateData();
         },
         ready: function() {
 

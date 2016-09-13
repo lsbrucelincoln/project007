@@ -143,8 +143,11 @@
 .inputShort input {
   height: 24px;
   width: 200px;
-  border: 1px solid #cccccc;
+  border: 1px solid #dddddd;
   padding: 5px;
+}
+.inputShort input:disabled {
+  background-color: #ebebe4;
 }
 .infoTable {
   width: 100%;

@@ -14,7 +14,7 @@
             margin-top: 0;
             .ztrbox {
                 width: 250px;
-                height: 332px;
+                height: 350px;
                 position: relative;
                 float: left;
                 .border;
@@ -22,22 +22,16 @@
                     height: 310px;
                     border: 0;
                     width: 100%;
-                    padding:5px;
-                    line-height:1.5;
+                    padding: 5px;
+                    line-height: 1.5;
                 }
-                input{
-                    border: 1px solid #ccc;
-                    line-height:28px;
-                }
-                input+i{
-                    font-style:normal;
-                }
-                .treeAdd,.treeRemove{
-                    position:absolute;
-                    bottom:5px;
+                .treeAdd,
+                .treeRemove {
+                    position: absolute;
+                    bottom: 5px;
                     font-size: 30px;
-                    cursor:pointer;
-                    font-style:normal;
+                    cursor: pointer;
+                    font-style: normal;
                 }
                 .treeAdd {
                     left: 10px;
@@ -45,29 +39,40 @@
                 .treeRemove {
                     right: 10px;
                 }
-                .chosenCategory{
+                .chosenCategory {
                     background-color: #ccc;
-                    >i{
+                    >i {
                         background-color: #ccc;
                     }
-                    >span{
+                    >span {
                         background-color: #ccc;
                     }
                 }
-                a{
-                    display:block;
-                    line-height:28px;
-                    ul{
+                a {
+                    display: block;
+                    line-height: 28px;
+                    ul {
                         padding-left: 20px;
                     }
-                    i{
-                        font-size:14px;
+                    i {
+                        font-size: 14px;
                         margin-right: 2px;
                     }
                 }
+                input {
+                    border: 1px solid #ccc;
+                    margin: 2px 0px;
+                    line-height: 24px;
+                    padding:0px 5px;
+                }
+                input+i {
+                    font-style: normal;
+                    margin-left: 6px;
+                    margin-right:6px;
+                }
             }
-            .tableBox{
-                width:70%;
+            .tableBox {
+                width: 70%;
             }
         }
     }
