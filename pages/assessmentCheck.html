@@ -1,5 +1,5 @@
 <div class="assessmentCheck" id="assessmentBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">评估检查</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作 > <span class="nowPlace">评估检查</span></span>
     </div>
     <div class="contentBody">
         <div class="tagBar">
@@ -34,7 +34,7 @@
                     <div class="endProgramBtn normalBtn" @click="endProgram">结束任务</div>
                 </div>
                 <div class="tableBox">
-                    <table id="checkTable" class="display">
+                    <table id="checkTable" class="display" v-show="showState">
                         <thead>
                             <tr>
                                 <th>
@@ -131,7 +131,8 @@ $(document).ready(function() {
             showTasks: [],
             competence: true,
             chosenList: [],
-            region: []
+            region: [],
+            showState:false
         },
         computed: {
             addTask: function() {
@@ -157,6 +158,13 @@ $(document).ready(function() {
                 var timeList = [];
                 for (var i = 0; i < data.length; i++) {
                     data[i].time = vm.stamp2time(data[i].in_time);
+                    if (this.tagState==2) {
+                        data[i].mode="应急演练";
+                        var time=new Date();
+                        if (data[i].deadline<time.getTime()) {
+                            data[i].state="已过期"
+                        }
+                    }
                     data[i].createTime = data[i].time.split(" ")[0];
                     companyList.push(data[i].company.name)
                     timeList.push(data[i].createTime)
@@ -235,6 +243,8 @@ $(document).ready(function() {
                                 alert("催促成功");
                             }
                         })
+                }else{
+                    alert("请选择催促项")
                 }
             },
             endProgram: function() {
@@ -257,11 +267,14 @@ $(document).ready(function() {
                         .done(function(data) {
                             if (data.state == 0) {
                                 alert("任务已结束");
-                                this.showTasks = [];
+                                self.showState=false;
+                                self.showTasks = [];
                                 $('table.display').DataTable().destroy();
                                 self.getData(self.tagState)
                             }
                         })
+                }else{
+                    alert("请选择结束项")
                 }
             },
             getChosenList: function() {
@@ -274,6 +287,7 @@ $(document).ready(function() {
                 });
             },
             getData: function(state) {
+                var self=this;
                 var data = {}
                 switch (state) {
                     case 1:
@@ -336,6 +350,7 @@ $(document).ready(function() {
                                     }
                                 }
                             });
+                            self.showState=true;
                         })
                     }
                 });

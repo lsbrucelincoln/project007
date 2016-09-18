@@ -61,7 +61,7 @@ label {
                         <td>状态：</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params.delete">
+                                <select name="" id="" v-model="params._delete">
                                     <option value="false">启用</option>
                                     <option value="true">停用</option>
                                 </select>
@@ -125,7 +125,11 @@ var vm = new Vue({
                     })
                     .done(function() {
                         console.log("success");
-                        alert("增加成功");
+                        if (self.state) {
+                            alert("增加成功");
+                        }else{
+                            alert("修改成功")
+                        }
                         history.back();
                     })
             }

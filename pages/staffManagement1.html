@@ -35,7 +35,8 @@
         </table>
         <div class="bottom-search">
             <div class="allSelectBtn normalBtn">全选</div>
-            <div class="urgeBtn normalBtn" @click="delete">删除</div>
+            <div class="urgeBtn normalBtn" @click="deleteOne(true)">启用</div>
+            <div class="urgeBtn normalBtn" @click="deleteOne(false)">禁用</div>
             <!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -136,72 +137,88 @@ $(document).ready(function() {
                     self.chosenList.push($(el).attr('data-id'));
                 });
             },
-            delete: function() {
+            deleteOne: function(boolean) {
                 var self = this;
                 self.getChosenList();
-                $.ajax({
-                        url: '/region/deleteUser',
-                        type: 'POST',
-                        data: {
-                            user_id: self.chosenList,
-                            no_lock: false
-                        },
-                        traditional: true
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            alert("删除成功");
-                            $('table.display').DataTable().destroy();
-                            self.getData()
-                        }
-                    })
-            },
-            getData:function(){
-            $.post(baseUrl + '/model', {
-                name: "User",
-                rows: 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.userDetail(data.data);
-                    vm.$nextTick(function() {
-                        vm.showState = true;
-                        $('table.display').DataTable({
-                            "order": [
-                                [4, "desc"]
-                            ],
-                            "pageLength": 7,
-                            "dom": 'rtp',
-                            "columnDefs": [{
-                                "orderable": false,
-                                "targets": [0, 6]
-                            }],
-                            language: {
-                                processing: "处理中...",
-                                search: "查找中...",
-                                lengthMenu: "显示 _MENU_ 项结果",
-                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                infoFiltered: "(由 _MAX_ 项结果过滤)",
-                                infoPostFix: "",
-                                loadingRecords: "载入中...",
-                                zeroRecords: "没有匹配结果",
-                                emptyTable: "表中数据为空",
-                                paginate: {
-                                    first: "首页",
-                                    previous: "上页",
-                                    next: "下页",
-                                    last: "末页"
-                                },
-                                aria: {
-                                    sortAscending: ": 以升序排列此列",
-                                    sortDescending: ":  以降序排列此列"
+                if (self.chosenList.length > 0) {
+                    $.ajax({
+                            url: '/region/deleteUser',
+                            type: 'POST',
+                            data: {
+                                user_id: self.chosenList,
+                                no_lock: boolean
+                            },
+                            traditional: true
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                if (boolean) {
+                                    alert("启用成功")
+                                } else {
+                                    alert("禁用成功");
                                 }
+                                $('table.display').hide();
+                                $('table.display').DataTable().destroy();
+                                self.getData()
+
                             }
-                        });
-                    })
+                        })
+                }else{
+                    if (boolean) {
+                        alert("请选择启用项")
+                    }else{
+                        alert("请选择禁用项")
+                    }
                 }
-            });
+
+            },
+            getData: function() {
+                $.post(baseUrl + '/model', {
+                    name: "User",
+                    rows: 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.userDetail(data.data);
+                        vm.$nextTick(function() {
+                            vm.showState = true;
+                            $('table.display').DataTable({
+                                "order": [
+                                    [4, "desc"]
+                                ],
+                                "pageLength": 7,
+                                "dom": 'rtp',
+                                "columnDefs": [{
+                                    "orderable": false,
+                                    "targets": [0, 6]
+                                }],
+                                language: {
+                                    processing: "处理中...",
+                                    search: "查找中...",
+                                    lengthMenu: "显示 _MENU_ 项结果",
+                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    infoPostFix: "",
+                                    loadingRecords: "载入中...",
+                                    zeroRecords: "没有匹配结果",
+                                    emptyTable: "表中数据为空",
+                                    paginate: {
+                                        first: "首页",
+                                        previous: "上页",
+                                        next: "下页",
+                                        last: "末页"
+                                    },
+                                    aria: {
+                                        sortAscending: ": 以升序排列此列",
+                                        sortDescending: ":  以降序排列此列"
+                                    }
+                                }
+                            });
+                            $('table.display').show()
+                        })
+                    }
+                });
             }
         },
         created: function() {

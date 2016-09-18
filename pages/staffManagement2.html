@@ -20,19 +20,20 @@
             </thead>
             <tr v-for="company in showTasks">
                 <td>
-                    <input type="checkBox" id="person1" class="checkBox">
+                    <input type="checkBox" id="person1" class="checkBox" data-id="{{company.user.id}}">
                 </td>
                 <td>{{company.id}}</td>
                 <td>{{company.name}}</td>
                 <td>{{company.region.area}}</td>
                 <td>{{company.time}}</td>
-                <td>使用中</td>
+                <td>{{company.user.no_lock?"使用中":"禁用"}}</td>
                 <td><a href="#/staffManagementDetail.html" @click="saveDetail(company)">查看</a></td>
             </tr>
         </table>
         <div class="bottom-search">
             <div class="allSelectBtn normalBtn">全选</div>
-            <div class="urgeBtn normalBtn">删除</div>
+            <div class="urgeBtn normalBtn" @click="deleteOne(true)">启用</div>
+            <div class="urgeBtn normalBtn" @click="deleteOne(false)">禁用</div>
         </div>
     </div>
 </div>
@@ -69,10 +70,9 @@ $(document).ready(function() {
             risks: {},
             taskNum: "",
             showTasks: [],
-            showState:false
+            showState: false
         },
-        computed: {
-        },
+        computed: {},
         methods: {
             userDetail: function(data) {
                 for (var i = 0; i < data.length; i++) {
@@ -111,6 +111,49 @@ $(document).ready(function() {
                 data = JSON.stringify(data);
                 localStorage.setItem("companyDetail", data);
             },
+            getChosenList: function() {
+                var self = this;
+                self.chosenList = [];
+                $("td>.checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
+            },
+            deleteOne: function(boolean) {
+                var self = this;
+                self.getChosenList();
+                if (self.chosenList.length > 0) {
+                    $.ajax({
+                            url: '/region/deleteUser',
+                            type: 'POST',
+                            data: {
+                                user_id: self.chosenList,
+                                no_lock: boolean
+                            },
+                            traditional: true
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                if (boolean) {
+                                    alert("启用成功")
+                                } else {
+                                    alert("禁用成功");
+                                }
+                                $('table.display').hide();
+                                $('table.display').DataTable().destroy();
+                                self.getData()
+
+                            }
+                        })
+                }else{
+                    if (boolean) {
+                        alert("请选择启用项")
+                    }else{
+                        alert("请选择禁用项")
+                    }
+                }
+
+            },
         },
         created: function() {
             var self = this;
@@ -123,7 +166,7 @@ $(document).ready(function() {
                 if (data.state == 0) {
                     vm.userDetail(data.data)
                     vm.$nextTick(function() {
-                        vm.showState=true;
+                        vm.showState = true;
                         $('table.display').DataTable({
                             "order": [
                                 [4, "desc"]

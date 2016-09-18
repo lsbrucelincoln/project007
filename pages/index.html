@@ -36,14 +36,14 @@
     <!-- <script src="../source/js/router.js"></script> -->
     <!-- <script src="../source/plunges/tinymce/tinymce.js"></script> -->
     <script src="../source/js/vue.js"></script>
-    <script src="../source/plunges/zTree/js/jquery.ztree.all.min.js"></script>
-    <script src="../source/js/page.js"></script>
-    <script src="../source/js/vue-resource.min.js"></script>
-    <script src="../source/js/vue-smart-table.js"></script>
+    <!-- <script src="../source/plunges/zTree/js/jquery.ztree.all.min.js"></script> -->
+    <!-- <script src="../source/js/page.js"></script> -->
+    <!-- <script src="../source/js/vue-resource.min.js"></script> -->
+    <!-- <script src="../source/js/vue-smart-table.js"></script> -->
     <!-- <script src="../source/js/jquery.tablesorter.js"></script> -->
     <script src="../source/js/jquery.datetimepicker.full.min.js"></script>
-    <script src="../source/plunges/echarts/echarts.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="../source/js/jquery.dataTables.js"></script>
+    <script src="../source/js/echarts.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="../source/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8" src="../source/My97DatePicker/WdatePicker.js"></script>
 </head>
 
@@ -56,17 +56,17 @@
             </div>
             <div class="rightBox">
                 <div class="userBox">
-                    <div class="client" id="client">
+                    <a href="#/groupInfoManagement.html" class="client" id="client">
                         <i class="flaticon-profile" style="color:white"></i>
                         <span class="name">陈某某(宁波市港航管理局)</span>
-                    </div>
+                    </a>
                     <a href="sign_in.html" class="logout">
                         <i class="flaticon-logout" style="color:white"></i>
                         <span>退出</span>
                     </a>
                 </div>
                 <div class="tips">
-                    <p>今日提示：<span class="checkNum" id="todayTask">8</span>项评估检查 <span class="checkNum" id="todayCensor">9</span>项隐患问题 <a href=""><i class="flaticon-cloud-storage-download"> </i>工作月报</a></p>
+                    <p>今日提示：<a href="#/assessmentCheck.html" class="checkNum" id="todayTask">0</a>项评估检查 <a class="checkNum" href="#/riskManagement.html" id="todayCensor">0</a>项隐患问题 <a href="javascript:void(0)" style="text-decoration:none"><i class="flaticon-cloud-storage-download"> </i>工作月报</a></p>
                 </div>
             </div>
         </div>
@@ -239,7 +239,7 @@
                                             </span>
                                             <div class="name">法律法规</div>
                                         </a>
-                                        <a class="line">
+                                        <a class="line" href="#/executiveStandard.html">
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
@@ -322,7 +322,7 @@
                 </div>
                 <div class="inputShort"><span>性别：</span>
                     <div class="admin_ui_select" style="width:200px">
-                        <select  v-model="sex">
+                        <select v-model="sex">
                             <option value="男">男</option>
                             <option value="女">女</option>
                         </select>
@@ -330,7 +330,7 @@
                 </div>
                 <div class="inputShort"><span>所属中队：</span>
                     <div class="admin_ui_select" style="width:200px">
-                        <select  v-model="squadron">
+                        <select v-model="squadron">
                             <option>第一中队</option>
                             <option>第二中队</option>
                             <option>第三中队</option>
@@ -339,7 +339,7 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>角色：</span>
-                    <div class="admin_ui_select" style="width:200px" >
+                    <div class="admin_ui_select" style="width:200px">
                         <select v-model="competence">
                             <option value="检查评估员">检查评估员</option>
                             <option value="机构管理员">机构管理员</option>
@@ -354,7 +354,7 @@
         </div>
     </div>
     <script>
-    var vm = new Vue({
+    var vx = new Vue({
         el: "#addAccount",
         data: {
             username: "",
@@ -367,12 +367,26 @@
         computed: {},
         methods: {
             createUser: function() {
-                $.post(baseUrl + '/region/createUser', vm.$data, function(data, textStatus, xhr) {
+                var self=this;
+                $.post(baseUrl + '/region/createUser', vx.$data, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         alert("新增成功")
                         $(".mask,.addAccount").hide();
+                        self.clearData();
+                    } else if (data.state == 10000) {
+                        alert("用户名已被注册")
                     }
                 });
+            },
+            clearData: function() {
+                this.$data = {
+                    username: "",
+                    password: "",
+                    name: "",
+                    squadron: "第一中队",
+                    sex: "男",
+                    competence: "检查评估员"
+                }
             }
         },
         created: function() {},

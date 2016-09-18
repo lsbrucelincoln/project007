@@ -58,9 +58,11 @@
                                 <td style="text-align:left">{{rule.text}}</td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
-                                <td>06/01 20:00</td>
-                                <td></td>
-                                <td><a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a> <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
+                                <td>{{rule.updateTime}}</td>
+                                <td>{{rule.used?"启用":"禁用"}}</td>
+                                <td>
+<!--                                 <a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a> -->
+                                 <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
                             </tr>
                         </table>
                         <div class="bottom-search">
@@ -168,6 +170,7 @@ $(document).ready(function() {
                 var category = {};
                 var category2 = [];
                 for (var i = 0; i < data.length; i++) {
+                    data[i].updateTime = this.stamp2time(data[i].in_time)
                     if (i == 0) {
                         vm.startAttr = data[i].category1;
                         vm.categroy1 = data[i].category1;
@@ -300,6 +303,7 @@ $(document).ready(function() {
                     name: "SafeRule",
                     "params['companyType']": this.rawData.choseCompany[0].type.id,
                     "params['mode']": this.params.mode,
+                    "params['used']":true
                 }
                 if (this.params.special&&this.params.mode=="专项评估") {
                     data["params['special']"] = this.params.special;

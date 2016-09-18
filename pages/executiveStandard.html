@@ -1,5 +1,5 @@
 <div class="addAssessment admin_content_innerBox dataManagement" id="dataManagementBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：评估标准管理 > <span class="nowPlace">数据管理</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 在线学习 > <span class="nowPlace">执行标准</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
@@ -13,10 +13,6 @@
                     <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label>
                 </div>
-                <input type="file" id="uploadData" style="display:none">
-                <div class="dataOutBtn normalBtn" style="float:right">导出数据</div>
-                <label class="dataInBtn normalBtn" for="uploadData" style="float:right">导入数据</label>
-                
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
@@ -24,8 +20,7 @@
                             <ul class="line" v-show="state[$index]==1"><li class="category2" v-for="item2 in tree2[item]"  @click.stop="showData(item2,$event,item)"><i class="flaticon-interface"></i>{{item2}}</li></ul>
                             </a>
                         </div>
-                        <i class="treeAdd" @click="addTreeNode">+</i>
-                        <i class="treeRemove">-</i></div>
+                    </div>
                     <div class="tableBox">
                         <table>
                             <tr>
@@ -36,7 +31,7 @@
                                 <th style="width: 40px;">等级</th>
                                 <th style="width: 60px;">强制执行</th>
                                 <th style="width: 100px;">更新时间</th>
-                                <th style="width: 100px;">当前状态</th>
+                                <th style="width: 100px;">是否显示</th>
                                 <th style="width: 80px;">操作</th>
                             </tr>
                             <tr v-for="rule in rules   |limitBy recordLimit startPoint">
@@ -47,12 +42,14 @@
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>{{rule.updateTime}}</td>
-                                <td>{{rule.used?"启用":"禁用"}}</td>
-                                <td><a href="#/addRules.html?edit" @click="saveDetail(rule)">查看</a></td>
+                                <td>{{rule.shows?"显示":"隐藏"}}</td>
+                                <td><a href="#/addRules.html?read" @click="saveDetail(rule)">查看</a></td>
                             </tr>
                         </table>
                         <div class="bottom-search">
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div><div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)" v-show="competence">显示</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)" v-show="competence">隐藏</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -124,7 +121,7 @@ $(document).ready(function() {
                 Vue.set(vm.tree2, value, [])
                 vm.tree2[value] = [];
                 vm.category[value] = {}
-                $(".ztrbox input,.addConfirm,.removeConfirm").remove();
+                $(".ztrbox input,.addConfirm").remove();
             } else {
                 var text = $(".ztrbox input").parents('a').children('span').text();
                 var tree2 = (vm.tree2);
@@ -158,7 +155,8 @@ $(document).ready(function() {
             tree1: [],
             tree2: {},
             showUsed: false,
-            chosenList: []
+            chosenList: [],
+            competence: true
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -218,31 +216,31 @@ $(document).ready(function() {
                 var self = this;
                 self.getChosenList();
                 if (self.chosenList.length > 0) {
-                $.ajax({
-                        url: '/region/disableSafety',
-                        type: 'POST',
-                        data: {
-                            safety: self.chosenList,
-                            delete: state
-                        },
-                        traditional: true
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            if (state) {
-                                alert("禁用成功")
-                            } else {
-                                alert("启用成功")
+                    $.ajax({
+                            url: '/region/showSafety',
+                            type: 'POST',
+                            data: {
+                                safety: self.chosenList,
+                                delete: state
+                            },
+                            traditional: true
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                if (state) {
+                                    alert("隐藏成功")
+                                } else {
+                                    alert("显示成功")
+                                }
+                                self.updateData();
                             }
-                            self.updateData();
-                        }
 
-                    })
+                        })
                 }else{
-                    if (self.state) {
-                        alert("请选择启用项")
+                    if (state) {
+                        alert("请选择隐藏项")
                     }else{
-                        alert("请选择禁用项")
+                        alert("请选择显示项")
                     }
                 }
             },
@@ -367,7 +365,7 @@ $(document).ready(function() {
                 if (!this.tree2[$(".chosenCategory span").text()] || this.tree2[$(".chosenCategory span").text()].length !== 0) {
                     $(".chosenCategory").after('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>');
                 } else {
-                    $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>')
+                    $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i>')
                 }
             },
             addOne: function() {
@@ -377,7 +375,10 @@ $(document).ready(function() {
         },
         created: function() {
             var self = this;
-            var id = localStorage.getItem("id");
+            var competence = localStorage.getItem("competence");
+            if (competence == "企业负责人") {
+                self.competence = false;
+            }
             self.updateData();
             $.post('/model', {
                 name: "CompanyType",

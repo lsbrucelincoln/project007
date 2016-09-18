@@ -4,7 +4,7 @@
 }
 </style>
 <div class="addAssessment admin_content_innerBox dataManagement" id="urgeBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > <span class="nowPlace">应急演练预设</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：> 评估标准管理 > <span class="nowPlace">应急演练预设</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
@@ -15,7 +15,7 @@
                             <option value="">版本1</option>
                         </select>
                     </div>
-<!--                     <input type="checkBox" id="canUse" v-model="showUsed">
+                    <!--                     <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label> -->
                 </div>
                 <div class="dataOutBtn normalBtn">导出数据</div>
@@ -50,10 +50,7 @@
                             </tr>
                         </table>
                         <div class="bottom-search">
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
-                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div><div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -194,27 +191,34 @@ $(document).ready(function() {
             updateState: function(state) {
                 var self = this;
                 self.getChosenList();
-                $.ajax({
-                        url: '/region/disableEmergencyRule',
-                        type: 'POST',
-                        data: {
-                            emergencyRule: self.chosenList,
-                            delete: state
-                        },
-                        traditional: true
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            if (state) {
-                                alert("禁用成功")
-                            } else {
-                                alert("启用成功")
+                if (self.chosenList.length > 0) {
+                    $.ajax({
+                            url: '/region/disableEmergencyRule',
+                            type: 'POST',
+                            data: {
+                                emergencyRule: self.chosenList,
+                                delete: state
+                            },
+                            traditional: true
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                if (state) {
+                                    alert("禁用成功")
+                                } else {
+                                    alert("启用成功")
+                                }
+                                self.updateData();
                             }
-                            self.updateData();
-                        }
 
-                    })
-
+                        })
+                }else{
+                    if (self.state) {
+                        alert("请选择启用项")
+                    }else{
+                        alert("请选择禁用项")
+                    }
+                }
             },
             getChosenList: function() {
                 var self = this;

@@ -20,6 +20,7 @@
                 <table id="taskTable" class="compact display">
                     <thead>
                         <tr>
+                            <th>id</th>
                             <th @click=" nameOrder1 = nameOrder1 * -1 ">
                                 企业名称
                             </th>
@@ -33,6 +34,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task">
+                            <td>{{task.id}}</td>
                             <td>{{task.company.name}}</td>
                             <td>{{task.mode}}</td>
                             <td>{{task.time}}</td>
@@ -49,6 +51,7 @@
                 <table id="riskTable" class="compact display">
                     <thead>
                         <tr>
+                            <th>id</th>
                             <th>
                                 企业名称
                             </th>
@@ -60,6 +63,7 @@
                         </tr>
                     </thead>
                     <tr v-for="risk in risks|filterBy companyName2Filter risk |filterBy setTimeFilter risk">
+                        <td>{{risk.id}}</td>
                         <td>{{risk.censor.task.company.name}}</td>
                         <td>{{risk.restDay}}</td>
                         <td>{{risk.time}}</td>
@@ -67,16 +71,16 @@
                     </tr>
                 </table>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大危险源备案登记数：<a href=""><span>{{statistics.Dangerous}} </span>项</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大危险源备案登记数：<a href="#/dangerousSources.html"><span>{{statistics.Dangerous}} </span>项</a>
                 </span>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-alarm"></i></span><span class="reportText">当前辖区内隐患整改到期预警：<a href=""><span>{{statistics.recheckDeadline}} </span>项</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-alarm"></i></span><span class="reportText">当前辖区内隐患整改到期预警：<a href="#/riskManagement.html"><span>{{statistics.recheckDeadline}} </span>项</a>
                 </span>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-newspaper"></i></span><span class="reportText">2016年07月月报已生成：<a href=""><span class="turnToReport">点击查看</span></a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-newspaper"></i></span><span class="reportText">2016年07月月报已生成：<a href="javascript:void(0)"><span class="turnToReport">点击查看</span></a>
                 </span>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-apartment"></i></span><span class="reportText">当前辖区内注册企业数:<a href=""><span>{{statistics.company}} </span>家</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-apartment"></i></span><span class="reportText">当前辖区内注册企业数:<a href="#/staffManagement.html?company"><span>{{statistics.company}} </span>家</a>
                 </span>
             </div>
         </div>
@@ -233,12 +237,17 @@ $(document).ready(function() {
                                 $('table.display').DataTable({
                                     // paging: false,
                                     "order": [
-                                        [2, "desc"]
+                                        [0, "desc"]
                                     ],
                                     "searching": false,
                                     "pageLength": 5,
                                     "dom": 'rt',
-                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
+                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json',
+                                    "columnDefs": [{
+                                        "targets": [0],
+                                        "visible": false,
+                                        "searchable": false
+                                    }]
                                 });
                             })
                         }
@@ -257,12 +266,17 @@ $(document).ready(function() {
                                 $('table.display').DataTable({
                                     // paging: false,
                                     "order": [
-                                        [3, "desc"]
+                                        [0, "desc"]
                                     ],
                                     "searching": false,
                                     "pageLength": 5,
                                     "dom": 'rt',
-                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json'
+                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json',
+                                    "columnDefs": [{
+                                        "targets": [0],
+                                        "visible": false,
+                                        "searchable": false
+                                    }]
                                 });
                             })
                         }

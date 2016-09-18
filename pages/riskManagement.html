@@ -1,5 +1,5 @@
 <div class="assessmentCheck" id="riskManagementBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作> <span class="nowPlace">隐患管理</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作 > <span class="nowPlace">隐患管理</span></span>
     </div>
     <div class="contentBody">
         <div class="tagBar">
@@ -33,12 +33,13 @@
                     <div class="endProgramBtn normalBtn" v-if="!competence">指派处置</div>
                 </div>
                 <div class="tableBox">
-                    <table id="checkTable" class="display">
+                    <table id="checkTable" class="display" >
                         <thead>
                             <tr>
                                 <th>
                                     <input type="checkBox" id="person1" class="checkBox">
                                 </th>
+                                <th>id</th>
                                 <th>隐患编号</th>
                                 <th>隐患等级</th>
                                 <th>企业对象</th>
@@ -54,6 +55,7 @@
                                 <td>
                                     <input type="checkBox" id="person1" class="checkBox" v-if="task.code" data-id="{{task.id}}">
                                 </td>
+                                <td>{{task.id}}</td>
                                 <td>{{task.code}}</td>
                                 <td>{{task.censor.safeRule.safetyLevel}}</td>
                                 <td>{{task.company.name}}</td>
@@ -116,7 +118,8 @@ $(document).ready(function() {
             showTasks: [],
             competence: true,
             chosenList: [],
-            region: []
+            region: [],
+            showState:false
         },
         computed: {
             startPoint: function() {
@@ -206,6 +209,8 @@ $(document).ready(function() {
                                 alert("警告成功");
                             }
                         })
+                }else{
+                    alert("请选择警告项")
                 }
             },
             endProgram: function() {
@@ -230,6 +235,8 @@ $(document).ready(function() {
                                 self.getData(self.tagState)
                             }
                         })
+                }else{
+                    alert("请选择结束项")
                 }
             },
             unique: function(arr) {
@@ -254,11 +261,13 @@ $(document).ready(function() {
             },
             changeState: function(state) {
                 this.tagState = state;
+                this.showState=false;
                 this.showTasks = [];
                 $('table.display').DataTable().destroy();
                 this.getData(state);
             },
             getData: function(state) {
+                var self=this;
                 var data = {}
                 switch (state) {
                     case 1:
@@ -283,15 +292,20 @@ $(document).ready(function() {
                         vm.$nextTick(function() {
                             $('table.display').DataTable({
                                 "order": [
-                                    [5, "desc"]
+                                    [1, "desc"]
                                 ],
                                 // "searching": false,
                                 "pageLength": 5,
                                 "dom": 'rtp',
                                 "columnDefs": [{
                                     "orderable": false,
-                                    "targets": [0, 8]
+                                    "targets": [0, 9]
+                                },{
+                                    "targets":[1],
+                                    "visible": false,
+                                     "searchable": false
                                 }],
+
                                 language: {
                                     processing: "处理中...",
                                     search: "Rechercher&nbsp;:",
@@ -315,6 +329,8 @@ $(document).ready(function() {
                                     }
                                 }
                             });
+                            self.showState=true;
+                            // $("table.display").show()
                         })
                     }
                 });
@@ -327,6 +343,7 @@ $(document).ready(function() {
             if (competence == "企业负责人") {
                 this.competence = false;
             }
+            // $("table.display").hide()
             this.getData(1);
             $.post('/model', {
                 name: "Region",

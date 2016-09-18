@@ -1,5 +1,5 @@
 <div class="assessmentCheck staffManagement" id="staffBody">
-    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理> <span class="nowPlace">企业&账号管理</span></span>
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：信息管理 > <span class="nowPlace">企业&账号管理</span></span>
     </div>
     <div class="contentBody">
         <div class="tagBar">
@@ -13,11 +13,29 @@
 <script>
 $(document).ready(function() {
     // TablePage("#checkTable", 5);
-    $(".contenBox").load('staffManagement1.html',
-        function() {});
+    console.log(window.location.href.search("company") != -1);
+    if (window.location.href.search("company") != -1) {
+        $(".contenBox").load('staffManagement2.html',
+            function() {});
+        $(".praticeBtn").addClass('chosenBtn');
+        $(".praticeBtn").siblings('.tag').removeClass('chosenBtn');
+        $(".checkBtn").css('z-index', '3');
+    } else {
+        $(".contenBox").load('staffManagement1.html',
+            function() {});
+    }
+
     $(".mask,.cancel").on('click', function(event) {
         event.preventDefault();
         $(".mask,.addAccount").hide();
+        vx.$data = {
+            username: "",
+            password: "",
+            name: "",
+            squadron: "第一中队",
+            sex: "男",
+            competence: "检查评估员"
+        }
     });
     $(".tag").on('click', function(event) {
         $(this).addClass('chosenBtn');

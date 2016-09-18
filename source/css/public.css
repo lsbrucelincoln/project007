@@ -216,6 +216,7 @@
 }
 .tableBox .tableHeader {
   height: 40px;
+  background-color: #d7eefb;
   background-image: -webkit-linear-gradient(270deg, #edf8fd 0%, #d7eefb 100%);
   background-image: linear-gradient(-180deg, #edf8fd 0%, #d7eefb 100%);
   border: 1px solid #a9dbf6;

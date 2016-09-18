@@ -189,7 +189,7 @@ $(document).ready(function() {
                 }
             },
             teamFilter: function(data) {
-                if (this.team == "" || (this.team !== "" && this.team !== data.squadron)) {
+                if (this.team == "" || (this.team !== "" && this.team !== data.squadron||data.competence!=="检查评估员")) {
                     return false;
                 } else {
                     return true;

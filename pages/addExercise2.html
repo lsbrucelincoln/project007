@@ -268,7 +268,8 @@ $(document).ready(function() {
             this.params = JSON.parse(localStorage.getItem("paramsEx"));
             $.post('/model', {
                 name: "EmergencyRule",
-                rows: 0
+                rows: 0,
+                "params['delete']":false
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {

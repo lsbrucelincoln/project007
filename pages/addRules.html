@@ -17,7 +17,15 @@ textarea {
     line-height: 18px;
     padding: 5px;
 }
-
+.admin_ui_select > select:disabled{
+    background-color: #fff;
+}
+input:disabled{
+    background-color: #fff;
+}
+textarea:disabled{
+    background-color: #fff;
+}
 label {
     margin-left: 2px;
 }
@@ -39,7 +47,8 @@ label {
 <div class="companyInfoManagement admin_content_innerBox" id="riskManagementDetail">
     <div class="admin_scrollBox">
         <div class="minibar">
-            <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估标准管理 > 数据管理 > <span class="nowPlace">详细信息</span></span>
+            <i class="flaticon-arrows-4"></i><span>当前位置：
+            {{readOnly?"在线学习 > 执行标准":"评估标准管理 > 数据管理"}} > <span class="nowPlace">详细信息</span></span>
         </div>
         <div class="contentBody">
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
@@ -49,7 +58,7 @@ label {
                         <td>分类一：</td>
                         <td colspan="2">
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="category1">
+                                <select name="" id="" v-model="category1" :disabled='readOnly'>
                                     <option value="{{cate1}}" v-for="cate1 in ruleDetail.tree1">{{cate1}}</option>
                                 </select>
                             </div>
@@ -57,7 +66,7 @@ label {
                         <td>分类二：</td>
                         <td colspan="2">
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="category2">
+                                <select name="" id="" v-model="category2" :disabled='readOnly'>
                                     <option value="{{cate2}}" v-for="cate2 in categoryList">{{cate2}}</option>
                                 </select>
                             </div>
@@ -67,26 +76,26 @@ label {
                         <td>适用的企业类型：</td>
                         <td colspan="5">
                             <label for="{{company.name}}" v-for="company in companyType">
-                                <input type="checkbox" id="{{company.name}}" value="{{company.id}}" v-model="params.companyTypes">{{company.name}}</label>
+                                <input type="checkbox" id="{{company.name}}" value="{{company.id}}" v-model="params.companyTypes" :disabled='readOnly'>{{company.name}}</label>
                         </td>
                     </tr>
                     <tr>
                         <td>检查项内容：</td>
                         <td colspan="5">
-                            <input type="text" v-model="params.text">
+                            <input type="text" v-model="params.text" :disabled='readOnly'>
                         </td>
                     </tr>
                     <tr>
                         <td>检查项编号：</td>
                         <td colspan="5">
-                            <input type="text" v-model="params.code">
+                            <input type="text" v-model="params.code" :disabled='readOnly'>
                         </td>
                     </tr>
                     <tr>
                         <td>是否强制执行：</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params.must">
+                                <select name="" id="" v-model="params.must" :disabled='readOnly'>
                                     <option value="true">是</option>
                                     <option value="false">否</option>
                                 </select>
@@ -94,12 +103,12 @@ label {
                         </td>
                         <td>分值</td>
                         <td>
-                            <input type="text" v-model="params.score">
+                            <input type="text" v-model="params.score" :disabled='readOnly'>
                         </td>
                         <td>安全等级</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params.safetyLevel">
+                                <select name="" id="" v-model="params.safetyLevel" :disabled='readOnly'>
                                     <option value="一级">一级</option>
                                     <option value="二级">二级</option>
                                     <option value="三级">三级</option>
@@ -111,19 +120,19 @@ label {
                     <tr>
                         <td>执行依据：</td>
                         <td colspan="5">
-                            <textarea name="" id="" v-model="params.based"></textarea>
+                            <textarea name="" id="" v-model="params.based" :disabled='readOnly'></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td>处置方式：</td>
                         <td colspan="5">
-                            <textarea name="" id="" v-model="params.punishment"></textarea>
+                            <textarea name="" id="" v-model="params.punishment" :disabled='readOnly'></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td>评估要点:</td>
                         <td colspan="5">
-                            <textarea name="" id="" v-model="params.evaluation"></textarea>
+                            <textarea name="" id="" v-model="params.evaluation" :disabled='readOnly'></textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -131,13 +140,13 @@ label {
         </div>
     </div>
     <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="addRule">确认</div>
-        <div class="urgeBtn normalBtn" style="margin-top:15px">返回</div>
+        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="addRule" v-show="!readOnly">确认</div>
+        <div class="urgeBtn normalBtn" style="margin-top:15px" @click="back">返回</div>
     </div>
 </div>
 <script>
 window.page.beforeUnload = function(hash) {
-    if (confirm("未保存修改的信息，确定要离开吗？")) {
+    if (vm.readOnly||confirm("未保存修改的信息，确定要离开吗？")) {
         return true;
     } else {
         return false;
@@ -157,7 +166,7 @@ var vm = new Vue({
         category1: [],
         category2: [],
         companyType: '',
-
+        readOnly:false
     },
     computed: {
         categoryList: function() {
@@ -170,6 +179,16 @@ var vm = new Vue({
         addRule: function() {
             var self = this;
             console.log('test');
+            delete self.params.updateTime;
+            console.log(self.params);
+            if(!self.state){
+                var types=[];
+                for (var i = 0; i < self.params.companyTypes.length; i++) {
+                    var msg=self.params.companyTypes[i];
+                    types.push(msg.id)
+                }
+                self.params.companyTypes=types
+            }
             if (self.state && self.params.companyTypes.length == 0) {
                 alert("请选择适用的企业类型")
             } else if (!self.params.code) {
@@ -187,11 +206,18 @@ var vm = new Vue({
                     })
                     .done(function() {
                         console.log("success");
-                        alert("增加成功");
+                        if (self.state) {
+                            alert("增加成功");
+                        }else{
+                            alert("修改成功")
+                        }
+                        
                         history.back();
                     })
             }
-
+        },
+        back:function(){
+            history.back();
         },
         stamp2time: function(stamp) {
             var time = new Date(stamp);
@@ -222,11 +248,14 @@ var vm = new Vue({
     },
     created: function() {
         this.ruleDetail = JSON.parse(localStorage.getItem("dataParams"));
-        if (window.location.href.search("edit") !== -1) {
+        if (window.location.href.search("edit") !== -1||window.location.href.search("read") !== -1) {
             this.params = JSON.parse(localStorage.getItem("ruleDetail"));
             this.state = false;
             this.params.used = this.params.used + "";
             this.params.must = this.params.must + "";
+        }
+        if (window.location.href.search("read") !== -1){
+            this.readOnly=true;
         }
         this.category1 = this.ruleDetail.startAttr;
         this.category2 = this.ruleDetail.startAttr2;

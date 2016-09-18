@@ -2,7 +2,12 @@
     <div class="admin_scrollBox">
         <div class="infoHeader">
             <div class="leftInfo"><span class="title">通知公告</span>
-                <div class="scrollBox"><i class="flaticon-music"></i>这里可以插入下载超链接，不够显示，可以左右滚动播放。</div>
+                <i class="flaticon-music"></i>
+                <div class="scrollBox">
+                    <div class="list1">
+                        <p v-for="message in messages"><a href="#/noticeReport.html">{{message.text}}</a></p>
+                    </div>
+                </div>
             </div>
             <a href="#/welcome.html" class="normalBtn"><i class="flaticon-location"></i><span>返回</span></a>
         </div>

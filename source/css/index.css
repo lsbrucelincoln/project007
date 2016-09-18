@@ -70,10 +70,11 @@ body {
   line-height: 30px;
   float: right;
   color: white;
-  cursor: pointer;
   vertical-align: middle;
 }
 .admin_header .rightBox .userBox {
+  cursor: pointer;
+  background-color: #388ed2;
   background-image: -webkit-linear-gradient(270deg, #59ace8 0%, #388ed2 100%);
   background-image: linear-gradient(-180deg, #59ace8 0%, #388ed2 100%);
   box-shadow: 0px 0px 0px 1px rgba(29, 109, 175, 0.5);
@@ -103,7 +104,8 @@ body {
   float: right;
   right: 20px;
 }
-.admin_header .tips span {
+.admin_header .tips span,
+.admin_header .tips a {
   text-decoration: underline;
   margin-left: 15px;
   margin-right: 5px;
@@ -270,6 +272,7 @@ body {
   text-align: left;
   width: 472px;
   height: 100%;
+  background-color: #fafbfd;
   background-image: -webkit-linear-gradient(270deg, #ffffff 0%, #fafbfd 100%);
   background-image: linear-gradient(-180deg, #ffffff 0%, #fafbfd 100%);
   float: left;
@@ -371,6 +374,7 @@ body {
   margin-left: 50px;
   margin-top: 40px;
   width: 200px;
+  background-color: #a9dbf6;
   background-image: -webkit-linear-gradient(270deg, #d7eefb 0%, #a9dbf6 100%);
   background-image: linear-gradient(-180deg, #d7eefb 0%, #a9dbf6 100%);
   height: 40px;
@@ -773,6 +777,7 @@ body {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+  -ms-appearance: none;
   background-color: transparent;
 }
 .admin_ui_select > select::-ms-expand {

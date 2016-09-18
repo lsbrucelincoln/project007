@@ -5,7 +5,7 @@
 </style>
 <div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
     <div class="minibar">
-        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > 重大危险源 ><span class="nowPlace">新增备案</span></span>
+        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 业务操作 > 重大危险源 ><span class="nowPlace"> 新增备案</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
@@ -39,7 +39,7 @@
                 <tbody>
                     <tr>
                         <td colspan="3">
-                            <span style="margin-bottom: 10px;display: inline-block;">描述：</span>
+                            <div class="inputShort"> <span style="margin-bottom: 10px;display: inline-block;width:100px">描述：</span></div>
                             <br />
                         </td>
                     </tr>
@@ -50,7 +50,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span style="margin-bottom: 10px;display: inline-block;">附件：</span>
+                            <div class="inputShort"> <span style="margin-bottom: 10px;display: inline-block;width:100px">附件：</span></div>
                             <br />
                         </td>
                     </tr>
@@ -96,7 +96,7 @@ $(document).ready(function() {
             } else {
                 return false;
             }
-        }else{
+        } else {
             return true
         }
     }
