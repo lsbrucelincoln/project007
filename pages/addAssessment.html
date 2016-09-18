@@ -163,7 +163,8 @@ $(document).ready(function() {
             deadLine: "",
             choseCompany: {},
             place1: "1",
-            place2: ""
+            place2: "",
+            rawUser:[]
         },
         watch: {
             place1: function(val, oldVal) {
@@ -182,6 +183,10 @@ $(document).ready(function() {
                 } else {
                     this.params.places.$remove(2)
                 }
+            },
+            team:function(val,oldVal){
+                this.user=this.rawUser;
+                this.teamList=[]
             }
         },
         methods: {
@@ -297,6 +302,7 @@ $(document).ready(function() {
                 }, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         vm.user = data.data;
+                        vm.rawUser=data.data;
                     }
                 });
             }

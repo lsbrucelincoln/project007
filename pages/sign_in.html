@@ -84,9 +84,13 @@
             event.preventDefault();
             var username = $("#account").val();
             var password = $("#password").val();
-            if ($("#rememberBtn").prop('checkBox', true)) {
+            console.log($("#rememberBtn").prop('checked'));
+            if ($("#rememberBtn").prop('checked')==true) {
                 localStorage.setItem("username", username);
                 localStorage.setItem("pd", password);
+            }else{
+                localStorage.removeItem("username");
+                localStorage.removeItem("pd");
             }
             $.ajaxSetup({
                 withCredentials: true

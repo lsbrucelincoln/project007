@@ -5,23 +5,39 @@
                 <i class="flaticon-music"></i>
                 <div class="scrollBox">
                     <div class="list1">
-                        <p v-for="message in messages"><a href="#/noticeReport.html">{{message.text}}</a></p>
+                        <p v-for="message in messages"><a href="#/noticeReport.html" v-cloak>{{message.text}}</a></p>
                     </div>
                 </div>
             </div>
             <a href="#/welcome.html" class="normalBtn"><i class="flaticon-location"></i><span>返回</span></a>
         </div>
         <div id="baiduMap">
-            
         </div>
     </div>
 </div>
 <script src="http://api.map.baidu.com/api?v=2.0&ak=Ogc3s9tT2jSfg8GvYBScols0iyeSoUGG&callback=initialize"></script>
 <script type="text/javascript">
+var map;
+var vm;
+var area = $(".scrollBox")[0];
+var con1 = $(".list1")[0];
 
+function scrollUp() {
+    if (area.scrollTop >= con1.offsetHeight) {
+        area.scrollTop = 5;
+    } else {
+        area.scrollTop++;
+    }
+}
+var time = 100;
+var myScroll = setInterval(scrollUp, time);
+area.onmouseover = function() {
+    clearInterval(myScroll);
+};
+area.onmouseout = function() {
+    myScroll = setInterval(scrollUp, time);
+};
 
-var map; 
-var vm;   
 function initialize() {
     $("#baiduMap").height($("#admin_content_table").height() - 30);
     $(window).bind('resize', function() {
@@ -34,7 +50,7 @@ function initialize() {
         anchor: BMAP_ANCHOR_TOP_LEFT
     }); // 左上角，添加比例尺
     var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
-    
+
     map.addControl(top_left_control);
     map.addControl(top_left_navigation);
 
@@ -97,71 +113,86 @@ function initialize() {
     // map.openInfoWindow(infoWindow1, new BMap.Point(121.5606865, 29.870177));
 
     // 添加自定义控件： 右上角的4个选项
-    function selectBoxControl(){    
+    function selectBoxControl() {
         // 设置默认停靠位置和偏移量  
-        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;    
-        this.defaultOffset = new BMap.Size(10, 10);    
-    }    
+        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+        this.defaultOffset = new BMap.Size(10, 10);
+    }
     selectBoxControl.prototype = new BMap.Control();
-    selectBoxControl.prototype.initialize = function(map){
-        var _selectBox = $('<div id="map_selectBox" class="map_selectBox">'+
-                            '<div data-name="All" style="border-bottom: 1px solid #eee;">显示全部</div>'+
-                            '<div data-name="Dangerous">重大危险源</div>'+
-                            '<div data-name="Company">注册企业</div>'+
-                            '<div data-name="Recheck">隐患问题</div>'+
-                            '<div data-name="Task">评估任务</div>'+
-                        '</div>');
+    selectBoxControl.prototype.initialize = function(map) {
+        var _selectBox = $('<div id="map_selectBox" class="map_selectBox">' +
+            '<div data-name="All" style="border-bottom: 1px solid #eee;">显示全部</div>' +
+            '<div data-name="Dangerous">重大危险源</div>' +
+            '<div data-name="Company">注册企业</div>' +
+            '<div data-name="Recheck">隐患问题</div>' +
+            '<div data-name="Task">评估任务</div>' +
+            '</div>');
         map.getContainer().appendChild(_selectBox[0]);
     }
     var mySelectBoxCtrl = new selectBoxControl();
     map.addControl(mySelectBoxCtrl);
     vm = new Vue({
         el: '#safeDataMapContent',
-        data:{
+        data: {
             markerList_Dangerous: [],
             markerList_Company: [],
             markerList_Recheck: [],
-            markerList_Task: []
+            markerList_Task: [],
+            messages: []
         },
         computed: {
-            markerList_All: function(){
-                return [].concat(this.markerList_Dangerous,this.markerList_Company,this.markerList_Recheck,this.markerList_Task)
+            markerList_All: function() {
+                return [].concat(this.markerList_Dangerous, this.markerList_Company, this.markerList_Recheck, this.markerList_Task)
             }
         },
         method: {
 
         },
-        created: function(){
+        created: function() {
             var self = this;
             // 获取危险源
-            $.when(getModels()).done(function(data){
-                if(data.state == 0){
+            $.post(baseUrl + '/model', {
+                name: "Message",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    if (data.data.length > 5) {
+                        self.messages = data.data.slice(0, 6)
+                    } else {
+                        self.messages = data.data
+                    }
+                }
+            })
+            $.when(getModels()).done(function(data) {
+                if (data.state == 0) {
                     var _data = data.data;
                     self.markerList_Dangerous = getMarkerList_Dangerous(_data[0]);
-                    self.markerList_Company = getMarkerList_Company(_data[1]);
-                    self.markerList_Recheck = getMarkerList_Recheck(_data[2]);
+                    self.markerList_Company = getMarkerList_Company(_data[2]);
+                    self.markerList_Recheck = getMarkerList_Recheck(_data[1]);
                     self.markerList_Task = getMarkerList_Task(_data[3]);
                     addMarkerByMarkerList(self.markerList_All);
                 }
             });
         },
-        ready: function(){
+        ready: function() {
             var self = this;
-            $("#map_selectBox").find('[data-name]').bind('click',function(){
+            $("#map_selectBox").find('[data-name]').bind('click', function() {
                 var name = $(this).attr("data-name");
                 showMarkerByType(name);
             });
         }
     });
 }
-function getMarkerList_Dangerous(dataList){
+
+function getMarkerList_Dangerous(dataList) {
     var markers = [];
-    for(var i = 0, length = dataList.length; i < length; i++){
+    for (var i = 0, length = dataList.length; i < length; i++) {
         var data = dataList[i];
         var coordinate = data.coordinate;
-        if(coordinate&&coordinate.split(" ").length == 2){
+        if (coordinate && coordinate.split(" ").length == 2) {
             coordinate = coordinate.split(" ");
-            var lat = coordinate[0], lng = coordinate[1];
+            var lat = coordinate[0],
+                lng = coordinate[1];
             var marker = new BMap.Marker(new BMap.Point(lng, lat));
             var opts = {
                 width: 220, // 信息窗口宽度    
@@ -171,15 +202,15 @@ function getMarkerList_Dangerous(dataList){
                 '<tbody>' +
                 '<tr>' +
                 '<td>危险源名称：</td>' +
-                '<td>'+data.name+'</td>' +
+                '<td>' + data.name + '</td>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>等级：</td>' +
-                '<td>'+data.level+'</td>' +
+                '<td>' + data.level + '</td>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>相关企业：</td>' +
-                '<td>'+data.company+'</td>' +
+                '<td>' + data.company.name + '</td>' +
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
@@ -192,14 +223,17 @@ function getMarkerList_Dangerous(dataList){
     }
     return markers;
 }
-function getMarkerList_Company(dataList){
+
+function getMarkerList_Company(dataList) {
     var markers = [];
-    for(var i = 0, length = dataList.length; i < length; i++){
+    for (var i = 0, length = dataList.length; i < length; i++) {
         var data = dataList[i];
-        var coordinate = data.company.coordinate;
-        if(coordinate&&coordinate.split("+").length == 2){
+        // console.log(data);
+        var coordinate = data.coordinate;
+        if (coordinate && coordinate.split("+").length == 2) {
             coordinate = coordinate.split("+");
-            var lat = coordinate[0], lng = coordinate[1];
+            var lat = coordinate[0],
+                lng = coordinate[1];
             var marker = new BMap.Marker(new BMap.Point(lat, lng));
             var opts = {
                 width: 220, // 信息窗口宽度    
@@ -208,16 +242,16 @@ function getMarkerList_Company(dataList){
             var html = '<table>' +
                 '<tbody>' +
                 '<tr>' +
-                '<td>隐患编号：</td>' +
-                '<td>'+data.code+'</td>' +
+                '<td>企业名称：</td>' +
+                '<td>' + data.name + '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>等级：</td>' +
-                '<td>'+data.level+'</td>' +
+                '<td>企业类型：</td>' +
+                '<td>' + data.type.name + '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>整改状态：</td>' +
-                '<td>'+data.recheckState+'</td>' +
+                '<td>所属机构：</td>' +
+                '<td>' + data.region.name + '</td>' +
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
@@ -230,15 +264,18 @@ function getMarkerList_Company(dataList){
     }
     return markers;
 }
-function getMarkerList_Recheck(dataList){
+
+function getMarkerList_Recheck(dataList) {
     var markers = [];
-    for(var i = 0, length = dataList.length; i < length; i++){
+    for (var i = 0, length = dataList.length; i < length; i++) {
         var data = dataList[i];
+        console.log(data);
         var coordinate = data.coordinate;
-        if(coordinate&&coordinate.split("+").length == 2){
+        if (coordinate && coordinate.split("+").length == 2) {
             coordinate = coordinate.split("+");
-            var lat = coordinate[0], lng = coordinate[1];
-            console.log(lat,lng);
+            var lat = coordinate[0],
+                lng = coordinate[1];
+            console.log(lat, lng);
             var marker = new BMap.Marker(new BMap.Point(lat, lng));
             var opts = {
                 width: 220, // 信息窗口宽度    
@@ -248,15 +285,15 @@ function getMarkerList_Recheck(dataList){
                 '<tbody>' +
                 '<tr>' +
                 '<td>隐患类型：</td>' +
-                '<td>'+data.type.name+'</td>' +
+                '<td>' + data.censor.type.name + '</td>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>等级：</td>' +
-                '<td>'+data.level+'</td>' +
+                '<td>' + data.censor.safeRule.safetyLevel + '</td>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>整改状态：</td>' +
-                '<td>'+data.recheckState+'</td>' +
+                '<td>' + data.recheckState + '</td>' +
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
@@ -269,88 +306,80 @@ function getMarkerList_Recheck(dataList){
     }
     return markers;
 }
-function getMarkerList_Task(dataList){
+
+function getMarkerList_Task(dataList) {
     var markers = [];
-    for(var i = 0, length = dataList.length; i < length; i++){
+    for (var i = 0, length = dataList.length; i < length; i++) {
         var data = dataList[i];
         var coordinate = data.coordinate;
-        if(coordinate&&coordinate.split("+").length == 2){
+        if (coordinate && coordinate.split("+").length == 2) {
             coordinate = coordinate.split("+");
-            var lat = coordinate[0], lng = coordinate[1];
-            console.log(lat,lng);
+            var lat = coordinate[0],
+                lng = coordinate[1];
+            console.log(lat, lng);
             var marker = new BMap.Marker(new BMap.Point(lat, lng));
             markers.push(marker);
         }
     }
     return markers;
 }
-function addMarkerByMarkerList(markerList){
-    for(var i = 0, length = markerList.length; i < length; i++){
+
+function addMarkerByMarkerList(markerList) {
+    for (var i = 0, length = markerList.length; i < length; i++) {
         map.addOverlay(markerList[i]);
     }
 }
-function showMarkerByType(type){
-    $.each(vm.markerList_All,function(){
+
+function showMarkerByType(type) {
+    $.each(vm.markerList_All, function() {
         this.hide();
     });
-    $.each(vm["markerList_"+type],function(){
+    $.each(vm["markerList_" + type], function() {
         this.show();
     });
 }
-function setMarkerByData(data,type){
-    if(type == "Dangerous"){
+
+function setMarkerByData(data, type) {
+    if (type == "Dangerous") {
         var coordinate = data.coordinate;
-        if(coordinate&&coordinate.split(" ").length == 2){
+        if (coordinate && coordinate.split(" ").length == 2) {
             coordinate = coordinate.split(" ");
-            var lat = coordinate[0], lng = coordinate[1];
-            console.log(lat,lng);
+            var lat = coordinate[0],
+                lng = coordinate[1];
+            console.log(lat, lng);
             var marker = new BMap.Marker(new BMap.Point(lng, lat));
             map.addOverlay(marker);
         }
-    }
-    else if(type == "Company"){
+    } else if (type == "Company") {
         var coordinate = data.company.coordinate;
-        if(coordinate&&coordinate.split("+").length == 2){
+        if (coordinate && coordinate.split("+").length == 2) {
             coordinate = coordinate.split("+");
-            var lat = coordinate[0], lng = coordinate[1];
-            console.log(lat,lng);
+            var lat = coordinate[0],
+                lng = coordinate[1];
+            console.log(lat, lng);
             var marker = new BMap.Marker(new BMap.Point(lng, lat));
             map.addOverlay(marker);
         }
     }
-    
+
 }
 
 
-function getModels(){
+function getModels() {
     var ajax = $.ajax({
-                    url: "/models",
-                    type: "POST",
-                    data: {
-                        "models[0].name": "Dangerous",
-                        "models[0].row": "0",
-                        "models[1].name": "Recheck",
-                        "models[1].row": "0",
-                        "models[2].name": "Company",
-                        "models[2].row": "0",
-                        "models[3].name": "Task",
-                        "models[3].row": "0"
-                    }
-                });
+        url: "/models",
+        type: "POST",
+        data: {
+            "models[0].name": "Dangerous",
+            "models[0].row": "0",
+            "models[1].name": "Recheck",
+            "models[1].row": "0",
+            "models[2].name": "Company",
+            "models[2].row": "0",
+            "models[3].name": "Task",
+            "models[3].row": "0"
+        }
+    });
     return ajax;
 }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
