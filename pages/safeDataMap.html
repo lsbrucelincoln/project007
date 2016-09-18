@@ -215,8 +215,9 @@ function getMarkerList_Dangerous(dataList) {
                 '</tbody>' +
                 '</table>';
             var infoWindow = new BMap.InfoWindow(html, opts);
+            marker._infoWindow = infoWindow;
             marker.addEventListener('click', function(e) {
-                this.openInfoWindow(infoWindow);
+                this.openInfoWindow(this._infoWindow);
             });
             markers.push(marker);
         }
