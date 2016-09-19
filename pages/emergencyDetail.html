@@ -68,31 +68,37 @@
                 </div>
                 <div class="tableBox">
                     <table>
-                        <tr>
-                            <th style="width:100px">序号</th>
-                            <th>评估内容</th>
-                            <th style="width:50px;">总分</th>
-                            <th style="width:50px;">得分</th>
-                            <th style="width:250px;">观察记录</th>
-                        </tr>
-                        <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
-                            <td>{{rule.emergencyRule.id}}</td>
-                            <td>{{rule.emergencyRule.text}}</td>
-                            <td>{{rule.emergencyRule.score}}</td>
-                            <td>{{rule.score}}</td>
-                            <td>{{rule.text}}</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th style="width:100px">序号</th>
+                                <th>评估内容</th>
+                                <th style="width:50px;">总分</th>
+                                <th style="width:50px;">得分</th>
+                                <th style="width:250px;">观察记录</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
+                                <td>{{rule.emergencyRule.id}}</td>
+                                <td>{{rule.emergencyRule.text}}</td>
+                                <td>{{rule.emergencyRule.score}}</td>
+                                <td>{{rule.score}}</td>
+                                <td>{{rule.text}}</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <table>
-                        <tr>
-                            <td style="width:100px">总得分</td>
-                            <td>{{params.score}}</td>
-                            <td style="width:50px;"></td>
-                            <td style="width:50px;"></td>
-                            <td style="width:250px;"></td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td style="width:100px">总得分</td>
+                                <td>{{params.score}}</td>
+                                <td style="width:50px;"></td>
+                                <td style="width:50px;"></td>
+                                <td style="width:250px;"></td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <div class="bottom-search">
+                    <div class="bottom-search" style="width:100%">
                         <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                             <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                 <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>

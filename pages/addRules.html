@@ -48,7 +48,7 @@ label {
     <div class="admin_scrollBox">
         <div class="minibar">
             <i class="flaticon-arrows-4"></i><span>当前位置：
-            {{readOnly?"在线学习 > 执行标准":"评估标准管理 > 数据管理"}} > <span class="nowPlace">详细信息</span></span>
+            {{showTitle}} > <span class="nowPlace">详细信息</span></span>
         </div>
         <div class="contentBody">
             <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
@@ -129,7 +129,7 @@ label {
                             <textarea name="" id="" v-model="params.punishment" :disabled='readOnly'></textarea>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-show="evaluateState">
                         <td>评估要点:</td>
                         <td colspan="5">
                             <textarea name="" id="" v-model="params.evaluation" :disabled='readOnly'></textarea>
@@ -166,13 +166,23 @@ var vm = new Vue({
         category1: [],
         category2: [],
         companyType: '',
-        readOnly:false
+        readOnly:false,
+        evaluateState:false,
     },
     computed: {
         categoryList: function() {
             this.params.category1 = this.category1;
             this.params.category2 = this.category2;
             return this.ruleDetail.tree2[this.category1]
+        },
+        showTitle:function(){
+            if (this.readOnly) {
+                return "在线学习 > 执行标准"
+            }else if (this.evaluateState) {
+                return "评估标准管理 > 评估任务预设"
+            }else{
+                return "评估标准管理 > 数据管理"
+            }
         }
     },
     methods: {
@@ -248,12 +258,18 @@ var vm = new Vue({
     },
     created: function() {
         this.ruleDetail = JSON.parse(localStorage.getItem("dataParams"));
-        if (window.location.href.search("edit") !== -1||window.location.href.search("read") !== -1) {
+        if (window.location.href.search("edit") !== -1||window.location.href.search("read") !== -1||window.location.href.search("set") !== -1) {
             this.params = JSON.parse(localStorage.getItem("ruleDetail"));
             this.state = false;
+            if (window.location.href.search("set") !== -1) {
+                this.evaluateState=true
+            }
             this.params.used = this.params.used + "";
             this.params.must = this.params.must + "";
         }
+                    if (window.location.href.search("addSet") !== -1) {
+                this.evaluateState=true
+            }
         if (window.location.href.search("read") !== -1){
             this.readOnly=true;
         }

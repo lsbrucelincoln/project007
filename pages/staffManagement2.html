@@ -3,7 +3,7 @@
         <div class="searchBox">
             <input type="text" class="searchInput" placeholder="输入姓名搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtomNormal">搜索</span>
         </div>
-        <a href="#" class="addBtn normalBtn">添加公司</a>
+        <a href="#" class="addBtn normalBtn">添加企业</a>
     </div>
     <div class="tableBox" v-show="showState">
         <table class="display">
@@ -24,7 +24,7 @@
                 </td>
                 <td>{{company.id}}</td>
                 <td>{{company.name}}</td>
-                <td>{{company.region.area}}</td>
+                <td>{{company.area}}</td>
                 <td>{{company.time}}</td>
                 <td>{{company.user.no_lock?"使用中":"禁用"}}</td>
                 <td><a href="#/staffManagementDetail.html" @click="saveDetail(company)">查看</a></td>
@@ -55,7 +55,7 @@ $(document).ready(function() {
     });
     $(".searchButtomNormal").on('click', function(event) {
         event.preventDefault();
-        $("table.display").DataTable().columns(1).search($(".searchInput").val(), false, true).draw();
+        $("table.display").DataTable().columns(2).search($(".searchInput").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#staffBody",

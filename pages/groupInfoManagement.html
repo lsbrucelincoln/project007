@@ -20,7 +20,7 @@
                     <span>上级管理部门：</span>
                     <div class="admin_ui_select" style="width:200px">
                         <select v-model="params.parent" :disabled="disabled">
-                            <option>宁波市港航管理局</option>
+                            <option>宁波市港航局</option>
                         </select>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
                     <input type="text" v-model="params.phone" :disabled="disabled">
                 </div>
                 <div class="inputShort digitMap"><span>电子地图：</span> X:
-                    <input type="text" value="750" disabled v-model="x" :disabled="disabled"> — Y:
-                    <input type="text" value="145" disabled v-model="y" :disabled="disabled">
+                    <input type="text" disabled v-model="x" :disabled="disabled"> — Y:
+                    <input type="text" disabled v-model="y" :disabled="disabled">
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
                     <input type="text" v-model="params.telephone" :disabled="disabled">
@@ -110,7 +110,7 @@ $(document).ready(function() {
         },
         computed: {
             coordinate: function() {
-                var place = vm.x + "+" + vm.y;
+                var place = this.x + "+" + this.y;
                 this.params.coordinate = place;
                 return place;
             }
@@ -178,7 +178,9 @@ $(document).ready(function() {
                 });
             },
             update: function() {
-
+                if (this.params.photo==null) {
+                    delete this.params.photo
+                }
                 $.ajax({
                         url: '/region/editRegion',
                         type: 'POST',
@@ -198,11 +200,13 @@ $(document).ready(function() {
             var id = localStorage.getItem("id");
             $.post('/model', {
                 name: "Region",
-                "params['my']": 1
+                "params['my']": 1,
+                start:-1
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
-                    vm.params = data.data[0];
+                    vm.params = data.data;
+                    delete vm.params.special
                     if (vm.params.coordinate) {
                         vm.x = vm.params.coordinate.split("+")[0];
                         vm.y = vm.params.coordinate.split("+")[1];

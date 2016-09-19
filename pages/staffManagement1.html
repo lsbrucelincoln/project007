@@ -20,7 +20,7 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <tr v-for="account in showTasks ">
+            <tr v-for="account in showTasks|filterBy ruleFilter account ">
                 <td>
                     <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0" data-id="{{account.id}}">
                     <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0" data-id="{{account.id}}">
@@ -49,7 +49,6 @@
     </div>
 </div>
 <script>
-$(document).ready(function() {
     $("th .checkBox").on('click', function(event) {
         if ($(this).prop('checked')) {
             $("td .checkBox").each(function(index, el) {
@@ -112,6 +111,14 @@ $(document).ready(function() {
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 var timeString = '';
                 return year + "-" + month + "-" + day;
+            },
+            ruleFilter:function(data){
+                console.log(data);
+                if (data.competence=="企业负责人") {
+                    return false
+                }else{
+                    return true
+                }
             },
             unique: function(arr) {
                 var result = [],
@@ -274,5 +281,4 @@ $(document).ready(function() {
 
         }
     })
-});
 </script>

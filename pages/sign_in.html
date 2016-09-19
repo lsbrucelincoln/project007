@@ -123,9 +123,10 @@
                             alert("您是检查评估员，没有权限进入后台");
                             break;
                     }
-                } else if (data.state == 10000) {
-                    alert("密码错误，请重新输入");
+                } else {
+                    alert(data.msg);
                     $("#password").val("");
+                    $("#account").val("");
                 }
             });
 

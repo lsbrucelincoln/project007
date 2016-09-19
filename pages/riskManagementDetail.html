@@ -81,8 +81,12 @@ img {
                         <td>
                             {{excuteTime}}
                         </td>
+                        <!-- <th>附件：</th> -->
+<!--                         <td><a class="admin_ui_link">查看</a></td> -->
+                    </tr>
+                    <tr>
                         <th>附件：</th>
-                        <td><a class="admin_ui_link">查看</a></td>
+                        <td colspan="5"><img :src="'/map/'+photo.id" alt="" v-for="photo in taskDetail.censor.photos"></td>
                     </tr>
                     <tr v-if="taskDetail.recheckState=='未整改'">
                         <th>整改说明：</th>
@@ -110,13 +114,13 @@ img {
             </table>
             <table class="tem_headTable" v-if="taskDetail.recheckState!='未整改'&&taskDetail.details.length > 0" v-for="detail in taskDetail.details">
                 <tr>
-                    <th width="120">整改说明：</th>
+                    <th width="120">{{$index%2==0?"整改说明：":"复检说明："}}</th>
                     <td colspan="5">
                         {{detail.text}}
                     </td>
                 </tr>
                 <tr>
-                    <th>整改图片：</th>
+                    <th>{{$index%2==0?"整改图片：":"复检图片："}}</th>
                     <td colspan="5" id="picTable">
                         <img :src="'/map/'+photo.id" alt="" v-for="photo in detail.photos">
                     </td>
@@ -126,7 +130,7 @@ img {
     </div>
     <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
         <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="confirm">确认</div>
-        <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+        <!-- <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div> -->
     </div>
 </div>
 <script>

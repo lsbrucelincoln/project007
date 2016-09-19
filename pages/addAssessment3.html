@@ -1,3 +1,13 @@
+<style>
+    u{
+        border: 1px solid #ddd;
+        display: inline-block;
+        width: 120px;
+        border-bottom: 1px solid #ddd !important;
+        line-height: 14px;
+        padding: 4px;
+    }
+</style>
 <div class="addAssessment admin_content_innerBox" id="addAssessment3Body">
     <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：首页 > 评估检查 > <span class="nowPlace">新建任务</span></span>
     </div>
@@ -7,17 +17,17 @@
             <div class="stateBox">
                 <div class="state">
                     <div class="stateBody">
-                    <i class="flaticon-arrows-3"></i>
+                        <i class="flaticon-arrows-3"></i>
                         <i class="circle"></i>
                         <br/><span>基本信息设置</span>
                     </div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle"></i>
                         <br/><span>选择评估模板</span></div>
                 </div>
                 <div class="state">
-                    <div class="stateBody">                    <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
+                    <div class="stateBody"> <i class="flaticon-arrows-3"></i> <i class="circle  chosen"></i>
                         <br/><span>确认发布</span> </div>
                 </div>
             </div>
@@ -48,11 +58,10 @@
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(hash){
-        if(hash == "#/addAssessment2.html" || hash == "#/assessmentCheck.html" || confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function(hash) {
+        if (hash == "#/addAssessment2.html" || hash == "#/assessmentCheck.html" || confirm("未保存修改的信息，确定要离开吗？")) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -94,6 +103,7 @@ $(document).ready(function() {
             params: {},
             rawData: {},
             changeState: true,
+            sendMessage: true
         },
         computed: {
             time: function() {
@@ -129,6 +139,7 @@ $(document).ready(function() {
                 return month + "/" + day + " " + hours + ":" + minutes;
             },
             createTask: function() {
+                var self=this;
                 console.log(this.params);
                 var data = this.params;
                 // data.title="";
@@ -144,27 +155,32 @@ $(document).ready(function() {
                 //     }
                 // });
                 console.log(this.otherMember);
-                $.ajax({
-                        url: '/region/createTask',
-                        type: 'POST',
-                        traditional: true,
-                        data: data,
-                    })
-                    .done(function(data) {
-                        if (data.state == 0) {
-                            alert("新增成功");
-                            window.location.href = "index.html#/assessmentCheck.html";
-                            localStorage.removeItem("data");
-                            localStorage.removeItem("params");
-                        }
-                    })
-                    .fail(function() {
-                        console.log("error");
-                    })
-                    .always(function() {
-                        console.log("complete");
-                    });
-
+                if (this.sendMessage) {
+                    this.sendMessage=false;
+                    $.ajax({
+                            url: '/region/createTask',
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("新增成功");
+                                window.location.href = "index.html#/assessmentCheck.html";
+                                localStorage.removeItem("data");
+                                localStorage.removeItem("params");
+                            }
+                        })
+                        .fail(function() {
+                            console.log("error");
+                        })
+                        .always(function() {
+                            self.sendMessage=true;
+                            console.log("complete");
+                        });
+                }else{
+                    alert("请求已发送，请勿重复点击")
+                }
             },
             arrayChange: function(param) {
                 var result = {};

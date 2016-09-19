@@ -867,6 +867,7 @@ body {
 .bottom-search {
   position: relative;
   height: 30px;
+  width: 40%;
 }
 .bottom-search .normalBtn {
   margin-top: 15px;

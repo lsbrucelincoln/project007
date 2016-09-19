@@ -162,8 +162,8 @@ function basicAjax() {
             $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
         }
         else if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
-            alert("登录超时，请重新登录");
-            window.location.href = "sign_in.html"
+            // alert("登录超时，请重新登录");
+            // window.location.href = "sign_in.html"
         }
     });
     $.get(baseUrl + '/region/getStatistics', function(data) {

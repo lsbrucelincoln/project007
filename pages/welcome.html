@@ -107,7 +107,6 @@ $(document).ready(function() {
         myScroll = setInterval(scrollUp, time);
     };
     $(document).ready(function() {
-
         var vm = new Vue({
             el: "#welcomeBody",
             data: {
@@ -226,7 +225,8 @@ $(document).ready(function() {
                 $.post(baseUrl + '/model', {
                     name: "Task",
                     rows: 0,
-                    remove: "safeRules"
+                    remove: "safeRules",
+                    "params['state']": "未检"
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
@@ -256,6 +256,7 @@ $(document).ready(function() {
                 $.post(baseUrl + '/model', {
                     name: "Recheck",
                     rows: 0,
+                    "params['notcompelete']": 1
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {

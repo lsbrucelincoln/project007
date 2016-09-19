@@ -50,11 +50,8 @@
                                 <td><a href="#/addRules.html?edit" @click="saveDetail(rule)">查看</a></td>
                             </tr>
                         </table>
-                        <div class="bottom-search">
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
-                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
+                        <div class="bottom-search" style="width:100%">
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div><div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -275,7 +272,7 @@ $(document).ready(function() {
                     $(event.target).parent("li").addClass('chosenCategory');
                 }
                 this.startAttr2 = item2;
-                $(".ztrbox input,.addConfirm").remove();
+                $(".ztrbox input,.addConfirm,.removeConfirm").remove();
             },
             stateChange: function(index) {},
             stamp2time: function(stamp) {

@@ -66,7 +66,7 @@
                     </a>
                 </div>
                 <div class="tips">
-                    <p>今日提示：<a href="#/assessmentCheck.html" class="checkNum" id="todayTask">0</a>项评估检查 <a class="checkNum" href="#/riskManagement.html" id="todayCensor">0</a>项隐患问题 <a href="javascript:void(0)" style="text-decoration:none"><i class="flaticon-cloud-storage-download"> </i>工作月报</a></p>
+                    <p>今日提示：<a href="#/assessmentCheck.html" class="checkNum" id="todayTask">0</a>[项] 评估检查 <a class="checkNum" href="#/riskManagement.html" id="todayCensor">0</a>[项] 隐患问题 <a href="javascript:void(0)" style="text-decoration:none"><i class="flaticon-cloud-storage-download"> </i>工作月报</a></p>
                 </div>
             </div>
         </div>
@@ -367,12 +367,58 @@
         computed: {},
         methods: {
             createUser: function() {
-                var self=this;
+                var self = this;
                 $.post(baseUrl + '/region/createUser', vx.$data, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         alert("新增成功")
                         $(".mask,.addAccount").hide();
                         self.clearData();
+                        $.post(baseUrl + '/model', {
+                            name: "User",
+                            rows: 0
+                        }, function(data, textStatus, xhr) {
+                            console.log(data);
+                            if (data.state == 0) {
+                                $('table.display').DataTable().destroy();
+                                vm.userDetail(data.data);
+                                vm.$nextTick(function() {
+                                    vm.showState = true;
+                                    $('table.display').DataTable({
+                                        "order": [
+                                            [4, "desc"]
+                                        ],
+                                        "pageLength": 7,
+                                        "dom": 'rtp',
+                                        "columnDefs": [{
+                                            "orderable": false,
+                                            "targets": [0, 6]
+                                        }],
+                                        language: {
+                                            processing: "处理中...",
+                                            search: "查找中...",
+                                            lengthMenu: "显示 _MENU_ 项结果",
+                                            info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                            infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                            infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                            infoPostFix: "",
+                                            loadingRecords: "载入中...",
+                                            zeroRecords: "没有匹配结果",
+                                            emptyTable: "表中数据为空",
+                                            paginate: {
+                                                first: "首页",
+                                                previous: "上页",
+                                                next: "下页",
+                                                last: "末页"
+                                            },
+                                            aria: {
+                                                sortAscending: ": 以升序排列此列",
+                                                sortDescending: ":  以降序排列此列"
+                                            }
+                                        }
+                                    });
+                                })
+                            }
+                        });
                     } else if (data.state == 10000) {
                         alert("用户名已被注册")
                     }

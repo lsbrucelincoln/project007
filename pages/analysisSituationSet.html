@@ -64,10 +64,10 @@
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>{{rule.updateTime}}</td>
                                 <td>{{rule.used?"启用":"禁用"}}</td>
-                                <td><a href="#/addRules.html?edit" @click="saveDetail(rule)">查看</a> </td>
+                                <td><a href="#/addRules.html?set" @click="saveDetail(rule)">查看</a> </td>
                             </tr>
                         </table>
-                        <div class="bottom-search">
+                        <div class="bottom-search" style="width:100%">
                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div><div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
@@ -381,7 +381,7 @@ $(document).ready(function() {
             },
             addOne: function() {
                 localStorage.setItem("dataParams", JSON.stringify(this.$data));
-                window.location.href = "#/addRules.html"
+                window.location.href = "#/addRules.html?addSet"
             },
             addSpecialEvent: function(data) {
                 var self = this;

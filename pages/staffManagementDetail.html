@@ -6,7 +6,7 @@
             </span>
         </div>
         <div class="contentBody">
-        <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
+        <div class="backToBtn normalBtn" style="float:right" @click.prevent="confirm"><i class="flaticon-cancel"></i></div>
             <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px">
                 <div class="inputShort">
                     <span>企业名称：</span>
@@ -173,20 +173,20 @@ $(document).ready(function() {
                 $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         alert("增加成功");
-                        history.back();
+                        window.location.href="#/staffManagement.html?company"
                     }
                 });
             },
             confirm: function() {
                 console.log(this.coordinate);
                 if (vm.disabled) {
-                    history.back();
+                    window.location.href="#/staffManagement.html?company"
                 } else {
                     console.log(vm.params);
                     $.post('/region/modifyCompany', vm.params, function(data, textStatus, xhr) {
                         if (data.state == 0) {
                             alert("修改成功");
-                            history.back();
+                            window.location.href="#/staffManagement.html?company"
                         }
                     });
                 }
