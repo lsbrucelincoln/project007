@@ -6,11 +6,19 @@
             </span>
         </div>
         <div class="contentBody">
-        <div class="backToBtn normalBtn" style="float:right" @click.prevent="confirm"><i class="flaticon-cancel"></i></div>
+            <div class="backToBtn normalBtn" style="float:right" @click.prevent="confirm"><i class="flaticon-cancel"></i></div>
             <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px">
                 <div class="inputShort">
                     <span>企业名称：</span>
                     <i>{{td.name}}</i>
+                </div>
+                <div class="inputShort">
+                    <span>用户名：</span>
+                    <i>{{company.username}}</i>
+                </div>
+                <div class="inputShort">
+                    <span>密码：</span>
+                    <i>******</i>
                 </div>
                 <div class="inputShort">
                     <span>注册时间：</span>
@@ -68,7 +76,7 @@
                 </div>
                 <div class="inputShort">
                     <span>证书附件：</span>
-                    <a class="admin_ui_link" href="/map?id={{params.photo}}">查看</a>
+                    <a class="admin_ui_link" href="/map/{{params.photo}}">查看</a>
                     <br/>
                     <div class="picUpload" style="margin-left:40%" v-show="!disabled">
                         <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
@@ -133,7 +141,8 @@ $(document).ready(function() {
             x: "",
             y: "",
             disabled: true,
-            url: ""
+            url: "",
+            company: {}
         },
         computed: {
             coordinate: function() {
@@ -173,20 +182,20 @@ $(document).ready(function() {
                 $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         alert("增加成功");
-                        window.location.href="#/staffManagement.html?company"
+                        window.location.href = "#/staffManagement.html?company"
                     }
                 });
             },
             confirm: function() {
                 console.log(this.coordinate);
                 if (vm.disabled) {
-                    window.location.href="#/staffManagement.html?company"
+                    window.location.href = "#/staffManagement.html?company"
                 } else {
                     console.log(vm.params);
                     $.post('/region/modifyCompany', vm.params, function(data, textStatus, xhr) {
                         if (data.state == 0) {
                             alert("修改成功");
-                            window.location.href="#/staffManagement.html?company"
+                            window.location.href = "#/staffManagement.html?company"
                         }
                     });
                 }
@@ -294,6 +303,15 @@ $(document).ready(function() {
                 console.log(data);
                 if (data.state == 0) {
                     vm.region = data.data;
+                }
+            });
+            $.post('/model', {
+                name: "User",
+                "params['name']": td.name
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.company = data.data[0];
                 }
             });
             $.post('/model', {

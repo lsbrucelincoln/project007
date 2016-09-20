@@ -15,7 +15,7 @@
                     <div class="admin_ui_select" style="width: 200px;">
                         <select class="regionName">
                         <option value="">全部</option>
-                            <option v-for="place in region" value="place.id">{{place.name}}</option>
+                            <option v-for="place in region" value="{{place.name}}">{{place.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -162,7 +162,7 @@ $(document).ready(function() {
                     if (this.tagState==2) {
                         data[i].mode="应急演练";
                         var time=new Date();
-                        if (data[i].deadline<time.getTime()) {
+                        if (data[i].deadline<time.getTime()&&data[i].state=="未完成") {
                             data[i].state="已过期"
                         }
                     }
@@ -319,7 +319,7 @@ $(document).ready(function() {
                         vm.$nextTick(function() {
                             $('table.display').DataTable({
                                 "order": [
-                                    [5, "desc"]
+                                    [1, "desc"]
                                 ],
                                 // "searching": false,
                                 "pageLength": 5,

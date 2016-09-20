@@ -82,19 +82,27 @@ img {
                             {{excuteTime}}
                         </td>
                         <!-- <th>附件：</th> -->
-<!--                         <td><a class="admin_ui_link">查看</a></td> -->
+                        <!--                         <td><a class="admin_ui_link">查看</a></td> -->
+                    </tr>
+                    <tr>
+                        <th>补充描述：</th>
+                        <td colspan="5">{{taskDetail.censor.description}}</td>
+                    </tr>
+                    <tr>
+                        <th>处罚要求：</th>
+                        <td colspan="5">{{taskDetail.censor.punishrequire}}</td>
                     </tr>
                     <tr>
                         <th>附件：</th>
                         <td colspan="5"><img :src="'/map/'+photo.id" alt="" v-for="photo in taskDetail.censor.photos"></td>
                     </tr>
-                    <tr v-if="taskDetail.recheckState=='未整改'">
+                    <tr v-if="taskDetail.recheckState=='未整改'&&competence">
                         <th>整改说明：</th>
                         <td colspan="5">
                             <textarea style="width:100%;height:50px;padding:5px" v-model="params.text" :disabled="taskDetail.recheckState!='未整改'"></textarea>
                         </td>
                     </tr>
-                    <tr v-if="taskDetail.recheckState=='未整改'">
+                    <tr v-if="taskDetail.recheckState=='未整改'&&competence">
                         <th>整改图片：</th>
                         <td colspan="5" id="picTable">
                             <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
@@ -112,7 +120,7 @@ img {
                     </tr>
                 </tbody>
             </table>
-            <table class="tem_headTable" v-if="taskDetail.recheckState!='未整改'&&taskDetail.details.length > 0" v-for="detail in taskDetail.details">
+            <table class="tem_headTable" v-if="taskDetail.recheckState!='未整改'&&taskDetail.details.length > 0" v-for="detail in taskDetail.details" style="border-top:1px solid #ccc">
                 <tr>
                     <th width="120">{{$index%2==0?"整改说明：":"复检说明："}}</th>
                     <td colspan="5">

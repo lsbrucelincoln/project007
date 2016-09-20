@@ -10,6 +10,7 @@
                         统计范围：
                         <div class="admin_ui_select" style="width: 180px;">
                             <select v-model="region">
+                                <option value="">全部</option>
                                 <option v-for="region in regionList" value="{{region.id}}">{{region.name}}</option>
                             </select>
                         </div>
@@ -118,7 +119,7 @@ var vm = new Vue({
         echartPie_AccessmentAnalysis_option: {},
         xName: monthName,
         regionList: [],
-        region: 1,
+        region: "",
         totalNum: 0,
         label: "月份"
     },
@@ -158,6 +159,9 @@ var vm = new Vue({
                 console.log("text2");
                 this.setTime();
             }
+        },
+        region:function(val,oldVal){
+            this.changeAll();
         }
     },
     computed: {
@@ -208,12 +212,16 @@ var vm = new Vue({
         },
         changeData: function(name, index) {
             var self = this;
-            $.post('/model', {
+            var data = {
                 "name": 'Task',
                 "params['month_time_begin']": self.start,
                 "params['month_time_end']": self.end,
                 "params['mode']": name
-            }, function(data, textStatus, xhr) {
+            }
+            if (self.region) {
+                data["params['region_id']"] = self.region
+            }
+            $.post('/model', data, function(data, textStatus, xhr) {
                 var msg = data.data
                 var showData = [];
                 if (self.granularity == "quarter") {
@@ -234,11 +242,15 @@ var vm = new Vue({
         },
         emergencyData: function() {
             var self = this;
-            $.post('/model', {
+            var data = {
                 "name": 'Emergency',
                 "params['month_time_begin']": self.start,
                 "params['month_time_end']": self.end,
-            }, function(data, textStatus, xhr) {
+            }
+            if (self.region) {
+                data["params['region_id']"] = self.region
+            }
+            $.post('/model', data, function(data, textStatus, xhr) {
                 console.log(data);
                 var msg = data.data
                 var showData = [];

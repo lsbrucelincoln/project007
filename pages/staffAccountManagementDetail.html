@@ -2,7 +2,7 @@
     <div class="admin_scrollBox">
         <div class="minibar"><i class="flaticon-arrows-4"></i>
             <span>
-        当前位置：信息管理 > 企业&账号管理 > <span class="nowPlace">账号详情</span>
+        当前位置：信息管理 > {{competence=="企业负责人"?"账号管理":"企业&账号管理"}} > <span class="nowPlace">账号详情</span>
             </span>
         </div>
         <div class="contentBody">
@@ -52,9 +52,9 @@
                     <input type="password" placeholder="请再次输入密码" v-model="check">
                 </div>
             </div>
-            <div style="text-align: center;margin-top: 150px;margin-bottom: 20px;">
+            <div style="text-align: center;margin-top: 100px;margin-bottom: 20px;">
                 <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="updateCode">确定</div>
-                <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div>
+                <!-- <div class="urgeBtn normalBtn" style="margin-top:15px">删除</div> -->
             </div>
         </div>
     </div>
@@ -93,7 +93,8 @@ $(document).ready(function() {
             taskDetail: JSON.parse(localStorage.getItem("accountDetail")),
             changeState: 0,
             password: "",
-            check: ""
+            check: "",
+            competence: localStorage.getItem("competence")
         },
         computed: {},
         methods: {
@@ -124,6 +125,7 @@ $(document).ready(function() {
                 return result.reverse();
             },
             updateCode: function() {
+                var self = this;
                 if (vm.changeState == 1) {
                     if (vm.password == vm.check) {
                         $.post('/resetPassword', {
@@ -131,16 +133,25 @@ $(document).ready(function() {
                             password: vm.password
                         }, function(data, textStatus, xhr) {
                             console.log(data);
-                            if (data.state==0) {
+                            if (data.state == 0) {
                                 alert("修改成功");
-                                window.location.href = "index.html#/staffManagement.html";
+                                if (self.competence == "企业负责人") {
+                                    window.location.href = "Index_c.html#/staffManagement_c.html";
+                                } else {
+                                    window.location.href = "index.html#/staffManagement.html";
+                                }
+
                             }
                         });
-                    }else{
+                    } else {
                         alert("两次密码输入不相同");
                     }
                 } else {
-                    window.location.href = "index.html#/staffManagement.html";
+                    if (self.competence == "企业负责人") {
+                        window.location.href = "Index_c.html#/staffManagement_c.html";
+                    } else {
+                        window.location.href = "index.html#/staffManagement.html";
+                    }
                 }
             }
         },

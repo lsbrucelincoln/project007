@@ -8,6 +8,7 @@
     border: 1px solid #ccc;
     text-align: center;
 }
+
 .useTable input[type="text"] {
     width: 100%;
     height: 100%;
@@ -26,15 +27,19 @@ textarea {
     line-height: 18px;
     padding: 5px;
 }
-.admin_ui_select > select:disabled{
+
+.admin_ui_select > select:disabled {
     background-color: #fff;
 }
-input:disabled{
+
+input:disabled {
     background-color: #fff;
 }
-textarea:disabled{
+
+textarea:disabled {
     background-color: #fff;
 }
+
 label {
     margin-left: 2px;
 }
@@ -52,6 +57,7 @@ label {
     border: 0;
     height: 100%;
 }
+
 textarea {
     font-family: STHeitiSC-Light;
     color: #333;
@@ -60,7 +66,7 @@ textarea {
 </style>
 <div class="addAssessment admin_content_innerBox dataManagement" id="dangerDetail">
     <div class="minibar">
-        <i class="flaticon-arrows-4"></i><span>当前位置：首页 > 业务操作 > 重大危险源 ><span class="nowPlace"> 详细信息</span></span>
+        <i class="flaticon-arrows-4"></i><span>当前位置：业务操作 > 重大危险源 ><span class="nowPlace"> 详细信息</span></span>
     </div>
     <div class="admin_scrollBox">
         <div class="contentBody">
@@ -134,7 +140,6 @@ textarea {
                     <tr>
                         <td>
                             Y：
-                            
                         </td>
                         <td>
                             <input type="text" style="width:65px;" v-model="y">
@@ -209,7 +214,8 @@ $(document).ready(function() {
             url: "",
             changeState: true,
             x: "",
-            y: ""
+            y: "",
+            competence: true,
         },
         watch: {
             x: function(val, oldVal) {
@@ -281,9 +287,15 @@ $(document).ready(function() {
             delete: function() {
                 console.log('test');
                 var self = this;
+                var url;
+                if (self.competence) {
+                    url = "/region/deleteDangerous"
+                } else {
+                    url = "/company/deleteDangerous"
+                }
                 if (confirm("是否删除该危险源")) {
                     $.ajax({
-                            url: '/region/deleteDangerous',
+                            url: url,
                             type: 'POST',
                             data: {
                                 delete: true,
@@ -315,16 +327,26 @@ $(document).ready(function() {
                 if (self.params.photo) {
                     data.photo = self.params.photo.id
                 }
-                $.post('/region/editDangerous', data, function(data, textStatus, xhr) {
+                var url;
+                if (self.competence) {
+                    url = "/region/editDangerous"
+                } else {
+                    url = "/company/editDangerous"
+                }
+                $.post(url, data, function(data, textStatus, xhr) {
                     if (data.state == 0) {
-                        alert("修改成功")
+                        alert("修改成功");
+                        history.back();
                     }
                 });
             }
         },
         created: function() {
             var self = this;
-            var id = localStorage.getItem("id");
+            var competence = localStorage.getItem("competence");
+            if (competence == "企业负责人") {
+                self.competence = false;
+            }
             this.params = JSON.parse(localStorage.getItem("dangerousDetail"));
             this.params._delete = this.params._delete + "";
             self.x = self.params.coordinate.split(" ")[0];

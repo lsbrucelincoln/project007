@@ -24,7 +24,7 @@
                             </a>
                         </div>
                         <i class="treeAdd" @click="addTreeNode">+</i>
-                        <i class="treeRemove">-</i></div>
+                        <i class="treeRemove" @click="removeTreeNode">-</i></div>
                     <div class="tableBox">
                         <table>
                             <tr>
@@ -157,7 +157,9 @@ $(document).ready(function() {
             tree1: [],
             tree2: {},
             showUsed: false,
-            chosenList: []
+            chosenList: [],
+            item1:"",
+            item2:''
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -375,6 +377,13 @@ $(document).ready(function() {
                     $(".chosenCategory").after('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>');
                 } else {
                     $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>')
+                }
+            },
+            removeTreeNode:function(){
+                if (($(".chosenCategory").hasClass('category1')&&this.tree2[$(".chosenCategory span").text()].length==0)||(this.rules.length==0&&$(".chosenCategory").hasClass('category2'))) {
+                    $(".chosenCategory").remove();
+                }else{
+                    alert("无法删除有数据的目录")
                 }
             },
             addOne: function() {

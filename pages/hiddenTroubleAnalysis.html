@@ -10,6 +10,7 @@
                         统计范围：
                         <div class="admin_ui_select" style="width: 180px;">
                             <select v-model="region">
+                            <option value="">全部</option>
                                 <option v-for="region in regionList" value="{{region.id}}">{{region.name}}</option>
                             </select>
                         </div>
@@ -90,7 +91,7 @@ var vm = new Vue({
         echartLine_AccessmentAnalysis_option: {},
         xName: monthName,
         regionList: [],
-        region: 1,
+        region: "",
         allNum: 0,
         finishNum: 0,
         expiredNum: 0
@@ -127,6 +128,9 @@ var vm = new Vue({
                 console.log("text2");
                 this.setTime();
             }
+        },
+        region: function(val, oldVal) {
+            this.changeAll();
         }
     },
     computed: {
@@ -177,38 +181,49 @@ var vm = new Vue({
         },
         changeData: function(name, index) {
             var self = this;
-            $.post('/model', {
+            var allNumData = {
                 "name": 'Recheck',
                 "count": true,
                 "params['begin']": self.start,
                 "params['end']": self.end,
-            }, function(data, textStatus, xhr) {
-                self.allNum = data.data;
-            });
-            $.post('/model', {
+            }
+            var finishNumData = {
                 "name": 'Recheck',
                 "count": true,
                 "params['begin']": self.start,
                 "params['end']": self.end,
-                "params['type']":'已完成'
-            }, function(data, textStatus, xhr) {
-                self.finishNum = data.data;
-            });
-            $.post('/model', {
+                "params['type']": '已完成'
+            }
+            var expiredNumData = {
                 "name": 'Recheck',
                 "count": true,
                 "params['begin']": self.start,
                 "params['end']": self.end,
-                "params['expired']":1
-            }, function(data, textStatus, xhr) {
-                self.expiredNum = data.data;
-            });
-            $.post('/model', {
+                "params['expired']": 1
+            }
+            var totalData = {
                 "name": 'Recheck',
                 "params['month_time_begin']": self.start,
                 "params['month_time_end']": self.end,
                 "params['safetyLevel']": name
-            }, function(data, textStatus, xhr) {
+            }
+            if (self.region) {
+                allNumData["params['region_id']"] = self.region
+                finishNumData["params['region_id']"] = self.region
+                expiredNumData["params['region_id']"] = self.region
+                totalData["params['region_id']"] = self.region
+            }
+            $.post('/model', allNumData, function(data, textStatus, xhr) {
+                self.allNum = data.data;
+            });
+            $.post('/model', finishNumData, function(data, textStatus, xhr) {
+                self.finishNum = data.data;
+            });
+            $.post('/model', expiredNumData, function(data, textStatus, xhr) {
+                self.expiredNum = data.data;
+            });
+
+            $.post('/model', totalData, function(data, textStatus, xhr) {
                 var msg = data.data
                 var showData = [];
                 if (self.granularity == "quarter") {

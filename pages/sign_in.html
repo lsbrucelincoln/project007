@@ -68,7 +68,6 @@
     $(document).ready(function() {
         if (localStorage.getItem("username")) {
             $("#account").val(localStorage.getItem("username"));
-            $("#password").val(localStorage.getItem("pd"));
         }
         $("#company").on('click', function(event) {
             $(".loginBtn").attr('href', 'Index_c.html');
@@ -87,10 +86,8 @@
             console.log($("#rememberBtn").prop('checked'));
             if ($("#rememberBtn").prop('checked')==true) {
                 localStorage.setItem("username", username);
-                localStorage.setItem("pd", password);
             }else{
                 localStorage.removeItem("username");
-                localStorage.removeItem("pd");
             }
             $.ajaxSetup({
                 withCredentials: true

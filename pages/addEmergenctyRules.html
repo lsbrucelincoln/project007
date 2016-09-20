@@ -116,7 +116,9 @@ var vm = new Vue({
                 alert("请输入分值")
             } else if (!self.params.text) {
                 alert("请输入检查项内容")
-            } else {
+            } else if (self.params.score>4) {
+                alert("分值请小于4分")
+            }  else {
                 $.ajax({
                         url: '/region/editEmergencyRule',
                         type: 'POST',

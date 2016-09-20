@@ -9,6 +9,7 @@
                 <div class="inputShort"><span>审核单位：</span>
                     <div class="admin_ui_select" style="width:200px">
                         <select class="auditGroup">
+                        <option value="">全部</option>
                             <option v-for="place in region" value="place.id">{{place.name}}</option>
                             </select>
                     </div>
@@ -112,7 +113,8 @@ $(document).ready(function() {
     });
     $(".checkBody .addBtn").on('click', function(event) {
         event.preventDefault();
-        $(".mask,.addAccount").show();
+        // $(".mask,.addAccount").show();
+        alert("此功能尚未开放")
     });
     var vm = new Vue({
         el: "#staffBody",

@@ -194,6 +194,9 @@ $(document).ready(function() {
                 });
             },
             update: function() {
+                if (this.params.photo == null) {
+                    delete this.params.photo
+                }
                 var params = {
                     code: this.params.code,
                     name: this.params.name,
@@ -207,11 +210,14 @@ $(document).ready(function() {
                     photo: this.params.photo,
                     area: this.params.area
                 }
+                if (this.params.photo) {
+                    params.photo=this.params.photo
+                }
                 $.post('/company/modifyCompany', params, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {
                         alert("修改成功");
-                        vm.disabled=true;
+                        vm.disabled = true;
                     }
                 });
             }
@@ -225,6 +231,7 @@ $(document).ready(function() {
                 console.log(data);
                 if (data.state == 0) {
                     vm.params = data.data[0];
+                    delete vm.params.special
                     if (vm.params.coordinate) {
                         vm.x = vm.params.coordinate.split("+")[0];
                         vm.y = vm.params.coordinate.split("+")[1];

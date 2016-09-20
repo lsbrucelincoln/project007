@@ -14,7 +14,7 @@
                     <div class="admin_ui_select" style="width:200px">
                         <select class="regionName">
                         <option value="">全部</option>
-                            <option v-for="place in region" value="place.id">{{place.name}}</option>
+                            <option v-for="place in region" value="{{place.name}}">{{place.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                                 <td>{{dangerous.level}}</td>
                                 <td>{{dangerous.code}}</td>
                                 <td>{{dangerous.time}}</td>
-                                <td>{{dangerous.company.region.area}}</td>
+                                <td>{{dangerous.company.area}}</td>
                                 <td>{{dangerous.company.region.name}}</td>
                                 <td><a href="#/dangerousSourcesDetail.html" @click="saveDetail(dangerous)" v-show="dangerous.name">查看</a></td>
                             </tr>

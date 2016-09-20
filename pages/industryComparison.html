@@ -10,6 +10,7 @@
                         统计范围：
                         <div class="admin_ui_select" style="width: 180px;">
                             <select v-model="region">
+                                <option value="">全部</option>
                                 <option v-for="region in regionList" value="{{region.id}}">{{region.name}}</option>
                             </select>
                         </div>
@@ -95,7 +96,7 @@
             echartLine_AccessmentAnalysis_option: {},
             xName: monthName,
             regionList: [],
-            region: 1,
+            region: "",
             company1: 4,
             company2: 5,
             companyList: [],
@@ -136,11 +137,22 @@
                     this.setTime();
                 }
             },
-            company1:function(val,oldVal){
+            company1: function(val, oldVal) {
                 this.changeAll();
             },
-            company2:function(val,oldVal){
+            company2: function(val, oldVal) {
                 this.changeAll();
+            },
+            region: function(val, oldVal) {
+                this.changeAll();
+                $.post('/model', {
+                    name: "Company",
+                    "row": 0
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.companyList = data.data;
+                    }
+                });
             }
         },
         computed: {
@@ -189,15 +201,19 @@
                 time.setHours(0);
                 return time.getTime();
             },
-            changeData: function(name, index,companyId) {
+            changeData: function(name, index, companyId) {
                 var self = this;
-                $.post('/model', {
+                var data = {
                     "name": 'Recheck',
                     "params['month_time_begin']": self.start,
                     "params['month_time_end']": self.end,
                     "params['safetyLevel']": name,
-                    "params['company_id']":companyId
-                }, function(data, textStatus, xhr) {
+                    "params['company_id']": companyId
+                };
+                if (self.region) {
+                    data["params['region_id']"] = self.region
+                }
+                $.post('/model', data, function(data, textStatus, xhr) {
                     var msg = data.data
                     var showData = [];
                     if (self.granularity == "quarter") {
@@ -224,14 +240,14 @@
                 })
             },
             changeAll: function() {
-                this.changeData("一级", 0,this.company1);
-                this.changeData("二级", 1,this.company1);
-                this.changeData("三级", 2,this.company1);
-                this.changeData("四级", 3,this.company1);
-                this.changeData("一级", 4,this.company2);
-                this.changeData("二级", 5,this.company2);
-                this.changeData("三级", 6,this.company2);
-                this.changeData("四级", 7,this.company2);
+                this.changeData("一级", 0, this.company1);
+                this.changeData("二级", 1, this.company1);
+                this.changeData("三级", 2, this.company1);
+                this.changeData("四级", 3, this.company1);
+                this.changeData("一级", 4, this.company2);
+                this.changeData("二级", 5, this.company2);
+                this.changeData("三级", 6, this.company2);
+                this.changeData("四级", 7, this.company2);
             },
             setTime: function() {
                 var startPoint, endPoint;
