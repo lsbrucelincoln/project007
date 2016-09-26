@@ -21,10 +21,11 @@
                 <div class="inputShort"><span>危险等级：</span>
                     <div class="admin_ui_select" style="width:200px">
                         <select name="" id="" class="taskNum">
-                            <option value="1">一级</option>
-                            <option value="2">二级</option>
-                            <option value="3">三级</option>
-                            <option value="4">四级</option>
+                        <option value="">全部</option>
+                            <option value="一级">一级</option>
+                            <option value="二级">二级</option>
+                            <option value="三级">三级</option>
+                            <option value="四级">四级</option>
                         </select>
                     </div>
                 </div>
@@ -239,7 +240,7 @@ $(document).ready(function() {
                 $.post('/model', {
                     name: "Dangerous",
                     rows: 0,
-                    "params['delete']": state
+                    "params['delete']": state,
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {

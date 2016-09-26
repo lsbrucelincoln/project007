@@ -18,7 +18,7 @@
                     <!--                     <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label> -->
                 </div>
-                <div class="dataOutBtn normalBtn">导出数据</div>
+                <div class="dataOutBtn normalBtn" style="float:right;" @click="export">导出数据</div>
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
@@ -27,7 +27,7 @@
                             </a>
                         </div>
                         <i class="treeAdd" @click="addTreeNode">+</i>
-                        <i class="treeRemove">-</i></div>
+                        <i class="treeRemove" @click="removeTreeNode">-</i></div>
                     <div class="tableBox">
                         <table id="urgeSetTable">
                             <tr>
@@ -50,7 +50,10 @@
                             </tr>
                         </table>
                         <div class="bottom-search" style="width:100%">
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div><div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -143,7 +146,9 @@ $(document).ready(function() {
             rawData: [],
             tree2: [],
             showUsed: false,
-            chosenList: []
+            chosenList: [],
+            item1: "",
+            item2: ''
         },
         computed: {
             startPoint: function() {
@@ -180,6 +185,15 @@ $(document).ready(function() {
                 this.tree2 = tree2;
                 this.category = category;
             },
+            export: function() {
+                $.get('/region/exportEmergency', function(data) {
+                    if (data.state == 0) {
+                        window.open("/" + data.data)
+                    } else {
+                        alert(data.state)
+                    }
+                });
+            },
             usedFilter: function(data) {
                 console.log((this.showUsed && !data.used));
                 if (this.showUsed && !data.used) {
@@ -212,10 +226,10 @@ $(document).ready(function() {
                             }
 
                         })
-                }else{
+                } else {
                     if (self.state) {
                         alert("请选择启用项")
-                    }else{
+                    } else {
                         alert("请选择禁用项")
                     }
                 }
@@ -307,6 +321,13 @@ $(document).ready(function() {
                 console.log($(".chosenCategory span").text());
                 $(".chosenCategory").after('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>');
 
+            },
+            removeTreeNode: function() {
+                if (($(".chosenCategory").hasClass('category1') && this.tree2[$(".chosenCategory span").text()].length == 0) || (this.rules.length == 0 && $(".chosenCategory").hasClass('category2'))) {
+                    $(".chosenCategory").remove();
+                } else {
+                    alert("无法删除有数据的目录")
+                }
             },
             addOne: function() {
                 localStorage.setItem("dataParams", JSON.stringify(this.$data));

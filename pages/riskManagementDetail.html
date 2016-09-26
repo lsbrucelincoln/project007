@@ -102,7 +102,7 @@ img {
                             <textarea style="width:100%;height:50px;padding:5px" v-model="params.text" :disabled="taskDetail.recheckState!='未整改'"></textarea>
                         </td>
                     </tr>
-                    <tr v-if="taskDetail.recheckState=='未整改'&&competence">
+                    <tr v-show="taskDetail.recheckState=='未整改'&&competence" class="uploadPicBox">
                         <th>整改图片：</th>
                         <td colspan="5" id="picTable">
                             <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
@@ -122,7 +122,7 @@ img {
             </table>
             <table class="tem_headTable" v-if="taskDetail.recheckState!='未整改'&&taskDetail.details.length > 0" v-for="detail in taskDetail.details" style="border-top:1px solid #ccc">
                 <tr>
-                    <th width="120">{{$index%2==0?"整改说明：":"复检说明："}}</th>
+                    <th width="120" style="line-height:40px">{{$index%2==0?"整改说明：":"复检说明："}}</th>
                     <td colspan="5">
                         {{detail.text}}
                     </td>
@@ -142,7 +142,7 @@ img {
     </div>
 </div>
 <script>
-$(".admin_content").on('click', 'img', function(event) {
+$(".uploadPicBox").on('click', 'img', function(event) {
     if (vm.taskDetail.recheckState == "未整改") {
         event.preventDefault();
         if (confirm("是否删除该图？")) {
@@ -208,7 +208,7 @@ var vm = new Vue({
                 console.log($(event.target)[0].files);
                 var file = $(event.target)[0].files[0];
                 if (!/image\/\w+/.test(file.type)) {
-                    alert("文件必须为图片！");
+                    alert("必须上传图片文件");
                     return false;
                 }
                 var reader = new FileReader();
@@ -259,25 +259,30 @@ var vm = new Vue({
             data.recheck = this.taskDetail.id;
             data.photos = [];
             console.log($("img").length);
-            if ($("img").length > 0) {
-                $("img").each(function(index, el) {
-                    if ($(el).attr('data-id')) {
-                        data.photos.push($(el).attr('data-id'));
-                    }
-                });
+            if (this.competence) {
+                if ($("img").length > 0) {
+                    $("img").each(function(index, el) {
+                        if ($(el).attr('data-id')) {
+                            data.photos.push($(el).attr('data-id'));
+                        }
+                    });
+                }
+                $.ajax({
+                        url: '/company/reCheck',
+                        type: 'POST',
+                        data: data,
+                        traditional: true
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            alert("提交成功");
+                            history.back();
+                        }
+                    })
+            }else{
+                history.back();
             }
-            $.ajax({
-                    url: '/company/reCheck',
-                    type: 'POST',
-                    data: data,
-                    traditional: true
-                })
-                .done(function(data) {
-                    if (data.state == 0) {
-                        alert("提交成功");
-                        history.back();
-                    }
-                })
+
         },
         dataURLtoBlob: function(dataurl) {
             var arr = dataurl.split(','),

@@ -13,7 +13,7 @@
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width: 200px;">
                         <select class="regionName">
-                        <option value="">全部</option>
+                            <option value="">全部</option>
                             <option v-for="place in region" value="{{place.name}}">{{place.name}}</option>
                         </select>
                     </div>
@@ -34,7 +34,7 @@
                     <div class="endProgramBtn normalBtn" v-if="!competence">指派处置</div>
                 </div>
                 <div class="tableBox">
-                    <table id="checkTable" class="display" >
+                    <table id="checkTable" class="display">
                         <thead>
                             <tr>
                                 <th>
@@ -48,11 +48,12 @@
                                 <th>登记时间</th>
                                 <th>整改限期</th>
                                 <th>当前状态</th>
+                                <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="task in showTasks |limitBy recordLimit startPoint ">
+                            <tr v-for="task in showTasks ">
                                 <td>
                                     <input type="checkBox" id="person1" class="checkBox" v-if="task.code" data-id="{{task.id}}">
                                 </td>
@@ -64,6 +65,7 @@
                                 <td>{{task.time}}</td>
                                 <td>{{task.restDay}}</td>
                                 <td>{{task.recheckState}}</td>
+                                <td>{{task.date}}</td>
                                 <td><a href="#/riskManagementDetail.html" @click="saveTask(task)" v-if="task.code">查看</a></td>
                             </tr>
                         </tbody>
@@ -97,10 +99,10 @@ $(document).ready(function() {
     });
     $(".searchButtom").on('click', function(event) {
         event.preventDefault();
-        $("#checkTable").DataTable().columns(5).search($(".createTime").val(), false, true).draw();
-        $("#checkTable").DataTable().columns(4).search($(".regionName").val(), false, true).draw();
-        $("#checkTable").DataTable().columns(1).search($(".taskNum").val(), false, true).draw();
-        $("#checkTable").DataTable().columns(3).search($(".companyName").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(9).search($(".createTime").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(5).search($(".regionName").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(2).search($(".taskNum").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(4).search($(".companyName").val(), false, true).draw();
     });
     var vm = new Vue({
         el: "#riskManagementBody",
@@ -120,7 +122,7 @@ $(document).ready(function() {
             competence: true,
             chosenList: [],
             region: [],
-            showState:false
+            showState: false
         },
         computed: {
             startPoint: function() {
@@ -208,9 +210,10 @@ $(document).ready(function() {
                         .done(function(data) {
                             if (data.state == 0) {
                                 alert("警告成功");
+                                $("td .checkBox").prop("checked", false);
                             }
                         })
-                }else{
+                } else {
                     alert("请选择警告项")
                 }
             },
@@ -232,11 +235,13 @@ $(document).ready(function() {
                         .done(function(data) {
                             if (data.state == 0) {
                                 this.showTasks = [];
+                                alert("项目已结束");
+                                $('table.display').hide();
                                 $('table.display').DataTable().destroy();
-                                self.getData(self.tagState)
+                                self.getData(self.tagState);
                             }
                         })
-                }else{
+                } else {
                     alert("请选择结束项")
                 }
             },
@@ -253,8 +258,11 @@ $(document).ready(function() {
                 return result.reverse();
             },
             dayPeriodCompute: function(startTime, endTime) {
-                var day = endTime - startTime;
-                return parseInt(day / (1000 * 60 * 60 * 24));
+                var time = endTime - startTime;
+                var day=parseInt(time / (1000 * 60 * 60 * 24));
+                console.log(day);
+                day=day>0?day:0;
+                return day;
             },
             saveTask: function(data) {
                 data = JSON.stringify(data);
@@ -262,79 +270,93 @@ $(document).ready(function() {
             },
             changeState: function(state) {
                 this.tagState = state;
-                this.showState=false;
+                this.showState = false;
                 this.showTasks = [];
                 $('table.display').DataTable().destroy();
                 this.getData(state);
             },
             getData: function(state) {
-                var self=this;
+                var self = this;
                 var data = {}
                 switch (state) {
                     case 1:
                         data = {
                             name: 'Recheck',
                             rows: 0,
-                            "params['notcompelete']": 1
+                            "params['notcompelete']": 1,
+                            remove: "censor.task.safeRules"
                         };
                         break;
                     case 2:
                         data = {
                             name: 'Recheck',
                             rows: 0,
-                            "params['type']": '已完成'
+                            "params['type']": '已完成',
+                            remove: "censor.task.safeRules"
                         };
                         break;
                 }
-                $.post('/model', data, function(data, textStatus, xhr) {
-                    console.log(data);
-                    if (data.state == 0) {
-                        vm.taskGetDetail(data.data);
-                        vm.$nextTick(function() {
-                            $('table.display').DataTable({
-                                "order": [
-                                    [1, "desc"]
-                                ],
-                                // "searching": false,
-                                "pageLength": 5,
-                                "dom": 'rtp',
-                                "columnDefs": [{
-                                    "orderable": false,
-                                    "targets": [0, 9]
-                                },{
-                                    "targets":[1],
-                                    "visible": false,
-                                     "searchable": false
-                                }],
+                $.ajax({
+                        url: '/model',
+                        type: 'POST',
+                        data: data,
+                    })
+                    .done(function(data) {
+                        console.log(data);
+                        if (data.state == 0) {
+                            vm.taskGetDetail(data.data);
+                            vm.$nextTick(function() {
+                                $('table.display').DataTable({
+                                    "order": [
+                                        [1, "desc"]
+                                    ],
+                                    // "searching": false,
+                                    "pageLength": 5,
+                                    "dom": 'rtp',
+                                    "columnDefs": [{
+                                        "orderable": false,
+                                        "targets": [0, 9]
+                                    }, {
+                                        "targets": [1,9],
+                                        "visible": false,
+                                    }],
 
-                                language: {
-                                    processing: "处理中...",
-                                    search: "Rechercher&nbsp;:",
-                                    lengthMenu: "显示 _MENU_ 项结果",
-                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
-                                    infoPostFix: "",
-                                    loadingRecords: "载入中...",
-                                    zeroRecords: "没有匹配结果",
-                                    emptyTable: "表中数据为空",
-                                    paginate: {
-                                        first: "首页",
-                                        previous: "上页",
-                                        next: "下页",
-                                        last: "末页"
-                                    },
-                                    aria: {
-                                        sortAscending: ": 以升序排列此列",
-                                        sortDescending: ":  以降序排列此列"
+                                    language: {
+                                        processing: "处理中...",
+                                        search: "Rechercher&nbsp;:",
+                                        lengthMenu: "显示 _MENU_ 项结果",
+                                        info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                        infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                        infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                        infoPostFix: "",
+                                        loadingRecords: "载入中...",
+                                        zeroRecords: "没有匹配结果",
+                                        emptyTable: "表中数据为空",
+                                        paginate: {
+                                            first: "首页",
+                                            previous: "上页",
+                                            next: "下页",
+                                            last: "末页"
+                                        },
+                                        aria: {
+                                            sortAscending: ": 以升序排列此列",
+                                            sortDescending: ":  以降序排列此列"
+                                        }
                                     }
-                                }
-                            });
-                            self.showState=true;
-                            // $("table.display").show()
-                        })
-                    }
-                });
+                                });
+                                self.showState = true;
+                                // $("table.display").show()
+                            })
+                            $('table.display').show();
+                        }
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
+
             }
         },
         created: function() {

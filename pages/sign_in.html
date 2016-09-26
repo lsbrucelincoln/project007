@@ -55,6 +55,7 @@
                 </div>
             </div>
         </div>
+        <div class="QR"><img src="../source/images/QR.png" alt=""></div>
     </div>
     <div class="admin_footer" style="position:fixed;bottom:0;">
         <span>宁波市港航管理局</span>
@@ -71,6 +72,11 @@
         }
         $("#company").on('click', function(event) {
             $(".loginBtn").attr('href', 'Index_c.html');
+        });
+        $(".download").hover(function() {
+            $(".QR").css('opacity', '1');
+        }, function() {
+            $(".QR").css('opacity', '0');
         });
         $("#government").on('click', function(event) {
             $(".loginBtn").attr('href', 'index.html');
@@ -95,20 +101,22 @@
             $.post(baseUrl + '/auth/login', {
                 username: username,
                 password: password,
-                // "remember-me": "on"
+                "remember-me": "on"
             }, function(data, textStatus, xhr) {
                 console.log(data);
                 if (data.state == 0) {
                     localStorage.setItem("id", data.id);
-                    localStorage.setItem("competence", data.competence)
+                    localStorage.setItem("competence", data.competence);
                     switch (data.competence) {
                         case "机构管理员":
+                        case "系统管理员":
                             if ($(".loginBtn").attr('href') == "Index_c.html") {
                                 alert("您不是企业负责人，没有权限进入")
                             }else if($(".loginBtn").attr('href') == "index.html"){
                                 window.location.href = "index.html";
                             }
                             break;
+
                         case "企业负责人":
                             if ($(".loginBtn").attr('href') == "index.html") {
                                 alert("您不是机构管理员，没有权限进入")

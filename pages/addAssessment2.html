@@ -324,9 +324,11 @@ $(document).ready(function() {
             self.getData();
             $.post('/model', {
                 name: "Region",
+                "params['my']": 1,
+                start: -1
             }, function(data, textStatus, xhr) {
                 if (data.state == 0) {
-                    vm.specialCheck = data.data[0].special;
+                    vm.specialCheck = data.data.special;
                 }
             });
         },

@@ -13,6 +13,7 @@ $(function() {
     adminInit();
     resizeContentTable();
     window.page = {};
+
     function adminInit() {
         eventBind();
         basicAjax();
@@ -45,7 +46,7 @@ function eventBind() {
     $(".admin_content").on('click', '.backBtn', function(event) {
         history.back();
     });
-    $("window").on('click', '.logout', function(event) {
+    $(".admin_body").on('click', '.logout', function(event) {
         event.preventDefault();
         $.post('/auth/logout', function(data, textStatus, xhr) {
             if (data.state == 0) {
@@ -68,7 +69,7 @@ function eventBind() {
     //         console.log($(this)[0].files);
     //         var file = $(this)[0].files[0];
     //         if (!/image\/\w+/.test(file.type)) {
-    //             alert("文件必须为图片！");
+    //             alert("必须上传图片文件");
     //             return false;
     //         }
     //         var reader = new FileReader();
@@ -157,21 +158,33 @@ function eventBind() {
 
 function basicAjax() {
     var id = localStorage.getItem("id");
-    $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
-        if (data.state == 0) {
-            $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
-        }
-        else if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
-            alert("登录超时，请重新登录");
-            window.location.href = "sign_in.html"
-        }
-    });
-    $.get(baseUrl + '/region/getStatistics', function(data) {
-        if (data.state == 0) {
-            $(".tips #todayTask").text(data.todayTask);
-            $(".tips #todayCensor").text(data.todayCensor);
-        }
-    });
+    console.log(window.location.href.search("Index_c") != -1);
+    if (window.location.href.search("Index_c") != -1) {
+        $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
+            if (data.state == 0) {
+                $(".client .name").text(data.data.username + "(" + data.data.name + ")");
+            }
+        });
+        $.get(baseUrl + '/company/getStatistics', function(data) {
+            if (data.state == 0) {
+                $(".tips #todayTask").text(data.todayTask);
+                $(".tips #todayCensor").text(data.todayCensor);
+            }
+        });
+    } else {
+        $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
+            if (data.state == 0) {
+                $(".client .name").text(data.data.username + "(" + data.data.region.name + ")");
+            }
+        });
+        $.get(baseUrl + '/region/getStatistics', function(data) {
+            if (data.state == 0) {
+                $(".tips #todayTask").text(data.todayTask);
+                $(".tips #todayCensor").text(data.todayCensor);
+            }
+        });
+    }
+
 }
 
 function uiComponentEventBind() {
@@ -190,7 +203,7 @@ function uiComponentEventBind() {
                 return false;
             }
             if (!/image\/\w+/.test(file.type)) {
-                alert("文件必须为图片！");
+                alert("必须上传图片文件");
                 return false;
             }
             var reader = new FileReader();
@@ -320,45 +333,52 @@ function resizeContentTable() {
 function loadContent(event) {
     var hash = window.location.hash;
     var url = window.location.href;
-    
+
     if (hash == "" && url.search("Index_c") == -1) {
         hash = "#/" + ADMIN_CONFIG.homePage;
     } else if (hash == "" && url.search("Index_c") !== -1) {
         hash = "#/" + "companyInfoManagement.html"
     }
     var hashArray = hash.split("/");
-    
-    window.page.beforeUnload = function(){
+
+    window.page.beforeUnload = function() {
         return true;
     }
     $(ADMIN_CONFIG.contentSelector).load(hash.split("/")[1], function() {
+        var id = localStorage.getItem("id");
+        $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {
+            if (data.state == 10001 & window.location.href.search("sign_in") == -1) {
+                alert("登录超时，请重新登录");
+                window.location.href = "sign_in.html"
+            }
+        });
         uiComponentEventBind();
         $(".submenu .line").removeClass('chosen')
-        .filter("[href='"+hash+"']").addClass("chosen")
-        .closest(".submenu").prev(".line").not(".active").trigger("click");
+            .filter("[href='" + hash + "']").addClass("chosen")
+            .closest(".submenu").prev(".line").not(".active").trigger("click");
     });
-    
+
 }
-$(document).on('click','a[href^="#/"]',function(e){
+$(document).on('click', 'a[href^="#/"]', function(e) {
     $(".line").removeClass('chosenLine');
-    if ($(this).attr('id')=="homePageBtn") {
+    if ($(this).attr('id') == "homePageBtn") {
         $(this).addClass('chosenLine')
     }
     var hash = $(this).attr("href");
-    if(window.page.beforeUnload(hash)){
+    if (window.page.beforeUnload(hash)) {
 
-    }
-    else{
+    } else {
         event.preventDefault();
     }
 })
+
 function leftMenuPlace() {
     var hash = window.location.hash;
     if (window.location.href.search("Index_c") == -1) {
         if (hash.match("safeDataMap") || !hash || hash.match("welcome")) {
             $("#homePageBtn").addClass('chosenLine');
         }
-    }else if(!hash){
+    } else if (!hash) {
         $(".leftmenu>div>.line").eq(0).trigger("click");
         $(".active+.submenu>.line").eq(0).addClass('chosen');
     }

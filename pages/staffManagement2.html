@@ -5,7 +5,7 @@
         </div>
         <a href="#" class="addBtn normalBtn">添加企业</a>
     </div>
-    <div class="tableBox" v-show="showState">
+    <div class="tableBox">
         <table class="display">
             <thead>
                 <tr>
@@ -22,11 +22,11 @@
                 <td>
                     <input type="checkBox" id="person1" class="checkBox" data-id="{{company.user.id}}">
                 </td>
-                <td>{{company.id}}</td>
+                <td>{{$index+1}}</td>
                 <td>{{company.name}}</td>
                 <td>{{company.area}}</td>
                 <td>{{company.time}}</td>
-                <td>{{company.user.no_lock?"使用中":"禁用"}}</td>
+                <td>{{company.user.no_lock?"启用":"禁用"}}</td>
                 <td><a href="#/staffManagementDetail.html" @click="saveDetail(company)">查看</a></td>
             </tr>
         </table>
@@ -145,64 +145,68 @@ $(document).ready(function() {
 
                             }
                         })
-                }else{
+                } else {
                     if (boolean) {
                         alert("请选择启用项")
-                    }else{
+                    } else {
                         alert("请选择禁用项")
                     }
                 }
 
             },
+            getData: function() {
+                $.post('/model', {
+                    name: "Company",
+                    rows: 0
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                    if (data.state == 0) {
+                        vm.userDetail(data.data)
+                        vm.$nextTick(function() {
+                            vm.showState = true;
+                            $('table.display').show();
+                            $('table.display').DataTable({
+                                "order": [
+                                    [1, "asc"]
+                                ],
+                                "pageLength": 5,
+                                "dom": 'rtp',
+                                "columnDefs": [{
+                                    "orderable": false,
+                                    "targets": [0, 6]
+                                }],
+                                language: {
+                                    processing: "处理中...",
+                                    search: "查找中...",
+                                    lengthMenu: "显示 _MENU_ 项结果",
+                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    infoPostFix: "",
+                                    loadingRecords: "载入中...",
+                                    zeroRecords: "没有匹配结果",
+                                    emptyTable: "表中数据为空",
+                                    paginate: {
+                                        first: "首页",
+                                        previous: "上页",
+                                        next: "下页",
+                                        last: "末页"
+                                    },
+                                    aria: {
+                                        sortAscending: ": 以升序排列此列",
+                                        sortDescending: ":  以降序排列此列"
+                                    }
+                                }
+                            });
+                        })
+                    }
+                });
+            }
         },
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
-            $.post('/model', {
-                name: "Company",
-                rows: 0
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-                if (data.state == 0) {
-                    vm.userDetail(data.data)
-                    vm.$nextTick(function() {
-                        vm.showState = true;
-                        $('table.display').DataTable({
-                            "order": [
-                                [4, "desc"]
-                            ],
-                            "pageLength": 5,
-                            "dom": 'rtp',
-                            "columnDefs": [{
-                                "orderable": false,
-                                "targets": [0, 6]
-                            }],
-                            language: {
-                                processing: "处理中...",
-                                search: "查找中...",
-                                lengthMenu: "显示 _MENU_ 项结果",
-                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                infoFiltered: "(由 _MAX_ 项结果过滤)",
-                                infoPostFix: "",
-                                loadingRecords: "载入中...",
-                                zeroRecords: "没有匹配结果",
-                                emptyTable: "表中数据为空",
-                                paginate: {
-                                    first: "首页",
-                                    previous: "上页",
-                                    next: "下页",
-                                    last: "末页"
-                                },
-                                aria: {
-                                    sortAscending: ": 以升序排列此列",
-                                    sortDescending: ":  以降序排列此列"
-                                }
-                            }
-                        });
-                    })
-                }
-            });
+            self.getData();
         },
         ready: function() {
 

@@ -144,10 +144,11 @@
                 this.changeAll();
             },
             region: function(val, oldVal) {
-                this.changeAll();
+                // this.changeAll();
                 $.post('/model', {
                     name: "Company",
-                    "row": 0
+                    "row": 0,
+                    "params['region_id']": val,
                 }, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         vm.companyList = data.data;

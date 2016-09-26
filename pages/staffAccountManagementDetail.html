@@ -41,7 +41,7 @@
                 <div class="inputShort">
                     <span>密码：</span>
                     <i>*******</i>
-                    <div class="normalBtn" style="position:absolute;right:20px;" @click="changeState==0?changeState=1:changeState=0">修改</div>
+                    <div class="normalBtn" style="position:absolute;right:20px;" @click="changeState==0?changeState=1:changeState=0" v-show="changeState==0">修改</div>
                 </div>
                 <div class="inputShort" v-if="changeState==1">
                     <span>新密码：</span>

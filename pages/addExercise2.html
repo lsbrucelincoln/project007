@@ -36,7 +36,7 @@
                 </div> -->
                 <div class="assess2Body">
                     <div class="ztreeBox ztree">
-                        <a class="category1" @click="state[0]==1?state.$set(0,0):state.$set(0,1)"><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
+                        <a class="category1" ><i class="flaticon-add-1" v-if="!state[0]==1"></i><i class="flaticon-square" v-if="state[0]==1"></i>应急演练模板
                             <ul class="line" v-if="state[0]==1"><li class="category2" v-for="(index2,item2) in category"  @click.stop="showData(item2,$event,index2)"><i class="flaticon-interface"></i>{{index2}}</li></ul>
                             </a>
                     </div>

@@ -43,6 +43,10 @@
                     <label for="port">码头</label>
                     <input type="checkbox" id="workingArea" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px;padding:0" :true-value="2" v-model="place2">
                     <label for="workingArea">作业区</label>
+                    <input type="checkbox" id="officeArea" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px;padding:0" :true-value="3" v-model="place3">
+                    <label for="officeArea">办公区</label>
+                    <input type="checkbox" id="warehouse" style="width:12px;height:12px;position:relative;top:2px;margin-right:2px;padding:0" :true-value="4" v-model="place4">
+                    <label for="warehouse">仓库</label>
                 </div>
                 <div class="inputShort inputLong companyObject"><span>选择企业对象:</span>
                     <div class="admin_ui_select">
@@ -168,7 +172,9 @@ $(document).ready(function() {
             choseCompany: {},
             place1: "1",
             place2: "",
-            rawUser:[]
+            place3: "",
+            place4: "",
+            rawUser: []
         },
         watch: {
             place1: function(val, oldVal) {
@@ -186,6 +192,22 @@ $(document).ready(function() {
                     this.params.places.push(val);
                 } else {
                     this.params.places.$remove(2)
+                }
+            },
+            place3: function(val, oldVal) {
+                console.log('test');
+                if (val) {
+                    this.params.places.push(val);
+                } else {
+                    this.params.places.$remove(3)
+                }
+            },
+            place4: function(val, oldVal) {
+                console.log('test');
+                if (val) {
+                    this.params.places.push(val);
+                } else {
+                    this.params.places.$remove(4)
                 }
             },
             // team:function(val,oldVal){
@@ -210,7 +232,7 @@ $(document).ready(function() {
                 }
             },
             teamFilter: function(data) {
-                if (this.team == "" || (this.team !== "" && this.team !== data.squadron||data.competence!=="检查评估员")) {
+                if (this.team == "" || (this.team !== "" && this.team !== data.squadron || data.competence !== "检查评估员")) {
                     return false;
                 } else {
                     return true;
@@ -288,10 +310,11 @@ $(document).ready(function() {
                 });
                 $.post('/model', {
                     name: "Region",
-                    "params['my']": 1
+                    "params['my']": 1,
+                    start: -1
                 }, function(data, textStatus, xhr) {
                     if (data.state == 0) {
-                        vm.specialCheck = data.data[0].special;
+                        vm.specialCheck = data.data.special;
                     }
                 });
                 $.post('/model', {
@@ -306,7 +329,7 @@ $(document).ready(function() {
                 }, function(data, textStatus, xhr) {
                     if (data.state == 0) {
                         vm.user = data.data;
-                        vm.rawUser=data.data;
+                        vm.rawUser = data.data;
                     }
                 });
             }

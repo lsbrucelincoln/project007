@@ -1,10 +1,11 @@
 <style>
-    .display td{
-        text-align: left!important;
-    }
-        .display th{
-        text-align: left!important;
-    }
+.display td:first-child {
+    text-align: left!important;
+}
+
+.display th:first-child {
+    text-align: left!important;
+}
 </style>
 <div class="welcome admin_content_innerBox" id="welcomeBody">
     <div class="admin_scrollBox">
@@ -29,15 +30,15 @@
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th @click=" nameOrder1 = nameOrder1 * -1 ">
+                            <th>
                                 企业名称
                             </th>
-                            <th style="width:40px">评估类</th>
-                            <th @click=" timeOrder1 = timeOrder1 * -1 ">
+                            <th style="width:60px">评估类型</th>
+                            <th style="width:60px">
                                 创建时间
                             </th>
-                            <th>负责人</th>
-                            <th>当前状态</th>
+                            <th style="width:50px">负责人</th>
+                            <th style="width:60px">当前状态</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,16 +80,16 @@
                     </tr>
                 </table>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">当前辖区内重大危险源备案登记数：<a href="#/dangerousSources.html"><span>{{statistics.Dangerous}} </span>项</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-warning"></i></span><span class="reportText">重大危险源备案登记数：<a href="#/dangerousSources.html"><span>{{statistics.Dangerous}} </span>项</a>
                 </span>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-alarm"></i></span><span class="reportText">当前辖区内隐患整改到期预警：<a href="#/riskManagement.html"><span>{{statistics.recheckDeadline}} </span>项</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-alarm"></i></span><span class="reportText">隐患整改到期预警：<a href="#/riskManagement.html"><span>{{statistics.recheckDeadline}} </span>项</a>
                 </span>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-newspaper"></i></span><span class="reportText">2016年07月月报已生成：<a href="javascript:void(0)"><span class="turnToReport">点击查看</span></a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-newspaper"></i></span><span class="reportText">{{year}}年{{lastMonth}}月月报已生成：<a href="javascript:void(0)"><span class="turnToReport">点击查看</span></a>
                 </span>
             </div>
-            <div class="reportBox"><span class="reportIcon"><i class="flaticon-apartment"></i></span><span class="reportText">当前辖区内注册企业数:<a href="#/staffManagement.html?company"><span>{{statistics.company}} </span>家</a>
+            <div class="reportBox"><span class="reportIcon"><i class="flaticon-apartment"></i></span><span class="reportText">注册企业数:<a href="#/staffManagement.html?company"><span>{{statistics.company}} </span>家</a>
                 </span>
             </div>
         </div>
@@ -130,7 +131,9 @@ $(document).ready(function() {
                 setTimeList: [],
                 setTime: "",
                 ajaxState: 0,
-                messages: []
+                messages: [],
+                lastMonth:'',
+                year:""
             },
             methods: {
                 taskGetDetail: function(data) {
@@ -199,8 +202,10 @@ $(document).ready(function() {
                     return month + "/" + day + " " + hours + ":" + minutes;
                 },
                 dayPeriodCompute: function(startTime, endTime) {
-                    var day = endTime - startTime;
-                    return parseInt(day / (1000 * 60 * 60 * 24));
+                    var time = endTime - startTime;
+                    var day = parseInt(time / (1000 * 60 * 60 * 24));
+                    day = day > 0 ? day : 0;
+                    return day;
                 },
                 unique: function(arr) {
                     var result = [],
@@ -218,6 +223,14 @@ $(document).ready(function() {
             created: function() {
                 var self = this;
                 var id = localStorage.getItem("id");
+                var time = new Date();
+                if (time.getMonth()==0) {
+                    this.lastMonth=12;
+                    this.year=time.getFullYear()-1
+                }else{
+                    this.lastMonth=time.getMonth();
+                    this.year=time.getFullYear();
+                }
                 $.post(baseUrl + '/model', {
                     name: "Message",
                     rows: 0
@@ -264,7 +277,8 @@ $(document).ready(function() {
                 $.post(baseUrl + '/model', {
                     name: "Recheck",
                     rows: 0,
-                    "params['notcompelete']": 1
+                    "params['notcompelete']": 1,
+                    remove: "censor.task.safeRules"
                 }, function(data, textStatus, xhr) {
                     console.log(data);
                     if (data.state == 0) {

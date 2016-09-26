@@ -34,7 +34,7 @@
             console.log($(this)[0].files);
             var file = $(this)[0].files[0];
             if (!/image\/\w+/.test(file.type)) {
-                alert("文件必须为图片！");
+                alert("必须上传图片文件");
                 return false;
             }
             var reader = new FileReader();

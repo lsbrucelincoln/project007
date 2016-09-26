@@ -13,8 +13,8 @@
                     <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label>
                 </div>
-                <input type="file" id="uploadData" style="display:none">
-                <div class="dataOutBtn normalBtn" style="float:right">导出数据</div>
+                <input type="file" id="uploadData" style="display:none" @change="upload">
+                <div class="dataOutBtn normalBtn" style="float:right" @click="export">导出数据</div>
                 <label class="dataInBtn normalBtn" for="uploadData" style="float:right">导入数据</label>
                 <div class="assess2Body">
                     <div class="ztrbox">
@@ -28,7 +28,7 @@
                     <div class="tableBox">
                         <table>
                             <tr>
-                                <th style="width: 40px;">
+                                <th style="width: 40px;" v-show="competence">
                                     <input type="checkBox" id="person1" class="checkBox">
                                 </th>
                                 <th width="240px">内容</th>
@@ -38,8 +38,8 @@
                                 <th style="width: 100px;">当前状态</th>
                                 <th style="width: 80px;">操作</th>
                             </tr>
-                            <tr v-for="rule in rules |filterBy usedFilter rule   |limitBy recordLimit startPoint">
-                                <td>
+                            <tr v-for="rule in rules |filterBy usedFilter rule |limitBy recordLimit startPoint">
+                                <td v-show="competence">
                                     <input type="checkBox" id="person1" class="checkBox" data-id={{rule.id}}>
                                 </td>
                                 <td style="text-align:left">{{rule.text}}</td>
@@ -51,8 +51,11 @@
                             </tr>
                         </table>
                         <div class="bottom-search" style="width:100%">
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div><div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div><div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
-                            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px" v-show="competence">全选</div>
+                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne" v-show="competence">新增</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)" v-show="competence">启用</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)" v-show="competence">禁用</div>
+                            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev" v-show="competence">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
                                 </a>
@@ -158,8 +161,10 @@ $(document).ready(function() {
             tree2: {},
             showUsed: false,
             chosenList: [],
-            item1:"",
-            item2:''
+            item1: "",
+            item2: '',
+            uploadData: "",
+            competence: false,
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -215,6 +220,37 @@ $(document).ready(function() {
                 this.tree2 = tree2;
                 this.category = category;
             },
+            export: function() {
+                $.get('/region/exportSafety', function(data) {
+                    if (data.state == 0) {
+                        window.open("/" + data.data)
+                    } else {
+                        alert(data.state)
+                    }
+                });
+            },
+            upload: function() {
+                var file = $('#uploadData')[0].files[0];
+                console.log(file);
+                if (!/xlsx/.test(file.name)) {
+                    alert("必须上传xlsx格式文件");
+                    return false;
+                }
+                var formData = new FormData();
+                formData.append('file', file);
+                $.ajax({
+                    url: '/region/uploadSafety',
+                    type: 'POST',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                }).done(function(res) {
+                    if (res.state == 0) {
+                        alert("上传成功")
+                    }
+                }).fail(function(res) {});
+            },
             usedFilter: function(data) {
                 console.log((this.showUsed && !data.used));
                 if (this.showUsed && !data.used) {
@@ -244,6 +280,8 @@ $(document).ready(function() {
                                     alert("启用成功")
                                 }
                                 self.updateData();
+                                $(".category2").removeClass('chosenCategory');
+                                $(".category1").removeClass('chosenCategory');
                             }
 
                         })
@@ -379,10 +417,10 @@ $(document).ready(function() {
                     $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>')
                 }
             },
-            removeTreeNode:function(){
-                if (($(".chosenCategory").hasClass('category1')&&this.tree2[$(".chosenCategory span").text()].length==0)||(this.rules.length==0&&$(".chosenCategory").hasClass('category2'))) {
+            removeTreeNode: function() {
+                if (($(".chosenCategory").hasClass('category1') && this.tree2[$(".chosenCategory span").text()].length == 0) || (this.rules.length == 0 && $(".chosenCategory").hasClass('category2'))) {
                     $(".chosenCategory").remove();
-                }else{
+                } else {
                     alert("无法删除有数据的目录")
                 }
             },
@@ -394,6 +432,10 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
+            var competence = localStorage.getItem('competence');
+            if (competence == "系统管理员") {
+                self.competence = true
+            }
             self.updateData();
             $.post('/model', {
                 name: "CompanyType",
@@ -403,7 +445,6 @@ $(document).ready(function() {
                     vm.companyType = data.data;
                 }
             });
-
         },
         ready: function() {
 

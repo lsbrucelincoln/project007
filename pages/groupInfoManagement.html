@@ -7,14 +7,14 @@
             <div class="textInfo">
                 <div class="inputShort">
                     <span>机构名称：</span>
-                    <i>{{params.name}}</i>
+                    <input type="text" v-model="params.name" :disabled="disabled">
                 </div>
                 <div class="inputShort">
                     <span>机构代码：</span>
-                    <i>{{params.code}}</i>
+                    <input type="text" v-model="params.code" :disabled="disabled">
                 </div>
                 <div class="inputShort"><span>业务责任人：</span>
-                    <input type="text" value="张三" v-model="params.contact" :disabled="disabled">
+                    <input type="text" v-model="params.contact" :disabled="disabled">
                 </div>
                 <div class="inputShort">
                     <span>上级管理部门：</span>
@@ -121,7 +121,7 @@ $(document).ready(function() {
                 console.log($(event.target)[0].files);
                 var file = $(event.target)[0].files[0];
                 if (!/image\/\w+/.test(file.type)) {
-                    alert("文件必须为图片！");
+                    alert("必须上传图片文件");
                     return false;
                 }
                 var reader = new FileReader();

@@ -6,86 +6,84 @@
             <div class="textInfo">
                 <div class="inputShort">
                     <span>企业名称：</span>
-                    <input type="text" v-model="params.name">
+                    <input type="text" v-model="params.name"> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort"><span>企业类型：</span>
-                    <div class="admin_ui_select">
+                    <div class="admin_ui_select" style="width: 200px">
                         <select v-model="params.type">
                             <option v-for="type in companyType" value="{{type.id}}">{{type.name}}</option>
-                        </select>
-                    </div>
+                        </select> 
+                    </div> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort">
                     <span>企业代码：</span>
-                    <input type="text" v-model="params.code">
+                    <input type="text" v-model="params.code"> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort">
                     <span>港口管理部门：</span>
-                    <div class="admin_ui_select">
+                    <div class="admin_ui_select" style="width: 200px">
                         <select v-model="params.region">
                             <option v-for="place in region" value="{{place.id}}">{{place.name}}</option>
                         </select>
-                    </div>
+                    </div> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort"><span>固定电话：</span>
-                    <input type="text" v-model="params.telephone">
+                    <input type="text" v-model="params.telephone"> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort"><span>所属港区：</span>
-                    <div class="admin_ui_select">
+                    <div class="admin_ui_select" style="width: 200px">
                         <select v-model="params.area">
                             <option v-for="place in area" value="{{place.name}}">{{place.name}}</option>
-                        </select>
-                    </div>
+                        </select> 
+                    </div> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort digitMap"><span>电子地图：</span> X:
                     <input type="text" v-model="x"> — Y:
                     <input type="text" v-model="y"> </div>
                 <div class="inputShort"><span>安全责任人：</span>
-                    <input type="text" v-model="params.contact">
+                    <input type="text" v-model="params.contact"> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort"><span>用户名：</span>
-                    <input type="text" v-model="params.username">
+                    <input type="text" v-model="params.username"> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort"><span>密码：</span>
-                    <input type="password" v-model="params.password">
+                    <input type="password" v-model="params.password"> <i style="color:red">*</i>
                 </div>
                 <div class="inputShort"><span>手机号码：</span>
-                    <input type="text" v-model="params.phone">
+                    <input type="text" v-model="params.phone"> <i style="color:red">*</i>
                 </div>
                 <br/>
                 <div class="inputShort companyAddress"><span>企业地址：</span>
-                    <input type="text" v-model="params.address">
-                </div>
+                    <input type="text" v-model="params.address"> <i style="color:red">*</i>
+                </div> 
                 <br/>
-                <div class="inputShort companyNumber"><span>企业组织机构代码证：</span>
+                <div class="inputShort companyNumber"><span>企业组织机构代码证：</span> <i style="color:red">*</i>
                     <br/>
                     <div class="picUpload">
-                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage" style="margin-left:0px">
                             <input type="file" id="uploadPic" name="file" @change="upload">
                             <label for="uploadPic" id="fileBtn">
                                 +
                                 <img class="showPic" :src="url" />
                             </label>
-                            <span class="tip"></span>
-                            <input type="text" name="turnUrl" class="turnUrl">
-                            <input type="submit" value="submit">
+                            <input type="text" name="turnUrl" class="turnUrl" style="display:none">
+                            <input type="submit" value="submit" style="display:none">
                             <canvas id="uploadImg" style="display:none"></canvas>
                         </form>
                         <iframe src="" frameborder="0" id="turnPage"></iframe>
                     </div>
                 </div>
-                <div class="addBtn normalBtn" @click="addCompany">增加</div>
+                <div class="addBtn normalBtn" @click="addCompany" style="margin-left:46%">增加</div>
             </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
-    window.page.beforeUnload = function(){
-        if(confirm("未保存修改的信息，确定要离开吗？")){
+    window.page.beforeUnload = function() {
+        if (confirm("未保存修改的信息，确定要离开吗？")) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -125,7 +123,7 @@ $(document).ready(function() {
             companyType: "",
             region: "",
             area: "",
-            url:""
+            url: ""
         },
         computed: {
             coordinate: function() {
@@ -140,7 +138,7 @@ $(document).ready(function() {
                 console.log($(event.target)[0].files);
                 var file = $(event.target)[0].files[0];
                 if (!/image\/\w+/.test(file.type)) {
-                    alert("文件必须为图片！");
+                    alert("必须上传图片文件");
                     return false;
                 }
                 var reader = new FileReader();
@@ -177,7 +175,7 @@ $(document).ready(function() {
                         success: function(data) {
                             vm.params.photo = data.id;
                             console.log(data);
-                            vm.url="/map?id="+vm.params.photo
+                            vm.url = "/map?id=" + vm.params.photo
                             $(".showPic").show().attr('data-id', "/" + data.id);
                         }
                     });
@@ -197,13 +195,21 @@ $(document).ready(function() {
                 });
             },
             addCompany: function() {
-                $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
-                    console.log(data);
-                    if (data.state == 0) {
-                        alert("增加成功");
-                        history.back();
-                    }
-                });
+                console.log(this.coordinate);
+                if (!this.params.name || !this.params.password || !this.params.coordinate || !this.params.code|| !this.params.contact || !this.params.name || !this.params.region || !this.params.type || !this.params.username) {
+                    alert("请完善企业信息")
+                } else {
+                    $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
+                        console.log(data);
+                        if (data.state == 0) {
+                            alert("增加成功");
+                            history.back();
+                        }else if(data.state==10000){
+                            alert(data.msg)
+                        }
+                    });
+                }
+
             }
         },
         created: function() {

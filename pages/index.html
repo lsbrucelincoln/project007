@@ -233,7 +233,7 @@
                                     </a>
                                     <div class="submenu">
                                         <!-- href="#/AccessmentAnalysis.html" -->
-                                        <a class="line">
+                                        <a class="line lawAlert" >
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
@@ -342,7 +342,7 @@
                     <div class="admin_ui_select" style="width:200px">
                         <select v-model="competence">
                             <option value="检查评估员">检查评估员</option>
-                            <option value="机构管理员">机构管理员</option>
+                            <!-- <option value="机构管理员">机构管理员</option> -->
                         </select>
                     </div>
                 </div>
@@ -354,6 +354,10 @@
         </div>
     </div>
     <script>
+    $(".lawAlert").on('click', function(event) {
+        event.preventDefault();
+        alert("功能开发中")
+    });
     var vx = new Vue({
         el: "#addAccount",
         data: {

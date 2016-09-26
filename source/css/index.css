@@ -246,6 +246,15 @@ body {
 .admin_left .leftmenu > div.active > .line .rightIcon {
   display: none;
 }
+.QR {
+  width: 200px;
+  position: absolute;
+  right: 25px;
+  bottom: 50px;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s;
+          transition: opacity 0.5s;
+}
 .signInBody {
   height: 100%;
   text-align: center;

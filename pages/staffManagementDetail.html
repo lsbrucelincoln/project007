@@ -18,7 +18,7 @@
                 </div>
                 <div class="inputShort">
                     <span>密码：</span>
-                    <i>******</i>
+                    <i>******</i><div class="normalBtn" @click="setPassword">重置</div>
                 </div>
                 <div class="inputShort">
                     <span>注册时间：</span>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="inputShort">
                     <span>当前状态：</span>
-                    <i>已审核</i>
+                    <i>{{td.user.no_lock?"启用":"禁用"}}</i>
                 </div>
                 <div class="inputShort">
                     <span>企业类型：</span>
@@ -74,18 +74,17 @@
                     <span>企业地址：</span>
                     <input type="text" v-model="params.address" :disabled="disabled">
                 </div>
-                <div class="inputShort">
+                <div class="inputShort" style="width:100%">
                     <span>证书附件：</span>
-                    <a class="admin_ui_link" href="/map/{{params.photo}}">查看</a>
+                    <!-- <a class="admin_ui_link" href="/map/{{params.photo}}">查看</a> -->
                     <br/>
-                    <div class="picUpload" style="margin-left:40%" v-show="!disabled">
-                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
-                            <input type="file" id="uploadPic" name="file" @change="upload">
+                    <div class="picUpload">
+                        <form action="/upload" class="fileForm" enctype="multipart/form-data" method="post" target="turnPage">
+                            <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
                             <label for="uploadPic" id="fileBtn">
                                 +
                                 <img class="showPic" :src="url" />
                             </label>
-                            <span class="tip"></span>
                             <input type="text" name="turnUrl" class="turnUrl">
                             <input type="submit" value="submit">
                             <canvas id="uploadImg" style="display:none"></canvas>
@@ -95,9 +94,9 @@
                 </div>
             </div>
             <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-                <div class="comfirmBtn normalBtn" style="margin-top:15px" @click="confirm">确定</div>
+                <div class="comfirmBtn normalBtn" style="margin-top:0px" @click="confirm">确定</div>
                 <div class="updateBtn normalBtn" style="margin-top:15px" @click="disabled=false">修改</div>
-                <div class="deleteBtn normalBtn" style="margin-top:15px">删除</div>
+                <div class="deleteBtn normalBtn" style="margin-top:15px" @click="deleteCompany">删除</div>
             </div>
         </div>
     </div>
@@ -178,6 +177,15 @@ $(document).ready(function() {
                 }
                 return result.reverse();
             },
+            setPassword:function(){
+                if (confirm("是否确定重置该企业密码，密码重置后默认为a123")) {
+                    $.post('/resetPassword', {id: this.td.user.id,password:'a123'}, function(data, textStatus, xhr) {
+                        if (data.state==0) {
+                            alert("重置成功")
+                        }
+                    });
+                }
+            },
             addCompany: function() {
                 $.post('/region/addCompany', vm.params, function(data, textStatus, xhr) {
                     if (data.state == 0) {
@@ -205,7 +213,7 @@ $(document).ready(function() {
                 console.log($(event.target)[0].files);
                 var file = $(event.target)[0].files[0];
                 if (!/image\/\w+/.test(file.type)) {
-                    alert("文件必须为图片！");
+                    alert("必须上传图片文件");
                     return false;
                 }
                 var reader = new FileReader();
@@ -261,6 +269,9 @@ $(document).ready(function() {
                     type: mime
                 });
             },
+            deleteCompany:function(){
+                
+            }
         },
         created: function() {
             var td = this.td = JSON.parse(localStorage.getItem("companyDetail"));
@@ -279,6 +290,7 @@ $(document).ready(function() {
             }
             if (td.photo) {
                 this.params.photo = td.photo.id
+                this.url='/map/'+td.photo.id
             } else {
                 this.params.photo = 1
             }

@@ -161,7 +161,7 @@ textarea {
                             </form>
                             <iframe src="" frameborder="0" id="turnPage" style="display:none"></iframe>
                         </td>
-                        <td style="text-align:center"><a class="admin_ui_link">下载</a></td>
+                        <td style="text-align:center"><a class="admin_ui_link" :href="url" download="1.jpg">下载</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -231,7 +231,7 @@ $(document).ready(function() {
                 console.log($(event.target)[0].files);
                 var file = $(event.target)[0].files[0];
                 if (!/image\/\w+/.test(file.type)) {
-                    alert("文件必须为图片！");
+                    alert("必须上传图片文件");
                     return false;
                 }
                 var reader = new FileReader();

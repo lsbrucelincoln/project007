@@ -169,7 +169,7 @@
                                         <i class="flaticon-arrows"></i></span>
                                     </a>
                                     <div class="submenu">
-                                        <a class="line">
+                                        <a class="line lawAlert">
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
@@ -235,6 +235,12 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(".lawAlert").on('click', function(event) {
+            event.preventDefault();
+            alert("功能开发中")
+        });
+        </script>
 </body>
 
 </html>
