@@ -12,7 +12,7 @@
                     <th>
                         <input type="checkBox" id="person1" class="checkBox">
                     </th>
-                    <th style="text-align: left">用户名</th>
+                    <th style="text-align: left;width: 210px" >用户名</th>
                     <th>角色</th>
                     <th>所属中队</th>
                     <th>注册时间</th>
@@ -25,7 +25,7 @@
                     <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0" data-id="{{account.id}}">
                     <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0" data-id="{{account.id}}">
                 </td>
-                <td style="text-align: left">{{account.name}}</td>
+                <td style="text-align: left" ><span class='ellipsis'>{{account.name}}</span></td>
                 <td>{{account.competence}}</td>
                 <td>{{account.squadron}}</td>
                 <td>{{account.time}}</td>
@@ -198,7 +198,7 @@ var vm = new Vue({
                             "dom": 'rtp',
                             "columnDefs": [{
                                 "orderable": false,
-                                "targets": [0, 6]
+                                "targets": [0,1, 6]
                             }],
                             language: {
                                 processing: "处理中...",
@@ -249,7 +249,7 @@ var vm = new Vue({
                         "dom": 'rtp',
                         "columnDefs": [{
                             "orderable": false,
-                            "targets": [0, 6]
+                            "targets": [0,1, 6]
                         }],
                         language: {
                             processing: "处理中...",

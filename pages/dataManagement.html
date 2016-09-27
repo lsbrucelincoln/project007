@@ -223,7 +223,7 @@ $(document).ready(function() {
             export: function() {
                 $.get('/region/exportSafety', function(data) {
                     if (data.state == 0) {
-                        window.open("/" + data.data)
+                        window.location.href=("/" + data.data)
                     } else {
                         alert(data.state)
                     }

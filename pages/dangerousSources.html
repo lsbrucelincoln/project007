@@ -64,7 +64,7 @@
                                     <input type="checkBox" class="checkBox" data-id={{dangerous.id}} v-show="dangerous.name">
                                 </td>
                                 <td>{{dangerous.id}}</td>
-                                <td>{{dangerous.company.name}}</td>
+                                <td width="210"><span class="ellipsis">{{dangerous.company.name}}</span></td>
                                 <td>{{dangerous.name}}</td>
                                 <td>{{dangerous.level}}</td>
                                 <td>{{dangerous.code}}</td>
@@ -255,7 +255,7 @@ $(document).ready(function() {
                                 "dom": 'rtp',
                                 "columnDefs": [{
                                     "orderable": false,
-                                    "targets": [0, 9]
+                                    "targets": [0,2,3, 9]
                                 },{
                                     "targets":[1],
                                     "visible": false,

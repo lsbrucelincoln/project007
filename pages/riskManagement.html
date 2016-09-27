@@ -60,7 +60,7 @@
                                 <td>{{task.id}}</td>
                                 <td>{{task.code}}</td>
                                 <td>{{task.censor.safeRule.safetyLevel}}</td>
-                                <td>{{task.company.name}}</td>
+                                <td width="210"><span class="ellipsis" title="{{task.company.name}}">{{task.company.name}}</span></td>
                                 <td>{{task.censor.user.region.name}}</td>
                                 <td>{{task.time}}</td>
                                 <td>{{task.restDay}}</td>
@@ -315,7 +315,7 @@ $(document).ready(function() {
                                     "dom": 'rtp',
                                     "columnDefs": [{
                                         "orderable": false,
-                                        "targets": [0, 9]
+                                        "targets": [0,4, 9]
                                     }, {
                                         "targets": [1,9],
                                         "visible": false,

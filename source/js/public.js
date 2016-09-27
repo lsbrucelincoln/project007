@@ -158,6 +158,12 @@ function eventBind() {
 
 function basicAjax() {
     var id = localStorage.getItem("id");
+    var competence=localStorage.getItem("competence");
+    if (competence=="系统管理员") {
+        $("#dataManagementBtn").show();
+    }else{
+        $("#dataManagementBtn").hide();
+    }
     console.log(window.location.href.search("Index_c") != -1);
     if (window.location.href.search("Index_c") != -1) {
         $.post(baseUrl + '/model', { name: 'User', start: "-1", "rows": id }, function(data, textStatus, xhr) {

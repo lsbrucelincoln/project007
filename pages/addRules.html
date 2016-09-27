@@ -265,8 +265,11 @@ var vm = new Vue({
         },
     },
     created: function() {
+        var self=this;
         this.ruleDetail = JSON.parse(localStorage.getItem("dataParams"));
-        if (competence = "系统管理员") {
+        var competence=localStorage.getItem("competence")
+        console.log(competence);
+        if (competence == "系统管理员") {
             self.competence=true
         }
         if (window.location.href.search("edit") !== -1 || window.location.href.search("read") !== -1 || window.location.href.search("set") !== -1) {

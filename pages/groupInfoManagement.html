@@ -52,7 +52,8 @@
                         <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
                         <label for="uploadPic" id="fileBtn">
                             +
-                            <img class="showPic" :src="url" />
+                            <a @click="showImage"><img class="showPic" :src="url" /></a>
+                            
                         </label>
                         <span class="tip"></span>
                         <input type="text" name="turnUrl" class="turnUrl">
@@ -162,6 +163,11 @@ $(document).ready(function() {
                             $(".showPic").show().attr('data-id', "/" + data.id);
                         }
                     });
+                }
+            },
+            showImage:function(){
+                if (this.disabled) {
+                    window.location.href=this.url
                 }
             },
             dataURLtoBlob: function(dataurl) {

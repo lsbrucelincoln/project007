@@ -29,22 +29,20 @@
                 <table id="taskTable" class="compact display">
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>
+                            <th width="210">
                                 企业名称
                             </th>
-                            <th style="width:60px">评估类型</th>
-                            <th style="width:60px">
+                            <th>评估类型</th>
+                            <th>
                                 创建时间
                             </th>
-                            <th style="width:50px">负责人</th>
-                            <th style="width:60px">当前状态</th>
+                            <th>负责人</th>
+                            <th>当前状态</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="task in tasks | filterBy companyNameFilter task | filterBy createTimeFilter task">
-                            <td>{{task.id}}</td>
-                            <td>{{task.company.name}}</td>
+                            <td  ><span class='ellipsis' title="{{task.company.name}}">{{task.company.name}}</span></td>
                             <td>{{task.mode}}</td>
                             <td>{{task.time}}</td>
                             <td>{{task.leader.name}}</td>
@@ -60,8 +58,7 @@
                 <table id="riskTable" class="compact display">
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>
+                            <th width="210">
                                 企业名称
                             </th>
                             <th>整改期限</th>
@@ -71,9 +68,8 @@
                             <th>隐患等级</th>
                         </tr>
                     </thead>
-                    <tr v-for="risk in risks|filterBy companyName2Filter risk |filterBy setTimeFilter risk">
-                        <td>{{risk.id}}</td>
-                        <td>{{risk.censor.task.company.name}}</td>
+                    <tr v-for="risk in risks|filterBy companyName2Filter risk |filterBy setTimeFilter risk |limitBy 5">
+                        <td><span class='ellipsis' title="{{risk.censor.task.company.name}}">{{risk.censor.task.company.name}}</span></td>
                         <td>{{risk.restDay}}</td>
                         <td>{{risk.time}}</td>
                         <td>{{risk.censor.safeRule.safetyLevel}}</td>
@@ -254,23 +250,23 @@ $(document).ready(function() {
                         vm.taskGetDetail(data.data);
                         self.ajaxState++;
                         if (self.ajaxState == 2) {
-                            vm.$nextTick(function() {
-                                $('table.display').DataTable({
-                                    // paging: false,
-                                    "order": [
-                                        [0, "desc"]
-                                    ],
-                                    "searching": false,
-                                    "pageLength": 5,
-                                    "dom": 'rt',
-                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json',
-                                    "columnDefs": [{
-                                        "targets": [0],
-                                        "visible": false,
-                                        "searchable": false
-                                    }]
-                                });
-                            })
+                            // vm.$nextTick(function() {
+                            //     $('table.display').DataTable({
+                            //         // paging: false,
+                            //         "order": [
+                            //             [0, "desc"]
+                            //         ],
+                            //         "searching": false,
+                            //         "pageLength": 5,
+                            //         "dom": 'rt',
+                            //         "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json',
+                            //         "columnDefs": [{
+                            //             "targets": [0],
+                            //             "visible": false,
+                            //             "searchable": false
+                            //         }]
+                            //     });
+                            // })
                         }
                     }
                 });
@@ -285,23 +281,23 @@ $(document).ready(function() {
                         vm.riskGetDetail(data.data);
                         self.ajaxState++;
                         if (self.ajaxState == 2) {
-                            vm.$nextTick(function() {
-                                $('table.display').DataTable({
-                                    // paging: false,
-                                    "order": [
-                                        [0, "desc"]
-                                    ],
-                                    "searching": false,
-                                    "pageLength": 5,
-                                    "dom": 'rt',
-                                    "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json',
-                                    "columnDefs": [{
-                                        "targets": [0],
-                                        "visible": false,
-                                        "searchable": false
-                                    }]
-                                });
-                            })
+                            // vm.$nextTick(function() {
+                            //     $('table.display').DataTable({
+                            //         // paging: false,
+                            //         "order": [
+                            //             [0, "desc"]
+                            //         ],
+                            //         "searching": false,
+                            //         "pageLength": 5,
+                            //         "dom": 'rt',
+                            //         "language": '//cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json',
+                            //         "columnDefs": [{
+                            //             "targets": [0],
+                            //             "visible": false,
+                            //             "searchable": false
+                            //         }]
+                            //     });
+                            // })
                         }
                     }
                 });

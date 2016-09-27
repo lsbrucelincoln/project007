@@ -58,7 +58,7 @@
                                 </td>
                                 <td>{{task.code}}</td>
                                 <td>{{task.mode}}</td>
-                                <td>{{task.company.name}}</td>
+                                <td width="210"><span class="ellipsis">{{task.company.name}}</span></td>
                                 <td>{{task.company.region.name}}</td>
                                 <td>{{task.time}}</td>
                                 <td>{{responsePerson(task)}}</td>
@@ -326,7 +326,7 @@ $(document).ready(function() {
                                 "dom": 'rtp',
                                 "columnDefs": [{
                                     "orderable": false,
-                                    "targets": [0, 8]
+                                    "targets": [0,3, 8]
                                 }],
                                 language: {
                                     processing: "处理中...",

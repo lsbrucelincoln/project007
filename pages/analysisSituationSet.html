@@ -25,8 +25,9 @@
                             <option value="add">新增专项</option>
                         </select>
                     </div>
-                    <input type="text" v-model="addSpecial" v-if="mode=='专项评估'&special=='add'" style="width:100px">
-                    <div class="addBtn normalBtn" v-if="mode=='专项评估'&special=='add'" @click="addSpecialEvent">确认添加</div>
+                    <div class="addBtn normalBtn" v-if="mode=='专项评估'&&special!='add'&&special!=''" @click="deleteSpecialEvent">删除专项</div>
+                    <input type="text" v-model="deleteSpecial" v-if="mode=='专项评估'&special=='add'" style="width:100px">
+                    <div class="addBtn normalBtn" v-if="mode=='专项评估'&&special=='add'" @click="addSpecialEvent">确认添加</div>
                     <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label>
                 </div>
@@ -215,7 +216,7 @@ $(document).ready(function() {
             export: function() {
                 $.get('/region/exportSafety', function(data) {
                     if (data.state == 0) {
-                        window.open("/" + data.data)
+                         window.location.href=("/" + data.data)
                     } else {
                         alert(data.state)
                     }
@@ -393,6 +394,16 @@ $(document).ready(function() {
             addOne: function() {
                 localStorage.setItem("dataParams", JSON.stringify(this.$data));
                 window.location.href = "#/addRules.html?addSet"
+            },
+            deleteSpecialEvent:function(){
+                var self=this;
+                if (confirm("确认删除该专项")) {
+                    var list = self.specialCheck.slice(0);
+                    list.filter(function(index) {
+                        return index!=self.special;
+                    });
+                    console.log(list);
+                }
             },
             addSpecialEvent: function(data) {
                 var self = this;

@@ -117,7 +117,7 @@
   color: #Ccc;
   font-size: 16px;
   position: relative;
-  top: 1px;
+  top: 6px;
 }
 .searchBox span {
   cursor: pointer;
@@ -243,6 +243,14 @@
 }
 .tableBox table {
   border-collapse: collapse;
+}
+.tableBox table .ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 210px;
+  text-align: left;
 }
 .tableBox table .checkBox + label {
   background: #ffffff;
