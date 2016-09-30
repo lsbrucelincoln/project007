@@ -58,7 +58,7 @@
                         <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
                         <label for="uploadPic" id="fileBtn">
                             +
-                            <img class="showPic" :src="url" />
+                            <a @click="showImage"><img class="showPic" :src="url" /></a>
                         </label>
                         <span class="tip"></span>
                         <input type="text" name="turnUrl" class="turnUrl">
@@ -180,6 +180,11 @@ $(document).ready(function() {
                     });
                 }
             },
+            showImage: function() {
+                if (this.disabled) {
+                    window.location.href = this.url
+                }
+            },
             dataURLtoBlob: function(dataurl) {
                 var arr = dataurl.split(','),
                     mime = arr[0].match(/:(.*?);/)[1],
@@ -211,7 +216,7 @@ $(document).ready(function() {
                     area: this.params.area
                 }
                 if (this.params.photo) {
-                    params.photo=this.params.photo
+                    params.photo = this.params.photo
                 }
                 $.post('/company/modifyCompany', params, function(data, textStatus, xhr) {
                     console.log(data);

@@ -4,7 +4,7 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType" style="width:250px"><span style="width:80px">选择企业类型:</span>
+                <div class="inputShort assessType" style="width:250px"><span style="width:56px">企业类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select v-model="selectCompany">
                             <option v-for="company in companyType" value="{{company.id}}">{{company.name}}</option>
@@ -26,7 +26,7 @@
                         </select>
                     </div>
                     <div class="addBtn normalBtn" v-if="mode=='专项评估'&&special!='add'&&special!=''" @click="deleteSpecialEvent">删除专项</div>
-                    <input type="text" v-model="deleteSpecial" v-if="mode=='专项评估'&special=='add'" style="width:100px">
+                    <input type="text" v-model="addSpecial" v-if="mode=='专项评估'&special=='add'" style="width:100px">
                     <div class="addBtn normalBtn" v-if="mode=='专项评估'&&special=='add'" @click="addSpecialEvent">确认添加</div>
                     <input type="checkBox" id="canUse" v-model="showUsed">
                     <label for="canUse">只看有效</label>
@@ -44,23 +44,25 @@
                         <i class="treeRemove">-</i> -->
                     </div>
                     <div class="tableBox">
-                        <table>
-                            <tr>
-                                <th style="width: 40px;">
-                                    <input type="checkBox" id="person1" class="checkBox">
-                                </th>
-                                <th width="240px">内容</th>
-                                <th style="width: 40px;">等级</th>
-                                <th style="width: 60px;">强制执行</th>
-                                <th style="width: 100px;">更新时间</th>
-                                <th style="width: 100px;">当前状态</th>
-                                <th style="width: 80px;">操作</th>
-                            </tr>
+                        <table class="dataTable compact">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;padding: 4px">
+                                        <input type="checkBox" id="person1" class="checkBox">
+                                    </th>
+                                    <th width="240" style="padding: 4px" class="sorting_disabled">内容</th>
+                                    <th style="width: 40px;" :class="classList[rankState]" @click="rankOrder">等级</th>
+                                    <th style="width: 60px;" :class="classList[forceState]" @click="forceOrder">强制执行</th>
+                                    <th style="width: 100px;padding: 4px" class="sorting_disabled">更新时间</th>
+                                    <th style="width: 100px;" :class="classList[currentState]" @click='currentOrder'>当前状态</th>
+                                    <th style="width: 80px;padding: 4px" class="sorting_disabled">操作</th>
+                                </tr>
+                            </thead>
                             <tr v-for="rule in rules|filterBy usedFilter rule |limitBy recordLimit startPoint">
                                 <td>
                                     <input type="checkBox" id="person1" class="checkBox" data-id={{rule.id}}>
                                 </td>
-                                <td style="text-align:left">{{rule.text}}</td>
+                                <td style="text-align:left"><span style="width: 240px" class="ellipsis" title="{{rule.text}}">{{rule.text}}</span></td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>{{rule.updateTime}}</td>
@@ -146,7 +148,11 @@ $(document).ready(function() {
             companyType: [],
             tree2: {},
             showUsed: false,
-            chosenList: []
+            chosenList: [],
+            rankState: 0,
+            forceState: 0,
+            currentState: 0,
+            classList: ['sorting', 'sorting_desc', 'sorting_asc']
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -175,6 +181,42 @@ $(document).ready(function() {
             },
         },
         methods: {
+            compare: function(propertyName,state) {
+                console.log(propertyName);
+                console.log(state);
+                return function(object1, object2) {
+                    var value1 = object1[propertyName];
+                    var value2 = object2[propertyName];
+                    if (value2 < value1) {
+                        return -1*state;
+                    } else if (value2 > value1) {
+                        return 1*state;
+                    } else {
+                        return 0*state;
+                    }
+                }
+            },
+            rankOrder: function() {
+                var self = this;
+                this.rankState !== 1 ? this.rankState = 1 : this.rankState = 2;
+                this.forceState = 0;
+                this.currentState = 0;
+                this.rules = this.rules.sort(self.compare("level",self.rankState==1?-1:1))
+            },
+            forceOrder: function() {
+                var self = this;
+                this.forceState !== 1 ? this.forceState = 1 : this.forceState = 2;
+                this.rankState = 0;
+                this.currentState = 0;
+                this.rules = this.rules.sort(self.compare("must",self.forceState==1?-1:1))
+            },
+            currentOrder: function() {
+                var self = this;
+                this.currentState !== 1 ? this.currentState = 1 : this.currentState = 2;
+                this.forceState = 0;
+                this.rankState = 0;
+                this.rules = this.rules.sort(self.compare("used",self.currentState==1?-1:1))
+            },
             rulesDetail: function(data) {
                 var category = {};
                 var category2 = [];
@@ -182,6 +224,20 @@ $(document).ready(function() {
                 var tree2 = {};
                 for (var i = 0; i < data.length; i++) {
                     data[i].updateTime = this.stamp2time(data[i].in_time)
+                    switch (data[i].safetyLevel) {
+                        case '一级':
+                            data[i].level = 1;
+                            break;
+                        case '二级':
+                            data[i].level = 2;
+                            break;
+                        case '三级':
+                            data[i].level = 3;
+                            break;
+                        case '四级':
+                            data[i].level = 4;
+                            break;
+                    }
                     if (i == 0) {
                         vm.startAttr = data[i].category1;
                         vm.startAttr2 = data[i].category2;
@@ -216,7 +272,7 @@ $(document).ready(function() {
             export: function() {
                 $.get('/region/exportSafety', function(data) {
                     if (data.state == 0) {
-                         window.location.href=("/" + data.data)
+                        window.location.href = ("/" + data.data)
                     } else {
                         alert(data.state)
                     }
@@ -395,14 +451,28 @@ $(document).ready(function() {
                 localStorage.setItem("dataParams", JSON.stringify(this.$data));
                 window.location.href = "#/addRules.html?addSet"
             },
-            deleteSpecialEvent:function(){
-                var self=this;
+            deleteSpecialEvent: function() {
+                var self = this;
                 if (confirm("确认删除该专项")) {
                     var list = self.specialCheck.slice(0);
-                    list.filter(function(index) {
-                        return index!=self.special;
+                    list = list.filter(function(index) {
+                        return index != self.special;
                     });
-                    console.log(list);
+                    $.ajax({
+                            url: '/region/resetSpecial',
+                            type: 'POST',
+                            data: {
+                                special: list
+                            },
+                            traditional: true,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                self.specialCheck = list;
+                                alert("删除成功");
+                                self.special = "";
+                            }
+                        })
                 }
             },
             addSpecialEvent: function(data) {

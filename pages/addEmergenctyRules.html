@@ -35,6 +35,20 @@ label {
     border: 0;
     height: 100%;
 }
+.admin_ui_select > select:disabled {
+    background-color: #fff;
+    color: #666;
+}
+
+input:disabled {
+    background-color: #fff;
+    color: #666;
+}
+
+textarea:disabled {
+    background-color: #fff;
+    color: #666;
+}
 </style>
 <div class="companyInfoManagement admin_content_innerBox" id="riskManagementDetail">
     <div class="admin_scrollBox">
@@ -49,19 +63,19 @@ label {
                         <td>分类：</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params.category2">
+                                <select name="" id="" v-model="params.category2" :disabled="!competence">
                                     <option value="{{cate2}}" v-for="cate2 in ruleDetail.tree2">{{cate2}}</option>
                                 </select>
                             </div>
                         </td>
                         <td>分值：</td>
                         <td>
-                            <input type="text" v-model="params.score">
+                            <input type="text" v-model="params.score" :disabled="!competence">
                         </td>
                         <td>状态：</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params._delete">
+                                <select name="" id="" v-model="params._delete" :disabled="!competence">
                                     <option value="false">启用</option>
                                     <option value="true">停用</option>
                                 </select>
@@ -71,7 +85,7 @@ label {
                     <tr>
                         <td>检查项内容：</td>
                         <td colspan="5">
-                            <input type="text" v-model="params.text">
+                            <input type="text" v-model="params.text" :disabled="!competence">
                         </td>
                     </tr>
                 </tbody>
@@ -79,13 +93,13 @@ label {
         </div>
     </div>
     <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="addRule">确认</div>
+        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="addRule" v-show="!competence">确认</div>
         <div class="urgeBtn normalBtn" style="margin-top:15px">返回</div>
     </div>
 </div>
 <script>
 window.page.beforeUnload = function(hash) {
-    if (confirm("未保存修改的信息，确定要离开吗？")) {
+    if (!vm.competence||confirm("未保存修改的信息，确定要离开吗？")) {
         return true;
     } else {
         return false;
@@ -102,7 +116,7 @@ var vm = new Vue({
         },
         category2: [],
         companyType: '',
-
+        competence:false
 
     },
     computed: {
@@ -165,6 +179,10 @@ var vm = new Vue({
         },
     },
     created: function() {
+        var competence=localStorage.getItem("competence");
+        if (competence=="系统管理员") {
+            this.competence=true
+        }
         this.ruleDetail = JSON.parse(localStorage.getItem("dataParams"));
         this.params.category2 = this.ruleDetail.startAttr2;
         if (window.location.href.search("edit") !== -1) {

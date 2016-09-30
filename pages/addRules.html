@@ -102,7 +102,7 @@ label {
                         <td>是否强制执行：</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params.must" :disabled='readOnly||!competence'>
+                                <select name="" id="" v-model="params.must" :disabled='readOnly'>
                                     <option value="true">是</option>
                                     <option value="false">否</option>
                                 </select>
@@ -110,12 +110,12 @@ label {
                         </td>
                         <td>分值</td>
                         <td>
-                            <input type="text" v-model="params.score" :disabled='readOnly||!competence'>
+                            <input type="text" v-model="params.score" :disabled='readOnly'>
                         </td>
                         <td>安全等级</td>
                         <td>
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="params.safetyLevel" :disabled='readOnly||!competence'>
+                                <select name="" id="" v-model="params.safetyLevel" :disabled='readOnly'>
                                     <option value="一级">一级</option>
                                     <option value="二级">二级</option>
                                     <option value="三级">三级</option>

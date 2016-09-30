@@ -17,16 +17,16 @@
                         <div class="chartConditionBox">
                             展示粒度：
                             <label for="zsld_byYear" style="margin-right: 10px;">
-                                <input id="zsld_byYear" name="zsld_by" type="radio" value="year" v-model=" granularity" @click="isCustom=false">按年
+                                <input id="zsld_byYear" name="zsld_by" type="radio" value="year" v-model=" granularity" @click="isCustom=false"> 按年
                             </label>
                             <label for="zsld_bySeason" style="margin-right: 10px;">
-                                <input id="zsld_bySeason" name="zsld_by" type="radio" value="quarter" v-model=" granularity">按季度
+                                <input id="zsld_bySeason" name="zsld_by" type="radio" value="quarter" v-model=" granularity"> 按季度
                             </label>
                             <label for="zsld_byMonth" style="margin-right: 10px;">
-                                <input id="zsld_byMonth" name="zsld_by" type="radio" v-model=" granularity" value="month">按月
+                                <input id="zsld_byMonth" name="zsld_by" type="radio" v-model=" granularity" value="month"> 按月
                             </label>
                             <label for="zsld_byCustom" style="margin-right: 10px;">
-                                <input id="zsld_byCustom" name="zsld_by" type="radio" value="self" v-model="granularity">自定义
+                                <input id="zsld_byCustom" name="zsld_by" type="radio" value="self" v-model="granularity"> 自定义
                             </label>
                             <input type="text" class="admin_ui_input datepicker" style="width: 100px;" v-model="startTime" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM'})" id="startTime">
                             <i class="fa fa-calendar"></i> -

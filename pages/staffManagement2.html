@@ -1,7 +1,7 @@
 <div class="practiceBody" style="display:block">
     <div class="btnBox">
         <div class="searchBox">
-            <input type="text" class="searchInput" placeholder="输入企业搜索"><i class="flaticon-magnifying-glass"></i><span class="searchButtomNormal">搜索</span>
+            <input type="text" class="searchInput" placeholder="输入企业搜索" onfocus="this.placeholder=''" onblur="this.placeholder='输入企业搜索'"><i class="flaticon-magnifying-glass"></i><span class="searchButtomNormal">搜索</span>
         </div>
         <a href="#" class="addBtn normalBtn">添加企业</a>
     </div>
@@ -23,7 +23,7 @@
                     <input type="checkBox" id="person1" class="checkBox" data-id="{{company.user.id}}">
                 </td>
                 <td>{{$index+1}}</td>
-                <td>{{company.name}}</td>
+                <td width="190"><span class='ellipsis' title="{{company.name}}">{{company.name}}</span></td>
                 <td>{{company.area}}</td>
                 <td>{{company.time}}</td>
                 <td>{{company.user.no_lock?"启用":"禁用"}}</td>
@@ -173,7 +173,7 @@ $(document).ready(function() {
                                 "dom": 'rtp',
                                 "columnDefs": [{
                                     "orderable": false,
-                                    "targets": [0, 6]
+                                    "targets": [0,2, 6]
                                 }],
                                 language: {
                                     processing: "处理中...",

@@ -9,7 +9,7 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span style="width:80px">选择版本:</span>
+                <div class="inputShort assessType"><span style="width:36px">版本:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select>
                             <option value="">版本1</option>
@@ -29,31 +29,34 @@
                         <i class="treeAdd" @click="addTreeNode">+</i>
                         <i class="treeRemove" @click="removeTreeNode">-</i></div>
                     <div class="tableBox">
-                        <table id="urgeSetTable">
-                            <tr>
-                                <th style="width: 40px;">
-                                    <input type="checkBox" id="person1" class="checkBox">
-                                </th>
-                                <th style="width: 65%;">评估内容</th>
-                                <th style="40px;">总分</th>
-                                <th style="80px;">当前状态</th>
-                                <th style="80px;">操作</th>
-                            </tr>
+                        <table id="urgeSetTable" class="dataTable compact">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;padding: 4px" class="sorting_disabled">
+                                        <input type="checkBox" id="person1" class="checkBox">
+                                    </th>
+                                    <th style="width:440px;padding: 4px" class="sorting_disabled">评估内容</th>
+                                    <th style="width:40px;padding: 4px" class="sorting_disabled">总分</th>
+                                    <th :class="classList[currentState]" @click='currentOrder'>当前状态</th>
+                                    <th style="padding: 4px" class="sorting_disabled">操作</th>
+                                </tr>
+                            </thead>
                             <tr v-for="rule in rules |filterBy usedFilter rule |limitBy recordLimit startPoint">
                                 <td>
                                     <input type="checkBox" id="person1" class="checkBox" data-id={{rule.id}}>
                                 </td>
-                                <td>{{rule.text}}</td>
+                                <td style="text-align:left"> <span class="ellipsis" style="width:440px" title="{{rule.text}}">{{rule.text}}</span></td>
+                                <!-- <td>{{rule.text}}</td> -->
                                 <td>{{rule.score}}</td>
                                 <td>{{rule._delete?"禁用":"启用"}}</td>
                                 <td><a href="#/addEmergenctyRules.html?edit" @click="saveDetail(rule)">查看</a> </td>
                             </tr>
                         </table>
                         <div class="bottom-search" style="width:100%">
-                            <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
-                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne">新增</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)">启用</div>
-                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)">禁用</div>
+                            <div class="allSelectBtn normalBtn" style="margin-top:15px" v-show="competence">全选</div>
+                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne" v-show="competence">新增</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)" v-show="competence">启用</div>
+                            <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)" v-show="competence">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
@@ -148,7 +151,10 @@ $(document).ready(function() {
             showUsed: false,
             chosenList: [],
             item1: "",
-            item2: ''
+            item2: '',
+            competence: false,
+            currentState: 0,
+            classList: ['sorting', 'sorting_desc', 'sorting_asc']
         },
         computed: {
             startPoint: function() {
@@ -159,6 +165,24 @@ $(document).ready(function() {
             },
         },
         methods: {
+            compare: function(propertyName, state) {
+                return function(object1, object2) {
+                    var value1 = object1[propertyName];
+                    var value2 = object2[propertyName];
+                    if (value2 < value1) {
+                        return -1 * state;
+                    } else if (value2 > value1) {
+                        return 1 * state;
+                    } else {
+                        return 0 * state;
+                    }
+                }
+            },
+            currentOrder: function() {
+                var self = this;
+                this.currentState !== 1 ? this.currentState = 1 : this.currentState = 2;
+                this.rules = this.rules.sort(self.compare("_delete", self.currentState == 1 ? -1 : 1))
+            },
             rulesDetail: function(data) {
                 var category = {};
                 var category2 = [];
@@ -350,6 +374,10 @@ $(document).ready(function() {
         created: function() {
             var self = this;
             var id = localStorage.getItem("id");
+            var competence = localStorage.getItem("competence");
+            if (competence == "系统管理员") {
+                self.competence = true;
+            }
             self.updateData();
         },
         ready: function() {

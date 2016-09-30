@@ -58,7 +58,7 @@
                 <table id="riskTable" class="compact display">
                     <thead>
                         <tr>
-                            <th width="210">
+                            <th width="190">
                                 企业名称
                             </th>
                             <th>整改期限</th>
@@ -241,7 +241,7 @@ $(document).ready(function() {
                 })
                 $.post(baseUrl + '/model', {
                     name: "Task",
-                    rows: 0,
+                    rows: 5,
                     remove: "safeRules",
                     "params['state']": "未检"
                 }, function(data, textStatus, xhr) {
@@ -272,7 +272,7 @@ $(document).ready(function() {
                 });
                 $.post(baseUrl + '/model', {
                     name: "Recheck",
-                    rows: 0,
+                    rows: 5,
                     "params['notcompelete']": 1,
                     remove: "censor.task.safeRules"
                 }, function(data, textStatus, xhr) {

@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="inputShort"><span>企业对象：</span>
-                    <input type="text" placeholder="输入企业名称" class="companyName">
+                    <input type="text" placeholder="输入企业名称" class="companyName" onfocus="this.placeholder=''" onblur="this.placeholder='输入企业名称'">
                 </div>
                 <div class="searchBody">
                     <span class="searchButtom normalBtn" id="searchBtn">搜索</span>
@@ -64,7 +64,7 @@
                                     <input type="checkBox" class="checkBox" data-id={{dangerous.id}} v-show="dangerous.name">
                                 </td>
                                 <td>{{dangerous.id}}</td>
-                                <td width="210"><span class="ellipsis">{{dangerous.company.name}}</span></td>
+                                <td width="210"><span class="ellipsis" title="{{dangerous.company.name}}">{{dangerous.company.name}}</span></td>
                                 <td>{{dangerous.name}}</td>
                                 <td>{{dangerous.level}}</td>
                                 <td>{{dangerous.code}}</td>

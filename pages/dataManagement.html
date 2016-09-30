@@ -4,7 +4,7 @@
     <div class="admin_scrollBox">
         <div class="contentBody">
             <div class="dataPage">
-                <div class="inputShort assessType"><span style="width:80px">选择企业类型:</span>
+                <div class="inputShort assessType" style="width: 60%"><span style="width:56px">企业类型:</span>
                     <div class="admin_ui_select" style="width: 140px;">
                         <select v-model="selectCompany">
                             <option v-for="company in companyType" value="{{company.id}}">{{company.name}}</option>
@@ -16,6 +16,7 @@
                 <input type="file" id="uploadData" style="display:none" @change="upload">
                 <div class="dataOutBtn normalBtn" style="float:right" @click="export">导出数据</div>
                 <label class="dataInBtn normalBtn" for="uploadData" style="float:right">导入数据</label>
+                <div class="addBtn normalBtn" @click="addOne" v-show="competence" style="float:right">新增</div>
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
@@ -26,23 +27,25 @@
                         <i class="treeAdd" @click="addTreeNode">+</i>
                         <i class="treeRemove" @click="removeTreeNode">-</i></div>
                     <div class="tableBox">
-                        <table>
-                            <tr>
-                                <th style="width: 40px;" v-show="competence">
-                                    <input type="checkBox" id="person1" class="checkBox">
-                                </th>
-                                <th width="240px">内容</th>
-                                <th style="width: 40px;">等级</th>
-                                <th style="width: 60px;">强制执行</th>
-                                <th style="width: 100px;">更新时间</th>
-                                <th style="width: 100px;">当前状态</th>
-                                <th style="width: 80px;">操作</th>
-                            </tr>
+                        <table class="dataTable compact">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;padding: 4px">
+                                        <input type="checkBox" id="person1" class="checkBox">
+                                    </th>
+                                    <th width="240px" style="padding: 4px" class="sorting_disabled">内容</th>
+                                    <th style="width: 40px;" :class="classList[rankState]" @click="rankOrder">等级</th>
+                                    <th style="width: 60px;" :class="classList[forceState]" @click="forceOrder">强制执行</th>
+                                    <th style="width: 100px;padding: 4px" class="sorting_disabled">更新时间</th>
+                                    <th style="width: 100px;" :class="classList[currentState]" @click='currentOrder'>当前状态</th>
+                                    <th style="width: 80px;padding: 4px" class="sorting_disabled">操作</th>
+                                </tr>
+                            </thead>
                             <tr v-for="rule in rules |filterBy usedFilter rule |limitBy recordLimit startPoint">
                                 <td v-show="competence">
                                     <input type="checkBox" id="person1" class="checkBox" data-id={{rule.id}}>
                                 </td>
-                                <td style="text-align:left">{{rule.text}}</td>
+                                <td style="text-align:left"> <span class="ellipsis" style="width:240px" title="{{rule.text}}" style="width:210px">{{rule.text}}</span></td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>{{rule.updateTime}}</td>
@@ -52,7 +55,7 @@
                         </table>
                         <div class="bottom-search" style="width:100%">
                             <div class="allSelectBtn normalBtn" style="margin-top:15px" v-show="competence">全选</div>
-                            <div class="addBtn normalBtn" style="margin-top:15px" @click="addOne" v-show="competence">新增</div>
+                            <div class="deleteBtn normalBtn" style="margin-top:15px" @click="deleteOne" v-show="competence">删除</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)" v-show="competence">启用</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)" v-show="competence">禁用</div>
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev" v-show="competence">« 上一页</span></a>
@@ -165,6 +168,10 @@ $(document).ready(function() {
             item2: '',
             uploadData: "",
             competence: false,
+            rankState: 0,
+            forceState: 0,
+            currentState: 0,
+            classList: ['sorting', 'sorting_desc', 'sorting_asc']
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -181,6 +188,42 @@ $(document).ready(function() {
             },
         },
         methods: {
+            compare: function(propertyName, state) {
+                console.log(propertyName);
+                console.log(state);
+                return function(object1, object2) {
+                    var value1 = object1[propertyName];
+                    var value2 = object2[propertyName];
+                    if (value2 < value1) {
+                        return -1 * state;
+                    } else if (value2 > value1) {
+                        return 1 * state;
+                    } else {
+                        return 0 * state;
+                    }
+                }
+            },
+            rankOrder: function() {
+                var self = this;
+                this.rankState !== 1 ? this.rankState = 1 : this.rankState = 2;
+                this.forceState = 0;
+                this.currentState = 0;
+                this.rules = this.rules.sort(self.compare("level", self.rankState == 1 ? -1 : 1))
+            },
+            forceOrder: function() {
+                var self = this;
+                this.forceState !== 1 ? this.forceState = 1 : this.forceState = 2;
+                this.rankState = 0;
+                this.currentState = 0;
+                this.rules = this.rules.sort(self.compare("must", self.forceState == 1 ? -1 : 1))
+            },
+            currentOrder: function() {
+                var self = this;
+                this.currentState !== 1 ? this.currentState = 1 : this.currentState = 2;
+                this.forceState = 0;
+                this.rankState = 0;
+                this.rules = this.rules.sort(self.compare("used", self.currentState == 1 ? -1 : 1))
+            },
             rulesDetail: function(data) {
                 var category = {};
                 var category2 = [];
@@ -188,6 +231,20 @@ $(document).ready(function() {
                 var tree2 = {};
                 for (var i = 0; i < data.length; i++) {
                     data[i].updateTime = this.stamp2time(data[i].in_time)
+                    switch (data[i].safetyLevel) {
+                        case '一级':
+                            data[i].level = 1;
+                            break;
+                        case '二级':
+                            data[i].level = 2;
+                            break;
+                        case '三级':
+                            data[i].level = 3;
+                            break;
+                        case '四级':
+                            data[i].level = 4;
+                            break;
+                    }
                     if (i == 0) {
                         vm.startAttr = data[i].category1;
                         vm.startAttr2 = data[i].category2;
@@ -223,7 +280,7 @@ $(document).ready(function() {
             export: function() {
                 $.get('/region/exportSafety', function(data) {
                     if (data.state == 0) {
-                        window.location.href=("/" + data.data)
+                        window.location.href = ("/" + data.data)
                     } else {
                         alert(data.state)
                     }
@@ -291,6 +348,32 @@ $(document).ready(function() {
                     } else {
                         alert("请选择禁用项")
                     }
+                }
+            },
+            deleteOne: function() {
+                var self = this;
+                self.getChosenList();
+                if (self.chosenList.length > 0) {
+                    $.ajax({
+                            url: '/region/deleteSafety',
+                            type: 'POST',
+                            data: {
+                                safety: self.chosenList,
+                            },
+                            traditional: true
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("删除成功")
+                                self.updateData();
+                                self.chosenList=[];
+                                $(".category2").removeClass('chosenCategory');
+                                $(".category1").removeClass('chosenCategory');
+                            }
+
+                        })
+                } else {
+                    alert("请选择删除项")
                 }
             },
             getChosenList: function() {

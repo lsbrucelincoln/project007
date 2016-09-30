@@ -117,7 +117,8 @@
   color: #Ccc;
   font-size: 16px;
   position: relative;
-  top: 6px;
+  top: 1px;
+  left: 5px;
 }
 .searchBox span {
   cursor: pointer;
@@ -249,7 +250,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
-  width: 210px;
+  width: 190px;
   text-align: left;
 }
 .tableBox table .checkBox + label {

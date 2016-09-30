@@ -175,7 +175,7 @@ $(document).ready(function() {
                         success: function(data) {
                             vm.params.photo = data.id;
                             console.log(data);
-                            vm.url = "/map?id=" + vm.params.photo
+                            vm.url = "/map/" + vm.params.photo
                             $(".showPic").show().attr('data-id', "/" + data.id);
                         }
                     });
