@@ -9,12 +9,12 @@
         </div>
         <div class="contenBox">
             <div class="checkBody">
-                <div class="inputShort"><span>创建时间：</span>
+                <div class="inputShort"><span>{{tagState==3?"结束时间：":"创建时间："}}</span>
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width: 200px;">
                         <select class="regionName">
-                        <option value="">全部</option>
+                            <option value="">全部</option>
                             <option v-for="place in region" value="{{place.name}}">{{place.name}}</option>
                         </select>
                     </div>
@@ -45,7 +45,7 @@
                                 <th>任务类型</th>
                                 <th>企业对象</th>
                                 <th>管理机构</th>
-                                <th>创建时间</th>
+                                <th>{{tagState==3?"结束时间":"创建时间"}}</th>
                                 <th>责任人</th>
                                 <th>当前状态</th>
                                 <th>操作</th>
@@ -60,10 +60,10 @@
                                 <td>{{task.mode}}</td>
                                 <td width="190"><span class="ellipsis" title="{{task.company.name}}">{{task.company.name}}</span></td>
                                 <td>{{task.company.region.name}}</td>
-                                <td>{{task.time}}</td>
+                                <td>{{tagState==3?task.endTime:task.time}}</td>
                                 <td>{{responsePerson(task)}}</td>
                                 <td>{{task.state}}</td>
-                                <td><a :href="tagState==2?'#/emergencyDetail.html':'#/assessDetail.html'" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
+                                <td><a :href="goDetail()" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -133,7 +133,7 @@ $(document).ready(function() {
             competence: true,
             chosenList: [],
             region: [],
-            showState:false
+            showState: false
         },
         computed: {
             addTask: function() {
@@ -154,16 +154,29 @@ $(document).ready(function() {
                     return ""
                 }
             },
+            goDetail:function(){
+                switch(this.tagState) {
+                    case 1:
+                        return '#/assessDetail.html'
+                        break;
+                    case 2:
+                        return '#/emergencyDetail.html'
+                        break;
+                    case 3:
+                    return '#/assessDetail.html?history'
+                }
+            },
             taskGetDetail: function(data) {
                 var companyList = [];
                 var timeList = [];
                 for (var i = 0; i < data.length; i++) {
                     data[i].time = vm.stamp2time(data[i].in_time);
-                    if (this.tagState==2) {
-                        data[i].mode="应急演练";
-                        var time=new Date();
-                        if (data[i].deadline<time.getTime()&&data[i].state=="未完成") {
-                            data[i].state="已过期"
+                    data[i].endTime = vm.stamp2time(data[i].dead_line);
+                    if (this.tagState == 2) {
+                        data[i].mode = "应急演练";
+                        var time = new Date();
+                        if (data[i].deadline < time.getTime() && data[i].state == "未完成") {
+                            data[i].state = "已过期"
                         }
                     }
                     data[i].createTime = data[i].time.split(" ")[0];
@@ -244,7 +257,7 @@ $(document).ready(function() {
                                 alert("催促成功");
                             }
                         })
-                }else{
+                } else {
                     alert("请选择催促项")
                 }
             },
@@ -268,13 +281,13 @@ $(document).ready(function() {
                         .done(function(data) {
                             if (data.state == 0) {
                                 alert("任务已结束");
-                                self.showState=false;
+                                self.showState = false;
                                 self.showTasks = [];
                                 $('table.display').DataTable().destroy();
                                 self.getData(self.tagState)
                             }
                         })
-                }else{
+                } else {
                     alert("请选择结束项")
                 }
             },
@@ -288,7 +301,7 @@ $(document).ready(function() {
                 });
             },
             getData: function(state) {
-                var self=this;
+                var self = this;
                 var data = {}
                 switch (state) {
                     case 1:
@@ -326,7 +339,7 @@ $(document).ready(function() {
                                 "dom": 'rtp',
                                 "columnDefs": [{
                                     "orderable": false,
-                                    "targets": [0,3, 8]
+                                    "targets": [0, 3, 8]
                                 }],
                                 language: {
                                     processing: "处理中...",
@@ -351,7 +364,7 @@ $(document).ready(function() {
                                     }
                                 }
                             });
-                            self.showState=true;
+                            self.showState = true;
                         })
                     }
                 });
@@ -364,7 +377,15 @@ $(document).ready(function() {
             if (competence == "企业负责人") {
                 this.competence = false;
             }
-            this.getData(1);
+            if (window.location.href.search("emergency") != -1) {
+                self.tagState = 2;
+                $(".praticeBtn").trigger('click')
+            }
+            if (window.location.href.search("history") != -1) {
+                self.tagState = 3;
+                $(".historyBtn").trigger('click')
+            }
+            this.getData(self.tagState);
             $.post('/model', {
                 name: "Region",
                 "row": 0
@@ -373,6 +394,7 @@ $(document).ready(function() {
                     vm.region = data.data;
                 }
             });
+            console.log(window.location.href.search("emergency") != -1);
         },
         ready: function() {
 

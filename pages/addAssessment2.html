@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="secondPage">
-                <div class="inputShort assessType" style="margin-bottom:0px"><span>选择评估类型:</span>
+<!--                 <div class="inputShort assessType" style="margin-bottom:0px"><span>选择评估类型:</span>
                     <div class="admin_ui_select">
                         <select name="" id="" v-model="params.mode">
                             <option value="日常评估">日常评估检查</option>
@@ -37,7 +37,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="assess2Body">
                     <div class="ztreeBox ztree">
                         <a class="category1" v-for="(index,item) in category" @click="category1Click(data,$index,index)"><i class="flaticon-add-1" v-if="!state[$index]==1"></i><i class="flaticon-square" v-if="state[$index]==1"></i>{{index}}
@@ -93,6 +93,7 @@ $(document).ready(function() {
             if (r == true) {
                 localStorage.removeItem("data");
                 localStorage.removeItem("params");
+                localStorage.removeItem("safetiesData");
                 return true;
             } else {
                 return false;
@@ -149,19 +150,6 @@ $(document).ready(function() {
             pageNum: function() {
                 return Math.ceil(this.showRules.length / this.recordLimit)
             },
-        },
-        watch: {
-            "params.mode": function(val, oldVal) {
-                console.log('test');
-                if (val !== "专项评估") {
-                    this.getData();
-                }
-            },
-            "params.special": function(val, oldVal) {
-                if (val && this.params.mode == "专项评估") {
-                    this.getData();
-                }
-            }
         },
         methods: {
             rulesDetail: function(data) {
@@ -272,7 +260,7 @@ $(document).ready(function() {
                 }
             },
             showPageTag: function(data) {
-                console.log(data - this.pageIndex);
+                // console.log(data - this.pageIndex);
                 if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
                     return true
                 } else {
@@ -293,11 +281,13 @@ $(document).ready(function() {
                     vm.params.safeties.push(vm.rules[i].id);
                 }
                 localStorage.setItem("params", JSON.stringify(vm.params));
+                localStorage.setItem("safetiesData",JSON.stringify(vm.$data));
             },
             saveDetail: function(data) {
                 localStorage.setItem("ruleDetail", JSON.stringify(data))
             },
             getData: function() {
+                console.log('data');
                 var self = this;
                 var data = {
                     name: "SafeRule",
@@ -321,7 +311,13 @@ $(document).ready(function() {
             var id = localStorage.getItem("id");
             this.params = JSON.parse(localStorage.getItem("params"));
             this.rawData = JSON.parse(localStorage.getItem("data"));
-            self.getData();
+            console.log(!localStorage.getItem("safetiesData"));
+            if ( !localStorage.getItem("safetiesData")) {
+                self.getData();
+            }else{
+                console.log('test1');
+                self.$data=JSON.parse(localStorage.getItem("safetiesData"))
+            }
             $.post('/model', {
                 name: "Region",
                 "params['my']": 1,

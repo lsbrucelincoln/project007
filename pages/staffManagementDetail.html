@@ -6,7 +6,8 @@
             </span>
         </div>
         <div class="contentBody">
-            <div class="backToBtn normalBtn" style="float:right" @click.prevent="confirm"><i class="flaticon-cancel"></i></div>
+            <a class="backToBtn normalBtn" style="float:right" href="#/staffManagement.html?company" ><i class="flaticon-cancel"></i></a>
+            <div class="updateBtn normalBtn" style="margin-top:35px;position: absolute;right:40px" @click="disabled=false" v-show="disabled==true">修改</div>
             <div class="textInfo" style="border-bottom: 1px solid #ddd;margin-bottom: 20px">
                 <div class="inputShort">
                     <span>企业名称：</span>
@@ -95,7 +96,6 @@
             </div>
             <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
                 <div class="comfirmBtn normalBtn" style="margin-top:0px" @click="confirm">确定</div>
-                <div class="updateBtn normalBtn" style="margin-top:15px" @click="disabled=false">修改</div>
                 <div class="deleteBtn normalBtn" style="margin-top:15px" @click="deleteCompany">删除</div>
             </div>
         </div>

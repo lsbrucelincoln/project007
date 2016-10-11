@@ -2,7 +2,7 @@
     <div class="admin_scrollBox">
         <div class="contentHeader">
             <p style="font-size:16px;float:left;width: 49%">评估编号：{{taskDetail.code}}</p>
-            <div class="backBtn normalBtn" style="float:right"><i class="flaticon-cancel"></i></div>
+            <a class="backToBtn normalBtn" style="float:right" :href="place()"><i class="flaticon-cancel"></i></a>
             <p style="font-size:16px;width: 42%;float:left;">状态：{{taskDetail.state}}</p>
         </div>
         <div class="contentBody">
@@ -86,6 +86,14 @@ $(document).ready(function() {
             }
         },
         methods: {
+            place:function(){
+                console.log(window.location.href.search('history')!=-1);
+                if (window.location.href.search('history')!=-1) {
+                    return '#/assessmentCheck.html?history'
+                }else{
+                    return '#/assessmentCheck.html'
+                }
+            },
             riskGetDetail: function(data) {
                 var companyList = [];
                 var timeList = [];
