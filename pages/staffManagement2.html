@@ -39,6 +39,11 @@
 </div>
 <script>
 $(document).ready(function() {
+    window.page.beforeUnload = function(hash) {
+        $('table.display').hide();
+        $('table.display').DataTable().destroy();
+        return true;
+    }
     $("th .checkBox").on('click', function(event) {
         if ($(this).prop('checked')) {
             $("td .checkBox").prop("checked", true);
@@ -155,52 +160,63 @@ $(document).ready(function() {
 
             },
             getData: function() {
-                $.post('/model', {
-                    name: "Company",
-                    rows: 0
-                }, function(data, textStatus, xhr) {
-                    console.log(data);
-                    if (data.state == 0) {
-                        vm.userDetail(data.data)
-                        vm.$nextTick(function() {
-                            vm.showState = true;
-                            $('table.display').show();
-                            $('table.display').DataTable({
-                                "order": [
-                                    [1, "asc"]
-                                ],
-                                "pageLength": 5,
-                                "dom": 'rtp',
-                                "columnDefs": [{
-                                    "orderable": false,
-                                    "targets": [0,2, 6]
-                                }],
-                                language: {
-                                    processing: "处理中...",
-                                    search: "查找中...",
-                                    lengthMenu: "显示 _MENU_ 项结果",
-                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
-                                    infoPostFix: "",
-                                    loadingRecords: "载入中...",
-                                    zeroRecords: "没有匹配结果",
-                                    emptyTable: "表中数据为空",
-                                    paginate: {
-                                        first: "首页",
-                                        previous: "上页",
-                                        next: "下页",
-                                        last: "末页"
-                                    },
-                                    aria: {
-                                        sortAscending: ": 以升序排列此列",
-                                        sortDescending: ":  以降序排列此列"
+                $.ajax({
+                        url: '/model',
+                        type: 'default GET (Other values: POST)',
+                        async: false,
+                        data: {
+                            name: "Company",
+                            rows: 0
+                        },
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            vm.userDetail(data.data)
+                            vm.$nextTick(function() {
+                                vm.showState = true;
+                                $('table.display').show();
+                                $('table.display').DataTable({
+                                    "order": [
+                                        [1, "asc"]
+                                    ],
+                                    "pageLength": 5,
+                                    "dom": 'rtp',
+                                    "columnDefs": [{
+                                        "orderable": false,
+                                        "targets": [0, 2, 6]
+                                    }],
+                                    language: {
+                                        processing: "处理中...",
+                                        search: "查找中...",
+                                        lengthMenu: "显示 _MENU_ 项结果",
+                                        info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                        infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                        infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                        infoPostFix: "",
+                                        loadingRecords: "载入中...",
+                                        zeroRecords: "没有匹配结果",
+                                        emptyTable: "表中数据为空",
+                                        paginate: {
+                                            first: "首页",
+                                            previous: "上页",
+                                            next: "下页",
+                                            last: "末页"
+                                        },
+                                        aria: {
+                                            sortAscending: ": 以升序排列此列",
+                                            sortDescending: ":  以降序排列此列"
+                                        }
                                     }
-                                }
-                            });
-                        })
-                    }
-                });
+                                });
+                            })
+                        }
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
             }
         },
         created: function() {

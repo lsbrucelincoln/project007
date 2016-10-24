@@ -9,7 +9,7 @@
             <div class="textInfo">
                 <h3>企业信息</h3>
                 <p class="halfText">企业名称：<span>{{taskDetail.company.name}}</span></p>
-                <p class="halfText">安全负责人：<span>{{taskDetail.leader.name}}</span></p>
+                <p class="halfText">安全负责人：<span>{{taskDetail.company.contact}}</span></p>
                 <p class="halfText">企业类型：<span>{{taskDetail.company.type.name}}</span></p>
                 <p class="halfText">联系电话：<span>{{taskDetail.company.phone}}</span></p>
                 <h3>评估详情</h3>
@@ -102,6 +102,9 @@ $(document).ready(function() {
                     data[i].date = vm.stamp2time(data[i].censor.in_time, "year");
                     data[i].createTime = data[i].time.split(" ")[0];
                     var restDay = vm.dayPeriodCompute(data[i].censor.in_time, data[i].censor.deadline);
+                    if (restDay<0) {
+                        restDay=0
+                    }
                     data[i].restDay = restDay;
                 }
                 vm.riskList = data;

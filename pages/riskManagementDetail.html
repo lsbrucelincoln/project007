@@ -259,7 +259,8 @@ var vm = new Vue({
             data.recheck = this.taskDetail.id;
             data.photos = [];
             console.log($("img").length);
-            if (this.competence) {
+            console.log(this.competence);
+            if (this.competenc&&taskDetail.recheckState=='未整改') {
                 if ($("img").length > 0) {
                     $("img").each(function(index, el) {
                         if ($(el).attr('data-id')) {

@@ -166,7 +166,7 @@ $(document).ready(function() {
                 }
             },
             showImage:function(){
-                if (this.disabled) {
+                if (this.disabled&&this.url) {
                     window.location.href=this.url
                 }
             },

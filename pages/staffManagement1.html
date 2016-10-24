@@ -12,8 +12,8 @@
                     <th>
                         <input type="checkBox" id="person1" class="checkBox">
                     </th>
-                    <th>id</th>
-                    <th style="text-align: left;width: 210px" >用户名</th>
+                    <!-- <th>id</th> -->
+                    <th style="text-align: left;width: 210px">账号</th>
                     <th>角色</th>
                     <th>所属中队</th>
                     <th>注册时间</th>
@@ -26,8 +26,8 @@
                     <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0" data-id="{{account.id}}">
                     <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0" data-id="{{account.id}}">
                 </td>
-                <td>{{account.id}}</td>
-                <td style="text-align: left" ><span class='ellipsis'>{{account.name}}</span></td>
+                <!-- <td>{{account.id}}</td> -->
+                <td style="text-align: left"><span class='ellipsis'>{{account.name}}</span></td>
                 <td>{{account.competence}}</td>
                 <td>{{account.squadron}}</td>
                 <td>{{account.time}}</td>
@@ -73,7 +73,7 @@ $(".allSelectBtn ").on('click', function(event) {
 $(".searchButtomNormal").on('click', function(event) {
     event.preventDefault();
     console.log('test');
-    $("table.display").DataTable().columns(2).search($(".searchInput").val(), false, true).draw();
+    $("table.display").DataTable().columns(1).search($(".searchInput").val(), false, true).draw();
 });
 var vm = new Vue({
     el: "#staffBody",
@@ -90,7 +90,8 @@ var vm = new Vue({
         showTasks: [],
         showState: false,
         chosenList: [],
-        competence: localStorage.getItem('competence')
+        competence: localStorage.getItem('competence'),
+        id: localStorage.getItem('id')
     },
     computed: {},
     methods: {
@@ -117,7 +118,7 @@ var vm = new Vue({
         },
         ruleFilter: function(data) {
             // console.log(data);
-            if (data.competence == "企业负责人") {
+            if (data.competence == "企业负责人" || data.region.id != this.id) {
                 return false
             } else {
                 return true
@@ -194,17 +195,14 @@ var vm = new Vue({
                         vm.showState = true;
                         $('table.display').DataTable({
                             "order": [
-                                [1, "desc"]
+                                [4, "desc"]
                             ],
                             "pageLength": 7,
                             "dom": 'rtp',
                             "columnDefs": [{
                                 "orderable": false,
-                                "targets": [0,2,4, 7]
-                            }, {
-                                        "targets": [1],
-                                        "visible": false,
-                                    }],
+                                "targets": [0, 1, 3, 6]
+                            }],
                             language: {
                                 processing: "处理中...",
                                 search: "查找中...",
@@ -246,42 +244,39 @@ var vm = new Vue({
                 vm.userDetail(data.data);
                 vm.$nextTick(function() {
                     vm.showState = true;
-                        $('table.display').DataTable({
-                            "order": [
-                                [1, "desc"]
-                            ],
-                            "pageLength": 7,
-                            "dom": 'rtp',
-                            "columnDefs": [{
-                                "orderable": false,
-                                "targets": [0,2,4, 7]
-                            }, {
-                                        "targets": [1],
-                                        "visible": false,
-                                    }],
-                            language: {
-                                processing: "处理中...",
-                                search: "查找中...",
-                                lengthMenu: "显示 _MENU_ 项结果",
-                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                infoFiltered: "(由 _MAX_ 项结果过滤)",
-                                infoPostFix: "",
-                                loadingRecords: "载入中...",
-                                zeroRecords: "没有匹配结果",
-                                emptyTable: "表中数据为空",
-                                paginate: {
-                                    first: "首页",
-                                    previous: "上页",
-                                    next: "下页",
-                                    last: "末页"
-                                },
-                                aria: {
-                                    sortAscending: ": 以升序排列此列",
-                                    sortDescending: ":  以降序排列此列"
-                                }
+                    $('table.display').DataTable({
+                        "order": [
+                            [4, "desc"]
+                        ],
+                        "pageLength": 7,
+                        "dom": 'rtp',
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": [0, 1, 3, 6]
+                        }],
+                        language: {
+                            processing: "处理中...",
+                            search: "查找中...",
+                            lengthMenu: "显示 _MENU_ 项结果",
+                            info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                            infoFiltered: "(由 _MAX_ 项结果过滤)",
+                            infoPostFix: "",
+                            loadingRecords: "载入中...",
+                            zeroRecords: "没有匹配结果",
+                            emptyTable: "表中数据为空",
+                            paginate: {
+                                first: "首页",
+                                previous: "上页",
+                                next: "下页",
+                                last: "末页"
+                            },
+                            aria: {
+                                sortAscending: ": 以升序排列此列",
+                                sortDescending: ":  以降序排列此列"
                             }
-                        });
+                        }
+                    });
 
                 })
             }

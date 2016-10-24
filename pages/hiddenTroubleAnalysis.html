@@ -274,14 +274,33 @@ var vm = new Vue({
     },
     created: function() {
         var self = this;
-        $.post('/model', {
-            name: "Region",
-            "row": 0
-        }, function(data, textStatus, xhr) {
-            if (data.state == 0) {
-                vm.regionList = data.data;
-            }
-        });
+        if (localStorage.getItem("competence") == "系统管理员") {
+            self.competence = true
+        }
+
+        if (self.competence) {
+            $.post('/model', {
+                name: "Region",
+                "row": 0,
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.regionList = data.data;
+                }
+            });
+        } else {
+            $.post('/model', {
+                name: "Region",
+                "row": 0,
+                "params['my']": 1,
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.regionList = data.data.filter(function(index) {
+                        return index.id==localStorage.getItem("id");
+                    });;
+                    vm.region=localStorage.getItem("id")
+                }
+            });
+        }
         self.echartLine_AccessmentAnalysis_option = {
             tooltip: {
                 trigger: 'axis',

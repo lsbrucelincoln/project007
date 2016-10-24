@@ -49,7 +49,7 @@
                             </tr>
                         </table>
                         <div class="bottom-search" style="width:100%">
-<!--                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
+                            <!--                             <div class="allSelectBtn normalBtn" style="margin-top:15px">全选</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)" v-show="competence">显示</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)" v-show="competence">隐藏</div> -->
                             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
@@ -181,7 +181,7 @@ $(document).ready(function() {
                 var tree1 = [];
                 var tree2 = {};
                 for (var i = 0; i < data.length; i++) {
-                    vm.rawData[i].number=i+1
+                    vm.rawData[i].number = i + 1
                     data[i].updateTime = this.stamp2time(data[i].in_time)
                     if (i == 0) {
                         vm.startAttr = data[i].category1;
@@ -239,10 +239,10 @@ $(document).ready(function() {
                             }
 
                         })
-                }else{
+                } else {
                     if (state) {
                         alert("请选择隐藏项")
-                    }else{
+                    } else {
                         alert("请选择显示项")
                     }
                 }
@@ -361,6 +361,9 @@ $(document).ready(function() {
                 }
                 self.state.$set($index, 1);
                 self.startAttr = item;
+                this.rules = this.rawData.filter(function(index) {
+                    return index.category1 == item;
+                });
             },
             addTreeNode: function() {
                 $(".ztrbox input,.addConfirm").remove();

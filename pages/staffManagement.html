@@ -13,6 +13,11 @@
 <script>
 $(document).ready(function() {
     // TablePage("#checkTable", 5);
+        window.page.beforeUnload = function(hash) {
+            $('table.display').hide();
+        $('table.display').DataTable().destroy();
+        return true;
+    }
     console.log(window.location.href.search("company") != -1);
     if (window.location.href.search("company") != -1) {
         $(".contenBox").load('staffManagement2.html',

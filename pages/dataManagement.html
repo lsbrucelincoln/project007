@@ -20,12 +20,12 @@
                 <div class="assess2Body">
                     <div class="ztrbox">
                         <div class="ztreeBox ztree">
-                            <a class="category1" v-for="item in tree1" @click="category1Click(index,item,$index,$event)"><i class="flaticon-add-1" v-show="!state[$index]==1"></i><i class="flaticon-square" v-show="state[$index]==1"></i><span>{{item}}</span>
-                            <ul class="line" v-show="state[$index]==1"><li class="category2" v-for="item2 in tree2[item]"  @click.stop="showData(item2,$event,item)"><i class="flaticon-interface"></i>{{item2}}</li></ul>
+                            <a class="category1" v-for="(index1,item) in tree1" @click="category1Click(index,item,$index,$event,index1)"><i class="flaticon-add-1" v-show="!state[$index]==1"></i><i class="flaticon-square" v-show="state[$index]==1"></i><span>{{item}}</span>
+                            <ul class="line" v-show="state[$index]==1"><li class="category2" v-for="(index2,item2) in tree2[item]"  @click.stop="showData(item2,$event,item,index1,index2)"><i class="flaticon-interface"></i>{{item2}}</li></ul>
                             </a>
                         </div>
                         <i class="treeAdd" @click="addTreeNode">+</i>
-                        <i class="treeRemove" @click="removeTreeNode">-</i></div>
+                        <i class="treeRemove" @click="removeTreeNode()">-</i></div>
                     <div class="tableBox">
                         <table class="dataTable compact">
                             <thead>
@@ -171,7 +171,9 @@ $(document).ready(function() {
             rankState: 0,
             forceState: 0,
             currentState: 0,
-            classList: ['sorting', 'sorting_desc', 'sorting_asc']
+            classList: ['sorting', 'sorting_desc', 'sorting_asc'],
+            index1:'',
+            index2:''
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -384,9 +386,11 @@ $(document).ready(function() {
                     self.chosenList.push($(el).attr('data-id'));
                 });
             },
-            showData: function(item2, event, item1) {
+            showData: function(item2, event, item1,index1,index2) {
                 this.rules = this.category[item1][item2];
                 this.pageIndex = 1;
+                this.index1=index1;
+                this.index2=index2;
                 $(".category2").removeClass('chosenCategory');
                 $(".category1").removeClass('chosenCategory');
                 if ($(event.target).parent("li").length == 0) {
@@ -475,9 +479,10 @@ $(document).ready(function() {
                 localStorage.setItem("ruleDetail", JSON.stringify(data));
                 localStorage.setItem("dataParams", JSON.stringify(this.$data));
             },
-            category1Click: function(index, item, $index, event) {
+            category1Click: function(index, item, $index, event,index1) {
                 var self = this;
                 console.log('test');
+                self.index1=index1;
                 $(".category2").removeClass('chosenCategory');
                 $(".category1").removeClass('chosenCategory');
                 for (var i = 0; i < self.state.length; i++) {
@@ -490,6 +495,9 @@ $(document).ready(function() {
                 }
                 self.state.$set($index, 1);
                 self.startAttr = item;
+                this.rules = this.rawData.filter(function(index) {
+                    return index.category1==item;
+                });
             },
             addTreeNode: function() {
                 $(".ztrbox input,.addConfirm").remove();
@@ -500,10 +508,18 @@ $(document).ready(function() {
                     $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>')
                 }
             },
-            removeTreeNode: function() {
-                if (($(".chosenCategory").hasClass('category1') && this.tree2[$(".chosenCategory span").text()].length == 0) || (this.rules.length == 0 && $(".chosenCategory").hasClass('category2'))) {
-                    $(".chosenCategory").remove();
-                } else {
+            removeTreeNode: function(index1,index2) {
+                if (($(".chosenCategory").hasClass('category1') && this.tree2[$(".chosenCategory span").text()].length == 0)) {
+                    // $(".chosenCategory").remove();
+                    delete this.tree2[$(".chosenCategory span").text()];
+                    this.tree1.splice(this.index1,1)
+                } else if(this.rules.length == 0 && $(".chosenCategory").hasClass('category2')){
+                    // $(".chosenCategory").remove();
+                    console.log(this.index1);
+                    console.log(this.tree1[this.index1]);
+                    console.log(this.tree2[this.tree1[this.index1]]);
+                    this.tree2[this.tree1[this.index1]].splice(this.index2,1)
+                }else {
                     alert("无法删除有数据的目录")
                 }
             },

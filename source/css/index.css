@@ -247,13 +247,19 @@ body {
   display: none;
 }
 .QR {
-  width: 100px;
+  width: 200px;
   position: absolute;
-  right: 25px;
-  bottom: 50px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -116px;
   opacity: 0;
   -webkit-transition: opacity 0.5s;
           transition: opacity 0.5s;
+  z-index: 31;
+}
+.QR p {
+  font-size: 16px;
 }
 .signInBody {
   height: 100%;

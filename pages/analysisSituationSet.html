@@ -161,7 +161,9 @@ $(document).ready(function() {
             },
             mode: function(val, oldVal) {
                 var self = this;
-                self.updateData();
+                if (self.mode != "专项评估" || self.special != "") {
+                    self.updateData();
+                }
             },
             special: function(val, oldVal) {
                 if (val !== "add") {
@@ -181,18 +183,18 @@ $(document).ready(function() {
             },
         },
         methods: {
-            compare: function(propertyName,state) {
+            compare: function(propertyName, state) {
                 console.log(propertyName);
                 console.log(state);
                 return function(object1, object2) {
                     var value1 = object1[propertyName];
                     var value2 = object2[propertyName];
                     if (value2 < value1) {
-                        return -1*state;
+                        return -1 * state;
                     } else if (value2 > value1) {
-                        return 1*state;
+                        return 1 * state;
                     } else {
-                        return 0*state;
+                        return 0 * state;
                     }
                 }
             },
@@ -201,21 +203,21 @@ $(document).ready(function() {
                 this.rankState !== 1 ? this.rankState = 1 : this.rankState = 2;
                 this.forceState = 0;
                 this.currentState = 0;
-                this.rules = this.rules.sort(self.compare("level",self.rankState==1?-1:1))
+                this.rules = this.rules.sort(self.compare("level", self.rankState == 1 ? -1 : 1))
             },
             forceOrder: function() {
                 var self = this;
                 this.forceState !== 1 ? this.forceState = 1 : this.forceState = 2;
                 this.rankState = 0;
                 this.currentState = 0;
-                this.rules = this.rules.sort(self.compare("must",self.forceState==1?-1:1))
+                this.rules = this.rules.sort(self.compare("must", self.forceState == 1 ? -1 : 1))
             },
             currentOrder: function() {
                 var self = this;
                 this.currentState !== 1 ? this.currentState = 1 : this.currentState = 2;
                 this.forceState = 0;
                 this.rankState = 0;
-                this.rules = this.rules.sort(self.compare("used",self.currentState==1?-1:1))
+                this.rules = this.rules.sort(self.compare("used", self.currentState == 1 ? -1 : 1))
             },
             rulesDetail: function(data) {
                 var category = {};
@@ -279,7 +281,6 @@ $(document).ready(function() {
                 });
             },
             usedFilter: function(data) {
-                console.log((this.showUsed && !data.used));
                 if (this.showUsed && !data.used) {
                     return false
                 } else {
@@ -290,25 +291,31 @@ $(document).ready(function() {
                 var self = this;
                 self.getChosenList();
                 if (self.chosenList.length > 0) {
-                    $.ajax({
-                            url: '/region/disableSafety',
-                            type: 'POST',
-                            data: {
-                                safety: self.chosenList,
-                                delete: state
-                            },
-                            traditional: true
-                        })
-                        .done(function(data) {
-                            if (data.state == 0) {
-                                if (state) {
-                                    alert("禁用成功")
-                                } else {
-                                    alert("启用成功")
+                    if (self.mode != "专项评估" || (self.mode == "专项评估" && self.special && self.special != "add")) {
+                        $.ajax({
+                                url: '/region/disableSafetys',
+                                type: 'POST',
+                                data: {
+                                    safety: self.chosenList,
+                                    delete: state,
+                                    mode: self.mode,
+                                    special: self.special
+                                },
+                                traditional: true
+                            })
+                            .done(function(data) {
+                                if (data.state == 0) {
+                                    if (state) {
+                                        alert("禁用成功")
+                                    } else {
+                                        alert("启用成功")
+                                    }
+                                    self.updateData();
                                 }
-                                self.updateData();
-                            }
-                        })
+                            })
+                    } else {
+                        alert("请选择对应的专项")
+                    }
                 } else {
                     if (self.state) {
                         alert("请选择启用项")
@@ -402,7 +409,6 @@ $(document).ready(function() {
                 vm.pageIndex = data + 1;
             },
             clickPageFilter: function(data) {
-                console.log(data);
                 if (data + 1 == vm.pageIndex) {
                     return true;
                 } else {
@@ -410,7 +416,6 @@ $(document).ready(function() {
                 }
             },
             showPageTag: function(data) {
-                console.log(data - this.pageIndex);
                 if (data == this.pageNum - 1 || data == 0 || ((data - this.pageIndex) < 1) && (data - this.pageIndex) >= -2) {
                     return true
                 } else {
@@ -436,6 +441,9 @@ $(document).ready(function() {
                 }
                 self.state.$set($index, 1);
                 self.startAttr = item;
+                this.rules = this.rawData.filter(function(index) {
+                    return index.category1 == item;
+                });
             },
             addTreeNode: function() {
                 $(".ztrbox input,.addConfirm").remove();

@@ -77,6 +77,11 @@
 </div>
 </div>
 <script>
+// window.page.beforeUnload = function(hash) {
+//     $('table.display').hide();
+//     $('table.display').DataTable().destroy();
+//     return true;
+// }
 $(document).ready(function() {
     $.datetimepicker.setLocale('zh');
     $(".createTime").datetimepicker({
@@ -154,8 +159,8 @@ $(document).ready(function() {
                     return ""
                 }
             },
-            goDetail:function(){
-                switch(this.tagState) {
+            goDetail: function() {
+                switch (this.tagState) {
                     case 1:
                         return '#/assessDetail.html'
                         break;
@@ -163,7 +168,7 @@ $(document).ready(function() {
                         return '#/emergencyDetail.html'
                         break;
                     case 3:
-                    return '#/assessDetail.html?history'
+                        return '#/assessDetail.html?history'
                 }
             },
             taskGetDetail: function(data) {

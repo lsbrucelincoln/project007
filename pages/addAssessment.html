@@ -125,10 +125,16 @@ $(document).ready(function() {
     $.datetimepicker.setLocale('zh');
     $(".excuteTime").datetimepicker({
         minDate: 0,
+        yearStart: new Date().getFullYear(),
         onChangeDateTime: function(dp, $input) {
             var d = $('.excuteTime').datetimepicker('getValue');
-            vm.params.dead_line = d.getTime();
-            vm.deadLine = $('.excuteTime').val();
+            if (d.getTime() < new Date().getTime()) {
+                alert("请选择有效时间");
+                $('.excuteTime').val('')
+            } else {
+                vm.params.dead_line = d.getTime();
+                vm.deadLine = $('.excuteTime').val();
+            }
         }
     });
     $("#processingBtn").on('click', function(event) {
@@ -177,7 +183,8 @@ $(document).ready(function() {
             place2: "",
             place3: "",
             place4: "",
-            rawUser: []
+            rawUser: [],
+            id: localStorage.getItem("id")
         },
         watch: {
             place1: function(val, oldVal) {
@@ -221,7 +228,7 @@ $(document).ready(function() {
         methods: {
             typeFilter: function(data) {
                 var type = data.type.id + "";
-                if (this.type !== "" && this.type !== type) {
+                if ((this.type !== "" && this.type !== type)||(data.region.id!=this.id)) {
                     return false;
                 } else {
                     return true;
@@ -235,7 +242,7 @@ $(document).ready(function() {
                 }
             },
             teamFilter: function(data) {
-                if (this.team == "" || (this.team !== "" && this.team !== data.squadron || data.competence !== "检查评估员")) {
+                if (this.team == "" || (this.team !== "" && this.team !== data.squadron || data.competence !== "检查评估员" || data.region.id != this.id)) {
                     return false;
                 } else {
                     return true;
