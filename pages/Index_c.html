@@ -140,19 +140,22 @@
                                         <i class="flaticon-arrows"></i></span>
                                     </a>
                                     <div class="submenu">
-                                        <a class="line" href="#/AccessmentAnalysis.html">
+                                        <!-- <a class="line analysisBtn" href="#/AccessmentAnalysis.html"> -->
+                                        <a class="line analysisBtn">
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
                                             <div class="name">任务分析</div>
                                         </a>
-                                        <a class="line" href="#/hiddenTroubleAnalysis.html">
+                                        <!-- <a class="line analysisBtn" href="#/hiddenTroubleAnalysis.html"> -->
+                                        <a class="line analysisBtn">
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
                                             <div class="name">隐患分析</div>
                                         </a>
-                                        <a class="line" href="#/industryComparison.html">
+                                        <!-- <a class="line analysisBtn" href="#/industryComparison.html"> -->
+                                        <a class="line analysisBtn">
                                             <span class="markIcon">
                                                 <i class="flaticon-arrows-3"></i>
                                             </span>
@@ -238,6 +241,10 @@
         </div>
         <script>
         $(".lawAlert").on('click', function(event) {
+            event.preventDefault();
+            alert("功能开发中")
+        });
+        $(".analysisBtn").on('click', function(event) {
             event.preventDefault();
             alert("功能开发中")
         });

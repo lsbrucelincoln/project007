@@ -160,10 +160,11 @@ $(document).ready(function() {
 
             },
             getData: function() {
+                var self=this;
                 $.ajax({
                         url: '/model',
-                        type: 'default GET (Other values: POST)',
-                        async: false,
+                        type: 'POST',
+                        // async: false,
                         data: {
                             name: "Company",
                             rows: 0
@@ -171,9 +172,9 @@ $(document).ready(function() {
                     })
                     .done(function(data) {
                         if (data.state == 0) {
-                            vm.userDetail(data.data)
-                            vm.$nextTick(function() {
-                                vm.showState = true;
+                            self.userDetail(data.data)
+                            self.$nextTick(function() {
+                                self.showState = true;
                                 $('table.display').show();
                                 $('table.display').DataTable({
                                     "order": [

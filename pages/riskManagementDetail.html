@@ -260,7 +260,7 @@ var vm = new Vue({
             data.photos = [];
             console.log($("img").length);
             console.log(this.competence);
-            if (this.competenc&&taskDetail.recheckState=='未整改') {
+            if (this.competence&&this.taskDetail.recheckState=='未整改') {
                 if ($("img").length > 0) {
                     $("img").each(function(index, el) {
                         if ($(el).attr('data-id')) {

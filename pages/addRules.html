@@ -65,7 +65,7 @@ label {
                         <td>分类一：</td>
                         <td colspan="2">
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="category1" :disabled='readOnly||!competence'>
+                                <select name="" id="" v-model="category1" :disabled='readOnly||!competence||evaluateState'>
                                     <option value="{{cate1}}" v-for="cate1 in ruleDetail.tree1">{{cate1}}</option>
                                 </select>
                             </div>
@@ -73,7 +73,7 @@ label {
                         <td>分类二：</td>
                         <td colspan="2">
                             <div class="admin_ui_select">
-                                <select name="" id="" v-model="category2" :disabled='readOnly||!competence'>
+                                <select name="" id="" v-model="category2" :disabled='readOnly||!competence||evaluateState'>
                                     <option value="{{cate2}}" v-for="cate2 in categoryList">{{cate2}}</option>
                                 </select>
                             </div>
@@ -83,19 +83,19 @@ label {
                         <td>适用的企业类型：</td>
                         <td colspan="5">
                             <label for="{{company.name}}" v-for="company in companyType">
-                                <input type="checkbox" id="{{company.name}}" value="{{company.id}}" v-model="params.companyTypes" :disabled='readOnly||!competence'>{{company.name}}</label>
+                                <input type="radio" id="{{company.name}}" name="user" value="{{company.id}}" v-model="params.companyTypes" :disabled='readOnly||!competence||evaluateState'>{{company.name}}</label>
                         </td>
                     </tr>
                     <tr>
                         <td>检查项内容：</td>
                         <td colspan="5">
-                            <input type="text" v-model="params.text" :disabled='readOnly||!competence'>
+                            <input type="text" v-model="params.text" :disabled='readOnly||!competence||evaluateState'>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-show="!state">
                         <td>检查项编号：</td>
                         <td colspan="5">
-                            <input type="text" v-model="params.code" :disabled='readOnly||!competence'>
+                            <input type="text" v-model="params.code" disabled>
                         </td>
                     </tr>
                     <tr>
@@ -127,7 +127,7 @@ label {
                     <tr>
                         <td>执行依据：</td>
                         <td colspan="5">
-                            <textarea name="" id="" v-model="params.based" :disabled='readOnly||!competence'></textarea>
+                            <textarea name="" id="" v-model="params.based" :disabled='readOnly||!competence||evaluateState'></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -168,7 +168,8 @@ var vm = new Vue({
             used: true,
             companyTypes: [],
             must: 'true',
-            safetyLevel: "一级"
+            safetyLevel: "一级",
+            score:0
         },
         category1: [],
         category2: [],
@@ -209,13 +210,9 @@ var vm = new Vue({
             }
             if (self.state && self.params.companyTypes.length == 0) {
                 alert("请选择适用的企业类型")
-            } else if (!self.params.code) {
-                alert("请输入检查项编号")
-            } else if (!self.params.text) {
+            }else if (!self.params.text) {
                 alert("请输入检查项内容")
-            } else if (!self.params.score) {
-                alert("请输入分数")
-            } else {
+            }else {
                 $.ajax({
                         url: '/region/editSafety',
                         type: 'POST',
