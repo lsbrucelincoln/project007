@@ -72,19 +72,19 @@ textarea:disabled {
                         <td>
                             <input type="text" v-model="params.score" :disabled="!competence">
                         </td>
-                        <td>状态：</td>
-                        <td>
+                        <!-- <td>状态：</td> -->
+<!--                         <td>
                             <div class="admin_ui_select">
                                 <select name="" id="" v-model="params._delete" :disabled="!competence">
                                     <option value="false">启用</option>
                                     <option value="true">停用</option>
                                 </select>
                             </div>
-                        </td>
+                        </td> -->
                     </tr>
                     <tr>
                         <td>检查项内容：</td>
-                        <td colspan="5">
+                        <td colspan="3">
                             <input type="text" v-model="params.text" :disabled="!competence">
                         </td>
                     </tr>
@@ -93,7 +93,7 @@ textarea:disabled {
         </div>
     </div>
     <div style="text-align: center;margin-top: 20px;margin-bottom: 20px;">
-        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="addRule" v-show="!competence">确认</div>
+        <div class="allSelectBtn normalBtn" style="margin-top:15px" @click="addRule" v-show="competence">确认</div>
         <div class="urgeBtn normalBtn" style="margin-top:15px">返回</div>
     </div>
 </div>
