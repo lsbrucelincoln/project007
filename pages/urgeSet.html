@@ -159,7 +159,7 @@ $(document).ready(function() {
         },
         computed: {
             startPoint: function() {
-                return (this.pageIndex - 1) * 5
+                return (this.pageIndex - 1) * 7
             },
             pageNum: function() {
                 return Math.ceil(this.rules.length / this.recordLimit)
@@ -213,7 +213,7 @@ $(document).ready(function() {
             export: function() {
                 $.get('/region/exportEmergency', function(data) {
                     if (data.state == 0) {
-                        window.open("/" + data.data)
+                        window.location.href=("/" + data.data);
                     } else {
                         alert(data.state)
                     }

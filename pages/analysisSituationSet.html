@@ -157,6 +157,13 @@ $(document).ready(function() {
         watch: {
             selectCompany: function(val, oldVal) {
                 var self = this;
+                $.post('/region/getSpecial', {
+                    companyType: val,
+                }, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        self.specialCheck = data.data;
+                    }
+                });
                 self.updateData();
             },
             mode: function(val, oldVal) {
@@ -176,7 +183,7 @@ $(document).ready(function() {
         },
         computed: {
             startPoint: function() {
-                return (this.pageIndex - 1) * 5
+                return (this.pageIndex - 1) * 7
             },
             pageNum: function() {
                 return Math.ceil(this.rules.length / this.recordLimit)
@@ -272,7 +279,13 @@ $(document).ready(function() {
                 this.category = category;
             },
             export: function() {
-                $.get('/region/exportSafety', function(data) {
+                var self=this;
+                var params={
+                    companyType:self.selectCompany,
+                    mode:self.mode,
+                    special:self.special
+                }
+                $.post('/region/exportSafety',params, function(data) {
                     if (data.state == 0) {
                         window.location.href = ("/" + data.data)
                     } else {
@@ -470,7 +483,8 @@ $(document).ready(function() {
                             url: '/region/resetSpecial',
                             type: 'POST',
                             data: {
-                                special: list
+                                special: list,
+                                companyType:self.selectCompany
                             },
                             traditional: true,
                         })
@@ -495,7 +509,8 @@ $(document).ready(function() {
                                 url: '/region/resetSpecial',
                                 type: 'POST',
                                 data: {
-                                    special: list
+                                    special: list,
+                                    companyType:self.selectCompany
                                 },
                                 traditional: true,
                             })
@@ -516,13 +531,11 @@ $(document).ready(function() {
             var self = this;
             var id = localStorage.getItem("id");
             self.updateData();
-            $.post('/model', {
-                name: "Region",
-                "params['my']": 1,
-                start: -1
+            $.post('/region/getSpecial', {
+                companyType: self.selectCompany,
             }, function(data, textStatus, xhr) {
                 if (data.state == 0) {
-                    vm.specialCheck = data.data.special;
+                    self.specialCheck = data.data;
                 }
             });
             $.post('/model', {

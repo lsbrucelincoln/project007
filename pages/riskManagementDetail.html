@@ -96,34 +96,12 @@ img {
                         <th>附件：</th>
                         <td colspan="5"><img :src="'/map/'+photo.id" alt="" v-for="photo in taskDetail.censor.photos"></td>
                     </tr>
-                    <tr v-if="taskDetail.recheckState=='未整改'&&competence">
-                        <th>整改说明：</th>
-                        <td colspan="5">
-                            <textarea style="width:100%;height:50px;padding:5px" v-model="params.text" :disabled="taskDetail.recheckState!='未整改'"></textarea>
-                        </td>
-                    </tr>
-                    <tr v-show="taskDetail.recheckState=='未整改'&&competence" class="uploadPicBox">
-                        <th>整改图片：</th>
-                        <td colspan="5" id="picTable">
-                            <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
-                                <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
-                                <label for="uploadPic" id="fileBtn">
-                                    +
-                                </label>
-                                <span class="tip"></span>
-                                <input type="text" name="turnUrl" class="turnUrl">
-                                <input type="submit" value="submit">
-                                <canvas id="uploadImg" style="display:none"></canvas>
-                            </form>
-                            <iframe src="" frameborder="0" id="turnPage"></iframe>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
-            <table class="tem_headTable" v-if="taskDetail.recheckState!='未整改'&&taskDetail.details.length > 0" v-for="detail in taskDetail.details" style="border-top:1px solid #ccc">
+            <table class="tem_headTable" v-if="taskDetail.recheckState!='未整改'||taskDetail.details.length > 0" v-for="detail in taskDetail.details" style="border-top:1px solid #ccc;margin-top: 10px">
                 <tr>
                     <th width="120" style="line-height:40px">{{$index%2==0?"整改说明：":"复检说明："}}</th>
-                    <td colspan="5">
+                    <td colspan="5" style="line-height:40px">
                         {{detail.text}}
                     </td>
                 </tr>
@@ -131,6 +109,30 @@ img {
                     <th>{{$index%2==0?"整改图片：":"复检图片："}}</th>
                     <td colspan="5" id="picTable">
                         <img :src="'/map/'+photo.id" alt="" v-for="photo in detail.photos">
+                    </td>
+                </tr>
+            </table>
+            <table v-show="taskDetail.recheckState=='未整改'&&competence" class="uploadPicBox tem_headTable">
+                <tr v-if="taskDetail.recheckState=='未整改'&&competence">
+                    <th style="width: 120px;">整改说明：</th>
+                    <td colspan="5">
+                        <textarea style="width:100%;height:50px;padding:5px" v-model="params.text" :disabled="taskDetail.recheckState!='未整改'"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 120px;">整改图片：</th>
+                    <td colspan="5" id="picTable">
+                        <form action="/upload" class="fileForm picUpload" enctype="multipart/form-data" method="post" target="turnPage">
+                            <input type="file" id="uploadPic" name="file" @change="upload" :disabled="disabled">
+                            <label for="uploadPic" id="fileBtn">
+                                +
+                            </label>
+                            <span class="tip"></span>
+                            <input type="text" name="turnUrl" class="turnUrl">
+                            <input type="submit" value="submit">
+                            <canvas id="uploadImg" style="display:none"></canvas>
+                        </form>
+                        <iframe src="" frameborder="0" id="turnPage"></iframe>
                     </td>
                 </tr>
             </table>
@@ -260,7 +262,7 @@ var vm = new Vue({
             data.photos = [];
             console.log($("img").length);
             console.log(this.competence);
-            if (this.competence&&this.taskDetail.recheckState=='未整改') {
+            if (this.competence && this.taskDetail.recheckState == '未整改') {
                 if ($("img").length > 0) {
                     $("img").each(function(index, el) {
                         if ($(el).attr('data-id')) {
@@ -280,7 +282,7 @@ var vm = new Vue({
                             history.back();
                         }
                     })
-            }else{
+            } else {
                 history.back();
             }
 

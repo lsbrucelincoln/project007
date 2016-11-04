@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="secondPage">
-<!--                 <div class="inputShort assessType" style="margin-bottom:0px"><span>选择评估类型:</span>
+                <!--                 <div class="inputShort assessType" style="margin-bottom:0px"><span>选择评估类型:</span>
                     <div class="admin_ui_select">
                         <select name="" id="" v-model="params.mode">
                             <option value="日常评估">日常评估检查</option>
@@ -54,15 +54,15 @@
                                 <th>当前状态</th>
                                 <th>操作</th>
                             </tr>
-                            <tr v-for="rule in rules |filterBy categoryFilter rule |limitBy recordLimit startPoint">
+                            <tr v-for="rule in rules |filterBy categoryFilter rule |filterBy usedFilter rule |limitBy recordLimit startPoint">
                                 <td style="text-align:left">{{rule.text}}</td>
                                 <td>{{rule.safetyLevel}}</td>
                                 <td>{{rule.must?"是":""}}</td>
                                 <td>{{rule.updateTime}}</td>
                                 <td>{{rule.used?"启用":"禁用"}}</td>
                                 <td>
-<!--                                 <a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a> -->
-                                 <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
+                                    <!--                                 <a href="#/ruleDetail.html" @click="saveDetail(rule)">查看</a> -->
+                                    <a href="" @click.prevent="deleteItem(rule)">删除</a></td>
                             </tr>
                         </table>
                         <div class="bottom-search" style="width:100%">
@@ -194,6 +194,14 @@ $(document).ready(function() {
                     return true;
                 }
             },
+            usedFilter: function(data) {
+                console.log((!data.used));
+                if (!data.used) {
+                    return false
+                } else {
+                    return true;
+                }
+            },
             showData: function(data, event, index2, index) {
                 // this.rules = data;
                 this.pageIndex = 1;
@@ -281,7 +289,7 @@ $(document).ready(function() {
                     vm.params.safeties.push(vm.rules[i].id);
                 }
                 localStorage.setItem("params", JSON.stringify(vm.params));
-                localStorage.setItem("safetiesData",JSON.stringify(vm.$data));
+                localStorage.setItem("safetiesData", JSON.stringify(vm.$data));
             },
             saveDetail: function(data) {
                 localStorage.setItem("ruleDetail", JSON.stringify(data))
@@ -293,9 +301,9 @@ $(document).ready(function() {
                     name: "SafeRule",
                     "params['companyType']": this.rawData.choseCompany[0].type.id,
                     "params['mode']": this.params.mode,
-                    "params['used']":true
+                    // "params['used']":true
                 }
-                if (this.params.special&&this.params.mode=="专项评估") {
+                if (this.params.special && this.params.mode == "专项评估") {
                     data["params['special']"] = this.params.special;
                 }
                 $.post('/model', data, function(data, textStatus, xhr) {
@@ -312,11 +320,11 @@ $(document).ready(function() {
             this.params = JSON.parse(localStorage.getItem("params"));
             this.rawData = JSON.parse(localStorage.getItem("data"));
             console.log(!localStorage.getItem("safetiesData"));
-            if ( !localStorage.getItem("safetiesData")) {
+            if (!localStorage.getItem("safetiesData")) {
                 self.getData();
-            }else{
+            } else {
                 console.log('test1');
-                self.$data=JSON.parse(localStorage.getItem("safetiesData"))
+                self.$data = JSON.parse(localStorage.getItem("safetiesData"))
             }
             $.post('/model', {
                 name: "Region",

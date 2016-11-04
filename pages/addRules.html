@@ -153,7 +153,7 @@ label {
 </div>
 <script>
 window.page.beforeUnload = function(hash) {
-    if (vm.readOnly||!vm.competence || confirm("未保存修改的信息，确定要离开吗？")) {
+    if (vm.readOnly || !vm.competence || confirm("未保存修改的信息，确定要离开吗？")) {
         return true;
     } else {
         return false;
@@ -169,14 +169,14 @@ var vm = new Vue({
             companyTypes: [],
             must: 'true',
             safetyLevel: "一级",
-            score:0
+            score: 0
         },
         category1: [],
         category2: [],
         companyType: '',
         readOnly: false,
         evaluateState: false,
-        competence:false
+        competence: false
     },
     computed: {
         categoryList: function() {
@@ -210,25 +210,56 @@ var vm = new Vue({
             }
             if (self.state && self.params.companyTypes.length == 0) {
                 alert("请选择适用的企业类型")
-            }else if (!self.params.text) {
+            } else if (!self.params.text) {
                 alert("请输入检查项内容")
-            }else {
-                $.ajax({
-                        url: '/region/editSafety',
-                        type: 'POST',
-                        data: self.params,
-                        traditional: true
-                    })
-                    .done(function() {
-                        console.log("success");
-                        if (self.state) {
-                            alert("增加成功");
-                        } else {
-                            alert("修改成功")
-                        }
+            } else {
+                if (self.evaluateState) {
+                    var params={
+                        id:self.params.id,
+                        punishment:self.params.punishment,
+                        used:self.params.used,
+                        must:self.params.must,
+                        score:self.params.score,
+                        evaluation:self.params.evaluation,
+                        safetyLevel:self.params.safetyLevel,
+                        mode:self.ruleDetail.mode,
+                        special:self.ruleDetail.special
+                    }
+                    $.ajax({
+                            url: '/region/editSafetys',
+                            type: 'POST',
+                            data: params,
+                            traditional: true
+                        })
+                        .done(function() {
+                            console.log("success");
+                            if (self.state) {
+                                alert("增加成功");
+                            } else {
+                                alert("修改成功")
+                            }
 
-                        history.back();
-                    })
+                            history.back();
+                        })
+                } else {
+                    $.ajax({
+                            url: '/region/editSafety',
+                            type: 'POST',
+                            data: self.params,
+                            traditional: true
+                        })
+                        .done(function() {
+                            console.log("success");
+                            if (self.state) {
+                                alert("增加成功");
+                            } else {
+                                alert("修改成功")
+                            }
+
+                            history.back();
+                        })
+                }
+
             }
         },
         back: function() {
@@ -262,12 +293,12 @@ var vm = new Vue({
         },
     },
     created: function() {
-        var self=this;
+        var self = this;
         this.ruleDetail = JSON.parse(localStorage.getItem("dataParams"));
-        var competence=localStorage.getItem("competence")
+        var competence = localStorage.getItem("competence")
         console.log(competence);
         if (competence == "系统管理员") {
-            self.competence=true
+            self.competence = true
         }
         if (window.location.href.search("edit") !== -1 || window.location.href.search("read") !== -1 || window.location.href.search("set") !== -1) {
             this.params = JSON.parse(localStorage.getItem("ruleDetail"));
@@ -284,6 +315,7 @@ var vm = new Vue({
         if (window.location.href.search("read") !== -1) {
             this.readOnly = true;
         }
+        this.params.companyTypes=this.ruleDetail.selectCompany;
         this.category1 = this.ruleDetail.startAttr;
         this.category2 = this.ruleDetail.startAttr2;
         $.post('/model', {

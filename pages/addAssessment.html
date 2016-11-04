@@ -57,7 +57,7 @@
                 </div>
                 <div class="inputShort assessType"><span>选择评估类型:</span>
                     <div class="admin_ui_select">
-                        <select name="" id="" v-model="params.mode">
+                        <select name="" id="" v-model="params.mode" @click="checkSpecial">
                             <option value="日常评估">日常评估检查</option>
                             <option value="专项评估">专项评估检查</option>
                             <option value="综合评估">综合评估检查</option>
@@ -220,15 +220,36 @@ $(document).ready(function() {
                     this.params.places.$remove(4)
                 }
             },
-            // team:function(val,oldVal){
-            //     this.user=this.rawUser;
-            //     this.teamList=[]
-            // }
+            'params.company': function(val, oldVal) {
+                    var self = this;
+                    console.log(val);
+                    for (var i = 0, length = self.companyList.length; i < length; i++) {
+                        if (self.companyList[i].id == val) {
+                            var companyType = self.companyList[i].type.id;
+                            $.post('/region/getSpecial', {
+                                companyType: companyType,
+                            }, function(data, textStatus, xhr) {
+                                if (data.state == 0) {
+                                    self.specialCheck = data.data;
+                                }
+                            });
+                        }
+                    }
+                }
+                // team:function(val,oldVal){
+                //     this.user=this.rawUser;
+                //     this.teamList=[]
+                // }
         },
         methods: {
+            checkSpecial: function(data) {
+                if (!this.params.company) {
+                    alert("请先选择企业");
+                }
+            },
             typeFilter: function(data) {
                 var type = data.type.id + "";
-                if ((this.type !== "" && this.type !== type)||(data.region.id!=this.id)) {
+                if ((this.type !== "" && this.type !== type) || (data.region.id != this.id)) {
                     return false;
                 } else {
                     return true;
@@ -261,6 +282,8 @@ $(document).ready(function() {
                     alert("请选择公司");
                 } else if (!this.params.mode) {
                     alert("请选择评估类型");
+                } else if (this.params.mode=="专项评估"&&!this.params.special) {
+                    alert("请选择专项类型");
                 } else if (!this.params.dead_line) {
                     alert("请选择执行时间");
                 } else if (this.teamList.length == 0) {

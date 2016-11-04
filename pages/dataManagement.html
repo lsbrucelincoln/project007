@@ -58,7 +58,7 @@
                             <div class="deleteBtn normalBtn" style="margin-top:15px" @click="deleteOne" v-show="competence">删除</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(false)" v-show="competence">启用</div>
                             <div class="urgeBtn normalBtn" style="margin-top:15px" @click="updateState(true)" v-show="competence">禁用</div>
-                            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev" v-show="competence">« 上一页</span></a>
+                            <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
                                 <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
                                     <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
                                 </a>
@@ -172,8 +172,8 @@ $(document).ready(function() {
             forceState: 0,
             currentState: 0,
             classList: ['sorting', 'sorting_desc', 'sorting_asc'],
-            index1:'',
-            index2:''
+            index1: '',
+            index2: ''
         },
         watch: {
             selectCompany: function(val, oldVal) {
@@ -183,7 +183,7 @@ $(document).ready(function() {
         },
         computed: {
             startPoint: function() {
-                return (this.pageIndex - 1) * 5
+                return (this.pageIndex - 1) * 7
             },
             pageNum: function() {
                 return Math.ceil(this.rules.length / this.recordLimit)
@@ -280,7 +280,10 @@ $(document).ready(function() {
                 this.category = category;
             },
             export: function() {
-                $.get('/region/exportSafety', function(data) {
+                var params={
+                    companyType:this.selectCompany
+                }
+                $.post('/region/exportSafety',params, function(data) {
                     if (data.state == 0) {
                         window.location.href = ("/" + data.data)
                     } else {
@@ -368,7 +371,7 @@ $(document).ready(function() {
                             if (data.state == 0) {
                                 alert("删除成功")
                                 self.updateData();
-                                self.chosenList=[];
+                                self.chosenList = [];
                                 $(".category2").removeClass('chosenCategory');
                                 $(".category1").removeClass('chosenCategory');
                             }
@@ -386,11 +389,11 @@ $(document).ready(function() {
                     self.chosenList.push($(el).attr('data-id'));
                 });
             },
-            showData: function(item2, event, item1,index1,index2) {
+            showData: function(item2, event, item1, index1, index2) {
                 this.rules = this.category[item1][item2];
                 this.pageIndex = 1;
-                this.index1=index1;
-                this.index2=index2;
+                this.index1 = index1;
+                this.index2 = index2;
                 $(".category2").removeClass('chosenCategory');
                 $(".category1").removeClass('chosenCategory');
                 if ($(event.target).parent("li").length == 0) {
@@ -479,10 +482,10 @@ $(document).ready(function() {
                 localStorage.setItem("ruleDetail", JSON.stringify(data));
                 localStorage.setItem("dataParams", JSON.stringify(this.$data));
             },
-            category1Click: function(index, item, $index, event,index1) {
+            category1Click: function(index, item, $index, event, index1) {
                 var self = this;
                 console.log('test');
-                self.index1=index1;
+                self.index1 = index1;
                 $(".category2").removeClass('chosenCategory');
                 $(".category1").removeClass('chosenCategory');
                 for (var i = 0; i < self.state.length; i++) {
@@ -496,7 +499,7 @@ $(document).ready(function() {
                 self.state.$set($index, 1);
                 self.startAttr = item;
                 this.rules = this.rawData.filter(function(index) {
-                    return index.category1==item;
+                    return index.category1 == item;
                 });
             },
             addTreeNode: function() {
@@ -508,24 +511,30 @@ $(document).ready(function() {
                     $(".chosenCategory").find("ul").append('<input type="text"><i class="addConfirm flaticon-checked"></i><i class="removeConfirm flaticon-cancel"></i>')
                 }
             },
-            removeTreeNode: function(index1,index2) {
+            removeTreeNode: function(index1, index2) {
                 if (($(".chosenCategory").hasClass('category1') && this.tree2[$(".chosenCategory span").text()].length == 0)) {
                     // $(".chosenCategory").remove();
                     delete this.tree2[$(".chosenCategory span").text()];
-                    this.tree1.splice(this.index1,1)
-                } else if(this.rules.length == 0 && $(".chosenCategory").hasClass('category2')){
+                    this.tree1.splice(this.index1, 1)
+                } else if (this.rules.length == 0 && $(".chosenCategory").hasClass('category2')) {
                     // $(".chosenCategory").remove();
                     console.log(this.index1);
                     console.log(this.tree1[this.index1]);
                     console.log(this.tree2[this.tree1[this.index1]]);
-                    this.tree2[this.tree1[this.index1]].splice(this.index2,1)
-                }else {
+                    this.tree2[this.tree1[this.index1]].splice(this.index2, 1)
+                } else {
                     alert("无法删除有数据的目录")
                 }
             },
             addOne: function() {
-                localStorage.setItem("dataParams", JSON.stringify(this.$data));
-                window.location.href = "#/addRules.html"
+                var self = this;
+                console.log($(".chosenCategory").length);
+                if ($(".chosenCategory").length > 0 && $(".chosenCategory").hasClass('category1')) {
+                    alert("请先选择子分类");
+                } else {
+                    localStorage.setItem("dataParams", JSON.stringify(this.$data));
+                    window.location.href = "#/addRules.html"
+                }
             }
         },
         created: function() {
