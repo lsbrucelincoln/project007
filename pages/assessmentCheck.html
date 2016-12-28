@@ -6,10 +6,11 @@
             <a class="tag  chosenBtn checkBtn" @click="changeState(1)">评估检查任务</a>
             <a class="tag praticeBtn" @click="changeState(2)">应急演练</a>
             <a class="tag historyBtn" @click="changeState(3)">评估历史</a>
+            <a class="tag praticeHistoryBtn" @click="changeState(4)">演练历史</a>
         </div>
         <div class="contenBox">
             <div class="checkBody">
-                <div class="inputShort"><span>{{tagState==3?"结束时间：":"创建时间："}}</span>
+                <div class="inputShort"><span>{{tagState>=3?"结束时间：":"创建时间："}}</span>
                     <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
                 <div class="inputShort"><span>管理机构：</span>
                     <div class="admin_ui_select" style="width: 200px;">
@@ -28,7 +29,7 @@
                 <div class="searchBody">
                     <span class="searchButtom normalBtn">搜索</span>
                 </div>
-                <div class="btnBox" v-if="tagState!==3&&competence">
+                <div class="btnBox" v-if="tagState<3&&competence">
                     <a :href="addTask" class="addBtn normalBtn">添加任务</a>
                     <div class="allSelectBtn normalBtn">全选</div>
                     <div class="urgeBtn normalBtn" @click="urgeExecute">催促执行</div>
@@ -45,7 +46,7 @@
                                 <th>任务类型</th>
                                 <th>企业对象</th>
                                 <th>管理机构</th>
-                                <th>{{tagState==3?"结束时间":"创建时间"}}</th>
+                                <th>{{tagState>=3?"结束时间":"创建时间"}}</th>
                                 <th>责任人</th>
                                 <th>当前状态</th>
                                 <th>操作</th>
@@ -60,7 +61,7 @@
                                 <td>{{task.mode}}</td>
                                 <td width="190"><span class="ellipsis" title="{{task.company.name}}">{{task.company.name}}</span></td>
                                 <td>{{task.company.region.name}}</td>
-                                <td>{{tagState==3?task.endTime:task.time}}</td>
+                                <td>{{tagState>=3?task.endTime:task.time}}</td>
                                 <td>{{responsePerson(task)}}</td>
                                 <td>{{task.state}}</td>
                                 <td><a :href="goDetail()" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
@@ -169,6 +170,10 @@ $(document).ready(function() {
                         break;
                     case 3:
                         return '#/assessDetail.html?history'
+                        break;
+                    case 4:
+                        return '#/emergencyDetail.html?history'
+                        break;
                 }
             },
             taskGetDetail: function(data) {
@@ -176,8 +181,12 @@ $(document).ready(function() {
                 var timeList = [];
                 for (var i = 0; i < data.length; i++) {
                     data[i].time = vm.stamp2time(data[i].in_time);
-                    data[i].endTime = vm.stamp2time(data[i].dead_line);
-                    if (this.tagState == 2) {
+                    if (data[i].deadline) {
+                        data[i].endTime = vm.stamp2time(data[i].deadline);
+                    }else{
+                        data[i].endTime = vm.stamp2time(data[i].dead_line);
+                    }
+                    if (this.tagState == 2||this.tagState==4) {
                         data[i].mode = "应急演练";
                         var time = new Date();
                         if (data[i].deadline < time.getTime() && data[i].state == "未完成") {
@@ -321,6 +330,7 @@ $(document).ready(function() {
                         data = {
                             name: 'Emergency',
                             rows: 0,
+                            "params['state']": "未完成"
                         };
                         break;
                     case 3:
@@ -329,6 +339,13 @@ $(document).ready(function() {
                             rows: 0,
                             remove: "safeRules",
                             "params['state']": "已检"
+                        };
+                        break;
+                    case 4:
+                        data = {
+                            name: 'Emergency',
+                            rows: 0,
+                            "params['state']": "已完成"
                         };
                 }
                 $.post('/model', data, function(data, textStatus, xhr) {

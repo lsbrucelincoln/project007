@@ -70,20 +70,25 @@
 .assessmentCheck .contentBody .tagBar .checkBtn {
   top: 0;
   left: 20px;
-  z-index: 3;
+  z-index: 4;
 }
 .assessmentCheck .contentBody .tagBar .praticeBtn {
   top: 0;
   left: 152px;
-  z-index: 2;
+  z-index: 3;
 }
 .assessmentCheck .contentBody .tagBar .historyBtn {
   top: 0;
   left: 287px;
+  z-index: 2;
+}
+.assessmentCheck .contentBody .tagBar .praticeHistoryBtn {
+  top: 0;
+  left: 415px;
   z-index: 1;
 }
 .assessmentCheck .contentBody .tagBar .chosenBtn {
-  z-index: 4;
+  z-index: 6 !important;
   top: 1px;
 }
 .assessmentCheck .contentBody .tagBar .chosenBtn:before {
@@ -465,7 +470,7 @@
   margin-left: 7px;
   width: 165px;
   height: 100px;
-  overflow: auto ;
+  overflow: auto;
   border: 1px solid #dfe9ef;
   float: left;
 }
