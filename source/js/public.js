@@ -1,4 +1,4 @@
-var baseUrl = "http://120.26.58.36"
+var baseUrl = ""
 var ADMIN_CONFIG = {
     "homePage": "welcome.html",
     "mainBodySelector": "#admin_body",
@@ -158,10 +158,10 @@ function eventBind() {
 
 function basicAjax() {
     var id = localStorage.getItem("id");
-    var competence=localStorage.getItem("competence");
-    if (competence=="系统管理员") {
+    var competence = localStorage.getItem("competence");
+    if (competence == "系统管理员") {
         $("#dataManagementBtn").show();
-    }else{
+    } else {
         $("#dataManagementBtn").hide();
     }
     console.log(window.location.href.search("Index_c") != -1);
