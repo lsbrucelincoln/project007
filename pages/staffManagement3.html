@@ -1,0 +1,289 @@
+<div class="checkBody" v-cloak>
+    <div class="btnBox">
+        <div class="searchBox">
+            <input type="text" class="searchInput" placeholder="输入账号搜索" onfocus="this.placeholder=''" onblur="this.placeholder='输入账号搜索'"><i class="flaticon-magnifying-glass"></i><span class="searchButtomNormal">搜索</span>
+        </div>
+        <a href="#" class="addBtn normalBtn">添加账号</a>
+    </div>
+    <div class="tableBox">
+        <table id="checkTable" class="display">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkBox" id="person1" class="checkBox">
+                    </th>
+                    <!-- <th>id</th> -->
+                    <th style="text-align: left;width: 210px">账号</th>
+                    <th>姓名</th>
+                    <th>所属行业</th>
+                    <th>注册时间</th>
+                    <th>当前状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tr v-for="account in showTasks|filterBy ruleFilter account ">
+                <td>
+                    <input type="checkBox" id="person1" class="checkBox" disabled v-if="$index==0" data-id="{{account.id}}">
+                    <input type="checkBox" id="person1" class="checkBox" v-if="!$index==0" data-id="{{account.id}}">
+                </td>
+                <!-- <td>{{account.id}}</td> -->
+                <td style="text-align: left"><span class='ellipsis'>{{account.username}}</span></td>
+                <td>{{account.name}}</td>
+                <td></td>
+                <td>{{account.time}}</td>
+                <td>{{account.no_lock?"正常":"停用"}}</td>
+                <td><a href="#/staffAccountManagementDetail.html" @click="saveDetail(account)">查看</a></td>
+            </tr>
+        </table>
+        <div class="bottom-search">
+            <div class="allSelectBtn normalBtn">全选</div>
+            <div class="urgeBtn normalBtn" @click="deleteOne(true)">启用</div>
+            <div class="urgeBtn normalBtn" @click="deleteOne(false)">禁用</div>
+            <!--             <div class="page"><a href="javascript:void(0)" @click="prevPage"><span id="Prev">« 上一页</span></a>
+                <a href="javascript:void(0)" v-for="n in pageNum" v-show="showPageTag(n)">
+                    <span @click="turnPage(n)" class="{{(n+1==pageIndex?'click_page':'normalPage')}}"> {{n+1}} </span>
+                </a>
+                <a href="javascript:void(0)" @click="nextPage">
+                    <span id="Next">下一页 »</span>
+                </a>
+            </div> -->
+        </div>
+    </div>
+</div>
+<script>
+$("th .checkBox").on('click', function(event) {
+    if ($(this).prop('checked')) {
+        $("td .checkBox").each(function(index, el) {
+            if (!$(this).attr('disabled')) {
+                $(this).prop("checked", true);
+            }
+        });
+
+    } else {
+        $("td .checkBox").prop("checked", false);
+    }
+});
+$(".addBtn").on('click', function(event) {
+    event.preventDefault();
+    $(".mask,.addAccount").show();
+});
+$(".allSelectBtn ").on('click', function(event) {
+    $("th .checkBox").trigger('click');
+});
+$(".searchButtomNormal").on('click', function(event) {
+    event.preventDefault();
+    console.log('test');
+    $("table.display").DataTable().columns(1).search($(".searchInput").val(), false, true).draw();
+});
+var vm = new Vue({
+    el: "#staffBody",
+    data: {
+        tagState: 1,
+        tasks: [],
+        companyList: [],
+        companyName: "",
+        createTimeList: [],
+        createTime: "",
+        region: "",
+        risks: {},
+        taskNum: "",
+        showTasks: [],
+        showState: false,
+        chosenList: [],
+        competence: localStorage.getItem('competence'),
+        id: localStorage.getItem('id')
+    },
+    computed: {},
+    methods: {
+        userDetail: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                data[i].time = vm.stamp2time(data[i].in_time);
+            }
+            vm.tasks = data;
+            vm.showTasks = data;
+        },
+        stamp2time: function(stamp) {
+            var time = new Date(stamp);
+            var year = time.getFullYear();
+            var month = time.getMonth() - 0 + 1;
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            month = month < 10 ? "0" + month : month;
+            var day = time.getDate();
+            day = day < 10 ? "0" + day : day;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            var timeString = '';
+            return year + "-" + month + "-" + day;
+        },
+        ruleFilter: function(data) {
+            // console.log(data);
+            if (data.competence == "企业负责人" || data.region.id != this.id) {
+                return false
+            } else {
+                return true
+            }
+        },
+        unique: function(arr) {
+            var result = [],
+                hash = {};
+            for (var i = 0, elem;
+                (elem = arr[i]) != null; i++) {
+                if (!hash[elem]) {
+                    result.push(elem);
+                    hash[elem] = true;
+                }
+            }
+            return result.reverse();
+        },
+        saveDetail: function(data) {
+            data = JSON.stringify(data);
+            localStorage.setItem("accountDetail", data);
+        },
+        getChosenList: function() {
+            var self = this;
+            self.chosenList = [];
+            $("td>.checkBox:checked").each(function(index, el) {
+                console.log($(el).attr('data-id'));
+                self.chosenList.push($(el).attr('data-id'));
+            });
+        },
+        deleteOne: function(boolean) {
+            var self = this;
+            self.getChosenList();
+            if (self.chosenList.length > 0) {
+                $.ajax({
+                        url: '/region/deleteUser',
+                        type: 'POST',
+                        data: {
+                            user_id: self.chosenList,
+                            no_lock: boolean
+                        },
+                        traditional: true
+                    })
+                    .done(function(data) {
+                        if (data.state == 0) {
+                            if (boolean) {
+                                alert("启用成功")
+                            } else {
+                                alert("禁用成功");
+                            }
+                            $('table.display').hide();
+                            $('table.display').DataTable().destroy();
+                            self.getData()
+
+                        }
+                    })
+            } else {
+                if (boolean) {
+                    alert("请选择启用项")
+                } else {
+                    alert("请选择禁用项")
+                }
+            }
+
+        },
+        getData: function() {
+            $.post(baseUrl + '/model', {
+                name: "User",
+                rows: 0
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+                if (data.state == 0) {
+                    vm.userDetail(data.data);
+                    vm.$nextTick(function() {
+                        vm.showState = true;
+                        $('table.display').DataTable({
+                            "order": [
+                                [4, "desc"]
+                            ],
+                            "pageLength": 7,
+                            "dom": 'rtp',
+                            "columnDefs": [{
+                                "orderable": false,
+                                "targets": [0, 1, 3, 6]
+                            }],
+                            language: {
+                                processing: "处理中...",
+                                search: "查找中...",
+                                lengthMenu: "显示 _MENU_ 项结果",
+                                info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                infoPostFix: "",
+                                loadingRecords: "载入中...",
+                                zeroRecords: "没有匹配结果",
+                                emptyTable: "表中数据为空",
+                                paginate: {
+                                    first: "首页",
+                                    previous: "上页",
+                                    next: "下页",
+                                    last: "末页"
+                                },
+                                aria: {
+                                    sortAscending: ": 以升序排列此列",
+                                    sortDescending: ":  以降序排列此列"
+                                }
+                            }
+                        });
+                        $('table.display').show()
+                    })
+                }
+            });
+        }
+    },
+    created: function() {
+        var self = this;
+        var id = localStorage.getItem("id");
+        $.post(baseUrl + '/model', {
+            name: "User",
+            rows: 0
+        }, function(data, textStatus, xhr) {
+            var time = new Date();
+            if (data.state == 0) {
+                vm.userDetail(data.data);
+                vm.$nextTick(function() {
+                    vm.showState = true;
+                    $('table.display').DataTable({
+                        "order": [
+                            [4, "desc"]
+                        ],
+                        "pageLength": 7,
+                        "dom": 'rtp',
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": [0, 1, 3, 6]
+                        }],
+                        language: {
+                            processing: "处理中...",
+                            search: "查找中...",
+                            lengthMenu: "显示 _MENU_ 项结果",
+                            info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                            infoFiltered: "(由 _MAX_ 项结果过滤)",
+                            infoPostFix: "",
+                            loadingRecords: "载入中...",
+                            zeroRecords: "没有匹配结果",
+                            emptyTable: "表中数据为空",
+                            paginate: {
+                                first: "首页",
+                                previous: "上页",
+                                next: "下页",
+                                last: "末页"
+                            },
+                            aria: {
+                                sortAscending: ": 以升序排列此列",
+                                sortDescending: ":  以降序排列此列"
+                            }
+                        }
+                    });
+
+                })
+            }
+        });
+    },
+    ready: function() {
+
+    }
+})
+</script>

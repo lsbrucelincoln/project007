@@ -5,6 +5,7 @@
         <div class="tagBar">
             <a class="tag  chosenBtn checkBtn">账号管理</a>
             <a class="tag praticeBtn">辖区企业管理</a>
+            <a class="tag historyBtn">行业专家</a>
         </div>
         <div class="contenBox">
         </div>
@@ -53,6 +54,10 @@ $(document).ready(function() {
     });
     $(".praticeBtn").on('click', function(event) {
         $(".contenBox").load('staffManagement2.html',
+            function() {});
+    });
+    $(".historyBtn").on('click', function(event) {
+        $(".contenBox").load('staffManagement3.html',
             function() {});
     });
     $(".checkBtn").on('click', function(event) {

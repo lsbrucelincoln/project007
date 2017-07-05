@@ -1,0 +1,420 @@
+<div class="assessmentCheck" id="assessmentBody">
+    <div class="minibar"><i class="flaticon-arrows-4"></i><span>当前位置：业务操作 > <span class="nowPlace">专家评估</span></span>
+    </div>
+    <div class="contentBody">
+        <div class="contenBox">
+            <div class="checkBody">
+                <div class="inputShort"><span>{{tagState>=3?"结束时间：":"创建时间："}}</span>
+                    <input type="text" class="createTime"><i class="flaticon-small-calendar"></i></div>
+                <div class="inputShort"><span>管理机构：</span>
+                    <div class="admin_ui_select" style="width: 200px;">
+                        <select class="regionName">
+                            <option value="">全部</option>
+                            <option v-for="place in region" value="{{place.name}}">{{place.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputShort"><span>任务编号：</span>
+                    <input type="text" placeholder="输入编号" class="taskNum" onfocus="this.placeholder=''" onblur="this.placeholder='输入编号'">
+                </div>
+                <div class="inputShort"><span>企业对象：</span>
+                    <input type="text" placeholder="输入企业名称" class="companyName" class="taskNum" onfocus="this.placeholder=''" onblur="this.placeholder='输入企业名称'">
+                </div>
+                <div class="searchBody">
+                    <span class="searchButtom normalBtn">搜索</span>
+                </div>
+                <div class="btnBox" v-if="tagState<3&&competence">
+                    <a :href="addTask" class="addBtn normalBtn">添加任务</a>
+                    <div class="allSelectBtn normalBtn">全选</div>
+                    <div class="urgeBtn normalBtn" @click="urgeExecute">催促执行</div>
+                    <div class="endProgramBtn normalBtn" @click="endProgram">结束任务</div>
+                </div>
+                <div class="tableBox">
+                    <table id="checkTable" class="display" v-show="showState">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkBox" class="checkBox">
+                                </th>
+                                <th>任务编号</th>
+                                <th>任务类型</th>
+                                <th>企业对象</th>
+                                <th>得分</th>
+                                <th>{{tagState>=3?"结束时间":"创建时间"}}</th>
+                                <th>责任专家</th>
+                                <th>当前状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="task in showTasks">
+                                <td>
+                                    <input type="checkBox" class="checkBox" data-id="{{task.id}}" v-if="task.company.name">
+                                </td>
+                                <td>{{task.code}}</td>
+                                <td>{{task.mode}}</td>
+                                <td width="190"><span class="ellipsis" title="{{task.company.name}}">{{task.company.name}}</span></td>
+                                <td>{{task.company.region.name}}</td>
+                                <td>{{tagState>=3?task.endTime:task.time}}</td>
+                                <td>{{responsePerson(task)}}</td>
+                                <td>{{task.state}}</td>
+                                <td><a :href="goDetail()" @click="saveDetail(task)" v-if="task.company.name">查看</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="bottom-search" v-if="!competence">
+                        <div class="allSelectBtn normalBtn">全选</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+// window.page.beforeUnload = function(hash) {
+//     $('table.display').hide();
+//     $('table.display').DataTable().destroy();
+//     return true;
+// }
+$(document).ready(function() {
+    $.datetimepicker.setLocale('zh');
+    $(".createTime").datetimepicker({
+        timepicker: false,
+        format: "Y-m-d",
+    });
+    $(".tag").on('click', function(event) {
+        $(this).addClass('chosenBtn');
+        $(this).siblings('.tag').removeClass('chosenBtn');
+        $(".checkBtn").css('z-index', '3');
+    });
+    $(".checkBtn").on('click', function(event) {
+        $(".checkBody").show();
+        $(".checkBody").siblings().hide();
+    });
+    $(".historyBtn").on('click', function(event) {
+        $(".checkBtn").css('z-index', '1');
+    });
+    if (window.location.href.search("urge") !== -1) {
+        $(".praticeBtn").trigger('click');
+        console.log('test');
+    };
+    $("th .checkBox").on('click', function(event) {
+        if ($(this).prop('checked')) {
+            $("td .checkBox").prop("checked", true);
+        } else {
+            $("td .checkBox").prop("checked", false);
+        }
+    });
+    $(".admin_content_table").on('click', ".allSelectBtn", function(event) {
+        $("td .checkBox").prop("checked", true);
+    });
+    $(".searchButtom").on('click', function(event) {
+        event.preventDefault();
+        console.log('test');
+        $("#checkTable").DataTable().columns(5).search($(".createTime").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(4).search($(".regionName").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(1).search($(".taskNum").val(), false, true).draw();
+        $("#checkTable").DataTable().columns(3).search($(".companyName").val(), false, true).draw();
+    });
+    var vm = new Vue({
+        el: "#assessmentBody",
+        data: {
+            tagState: 1,
+            tasks: [],
+            companyList: [],
+            companyName: "",
+            createTimeList: [],
+            createTime: "",
+            region: "",
+            risks: {},
+            taskNum: "",
+            showTasks: [],
+            competence: true,
+            chosenList: [],
+            region: [],
+            showState: false
+        },
+        computed: {
+            addTask: function() {
+                if (this.tagState == 1) {
+                    return "#/addAssessment.html"
+                } else {
+                    return "#/addExercise.html"
+                }
+            },
+        },
+        methods: {
+            responsePerson: function(data) {
+                if (data.user) {
+                    return data.user.name
+                } else if (data.leader) {
+                    return data.leader.name
+                } else {
+                    return ""
+                }
+            },
+            goDetail: function() {
+                switch (this.tagState) {
+                    case 1:
+                        return '#/assessDetail.html'
+                        break;
+                    case 2:
+                        return '#/emergencyDetail.html'
+                        break;
+                    case 3:
+                        return '#/assessDetail.html?history'
+                        break;
+                    case 4:
+                        return '#/emergencyDetail.html?history'
+                        break;
+                }
+            },
+            taskGetDetail: function(data) {
+                var companyList = [];
+                var timeList = [];
+                for (var i = 0; i < data.length; i++) {
+                    data[i].time = vm.stamp2time(data[i].in_time);
+                    if (data[i].deadline) {
+                        data[i].endTime = vm.stamp2time(data[i].deadline);
+                    }else{
+                        data[i].endTime = vm.stamp2time(data[i].dead_line);
+                    }
+                    if (this.tagState == 2||this.tagState==4) {
+                        data[i].mode = "应急演练";
+                        var time = new Date();
+                        if (data[i].deadline < time.getTime() && data[i].state == "未完成") {
+                            data[i].state = "已过期"
+                        }
+                    }
+                    data[i].createTime = data[i].time.split(" ")[0];
+                    companyList.push(data[i].company.name)
+                    timeList.push(data[i].createTime)
+                }
+                vm.tasks = data.reverse();
+                vm.showTasks = vm.tasks;
+                var len = this.showTasks.length;
+                if (len < 5) {
+                    for (var i = 0; i < 5 - len; i++) {
+                        this.tasks.push({
+                            company: {
+                                region: []
+                            },
+                            leader: [],
+                            safeRule: [],
+                        });
+                    }
+                }
+                vm.companyList = vm.unique(companyList);
+                vm.createTimeList = vm.unique(timeList);
+            },
+            stamp2time: function(stamp) {
+                var time = new Date(stamp);
+                var year = time.getFullYear();
+                var month = time.getMonth() - 0 + 1;
+                var hours = time.getHours();
+                var minutes = time.getMinutes();
+                month = month < 10 ? "0" + month : month;
+                var day = time.getDate();
+                day = day < 10 ? "0" + day : day;
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var timeString = '';
+                return year + "-" + month + "-" + day;
+            },
+            unique: function(arr) {
+                var result = [],
+                    hash = {};
+                for (var i = 0, elem;
+                    (elem = arr[i]) != null; i++) {
+                    if (!hash[elem]) {
+                        result.push(elem);
+                        hash[elem] = true;
+                    }
+                }
+                return result.reverse();
+            },
+            saveDetail: function(data) {
+                data = JSON.stringify(data);
+                localStorage.setItem("taskDetail", data);
+            },
+            changeState: function(state) {
+                this.tagState = state;
+                this.showTasks = [];
+                $('table.display').DataTable().destroy();
+                this.getData(state);
+            },
+            urgeExecute: function() {
+                var self = this;
+                this.getChosenList();
+                if (self.chosenList.length > 0) {
+                    var url = self.tagState == 1 ? '/region/urgeTask' : '/region/urgeEmergency';
+                    var data = self.tagState == 1 ? {
+                        task: self.chosenList
+                    } : {
+                        emergency: self.chosenList
+                    };
+                    $.ajax({
+                            url: url,
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("催促成功");
+                            }
+                        })
+                } else {
+                    alert("请选择催促项")
+                }
+            },
+            endProgram: function() {
+                var self = this;
+                self.getChosenList();
+                console.log(data);
+                if (self.chosenList.length > 0) {
+                    var url = self.tagState == 1 ? '/region/completeTask' : '/region/completeEmergency';
+                    var data = self.tagState == 1 ? {
+                        task: self.chosenList
+                    } : {
+                        emergency: self.chosenList
+                    };
+                    $.ajax({
+                            url: url,
+                            type: 'POST',
+                            traditional: true,
+                            data: data,
+                        })
+                        .done(function(data) {
+                            if (data.state == 0) {
+                                alert("任务已结束");
+                                self.showState = false;
+                                self.showTasks = [];
+                                $('table.display').DataTable().destroy();
+                                self.getData(self.tagState)
+                            }
+                        })
+                } else {
+                    alert("请选择结束项")
+                }
+            },
+            getChosenList: function() {
+                var self = this;
+                console.log('test');
+                self.chosenList = [];
+                $("td>.checkBox:checked").each(function(index, el) {
+                    console.log($(el).attr('data-id'));
+                    self.chosenList.push($(el).attr('data-id'));
+                });
+            },
+            getData: function(state) {
+                var self = this;
+                var data = {}
+                switch (state) {
+                    case 1:
+                        data = {
+                            name: 'Task',
+                            rows: 0,
+                            remove: "safeRules",
+                            "params['state']": "未检"
+                        };
+                        break;
+                    case 2:
+                        data = {
+                            name: 'Emergency',
+                            rows: 0,
+                            "params['state']": "未完成"
+                        };
+                        break;
+                    case 3:
+                        data = {
+                            name: 'Task',
+                            rows: 0,
+                            remove: "safeRules",
+                            "params['state']": "已检"
+                        };
+                        break;
+                    case 4:
+                        data = {
+                            name: 'Emergency',
+                            rows: 0,
+                            "params['state']": "已完成"
+                        };
+                }
+                $.post('/model', data, function(data, textStatus, xhr) {
+                    if (data.state == 0) {
+                        vm.taskGetDetail(data.data);
+                        vm.$nextTick(function() {
+                            $('table.display').DataTable({
+                                "order": [
+                                    [1, "desc"]
+                                ],
+                                // "searching": false,
+                                "pageLength": 5,
+                                "dom": 'rtp',
+                                "columnDefs": [{
+                                    "orderable": false,
+                                    "targets": [0, 3, 8]
+                                }],
+                                language: {
+                                    processing: "处理中...",
+                                    search: "Rechercher&nbsp;:",
+                                    lengthMenu: "显示 _MENU_ 项结果",
+                                    info: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                    infoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                    infoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    infoPostFix: "",
+                                    loadingRecords: "载入中...",
+                                    zeroRecords: "没有匹配结果",
+                                    emptyTable: "表中数据为空",
+                                    paginate: {
+                                        first: "首页",
+                                        previous: "上页",
+                                        next: "下页",
+                                        last: "末页"
+                                    },
+                                    aria: {
+                                        sortAscending: ": 以升序排列此列",
+                                        sortDescending: ":  以降序排列此列"
+                                    }
+                                }
+                            });
+                            self.showState = true;
+                        })
+                    }
+                });
+            },
+        },
+        created: function() {
+            var self = this;
+            var id = localStorage.getItem("id");
+            var competence = localStorage.getItem("competence");
+            if (competence == "企业负责人") {
+                this.competence = false;
+            }
+            if (window.location.href.search("emergency") != -1) {
+                self.tagState = 2;
+                $(".praticeBtn").trigger('click')
+            }
+            if (window.location.href.search("history") != -1) {
+                self.tagState = 3;
+                $(".historyBtn").trigger('click')
+            }
+            this.getData(self.tagState);
+            $.post('/model', {
+                name: "Region",
+                "row": 0
+            }, function(data, textStatus, xhr) {
+                if (data.state == 0) {
+                    vm.region = data.data;
+                }
+            });
+            console.log(window.location.href.search("emergency") != -1);
+        },
+        ready: function() {
+
+        }
+    })
+});
+</script>
